@@ -50,57 +50,76 @@ bool MainMenu::init()
     if (mainMenuCloseItem == nullptr ||
         mainMenuCloseItem->getContentSize().width <= 0 ||
         mainMenuCloseItem->getContentSize().height <= 0)
-    {
+    {//错误处理
         problemLoading("'exitMainMenu.png' and 'exitMainMenu.png'");
     }
     else
-    {
-        float x = origin.x + visibleSize.width - mainMenuCloseItem->getContentSize().width / 2;
-        float y = origin.y + mainMenuCloseItem->getContentSize().height / 2;
+    {//设置位置
+        float x = MAINMENU_CLOSE_ITEM_POSITION_X;
+        float y = MAINMENU_CLOSE_ITEM_POSITION_Y;
         mainMenuCloseItem->setPosition(Vec2(x, y));
     }
     //创建关闭菜单
     auto closeMenu = Menu::create(mainMenuCloseItem, NULL);
     closeMenu->setPosition(Vec2::ZERO);
-    this->addChild(closeMenu, 1);
+    this->addChild(closeMenu, 2);
     /*=====================创建关闭按钮结束====================*/
 
     /*=====================创建游戏名开始======================*/
 
-    auto gameNameLabel = Label::createWithTTF("BRAWLSTARS", "fonts/PixeloidMono.ttf", 96);
+    auto gameNameLabel = Label::createWithTTF(
+        "BRAWLSTARS", 
+        "fonts/PixeloidSans.ttf", 
+        MAINMENU_GAMENAME_LABEL_SIZE
+    );//创建文本
     if (gameNameLabel == nullptr)
     {
-        problemLoading("'fonts/PixeloidMono.ttf'");
+        problemLoading("'fonts/PixeloidSans.ttf'");
     }
     else
     {
-        gameNameLabel->setPosition(Vec2(origin.x + visibleSize.width / 2,
-            origin.y + visibleSize.height/8*7 - gameNameLabel->getContentSize().height));
+        const Color4B gameNameLabelColor(MAINMENU_TEXT_RGB_COLOR,255);//创建4B颜色
+        gameNameLabel->setTextColor(gameNameLabelColor);
+        gameNameLabel->setPosition(
+            Vec2(MAINMENU_GAMENAME_LABEL_POSITION_X,
+            MAINMENU_GAMENAME_LABEL_POSITION_Y)
+        );
 
-        // add the label as a child to this layer
         this->addChild(gameNameLabel, 1);
     }
     /*=====================创建游戏名结束======================*/
 
     /*===================创建主菜单选项开始====================*/
     MenuItemFont::setFontName("fonts/PixeloidMono.ttf");
-    MenuItemFont::setFontSize(40);
+    MenuItemFont::setFontSize(64);
+    const Color3B menuItemColor(MAINMENU_TEXT_RGB_COLOR);//创建3B颜色
 
-    MenuItemFont* itemStart = MenuItemFont::create("Start",
-        CC_CALLBACK_1(MainMenu::menuStartCallback, this));
-    MenuItemFont* itemStore = MenuItemFont::create("Store",
-        CC_CALLBACK_1(MainMenu::menuStoreCallback, this));
-    MenuItemFont* itemHeros = MenuItemFont::create("Heros",
-        CC_CALLBACK_1(MainMenu::menuHerosCallback, this));
-    MenuItemFont* itemSettings = MenuItemFont::create("Settings",
-        CC_CALLBACK_1(MainMenu::menuSettingsCallback, this));
+    //创建单个菜单项
+    MenuItemFont* itemStart = MenuItemFont::create(
+        "START",
+        CC_CALLBACK_1(MainMenu::menuStartCallback, this)
+    );
+    MenuItemFont* itemStore = MenuItemFont::create(
+        "STORE",
+        CC_CALLBACK_1(MainMenu::menuStartCallback, this)
+    );
+    MenuItemFont* itemHeros = MenuItemFont::create(
+        "HEROS",
+        CC_CALLBACK_1(MainMenu::menuSettingsCallback, this)
+    );
+    MenuItemFont* itemSettings = MenuItemFont::create(
+        "SETTINGS",
+        CC_CALLBACK_1(MainMenu::menuSettingsCallback, this)
+    );
 
+    //创建菜单 把菜单项放进去
     Menu* mainMenu = Menu::create(itemStart, itemStore, itemHeros, itemSettings, NULL);
-    mainMenu->setPosition(visibleSize.width / 2 + origin.x,
-        origin.y + mainMenu->getContentSize().height / 2);
+    mainMenu->setPosition(MAINMENU_MAINMENU_POSITION_X,
+        MAINMENU_MAINMENU_POSITION_Y);
     mainMenu->alignItemsVertically();
+    mainMenu->setColor(menuItemColor);
 
-    this->addChild(mainMenu);
+    this->addChild(mainMenu,1);
     /*===================创建主菜单选项结束====================*/
 
     /*=====================创建背景图开始======================*/
@@ -112,8 +131,8 @@ bool MainMenu::init()
     else
     {
         //将背景图放在中央
-        sprite->setPosition(Vec2(visibleSize.width / 2 + origin.x, 
-            visibleSize.height / 2 + origin.y));
+        sprite->setPosition(Vec2(MAINMENU_BACKGROUND_POSITION_X,
+            MAINMENU_BACKGROUND_POSITION_Y));
 
         this->addChild(sprite, 0);
     }
@@ -135,36 +154,39 @@ void MainMenu::menuCloseCallback(Ref* pSender)
 * Summary ：主菜单开始按钮回调
 * return ：
 ****************************/
-void menuStartCallback(cocos2d::Ref* pSender)
+void MainMenu::menuStartCallback(cocos2d::Ref* pSender)
 {
 	auto gameScene = GameScene::createScene();
-	Director::getInstance()->
+    Director::getInstance()->replaceScene(gameScene);//mainmenu已被释放
 }
 /****************************
 * Name ：menuStoreCallback
 * Summary ：主菜单商店按钮回调
 * return ：
 ****************************/
-void menuStoreCallback(cocos2d::Ref* pSender)
+void MainMenu::menuStoreCallback(cocos2d::Ref* pSender)
 {
 	auto storeScene = StoreScene::createScene();
-	Director::getInstance()->pushScene(storeScene);
+	Director::getInstance()->pushScene(storeScene);//mainmenu未被释放 使用popScene返回
 }
 /****************************
 * Name ：menuHerosCallback
 * Summary ：主菜单人物按钮回调
 * return ：
 ****************************/
-void menuHerosCallback(cocos2d::Ref* pSender)
+void MainMenu::menuHerosCallback(cocos2d::Ref* pSender)
 {
 	auto playerScene = PlayerScene::createScene();
-	Director::getInstance()->pushScene(playerScene);
+	Director::getInstance()->pushScene(playerScene);//mainmenu未被释放 使用popScene返回
 }
 /****************************
 * Name ：menuSettingsCallback
 * Summary ：主菜单设置按钮回调
 * return ：
 ****************************/
-void menuSettingsCallback(cocos2d::Ref* pSender)
+void MainMenu::menuSettingsCallback(cocos2d::Ref* pSender)
 {
+    auto settingsScene = SettingsScene::createScene();
+    Director::getInstance()->pushScene(settingsScene);//mainmenu未被释放 使用popScene返回
 }
+
