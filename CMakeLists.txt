@@ -51,11 +51,13 @@ list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
      Classes/HelloWorldScene.cpp
      Classes/MainMenuScene.cpp
+     Classes/SettingsScene.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
      Classes/HelloWorldScene.h
      Classes/MainMenuScene.h
+     Classes/SettingsScene.h
      )
 
 if(ANDROID)

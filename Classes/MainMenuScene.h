@@ -21,12 +21,12 @@
 #define MAINMENU_GAMENAME_LABEL_SIZE 96
 
 #include "cocos2d.h"
-#include "GameScene.h"
-#include "StoreScene.h"
-#include "PlayerScene.h"
+//#include "GameScene.h"
+//#include "StoreScene.h"
+//#include "PlayerScene.h"
 #include "SettingsScene.h"
 
-class MainMenu : public cocos2d::Scene
+class MainMenuScene : public cocos2d::Scene
 {
 public:
     static cocos2d::Scene* createScene();
@@ -39,7 +39,7 @@ public:
     void menuHerosCallback(cocos2d::Ref* pSender);
     void menuSettingsCallback(cocos2d::Ref* pSender);
     //´´½¨
-    CREATE_FUNC(MainMenu);
+    CREATE_FUNC(MainMenuScene);
 };
 
-#endif // __MAINMENU_SCENE_H__
+#endif

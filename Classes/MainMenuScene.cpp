@@ -6,13 +6,13 @@
 USING_NS_CC;
 
 /****************************
-* Name ：MainMenu::createScene
+* Name ：MainMenuScene::createScene
 * Summary ：创建场景
 * return ：场景类指针
 ****************************/
-Scene* MainMenu::createScene()
+Scene* MainMenuScene::createScene()
 {
-    return MainMenu::create();
+    return MainMenuScene::create();
 }
 /****************************
 * Name ：problemLoading
@@ -25,11 +25,11 @@ static void problemLoading(const char* filename)
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in MainMenuScene.cpp\n");
 }
 /****************************
-* Name ：MainMenu::init
+* Name ：MainMenuScene::init
 * Summary ：主菜单初始化
 * return ：初始化成功与否
 ****************************/
-bool MainMenu::init()
+bool MainMenuScene::init()
 {
     if (!Scene::init())
     {
@@ -43,15 +43,15 @@ bool MainMenu::init()
 
     //创建关闭按钮
     auto mainMenuCloseItem = MenuItemImage::create(
-        "exitMainMenu.png",
-        "exitMainMenu.png",
-        CC_CALLBACK_1(MainMenu::menuCloseCallback, this));
+        "exitMainMenuNormal.png",
+        "exitMainMenuSelected.png",
+        CC_CALLBACK_1(MainMenuScene::menuCloseCallback, this));
 
     if (mainMenuCloseItem == nullptr ||
         mainMenuCloseItem->getContentSize().width <= 0 ||
         mainMenuCloseItem->getContentSize().height <= 0)
     {//错误处理
-        problemLoading("'exitMainMenu.png' and 'exitMainMenu.png'");
+        problemLoading("'exitMainMenuNormal.png' and 'exitMainMenuSelected.png'");
     }
     else
     {//设置位置
@@ -97,19 +97,19 @@ bool MainMenu::init()
     //创建单个菜单项
     MenuItemFont* itemStart = MenuItemFont::create(
         "START",
-        CC_CALLBACK_1(MainMenu::menuStartCallback, this)
+        CC_CALLBACK_1(MainMenuScene::menuStartCallback, this)
     );
     MenuItemFont* itemStore = MenuItemFont::create(
         "STORE",
-        CC_CALLBACK_1(MainMenu::menuStartCallback, this)
+        CC_CALLBACK_1(MainMenuScene::menuStartCallback, this)
     );
     MenuItemFont* itemHeros = MenuItemFont::create(
         "HEROS",
-        CC_CALLBACK_1(MainMenu::menuSettingsCallback, this)
+        CC_CALLBACK_1(MainMenuScene::menuSettingsCallback, this)
     );
     MenuItemFont* itemSettings = MenuItemFont::create(
         "SETTINGS",
-        CC_CALLBACK_1(MainMenu::menuSettingsCallback, this)
+        CC_CALLBACK_1(MainMenuScene::menuSettingsCallback, this)
     );
 
     //创建菜单 把菜单项放进去
@@ -123,28 +123,28 @@ bool MainMenu::init()
     /*===================创建主菜单选项结束====================*/
 
     /*=====================创建背景图开始======================*/
-    auto sprite = Sprite::create("mainmenuBackground.png");
-    if (sprite == nullptr)
+    auto background = Sprite::create("mainmenuBackground.png");
+    if (background == nullptr)
     {
         problemLoading("'mainmenuBackground.png'");
     }
     else
     {
         //将背景图放在中央
-        sprite->setPosition(Vec2(MAINMENU_BACKGROUND_POSITION_X,
+        background->setPosition(Vec2(MAINMENU_BACKGROUND_POSITION_X,
             MAINMENU_BACKGROUND_POSITION_Y));
 
-        this->addChild(sprite, 0);
+        this->addChild(background, 0);
     }
     /*=====================创建背景图结束======================*/
     return true;
 }
 /****************************
-* Name ：MainMenu::menuCloseCallback
+* Name ：MainMenuScene::menuCloseCallback
 * Summary ：主菜单关闭按钮回调
 * return ：
 ****************************/
-void MainMenu::menuCloseCallback(Ref* pSender)
+void MainMenuScene::menuCloseCallback(Ref* pSender)
 {
     Director::getInstance()->end();
 }
@@ -154,39 +154,39 @@ void MainMenu::menuCloseCallback(Ref* pSender)
 * Summary ：主菜单开始按钮回调
 * return ：
 ****************************/
-void MainMenu::menuStartCallback(cocos2d::Ref* pSender)
+void MainMenuScene::menuStartCallback(cocos2d::Ref* pSender)
 {
-	auto gameScene = GameScene::createScene();
-    Director::getInstance()->replaceScene(gameScene);//mainmenu已被释放
+	//auto gameScene = GameScene::createScene();
+    //Director::getInstance()->replaceScene(gameScene);//mainmenu已被释放
 }
 /****************************
 * Name ：menuStoreCallback
 * Summary ：主菜单商店按钮回调
 * return ：
 ****************************/
-void MainMenu::menuStoreCallback(cocos2d::Ref* pSender)
+void MainMenuScene::menuStoreCallback(cocos2d::Ref* pSender)
 {
-	auto storeScene = StoreScene::createScene();
-	Director::getInstance()->pushScene(storeScene);//mainmenu未被释放 使用popScene返回
+	//auto storeScene = StoreScene::createScene();
+	//Director::getInstance()->pushScene(storeScene);//mainmenu未被释放 使用popScene返回
 }
 /****************************
 * Name ：menuHerosCallback
 * Summary ：主菜单人物按钮回调
 * return ：
 ****************************/
-void MainMenu::menuHerosCallback(cocos2d::Ref* pSender)
+void MainMenuScene::menuHerosCallback(cocos2d::Ref* pSender)
 {
-	auto playerScene = PlayerScene::createScene();
-	Director::getInstance()->pushScene(playerScene);//mainmenu未被释放 使用popScene返回
+	//auto playerScene = PlayerScene::createScene();
+	//Director::getInstance()->pushScene(playerScene);//mainmenu未被释放 使用popScene返回
 }
 /****************************
 * Name ：menuSettingsCallback
 * Summary ：主菜单设置按钮回调
 * return ：
 ****************************/
-void MainMenu::menuSettingsCallback(cocos2d::Ref* pSender)
+void MainMenuScene::menuSettingsCallback(cocos2d::Ref* pSender)
 {
     auto settingsScene = SettingsScene::createScene();
-    Director::getInstance()->pushScene(settingsScene);//mainmenu未被释放 使用popScene返回
+    Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, settingsScene));//mainmenu未被释放 使用popScene返回
 }
 
