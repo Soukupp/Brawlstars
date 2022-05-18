@@ -1,6 +1,7 @@
 //作者 : 王鹏
 //日期 : 2022-5-14
 #include "MainMenuScene.h"
+#include "GameScene.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
@@ -156,8 +157,8 @@ void MainMenuScene::menuCloseCallback(Ref* pSender)
 ****************************/
 void MainMenuScene::menuStartCallback(cocos2d::Ref* pSender)
 {
-	//auto gameScene = GameScene::createScene();
-    //Director::getInstance()->replaceScene(gameScene);//mainmenu已被释放
+	auto gameScene = GameScene::createScene();   // 转入GameScene
+    Director::getInstance()->replaceScene(gameScene);//mainmenu已被释放
 }
 /****************************
 * Name ：menuStoreCallback
