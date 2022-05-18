@@ -1,7 +1,8 @@
 //作者 : 王鹏
-//日期 : 2022-5-14
+//创建日期 : 2022-5-14
 #include "MainMenuScene.h"
 #include "SimpleAudioEngine.h"
+
 
 USING_NS_CC;
 
@@ -64,6 +65,10 @@ bool MainMenu::init()
     closeMenu->setPosition(Vec2::ZERO);
     this->addChild(closeMenu, 2);
     /*=====================创建关闭按钮结束====================*/
+
+
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music2.mp3", true);
+        log("have played music");
 
     /*=====================创建游戏名开始======================*/
 
@@ -156,8 +161,8 @@ void MainMenu::menuCloseCallback(Ref* pSender)
 ****************************/
 void MainMenu::menuStartCallback(cocos2d::Ref* pSender)
 {
-	auto gameScene = GameScene::createScene();
-    Director::getInstance()->replaceScene(gameScene);//mainmenu已被释放
+	//auto gameScene = GameScene::createScene();
+ //   Director::getInstance()->replaceScene(gameScene);//mainmenu已被释放
 }
 /****************************
 * Name ：menuStoreCallback
@@ -166,8 +171,8 @@ void MainMenu::menuStartCallback(cocos2d::Ref* pSender)
 ****************************/
 void MainMenu::menuStoreCallback(cocos2d::Ref* pSender)
 {
-	auto storeScene = StoreScene::createScene();
-	Director::getInstance()->pushScene(storeScene);//mainmenu未被释放 使用popScene返回
+	//auto storeScene = StoreScene::createScene();
+	//Director::getInstance()->pushScene(storeScene);//mainmenu未被释放 使用popScene返回
 }
 /****************************
 * Name ：menuHerosCallback
@@ -176,8 +181,8 @@ void MainMenu::menuStoreCallback(cocos2d::Ref* pSender)
 ****************************/
 void MainMenu::menuHerosCallback(cocos2d::Ref* pSender)
 {
-	auto playerScene = PlayerScene::createScene();
-	Director::getInstance()->pushScene(playerScene);//mainmenu未被释放 使用popScene返回
+	//auto playerScene = PlayerScene::createScene();
+	//Director::getInstance()->pushScene(playerScene);//mainmenu未被释放 使用popScene返回
 }
 /****************************
 * Name ：menuSettingsCallback
@@ -186,7 +191,7 @@ void MainMenu::menuHerosCallback(cocos2d::Ref* pSender)
 ****************************/
 void MainMenu::menuSettingsCallback(cocos2d::Ref* pSender)
 {
-    auto settingsScene = SettingsScene::createScene();
-    Director::getInstance()->pushScene(settingsScene);//mainmenu未被释放 使用popScene返回
+    auto settingScene = SettingScene::createScene();
+    Director::getInstance()->pushScene(settingScene);//mainmenu未被释放 使用popScene返回
 }
 
