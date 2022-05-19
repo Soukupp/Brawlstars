@@ -6,6 +6,7 @@
 
 USING_NS_CC;
 
+static bool ifMusicBegin = true;
 /****************************
 * Name ：MainMenuScene::createScene
 * Summary ：创建场景
@@ -65,6 +66,12 @@ bool MainMenuScene::init()
     closeMenu->setPosition(Vec2::ZERO);
     this->addChild(closeMenu, 2);
     /*=====================创建关闭按钮结束====================*/
+    /*=====================创建背景音乐开始=======================*/
+
+    if(ifMusicBegin)
+        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("sound/retro_fight_ingame_01.mp3",true);
+    ifMusicBegin = false;
+    /*=====================创建背景音乐结束=======================*/
 
     /*=====================创建游戏名开始======================*/
 
