@@ -1,24 +1,25 @@
-//×÷Õß : ÍõÅô
-//´´½¨ÈÕÆÚ : 2022-5-14
+//ä½œè€… : çŽ‹é¹
+//åˆ›å»ºæ—¥æœŸ : 2022-5-14
 #include "MainMenuScene.h"
+#include "GameScene.h"
 #include "SimpleAudioEngine.h"
 
 
 USING_NS_CC;
 
 /****************************
-* Name £ºMainMenu::createScene
-* Summary £º´´½¨³¡¾°
-* return £º³¡¾°ÀàÖ¸Õë
+* Name ï¼šMainMenuScene::createScene
+* Summary ï¼šåˆ›å»ºåœºæ™¯
+* return ï¼šåœºæ™¯ç±»æŒ‡é’ˆ
 ****************************/
-Scene* MainMenu::createScene()
+Scene* MainMenuScene::createScene()
 {
-    return MainMenu::create();
+    return MainMenuScene::create();
 }
 /****************************
-* Name £ºproblemLoading
-* Summary £º´íÎó´òÓ¡
-* return £º
+* Name ï¼šproblemLoading
+* Summary ï¼šé”™è¯¯æ‰“å°
+* return ï¼š
 ****************************/
 static void problemLoading(const char* filename)
 {
@@ -26,11 +27,11 @@ static void problemLoading(const char* filename)
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in MainMenuScene.cpp\n");
 }
 /****************************
-* Name £ºMainMenu::init
-* Summary £ºÖ÷²Ëµ¥³õÊ¼»¯
-* return £º³õÊ¼»¯³É¹¦Óë·ñ
+* Name ï¼šMainMenuScene::init
+* Summary ï¼šä¸»èœå•åˆå§‹åŒ–
+* return ï¼šåˆå§‹åŒ–æˆåŠŸä¸Žå¦
 ****************************/
-bool MainMenu::init()
+bool MainMenuScene::init()
 {
     if (!Scene::init())
     {
@@ -40,50 +41,50 @@ bool MainMenu::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /*=====================´´½¨¹Ø±Õ°´Å¥¿ªÊ¼======================*/
+    /*=====================åˆ›å»ºå…³é—­æŒ‰é’®å¼€å§‹======================*/
 
-    //´´½¨¹Ø±Õ°´Å¥
+    //åˆ›å»ºå…³é—­æŒ‰é’®
     auto mainMenuCloseItem = MenuItemImage::create(
-        "exitMainMenu.png",
-        "exitMainMenu.png",
-        CC_CALLBACK_1(MainMenu::menuCloseCallback, this));
+        "exitMainMenuNormal.png",
+        "exitMainMenuSelected.png",
+        CC_CALLBACK_1(MainMenuScene::menuCloseCallback, this));
 
     if (mainMenuCloseItem == nullptr ||
         mainMenuCloseItem->getContentSize().width <= 0 ||
         mainMenuCloseItem->getContentSize().height <= 0)
-    {//´íÎó´¦Àí
-        problemLoading("'exitMainMenu.png' and 'exitMainMenu.png'");
+    {//é”™è¯¯å¤„ç†
+        problemLoading("'exitMainMenuNormal.png' and 'exitMainMenuSelected.png'");
     }
     else
-    {//ÉèÖÃÎ»ÖÃ
+    {//è®¾ç½®ä½ç½®
         float x = MAINMENU_CLOSE_ITEM_POSITION_X;
         float y = MAINMENU_CLOSE_ITEM_POSITION_Y;
         mainMenuCloseItem->setPosition(Vec2(x, y));
     }
-    //´´½¨¹Ø±Õ²Ëµ¥
+    //åˆ›å»ºå…³é—­èœå•
     auto closeMenu = Menu::create(mainMenuCloseItem, NULL);
     closeMenu->setPosition(Vec2::ZERO);
     this->addChild(closeMenu, 2);
-    /*=====================´´½¨¹Ø±Õ°´Å¥½áÊø====================*/
+    /*=====================åˆ›å»ºå…³é—­æŒ‰é’®ç»“æŸ====================*/
 
 
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music2.mp3", true);
         log("have played music");
 
-    /*=====================´´½¨ÓÎÏ·Ãû¿ªÊ¼======================*/
+    /*=====================åˆ›å»ºæ¸¸æˆåå¼€å§‹======================*/
 
     auto gameNameLabel = Label::createWithTTF(
         "BRAWLSTARS", 
         "fonts/PixeloidSans.ttf", 
         MAINMENU_GAMENAME_LABEL_SIZE
-    );//´´½¨ÎÄ±¾
+    );//åˆ›å»ºæ–‡æœ¬
     if (gameNameLabel == nullptr)
     {
         problemLoading("'fonts/PixeloidSans.ttf'");
     }
     else
     {
-        const Color4B gameNameLabelColor(MAINMENU_TEXT_RGB_COLOR,255);//´´½¨4BÑÕÉ«
+        const Color4B gameNameLabelColor(MAINMENU_TEXT_RGB_COLOR,255);//åˆ›å»º4Bé¢œè‰²
         gameNameLabel->setTextColor(gameNameLabelColor);
         gameNameLabel->setPosition(
             Vec2(MAINMENU_GAMENAME_LABEL_POSITION_X,
@@ -92,32 +93,32 @@ bool MainMenu::init()
 
         this->addChild(gameNameLabel, 1);
     }
-    /*=====================´´½¨ÓÎÏ·Ãû½áÊø======================*/
+    /*=====================åˆ›å»ºæ¸¸æˆåç»“æŸ======================*/
 
-    /*===================´´½¨Ö÷²Ëµ¥Ñ¡Ïî¿ªÊ¼====================*/
+    /*===================åˆ›å»ºä¸»èœå•é€‰é¡¹å¼€å§‹====================*/
     MenuItemFont::setFontName("fonts/PixeloidMono.ttf");
     MenuItemFont::setFontSize(64);
-    const Color3B menuItemColor(MAINMENU_TEXT_RGB_COLOR);//´´½¨3BÑÕÉ«
+    const Color3B menuItemColor(MAINMENU_TEXT_RGB_COLOR);//åˆ›å»º3Bé¢œè‰²
 
-    //´´½¨µ¥¸ö²Ëµ¥Ïî
+    //åˆ›å»ºå•ä¸ªèœå•é¡¹
     MenuItemFont* itemStart = MenuItemFont::create(
         "START",
-        CC_CALLBACK_1(MainMenu::menuStartCallback, this)
+        CC_CALLBACK_1(MainMenuScene::menuStartCallback, this)
     );
     MenuItemFont* itemStore = MenuItemFont::create(
         "STORE",
-        CC_CALLBACK_1(MainMenu::menuStartCallback, this)
+        CC_CALLBACK_1(MainMenuScene::menuStartCallback, this)
     );
     MenuItemFont* itemHeros = MenuItemFont::create(
         "HEROS",
-        CC_CALLBACK_1(MainMenu::menuSettingsCallback, this)
+        CC_CALLBACK_1(MainMenuScene::menuSettingsCallback, this)
     );
     MenuItemFont* itemSettings = MenuItemFont::create(
         "SETTINGS",
-        CC_CALLBACK_1(MainMenu::menuSettingsCallback, this)
+        CC_CALLBACK_1(MainMenuScene::menuSettingsCallback, this)
     );
 
-    //´´½¨²Ëµ¥ °Ñ²Ëµ¥Ïî·Å½øÈ¥
+    //åˆ›å»ºèœå• æŠŠèœå•é¡¹æ”¾è¿›åŽ»
     Menu* mainMenu = Menu::create(itemStart, itemStore, itemHeros, itemSettings, NULL);
     mainMenu->setPosition(MAINMENU_MAINMENU_POSITION_X,
         MAINMENU_MAINMENU_POSITION_Y);
@@ -125,73 +126,74 @@ bool MainMenu::init()
     mainMenu->setColor(menuItemColor);
 
     this->addChild(mainMenu,1);
-    /*===================´´½¨Ö÷²Ëµ¥Ñ¡Ïî½áÊø====================*/
+    /*===================åˆ›å»ºä¸»èœå•é€‰é¡¹ç»“æŸ====================*/
 
-    /*=====================´´½¨±³¾°Í¼¿ªÊ¼======================*/
-    auto sprite = Sprite::create("mainmenuBackground.png");
-    if (sprite == nullptr)
+    /*=====================åˆ›å»ºèƒŒæ™¯å›¾å¼€å§‹======================*/
+    auto background = Sprite::create("mainmenuBackground.png");
+    if (background == nullptr)
     {
         problemLoading("'mainmenuBackground.png'");
     }
     else
     {
-        //½«±³¾°Í¼·ÅÔÚÖÐÑë
-        sprite->setPosition(Vec2(MAINMENU_BACKGROUND_POSITION_X,
+        //å°†èƒŒæ™¯å›¾æ”¾åœ¨ä¸­å¤®
+        background->setPosition(Vec2(MAINMENU_BACKGROUND_POSITION_X,
             MAINMENU_BACKGROUND_POSITION_Y));
 
-        this->addChild(sprite, 0);
+        this->addChild(background, 0);
     }
-    /*=====================´´½¨±³¾°Í¼½áÊø======================*/
+    /*=====================åˆ›å»ºèƒŒæ™¯å›¾ç»“æŸ======================*/
     return true;
 }
 /****************************
-* Name £ºMainMenu::menuCloseCallback
-* Summary £ºÖ÷²Ëµ¥¹Ø±Õ°´Å¥»Øµ÷
-* return £º
+* Name ï¼šMainMenuScene::menuCloseCallback
+* Summary ï¼šä¸»èœå•å…³é—­æŒ‰é’®å›žè°ƒ
+* return ï¼š
 ****************************/
-void MainMenu::menuCloseCallback(Ref* pSender)
+void MainMenuScene::menuCloseCallback(Ref* pSender)
 {
     Director::getInstance()->end();
 }
 
 /****************************
-* Name £ºmenuStartCallback
-* Summary £ºÖ÷²Ëµ¥¿ªÊ¼°´Å¥»Øµ÷
-* return £º
+* Name ï¼šmenuStartCallback
+* Summary ï¼šä¸»èœå•å¼€å§‹æŒ‰é’®å›žè°ƒ
+* return ï¼š
 ****************************/
-void MainMenu::menuStartCallback(cocos2d::Ref* pSender)
+void MainMenuScene::menuStartCallback(cocos2d::Ref* pSender)
 {
-	//auto gameScene = GameScene::createScene();
- //   Director::getInstance()->replaceScene(gameScene);//mainmenuÒÑ±»ÊÍ·Å
+	auto gameScene = GameScene::createScene();   // è½¬å…¥GameScene
+    Director::getInstance()->replaceScene(gameScene);//mainmenuå·²è¢«é‡Šæ”¾
 }
 /****************************
-* Name £ºmenuStoreCallback
-* Summary £ºÖ÷²Ëµ¥ÉÌµê°´Å¥»Øµ÷
-* return £º
+* Name ï¼šmenuStoreCallback
+* Summary ï¼šä¸»èœå•å•†åº—æŒ‰é’®å›žè°ƒ
+* return ï¼š
 ****************************/
-void MainMenu::menuStoreCallback(cocos2d::Ref* pSender)
+void MainMenuScene::menuStoreCallback(cocos2d::Ref* pSender)
 {
 	//auto storeScene = StoreScene::createScene();
-	//Director::getInstance()->pushScene(storeScene);//mainmenuÎ´±»ÊÍ·Å Ê¹ÓÃpopScene·µ»Ø
+	//Director::getInstance()->pushScene(storeScene);//mainmenuæœªè¢«é‡Šæ”¾ ä½¿ç”¨popSceneè¿”å›ž
 }
 /****************************
-* Name £ºmenuHerosCallback
-* Summary £ºÖ÷²Ëµ¥ÈËÎï°´Å¥»Øµ÷
-* return £º
+* Name ï¼šmenuHerosCallback
+* Summary ï¼šä¸»èœå•äººç‰©æŒ‰é’®å›žè°ƒ
+* return ï¼š
 ****************************/
-void MainMenu::menuHerosCallback(cocos2d::Ref* pSender)
+void MainMenuScene::menuHerosCallback(cocos2d::Ref* pSender)
 {
 	//auto playerScene = PlayerScene::createScene();
-	//Director::getInstance()->pushScene(playerScene);//mainmenuÎ´±»ÊÍ·Å Ê¹ÓÃpopScene·µ»Ø
+	//Director::getInstance()->pushScene(playerScene);//mainmenuæœªè¢«é‡Šæ”¾ ä½¿ç”¨popSceneè¿”å›ž
 }
 /****************************
-* Name £ºmenuSettingsCallback
-* Summary £ºÖ÷²Ëµ¥ÉèÖÃ°´Å¥»Øµ÷
-* return £º
+* Name ï¼šmenuSettingsCallback
+* Summary ï¼šä¸»èœå•è®¾ç½®æŒ‰é’®å›žè°ƒ
+* return ï¼š
 ****************************/
-void MainMenu::menuSettingsCallback(cocos2d::Ref* pSender)
+void MainMenuScene::menuSettingsCallback(cocos2d::Ref* pSender)
 {
-    auto settingScene = SettingScene::createScene();
-    Director::getInstance()->pushScene(settingScene);//mainmenuÎ´±»ÊÍ·Å Ê¹ÓÃpopScene·µ»Ø
+    auto settingsScene = SettingsScene::createScene();
+    Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, settingsScene));//mainmenuæœªè¢«é‡Šæ”¾ ä½¿ç”¨popSceneè¿”å›ž
+
 }
 
