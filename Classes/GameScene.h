@@ -1,18 +1,26 @@
 //作者 : 李元特
 //日期 : 2022-5-18
 
+//修改 : 王鹏
+//日期 : 2022-5-20
+//增加了Player头文件 Weapon头文件
+//将人物从Sprite类替换为Player类 
+
 #ifndef __GAME_SCENE_H__
 #define __GAME_SCENE_H__
 
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
 
+#include "Entity/Player/Player.h"
+
 
 class GameScene : public cocos2d::Layer
 {
     cocos2d::TMXTiledMap* _tileMap;
     cocos2d::TMXLayer* _collidable;
-    cocos2d::Sprite* _player;
+    Player* _player;
+    Weapon* _weapon;//Weapon头文件已经包含在Player头文件里面
 
 public:
     static cocos2d::Scene* createScene();

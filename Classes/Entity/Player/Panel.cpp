@@ -1,0 +1,205 @@
+//作者 : 王鹏
+//日期 : 2022-5-18
+#include "Panel.h"
+
+USING_NS_CC;
+
+/****************************
+* Name ：Panel::init
+* Summary ：初始化面板
+* return ：
+****************************/
+void Panel::init(int& maxHealthPoint, int& attack, int& defence, float& skillAttackRate, float& attackRate)
+{
+	_maxHealthPoint = maxHealthPoint;
+	_healthPoint = maxHealthPoint;
+	_attack = attack % (PANEL_MAX_ATTACK + 1);
+	_defence = defence % (PANEL_MAX_DEFENCE + 1);
+	_skillAttackRate = skillAttackRate;
+	_attackRate = attackRate;
+
+	_survive = true;
+	_canBeSeen = true;
+}
+
+/*===============================================================================*/
+/*============================以下是面板的直接读取===============================*/
+/*===============================================================================*/
+
+/****************************
+* Name ：Panel::getHealthPoint()const
+* Summary ：读取当前血量
+* return ：血量
+****************************/
+int Panel::getHealthPoint()const
+{
+	return _healthPoint;
+}
+/****************************
+* Name ：Panel::getMaxHealthPoint()const
+* Summary ：读取最大血量
+* return ：最大血量
+****************************/
+int Panel::getMaxHealthPoint()const
+{
+	return _maxHealthPoint;
+}
+/****************************
+* Name ：Panel::getSkillAttackRate()const
+* Summary ：读取技能倍率
+* return ：技能倍率
+****************************/
+float Panel::getSkillAttackRate()const
+{
+	return _skillAttackRate;
+}
+/****************************
+* Name ：Panel::getAttackRate()const
+* Summary ：读取普攻倍率
+* return ：普攻倍率
+****************************/
+float Panel::getAttackRate()const
+{
+	return _attackRate;
+}
+/****************************
+* Name ：Panel::getAttack()const
+* Summary ：读取攻击力
+* return ：攻击力
+****************************/
+int Panel::getAttack()const
+{
+	return _attack;
+}
+/****************************
+* Name ：Panel::getDefence()const
+* Summary ：读取防御力
+* return ：防御力
+****************************/
+int Panel::getDefence()const
+{
+	return _defence;
+}
+/****************************
+* Name ：getIsSurvive()const
+* Summary ：获取是否存活 
+* return ：true 存活, false 未存活 
+****************************/
+bool Panel::getIsSurvive()const
+{
+	return _survive;
+}
+/****************************
+* Name ：getCanBeSeen()const
+* Summary ：获取是否可视 
+* return ：true 可视, false 不可视 
+****************************/
+bool Panel::getCanBeSeen()const
+{
+	return _canBeSeen;
+}
+
+/*===============================================================================*/
+/*============================以下是面板的直接设置===============================*/
+/*===============================================================================*/
+
+/****************************
+* Name ：Panel::setHealthPoint
+* Summary ：设置当前血量
+* return ：
+****************************/
+void Panel::setHealthPoint(int& healthPoint)
+{
+	_healthPoint = healthPoint;
+}
+/****************************
+* Name ：Panel::setAttack
+* Summary ：设置攻击力
+* return ：
+****************************/
+void Panel::setAttack(int& attack)
+{
+	_attack = attack % (PANEL_MAX_ATTACK + 1);
+}
+/****************************
+* Name ：Panel::setDefence
+* Summary ：设置防御力
+* return ：
+****************************/
+void Panel::setDefence(int& defence)
+{
+	_defence = defence % (PANEL_MAX_DEFENCE + 1);
+}
+/****************************
+* Name ：setIsSurvive
+* Summary ：设置是否存活 
+* return ：
+****************************/
+void Panel::setIsSurvive(bool survive)
+{
+	_survive = survive;
+}
+/****************************
+* Name ：setCanBeSeen
+* Summary ：设置是否可见 
+* return ：
+****************************/
+void Panel::setCanBeSeen(bool canBeSeen)
+{
+	_canBeSeen = canBeSeen;
+}
+
+/*===============================================================================*/
+/*=========================以下是发起攻击的伤害的结算============================*/
+/*===============================================================================*/
+
+/****************************
+* Name ：Panel::doAttack()
+* Summary ：结算普攻伤害
+* return ：普攻伤害
+****************************/
+int Panel::doAttack()
+{
+	return int(_attack * _attackRate);
+}
+/****************************
+* Name ：Panel::doSkillAttack()
+* Summary ：结算技能伤害
+* return ：技能伤害
+****************************/
+int Panel::doSkillAttack()
+{
+	return int(_attack * _skillAttackRate);
+}
+
+/*===============================================================================*/
+/*=========================以下是受攻击与受治疗的结算============================*/
+/*===============================================================================*/
+
+/****************************
+* Name ：Panel::hit
+* Summary ：受攻击
+* return ：最终结算的伤害值
+****************************/
+int Panel::hit(int& attack)
+{
+	//防御力的生效方式为百分比减伤
+	int hitPoint = attack * (1.0f - _defence / PANEL_MAX_DEFENCE);
+	_healthPoint -= hitPoint;
+	if (_healthPoint <= 0) {//伤害溢出或击杀
+		_healthPoint = 0;
+		_survive = false;
+	}
+	return hitPoint;//哪怕伤害溢出 也直接返回造成的伤害
+}
+/****************************
+* Name ：Panel::treat
+* Summary ：受治疗
+* return ：受治疗量
+****************************/
+int Panel::treat(int& healthPoint)
+{
+	_healthPoint += healthPoint;
+	_healthPoint %= (_maxHealthPoint + 1);//避免溢出
+	return healthPoint;//返回治疗量
+}

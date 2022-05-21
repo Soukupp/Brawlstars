@@ -54,6 +54,10 @@ list(APPEND GAME_SOURCE
      Classes/SettingsScene.cpp
      Classes/GameScene.cpp
      Classes/GameOverScene.cpp
+     Classes/Entity/Entity.cpp
+     Classes/Entity/Player/Player.cpp
+     Classes/Entity/Player/Panel.cpp
+     Classes/Entity/Weapon/Weapon.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -62,6 +66,10 @@ list(APPEND GAME_HEADER
      Classes/SettingsScene.h
      Classes/GameScene.h
      Classes/GameOverScene.h
+     Classes/Entity/Entity.h
+     Classes/Entity/Player/Player.h
+     Classes/Entity/Player/Panel.h
+     Classes/Entity/Weapon/Weapon.h
      )
 
 if(ANDROID)

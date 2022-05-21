@@ -1,6 +1,10 @@
 //作者 : 李元特
 //日期 : 2022-5-18
 
+//修改 : 王鹏
+//日期 : 2022-5-20
+//将人物从Sprite类替换为Player类 
+
 #include "GameScene.h"
 #include "GameOverScene.h"
 #include "SimpleAudioEngine.h"
@@ -83,11 +87,19 @@ bool GameScene::init()
 
 	float _playerX = spawnPoint["x"].asFloat();
 	float _playerY = spawnPoint["y"].asFloat();
-
-	_player = Sprite::create("Colt.png");
+	/*=====================创建角色开始========================*/
+	_player = Player::create("Colt.png");
 	_player->setPosition(Vec2(_playerX, _playerY));
+	_player->initPlayer(100, 2, 3, 4.0f, 5.0f);
 	addChild(_player, 2, 200);
 
+	_weapon = Weapon::create("weaponWeapon.png");
+	_weapon->setAnchorPoint(
+		Vec2(PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT, 
+			PLAYER_WEAPON_ANCHOR_POSITION_Y));
+	addChild(_weapon, 2, 200);
+	_player->keepWeapon(_weapon);
+	/*=====================创建角色结束========================*/
 	setViewpointCenter(_player->getPosition());
 
 	_collidable = _tileMap->getLayer("collidable");  //障碍物collidable
@@ -145,11 +157,13 @@ void GameScene::onTouchEnded(Touch* touch, Event* event)
 	if (abs(diff.x) > abs(diff.y)) {
 		if (diff.x > 0) {
 			playerPos.x += _tileMap->getTileSize().width;
-			_player->runAction(FlipX::create(false));
+			//_player->runAction(FlipX::create(false));
+			_player->runFlipxWithWeapon(false, _weapon);
 		}
 		else {
 			playerPos.x -= _tileMap->getTileSize().width;
-			_player->runAction(FlipX::create(true));
+			//_player->runAction(FlipX::create(true));
+			_player->runFlipxWithWeapon(true, _weapon);
 		}
 	}
 	else {
@@ -189,7 +203,8 @@ void GameScene::setPlayerPosition(Vec2 position)
 		}
 	}
 	//移动精灵
-	_player->setPosition(position);
+	//_player->hitPlayer(5);//对角色造成攻击
+	_player->setPositionWithAll(position, _weapon);
 	//滚动地图
 	this->setViewpointCenter(_player->getPosition());
 }
