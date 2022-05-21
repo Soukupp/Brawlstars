@@ -99,7 +99,7 @@ bool SettingsScene::init()
 
     auto musicSlider = Slider::create();
 
-     musicVolume = UserDefault::getInstance()->getFloatForKey("musicVolume");   //musicVolume 用于记录音量大小（百分制）
+    musicVolume = UserDefault::getInstance()->getFloatForKey("musicVolume");   //musicVolume 用于记录音量大小（百分制）
     musicVolume = 50.0f;                                                        //定义初始值为50
     _displayedPercentage->setString(StringUtils::format("Percent %d", 50));
 
