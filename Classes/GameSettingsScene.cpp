@@ -1,30 +1,33 @@
-//ä½œè€… : ç‹é¹
-//æ—¥æœŸ : 2022-5-17
-//å®ç° ï¼šæ¡†æ¶æ­å»º
-//ä½œè€… ï¼šæŸèµ«
-//æ—¥æœŸ : 2022-5-19
-//å®ç° ï¼šå…·ä½“åŠŸèƒ½å®ç°
-#include "SettingsScene.h"
+//×÷Õß : ÍõÅô
+//ÈÕÆÚ : 2022-5-14
+
+//×÷Õß £ºÀîÔªÌØ
+//ÈÕÆÚ : 2022-5-21
+//ÊµÏÖ £º¶Ô½ÓÓÎÏ·½çÃæ£¬ÒôÁ¿µ÷½Ú
+
+
+#include "GameSettingsScene.h"
+#include "GameScene.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
-static bool ifShowPlay = true;          //æ˜¯å¦æ’­æ”¾éŸ³ä¹
-static bool ifShowStates = false;       //æ˜¯å¦æ˜¾ç¤ºFPS
+static bool ifShowPlay = true;          //ÊÇ·ñ²¥·ÅÒôÀÖ
+static bool ifShowStates = false;       //ÊÇ·ñÏÔÊ¾FPS
 
 /****************************
-* Name ï¼šSettingsScene::createScene
-* Summary ï¼šåˆ›å»ºåœºæ™¯
-* return ï¼šåœºæ™¯ç±»æŒ‡é’ˆ
+* Name £ºGameSettingsScene::createScene
+* Summary £º´´½¨³¡¾°
+* return £º³¡¾°ÀàÖ¸Õë
 ****************************/
-Scene* SettingsScene::createScene()
+Scene* GameSettingsScene::createScene()
 {
-    return SettingsScene::create();
+    return GameSettingsScene::create();
 }
 /****************************
-* Name ï¼šproblemLoading
-* Summary ï¼šé”™è¯¯æ‰“å°
-* return ï¼š
+* Name £ºproblemLoading
+* Summary £º´íÎó´òÓ¡
+* return £º
 ****************************/
 static void problemLoading(const char* filename)
 {
@@ -32,11 +35,11 @@ static void problemLoading(const char* filename)
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in SettingsScene.cpp\n");
 }
 /****************************
-* Name ï¼šSettingsScene::init
-* Summary ï¼šä¸»èœå•åˆå§‹åŒ–
-* return ï¼šåˆå§‹åŒ–æˆåŠŸä¸å¦
+* Name £ºGameSettingsScene::init
+* Summary £ºÖ÷²Ëµ¥³õÊ¼»¯
+* return £º³õÊ¼»¯³É¹¦Óë·ñ
 ****************************/
-bool SettingsScene::init()
+bool GameSettingsScene::init()
 {
     if (!Scene::init())
     {
@@ -46,46 +49,46 @@ bool SettingsScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /*=====================åˆ›å»ºè¿”å›æŒ‰é’®å¼€å§‹======================*/
+    /*=====================´´½¨·µ»Ø°´Å¥¿ªÊ¼======================*/
 
-    //åˆ›å»ºè¿”å›æŒ‰é’®
+    //´´½¨·µ»Ø°´Å¥
     auto settingsBackItem = MenuItemImage::create(
         "backSettingsNormal.png",
         "backSettingsSelected.png",
-        CC_CALLBACK_1(SettingsScene::settingsBackCallback, this));
+        CC_CALLBACK_1(GameSettingsScene::settingsBackToGameCallback, this));
 
     if (settingsBackItem == nullptr ||
         settingsBackItem->getContentSize().width <= 0 ||
         settingsBackItem->getContentSize().height <= 0)
-    {//é”™è¯¯å¤„ç†
+    {//´íÎó´¦Àí
         problemLoading("'backSettingsNormal.png' and 'backSettingsSelected.png'");
     }
     else
-    {//è®¾ç½®ä½ç½®
+    {//ÉèÖÃÎ»ÖÃ
         float x = SETTINGS_BACK_ITEM_POSITION_X;
         float y = SETTINGS_BACK_ITEM_POSITION_Y;
         settingsBackItem->setPosition(Vec2(x, y));
     }
-    //åˆ›å»ºè¿”å›èœå•
+    //´´½¨·µ»Ø²Ëµ¥
     auto backMenu = Menu::create(settingsBackItem, NULL);
     backMenu->setPosition(Vec2::ZERO);
     this->addChild(backMenu, 2);
-    /*=====================åˆ›å»ºå…³é—­æŒ‰é’®ç»“æŸ====================*/
+    /*=====================´´½¨¹Ø±Õ°´Å¥½áÊø====================*/
 
-    /*=====================åˆ›å»ºæ ‡é¢˜å¼€å§‹======================*/
+    /*=====================´´½¨±êÌâ¿ªÊ¼======================*/
 
     auto settingsNameLabel = Label::createWithTTF(
         "SETTINGS",
         "fonts/PixeloidSans.ttf",
         SETTINGS_NAME_LABEL_SIZE
-    );//åˆ›å»ºæ–‡æœ¬
+    );//´´½¨ÎÄ±¾
     if (settingsNameLabel == nullptr)
     {
         problemLoading("'fonts/PixeloidSans.ttf'");
     }
     else
     {
-        const Color4B settingsNameLabelColor(SETTINGS_TEXT_RGB_COLOR, 255);//åˆ›å»º4Bé¢œè‰²
+        const Color4B settingsNameLabelColor(255, 245, 245, 255);//´´½¨4BÑÕÉ«
         settingsNameLabel->setTextColor(settingsNameLabelColor);
         settingsNameLabel->setPosition(
             Vec2(SETTINGS_NAME_LABEL_POSITION_X,
@@ -94,51 +97,51 @@ bool SettingsScene::init()
 
         this->addChild(settingsNameLabel, 1);
     }
-    /*=====================åˆ›å»ºæ ‡é¢˜ç»“æŸ======================*/
+    /*=====================´´½¨±êÌâ½áÊø======================*/
 
-    /*===================åˆ›å»ºæ»‘åŠ¨æ¡å¼€å§‹======================*/
+    /*===================´´½¨»¬¶¯Ìõ¿ªÊ¼======================*/
 
-    _displayedPercentage = Text::create("0", "fonts/PixeloidSans.ttf", 27);          //_displayedPercentage ç”¨äºæ˜¾ç¤ºæ»‘å—æ‹–åŠ¨åæ‰€å æ¯”ä¾‹
+    _displayedPercentage = Text::create("0", "fonts/PixeloidSans.ttf", 27);          //_displayedPercentage ÓÃÓÚÏÔÊ¾»¬¿éÍÏ¶¯ºóËùÕ¼±ÈÀı
     _displayedPercentage->setPosition(Vec2(SETTINGS_SETTINGSMENU_POSITION_X, SETTINGS_SETTINGSMENU_POSITION_Y * 0.5));
 
     auto musicSlider = Slider::create();
 
-     _musicVolume = UserDefault::getInstance()->getFloatForKey("musicVolume");   //musicVolume ç”¨äºè®°å½•éŸ³é‡å¤§å°ï¼ˆç™¾åˆ†åˆ¶ï¼‰
-    _musicVolume = 50.0f;                                                        //å®šä¹‰åˆå§‹å€¼ä¸º50
+    musicVolume = UserDefault::getInstance()->getFloatForKey("musicVolume");   //musicVolume ÓÃÓÚ¼ÇÂ¼ÒôÁ¿´óĞ¡£¨°Ù·ÖÖÆ£©
+    musicVolume = 50.0f;                                                        //¶¨Òå³õÊ¼ÖµÎª50
     _displayedPercentage->setString(StringUtils::format("Percent %d", 50));
 
-    musicSlider->setPercent(_musicVolume);
+    musicSlider->setPercent(musicVolume);
     musicSlider->loadBarTexture("progressFrame.png");
     musicSlider->loadProgressBarTexture("progressBlock.png");
     musicSlider->setPosition(Vec2(SETTINGS_SETTINGSMENU_POSITION_X, SETTINGS_SETTINGSMENU_POSITION_Y));
-    musicSlider->addEventListener(CC_CALLBACK_2(SettingsScene::sliderEvent, this));
+    musicSlider->addEventListener(CC_CALLBACK_2(GameSettingsScene::sliderEvent, this));
     musicSlider->setScale(0.5);
 
-    this->addChild(_displayedPercentage,3);
-    this->addChild(musicSlider,2);
+    this->addChild(_displayedPercentage, 3);
+    this->addChild(musicSlider, 2);
 
-    /*===================åˆ›å»ºæ»‘åŠ¨æ¡ç»“æŸ====================*/
+    /*===================´´½¨»¬¶¯Ìõ½áÊø====================*/
 
-    /*===================åˆ›å»ºæ ‡ç­¾å¼€å§‹========================*/
+    /*===================´´½¨±êÇ©¿ªÊ¼========================*/
 
     Label* settingsMusicLabel = Label::create("MUSIC SETTING", "fonts/PixeloidSans.ttf", 27);
     settingsMusicLabel->setPosition(SETTINGS_SETTINGSMUSICLABEL_POSITION_X, SETTINGS_SETTINGSMUSICLABEL_POSITION_Y);
-    const Color4B settingsMusicLabelColor(SETTINGS_TEXT_RGB_COLOR, 255);//åˆ›å»º4Bé¢œè‰²
+    const Color4B settingsMusicLabelColor(255, 140, 15, 255);//´´½¨4BÑÕÉ«
     settingsMusicLabel->setTextColor(settingsMusicLabelColor);
-    
+
     this->addChild(settingsMusicLabel, 3);
 
-    /*===================åˆ›å»ºæ ‡ç­¾ç»“æŸ=========================*/
+    /*===================´´½¨±êÇ©½áÊø=========================*/
 
-    /*===================åˆ›å»ºèœå•å¼€å§‹========================*/
+    /*===================´´½¨²Ëµ¥¿ªÊ¼========================*/
 
     auto musicOn = MenuItemImage::create("musicOn.png", "musicOn.png");
     auto musicOff = MenuItemImage::create("musicOff.png", "musicOff.png");
 
     MenuItemToggle* musicOnOrOff = MenuItemToggle::createWithTarget(this,
-        menu_selector(SettingsScene::settingsPlayCallBack), musicOn, musicOff, NULL);
-                                                                                        //æ˜¾ç¤ºéŸ³ä¹å¼€å§‹æˆ–é™éŸ³å›¾æ ‡
-    
+        menu_selector(GameSettingsScene::settingsPlayCallBack), musicOn, musicOff, NULL);
+    //ÏÔÊ¾ÒôÀÖ¿ªÊ¼»ò¾²ÒôÍ¼±ê
+
     if (ifShowPlay)
     {
         musicOnOrOff->setSelectedIndex(0);
@@ -153,14 +156,14 @@ bool SettingsScene::init()
     _displayedMusicStates->setTextColor(settingsMusicLabelColor);
     _displayedMusicStates->setPosition(Vec2(SETTINGS_SETTINGMUSICSTATES_POSITION_X, SETTINGS_SETTINGMUSICSTATES_POSITION_Y));
 
- 
+
 
     auto FPSOn = MenuItemImage::create("FPSOn.png", "FPSOn.png");
     auto FPSOff = MenuItemImage::create("FPSOff.png", "FPSOff.png");
 
     MenuItemToggle* FPSOnOrOff = MenuItemToggle::createWithTarget(this,
-        menu_selector(SettingsScene::settingsFPSCallBack),FPSOn , FPSOff, NULL);
-    //æ˜¾ç¤ºFPSæ˜¾ç¤ºæˆ–éšè—å›¾æ ‡
+        menu_selector(SettingsScene::settingsFPSCallBack), FPSOn, FPSOff, NULL);
+    //ÏÔÊ¾FPSÏÔÊ¾»òÒş²ØÍ¼±ê
 
 
     FPSOnOrOff->setPosition(Vec2(SETTINGS_SETTINGFPSSTATES_POSITION_X, SETTINGS_SETTINGFPSSTATES_POSITION_Y));
@@ -180,75 +183,77 @@ bool SettingsScene::init()
     _displayedFPSStates->setPosition(Vec2(SETTINGS_SETTINGSFPSLABEL_POSITION_X, SETTINGS_SETTINGSFPSLABEL_POSITION_Y));
 
 
-    Menu* settingsMenu = Menu::create(musicOnOrOff,FPSOnOrOff, NULL);
-    
-    this->addChild(settingsMenu, 3);
-    addChild(_displayedMusicStates,3);
+    Menu* GameSettingsMenu = Menu::create(musicOnOrOff, FPSOnOrOff, NULL);
+
+    this->addChild(GameSettingsMenu, 3);
+    addChild(_displayedMusicStates, 3);
     addChild(_displayedFPSStates, 3);
 
-    /*===================åˆ›å»ºèœå•ç»“æŸ========================*/
+    /*===================´´½¨²Ëµ¥½áÊø========================*/
 
-    /*=====================åˆ›å»ºèƒŒæ™¯å›¾å¼€å§‹======================*/
-    auto background = Sprite::create("settingsBackground.png");
+
+
+
+    /*====================´´½¨±³¾°Í¼¿ªÊ¼======================*/
+    auto background = Sprite::create("GameSettingsBackground.png");
     if (background == nullptr)
     {
-        problemLoading("'settingsBackground.png'");
+        problemLoading("'GameSettingsBackground.png'");
     }
     else
     {
-        //å°†èƒŒæ™¯å›¾æ”¾åœ¨ä¸­å¤®
+        //½«±³¾°Í¼·ÅÔÚÖĞÑë
         background->setPosition(Vec2(SETTINGS_BACKGROUND_POSITION_X,
             SETTINGS_BACKGROUND_POSITION_Y));
 
         this->addChild(background, 0);
     }
-    /*=====================åˆ›å»ºèƒŒæ™¯å›¾ç»“æŸ======================*/
+    /*=====================´´½¨±³¾°Í¼½áÊø======================*/
     return true;
 }
 
 /****************************
-* Name ï¼šSettingsScene::settingsBackCallback
-* Summary ï¼šè®¾ç½®è¿”å›æŒ‰é’®å›è°ƒ
-* return ï¼š
+* Name £ºGameSettingsScene::settingsBackCallback
+* Summary £ºÉèÖÃ·µ»Ø°´Å¥»Øµ÷
+* return £º
 ****************************/
-void SettingsScene::settingsBackCallback(Ref* pSender)
+void GameSettingsScene::settingsBackToGameCallback(Ref* pSender)
 {
-    auto mainMenuScene = MainMenuScene::createScene();
-    Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//è¿‡åœºåŠ¨ç”»è®¾è®¡
+    auto GS = GameScene::createScene();
+    Director::getInstance()->popScene();//¹ı³¡¶¯»­Éè¼Æ
 }
 
 /****************************
-* Name ï¼šSettingsScene::sliderEvent
-* Summary ï¼šæ»‘åŠ¨äº‹ä»¶ç›‘å¬
-* return ï¼š
+* Name £ºGameSettingsScene::sliderEvent
+* Summary £º»¬¶¯ÊÂ¼ş¼àÌı
+* return £º
 * ***************************/
-void SettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
+void GameSettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
 {
     if (type == Slider::EventType::ON_PERCENTAGE_CHANGED)
     {
         Slider* slider = dynamic_cast<Slider*>(pSender);
         int percentVolume = slider->getPercent();
 
-
-        CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(float(percentVolume) / 100);
-        //å®åœ¨è°ƒä¸äº†éŸ³é‡ï¼Œçƒ‚å°¾äº†ï¼Œ~~~~~~~~~~~~~~~~~~~~~~~~è¿™ä¸ªå‡½æ•°è¦è‡ªå·±å®ç°ï¼Œå…ˆçƒ‚å°¾äº†
-        //éœ€è¦ç”¨æ˜¯sliderEventä¸­è¿›è¡Œä¿®æ”¹
+        log(percentVolume);
+        CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(2 * float(percentVolume) / 100);
+        //CocosDenshion::SimpleAudioEngine::sharedEngine()->setBackgroundMusicVolume(CocosDenshion::SimpleAudioEngine::sharedEngine()->getBackgroundMusicVolume() + float(percentVolume) / 100);
 
         UserDefault::getInstance()->setFloatForKey("musicVolume", percentVolume);
 
-        _displayedPercentage->setString(StringUtils::format("Percent %d", percentVolume));   //æ˜¾ç¤ºæ‰€å ç™¾åˆ†æ¯”
+        _displayedPercentage->setString(StringUtils::format("Percent %d", percentVolume));   //ÏÔÊ¾ËùÕ¼°Ù·Ö±È
 
     }
 }
 /****************************
-* Name ï¼šSettingsScene::settingsPlayCallBack
-* Summary  å›è°ƒå‡½æ•°
-* return ï¼š
+* Name £ºGameSettingsScene::settingsPlayCallBack
+* Summary  »Øµ÷º¯Êı
+* return £º
 * ***************************/
 
-void SettingsScene::settingsPlayCallBack(Ref* pSender)
+void GameSettingsScene::settingsPlayCallBack(Ref* pSender)
 {
-   
+
 
     if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
     {
@@ -264,12 +269,12 @@ void SettingsScene::settingsPlayCallBack(Ref* pSender)
     }
 }
 /****************************
-* Name ï¼šSettingsScene::settingsFPSCallBack
-* Summary  å›è°ƒå‡½æ•°
-* return ï¼š
+* Name £ºGameSettingsScene::settingsFPSCallBack
+* Summary  »Øµ÷º¯Êı
+* return £º
 * ***************************/
 
-void SettingsScene::settingsFPSCallBack(Ref* pSender)
+void GameSettingsScene::settingsFPSCallBack(Ref* pSender)
 {
     auto director = Director::getInstance();
     if (director->isDisplayStats())
