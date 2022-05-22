@@ -1,9 +1,13 @@
 //作者 : 李元特
 //日期 : 2022-5-20
 
+//修改 : 李元特
+//日期 : 2022-5-22
+//修改 : 增加键盘功能
+
 #include "MapLayer.h"
 #include "GameOverScene.h"
-#include "SimpleAudioEngine.h"
+
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -35,21 +39,21 @@ bool MapLayer::init()
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
+	 
 
 	/*======================创建地图开始=======================*/
-	//log("1");
-	_tileMap = TMXTiledMap::create("map/MiddleMap.tmx");
+	//log("1"); 
+	_tileMap = TMXTiledMap::create("map/Mapupdated.tmx");
 	// 用老地图MiddleMap可以，不知道为啥新地图不可以，还在研究中......
-	// 	_tileMap = TMXTiledMap::create("map/Map.tmx");
-
-
+	// 	_tileMap = TMXTiledMap::create("map/MiddleMaper.tmx");
+	
+	  
 	addChild(_tileMap, 0, 100);
 	//log("2");
 	TMXObjectGroup* group = _tileMap->getObjectGroup("objects");
-	ValueMap spawnPoint = group->getObject("Colt");  // 从地图读取游戏人物的位置，游戏人物Colt
-
-	//ValueMap spawnPoint = group->getObject("player");  // 新地图应该是player
+	ValueMap spawnPoint = group->getObject("player");  // 新地图应该是player
+	 
+	//ValueMap spawnPoint = group->getObject("Colt");  // 从地图读取游戏人物的位置，游戏人物Colt
 
 	float _playerX = spawnPoint["x"].asFloat();
 	float _playerY = spawnPoint["y"].asFloat();
@@ -64,19 +68,83 @@ bool MapLayer::init()
 		Vec2(PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT,
 			PLAYER_WEAPON_ANCHOR_POSITION_Y));
 	addChild(_weapon, 2, 200);
-	_player->keepWeapon(_weapon);
+	_player->keepWeapon(_weapon); 
 	/*=====================创建角色结束========================*/
 	setViewpointCenter(_player->getPosition());
 
 	_collidable = _tileMap->getLayer("collidable");  //障碍物collidable
 	_collidable->setVisible(false);  // 对应透明度
 
+	_watermonster = _tileMap->getLayer("watermonster");
+
 	setTouchEnabled(true);  // 开启触摸，必须继承于layer
 	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
+
+
+	/*======================控制键盘开始=======================*/
+	auto keyboardListener = EventListenerKeyboard::create();// 建立键盘监听器keyboardListener
+
+	keyboardListener->onKeyPressed = CC_CALLBACK_2(MapLayer::onKeyPressed, this);  // 按键盘操作
+	// 没有设置成持续按压，持续前进
+    //keyboardListener->onKeyReleased = CC_CALLBACK_2(MapLayer::onKeyReleased, this); // 释放键盘操作
+	
+	EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+	/*======================控制键盘结束=======================*/
+
 	/*======================创建地图结束=======================*/
 
 	return true;
 }
+
+
+/****************************
+* Name ：MapLayer::onKeyPressed
+* Summary ：按下键盘后分别带来的操作
+* return ：无
+****************************/
+void MapLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
+{
+
+	Vec2 playerPos = _player->getPosition();  // 获取玩家位置坐标
+
+	log("Key with keycode %d pressed", keyCode);
+	switch (keyCode) {
+		case EventKeyboard::KeyCode::KEY_D:
+		case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+		{
+			playerPos.x += _tileMap->getTileSize().width;
+			//_player->runAction(FlipX::create(false));
+			_player->runFlipxWithWeapon(false, _weapon);
+			break;
+		}
+		case EventKeyboard::KeyCode::KEY_A:
+		case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+		{
+			playerPos.x -= _tileMap->getTileSize().width;
+			//_player->runAction(FlipX::create(true));
+			_player->runFlipxWithWeapon(true, _weapon);
+			break;
+		}
+		case EventKeyboard::KeyCode::KEY_W:
+		case EventKeyboard::KeyCode::KEY_UP_ARROW:
+		{
+			playerPos.y += _tileMap->getTileSize().height;
+			break;
+		}
+		case EventKeyboard::KeyCode::KEY_S:
+		case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+		{
+			playerPos.y -= _tileMap->getTileSize().height;
+			break;
+		}
+		default:
+			break;
+	}
+	this->setPlayerPosition(playerPos);
+}
+
+
 
 /****************************
 * Name ：MapLayer::onTouchBegan
@@ -98,7 +166,7 @@ void MapLayer::onTouchMoved(Touch* touch, Event* event)
 {
 	log("onTouchMoved"); //日志
 }
-
+ 
 /****************************
 * Name ：MapLayer::onTouchEnded
 * Summary ：触摸结束
@@ -151,10 +219,13 @@ void MapLayer::onTouchEnded(Touch* touch, Event* event)
 ****************************/
 void MapLayer::setPlayerPosition(Vec2 position)
 {
+	log("setPlayerPosition");
 	// 读取坐标
 	Vec2 tileCoord = this->tileCoordFromPosition(position);  //从像素点坐标转化为瓦片坐标
 
 	int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
+	int tileGid_watermonster=_watermonster->getTileGIDAt(tileCoord);
+	log("success1");
 
 	// 碰撞检测
 	if (tileGid > 0) {
@@ -168,6 +239,18 @@ void MapLayer::setPlayerPosition(Vec2 position)
 			return;
 		}
 	}
+	//if (tileGid_watermonster > 0) {
+	//	Value prop = _tileMap->getPropertiesForGID(tileGid_watermonster);
+	//	log("success2");
+	//	ValueMap propValueMap = prop.asValueMap();  // 报错
+	//	log("success3");
+	//	std::string collision = propValueMap["crash"].asString();
+	//	// 元素+true
+	//	if (collision == "true") { //碰撞检测成功
+	//		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sound/empty.wav");
+	//		return;
+	//	}
+	//}
 	//移动精灵
 	//_player->hitPlayer(5);//对角色造成攻击
 	_player->setPositionWithAll(position, _weapon);
@@ -182,6 +265,7 @@ void MapLayer::setPlayerPosition(Vec2 position)
 ****************************/
 Vec2 MapLayer::tileCoordFromPosition(Vec2 pos)
 {
+	log("tileCoordFromPosition");
 	int x = pos.x / _tileMap->getTileSize().width;
 	int y = ((_tileMap->getMapSize().height * _tileMap->getTileSize().height) - pos.y) / _tileMap->getTileSize().height;
 	return Vec2(x, y);
