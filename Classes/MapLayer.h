@@ -13,6 +13,7 @@ class MapLayer : public cocos2d::Layer
 {
     cocos2d::TMXTiledMap* _tileMap;
     cocos2d::TMXLayer* _collidable;
+    cocos2d::TMXLayer* _watermonster;
     Player* _player;
     Weapon* _weapon;//Weapon头文件已经包含在Player头文件里面
 
@@ -24,6 +25,8 @@ public:
     virtual void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
     virtual void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 
+    void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // 必须要加作用域！！！
+  
 
     void setPlayerPosition(cocos2d::Vec2 position);
     cocos2d::Vec2 tileCoordFromPosition(cocos2d::Vec2 position);
