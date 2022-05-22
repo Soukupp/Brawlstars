@@ -3,7 +3,6 @@
 #include "MainMenuScene.h"
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
-
 USING_NS_CC;
 
 static bool ifMusicBegin = true;
@@ -109,11 +108,11 @@ bool MainMenuScene::init()
     );
     MenuItemFont* itemStore = MenuItemFont::create(
         "STORE",
-        CC_CALLBACK_1(MainMenuScene::menuStartCallback, this)
+        CC_CALLBACK_1(MainMenuScene::menuStoreCallback, this)
     );
     MenuItemFont* itemHeros = MenuItemFont::create(
         "HEROS",
-        CC_CALLBACK_1(MainMenuScene::menuSettingsCallback, this)
+        CC_CALLBACK_1(MainMenuScene::menuHerosCallback, this)
     );
     MenuItemFont* itemSettings = MenuItemFont::create(
         "SETTINGS",
@@ -174,8 +173,8 @@ void MainMenuScene::menuStartCallback(cocos2d::Ref* pSender)
 ****************************/
 void MainMenuScene::menuStoreCallback(cocos2d::Ref* pSender)
 {
-	//auto storeScene = StoreScene::createScene();
-	//Director::getInstance()->pushScene(storeScene);//mainmenu未被释放 使用popScene返回
+	auto storeScene = StoreScene::createScene();
+    Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, storeScene));//mainmenu未被释放 使用popScene返回
 }
 /****************************
 * Name ：menuHerosCallback
@@ -184,8 +183,8 @@ void MainMenuScene::menuStoreCallback(cocos2d::Ref* pSender)
 ****************************/
 void MainMenuScene::menuHerosCallback(cocos2d::Ref* pSender)
 {
-	//auto playerScene = PlayerScene::createScene();
-	//Director::getInstance()->pushScene(playerScene);//mainmenu未被释放 使用popScene返回
+	auto heroScene = HeroScene::createScene();
+    Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, heroScene));//mainmenu未被释放 使用popScene返回
 }
 /****************************
 * Name ：menuSettingsCallback

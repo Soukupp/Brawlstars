@@ -1,26 +1,30 @@
-//×÷Õß : ÍõÅô
-//ÈÕÆÚ : 2022-5-14
+//ä½œè€… : ç‹é¹
+//æ—¥æœŸ : 2022-5-17
+//å®ç° ï¼šæ¡†æ¶æ­å»º
+//ä½œè€… ï¼šæŸèµ«
+//æ—¥æœŸ : 2022-5-19
+//å®ç° ï¼šå…·ä½“åŠŸèƒ½å®ç°
 #include "SettingsScene.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
-static bool ifShowPlay = true;          //ÊÇ·ñ²¥·ÅÒôÀÖ
-static bool ifShowStates = false;       //ÊÇ·ñÏÔÊ¾FPS
+static bool ifShowPlay = true;          //æ˜¯å¦æ’­æ”¾éŸ³ä¹
+static bool ifShowStates = false;       //æ˜¯å¦æ˜¾ç¤ºFPS
 
 /****************************
-* Name £ºSettingsScene::createScene
-* Summary £º´´½¨³¡¾°
-* return £º³¡¾°ÀàÖ¸Õë
+* Name ï¼šSettingsScene::createScene
+* Summary ï¼šåˆ›å»ºåœºæ™¯
+* return ï¼šåœºæ™¯ç±»æŒ‡é’ˆ
 ****************************/
 Scene* SettingsScene::createScene()
 {
     return SettingsScene::create();
 }
 /****************************
-* Name £ºproblemLoading
-* Summary £º´íÎó´òÓ¡
-* return £º
+* Name ï¼šproblemLoading
+* Summary ï¼šé”™è¯¯æ‰“å°
+* return ï¼š
 ****************************/
 static void problemLoading(const char* filename)
 {
@@ -28,9 +32,9 @@ static void problemLoading(const char* filename)
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in SettingsScene.cpp\n");
 }
 /****************************
-* Name £ºSettingsScene::init
-* Summary £ºÖ÷²Ëµ¥³õÊ¼»¯
-* return £º³õÊ¼»¯³É¹¦Óë·ñ
+* Name ï¼šSettingsScene::init
+* Summary ï¼šä¸»èœå•åˆå§‹åŒ–
+* return ï¼šåˆå§‹åŒ–æˆåŠŸä¸å¦
 ****************************/
 bool SettingsScene::init()
 {
@@ -42,9 +46,9 @@ bool SettingsScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /*=====================´´½¨·µ»Ø°´Å¥¿ªÊ¼======================*/
+    /*=====================åˆ›å»ºè¿”å›æŒ‰é’®å¼€å§‹======================*/
 
-    //´´½¨·µ»Ø°´Å¥
+    //åˆ›å»ºè¿”å›æŒ‰é’®
     auto settingsBackItem = MenuItemImage::create(
         "backSettingsNormal.png",
         "backSettingsSelected.png",
@@ -53,35 +57,35 @@ bool SettingsScene::init()
     if (settingsBackItem == nullptr ||
         settingsBackItem->getContentSize().width <= 0 ||
         settingsBackItem->getContentSize().height <= 0)
-    {//´íÎó´¦Àí
+    {//é”™è¯¯å¤„ç†
         problemLoading("'backSettingsNormal.png' and 'backSettingsSelected.png'");
     }
     else
-    {//ÉèÖÃÎ»ÖÃ
+    {//è®¾ç½®ä½ç½®
         float x = SETTINGS_BACK_ITEM_POSITION_X;
         float y = SETTINGS_BACK_ITEM_POSITION_Y;
         settingsBackItem->setPosition(Vec2(x, y));
     }
-    //´´½¨·µ»Ø²Ëµ¥
+    //åˆ›å»ºè¿”å›èœå•
     auto backMenu = Menu::create(settingsBackItem, NULL);
     backMenu->setPosition(Vec2::ZERO);
     this->addChild(backMenu, 2);
-    /*=====================´´½¨¹Ø±Õ°´Å¥½áÊø====================*/
+    /*=====================åˆ›å»ºå…³é—­æŒ‰é’®ç»“æŸ====================*/
 
-    /*=====================´´½¨±êÌâ¿ªÊ¼======================*/
+    /*=====================åˆ›å»ºæ ‡é¢˜å¼€å§‹======================*/
 
     auto settingsNameLabel = Label::createWithTTF(
         "SETTINGS",
         "fonts/PixeloidSans.ttf",
         SETTINGS_NAME_LABEL_SIZE
-    );//´´½¨ÎÄ±¾
+    );//åˆ›å»ºæ–‡æœ¬
     if (settingsNameLabel == nullptr)
     {
         problemLoading("'fonts/PixeloidSans.ttf'");
     }
     else
     {
-        const Color4B settingsNameLabelColor(SETTINGS_TEXT_RGB_COLOR, 255);//´´½¨4BÑÕÉ«
+        const Color4B settingsNameLabelColor(SETTINGS_TEXT_RGB_COLOR, 255);//åˆ›å»º4Bé¢œè‰²
         settingsNameLabel->setTextColor(settingsNameLabelColor);
         settingsNameLabel->setPosition(
             Vec2(SETTINGS_NAME_LABEL_POSITION_X,
@@ -90,20 +94,20 @@ bool SettingsScene::init()
 
         this->addChild(settingsNameLabel, 1);
     }
-    /*=====================´´½¨±êÌâ½áÊø======================*/
+    /*=====================åˆ›å»ºæ ‡é¢˜ç»“æŸ======================*/
 
-    /*===================´´½¨»¬¶¯Ìõ¿ªÊ¼======================*/
+    /*===================åˆ›å»ºæ»‘åŠ¨æ¡å¼€å§‹======================*/
 
-    _displayedPercentage = Text::create("0", "fonts/PixeloidSans.ttf", 27);          //_displayedPercentage ÓÃÓÚÏÔÊ¾»¬¿éÍÏ¶¯ºóËùÕ¼±ÈÀı
+    _displayedPercentage = Text::create("0", "fonts/PixeloidSans.ttf", 27);          //_displayedPercentage ç”¨äºæ˜¾ç¤ºæ»‘å—æ‹–åŠ¨åæ‰€å æ¯”ä¾‹
     _displayedPercentage->setPosition(Vec2(SETTINGS_SETTINGSMENU_POSITION_X, SETTINGS_SETTINGSMENU_POSITION_Y * 0.5));
 
     auto musicSlider = Slider::create();
 
-    musicVolume = UserDefault::getInstance()->getFloatForKey("musicVolume");   //musicVolume ÓÃÓÚ¼ÇÂ¼ÒôÁ¿´óĞ¡£¨°Ù·ÖÖÆ£©
-    musicVolume = 50.0f;                                                        //¶¨Òå³õÊ¼ÖµÎª50
+     _musicVolume = UserDefault::getInstance()->getFloatForKey("musicVolume");   //musicVolume ç”¨äºè®°å½•éŸ³é‡å¤§å°ï¼ˆç™¾åˆ†åˆ¶ï¼‰
+    _musicVolume = 50.0f;                                                        //å®šä¹‰åˆå§‹å€¼ä¸º50
     _displayedPercentage->setString(StringUtils::format("Percent %d", 50));
 
-    musicSlider->setPercent(musicVolume);
+    musicSlider->setPercent(_musicVolume);
     musicSlider->loadBarTexture("progressFrame.png");
     musicSlider->loadProgressBarTexture("progressBlock.png");
     musicSlider->setPosition(Vec2(SETTINGS_SETTINGSMENU_POSITION_X, SETTINGS_SETTINGSMENU_POSITION_Y));
@@ -113,27 +117,27 @@ bool SettingsScene::init()
     this->addChild(_displayedPercentage,3);
     this->addChild(musicSlider,2);
 
-    /*===================´´½¨»¬¶¯Ìõ½áÊø====================*/
+    /*===================åˆ›å»ºæ»‘åŠ¨æ¡ç»“æŸ====================*/
 
-    /*===================´´½¨±êÇ©¿ªÊ¼========================*/
+    /*===================åˆ›å»ºæ ‡ç­¾å¼€å§‹========================*/
 
     Label* settingsMusicLabel = Label::create("MUSIC SETTING", "fonts/PixeloidSans.ttf", 27);
     settingsMusicLabel->setPosition(SETTINGS_SETTINGSMUSICLABEL_POSITION_X, SETTINGS_SETTINGSMUSICLABEL_POSITION_Y);
-    const Color4B settingsMusicLabelColor(SETTINGS_TEXT_RGB_COLOR, 255);//´´½¨4BÑÕÉ«
+    const Color4B settingsMusicLabelColor(SETTINGS_TEXT_RGB_COLOR, 255);//åˆ›å»º4Bé¢œè‰²
     settingsMusicLabel->setTextColor(settingsMusicLabelColor);
     
     this->addChild(settingsMusicLabel, 3);
 
-    /*===================´´½¨±êÇ©½áÊø=========================*/
+    /*===================åˆ›å»ºæ ‡ç­¾ç»“æŸ=========================*/
 
-    /*===================´´½¨²Ëµ¥¿ªÊ¼========================*/
+    /*===================åˆ›å»ºèœå•å¼€å§‹========================*/
 
     auto musicOn = MenuItemImage::create("musicOn.png", "musicOn.png");
     auto musicOff = MenuItemImage::create("musicOff.png", "musicOff.png");
 
     MenuItemToggle* musicOnOrOff = MenuItemToggle::createWithTarget(this,
         menu_selector(SettingsScene::settingsPlayCallBack), musicOn, musicOff, NULL);
-                                                                                        //ÏÔÊ¾ÒôÀÖ¿ªÊ¼»ò¾²ÒôÍ¼±ê
+                                                                                        //æ˜¾ç¤ºéŸ³ä¹å¼€å§‹æˆ–é™éŸ³å›¾æ ‡
     
     if (ifShowPlay)
     {
@@ -156,7 +160,7 @@ bool SettingsScene::init()
 
     MenuItemToggle* FPSOnOrOff = MenuItemToggle::createWithTarget(this,
         menu_selector(SettingsScene::settingsFPSCallBack),FPSOn , FPSOff, NULL);
-    //ÏÔÊ¾FPSÏÔÊ¾»òÒş²ØÍ¼±ê
+    //æ˜¾ç¤ºFPSæ˜¾ç¤ºæˆ–éšè—å›¾æ ‡
 
 
     FPSOnOrOff->setPosition(Vec2(SETTINGS_SETTINGFPSSTATES_POSITION_X, SETTINGS_SETTINGFPSSTATES_POSITION_Y));
@@ -182,12 +186,9 @@ bool SettingsScene::init()
     addChild(_displayedMusicStates,3);
     addChild(_displayedFPSStates, 3);
 
-    /*===================´´½¨²Ëµ¥½áÊø========================*/
+    /*===================åˆ›å»ºèœå•ç»“æŸ========================*/
 
-
-
-
-    /*=====================´´½¨±³¾°Í¼¿ªÊ¼======================*/
+    /*=====================åˆ›å»ºèƒŒæ™¯å›¾å¼€å§‹======================*/
     auto background = Sprite::create("settingsBackground.png");
     if (background == nullptr)
     {
@@ -195,31 +196,31 @@ bool SettingsScene::init()
     }
     else
     {
-        //½«±³¾°Í¼·ÅÔÚÖĞÑë
+        //å°†èƒŒæ™¯å›¾æ”¾åœ¨ä¸­å¤®
         background->setPosition(Vec2(SETTINGS_BACKGROUND_POSITION_X,
             SETTINGS_BACKGROUND_POSITION_Y));
 
         this->addChild(background, 0);
     }
-    /*=====================´´½¨±³¾°Í¼½áÊø======================*/
+    /*=====================åˆ›å»ºèƒŒæ™¯å›¾ç»“æŸ======================*/
     return true;
 }
 
 /****************************
-* Name £ºSettingsScene::settingsBackCallback
-* Summary £ºÉèÖÃ·µ»Ø°´Å¥»Øµ÷
-* return £º
+* Name ï¼šSettingsScene::settingsBackCallback
+* Summary ï¼šè®¾ç½®è¿”å›æŒ‰é’®å›è°ƒ
+* return ï¼š
 ****************************/
 void SettingsScene::settingsBackCallback(Ref* pSender)
 {
     auto mainMenuScene = MainMenuScene::createScene();
-    Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//¹ı³¡¶¯»­Éè¼Æ
+    Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//è¿‡åœºåŠ¨ç”»è®¾è®¡
 }
 
 /****************************
-* Name £ºSettingsScene::sliderEvent
-* Summary £º»¬¶¯ÊÂ¼ş¼àÌı
-* return £º
+* Name ï¼šSettingsScene::sliderEvent
+* Summary ï¼šæ»‘åŠ¨äº‹ä»¶ç›‘å¬
+* return ï¼š
 * ***************************/
 void SettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
 {
@@ -230,19 +231,19 @@ void SettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
 
 
         CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(float(percentVolume) / 100);
-        //ÊµÔÚµ÷²»ÁËÒôÁ¿£¬ÀÃÎ²ÁË£¬~~~~~~~~~~~~~~~~~~~~~~~~Õâ¸öº¯ÊıÒª×Ô¼ºÊµÏÖ£¬ÏÈÀÃÎ²ÁË
-        //ĞèÒªÓÃÊÇsliderEventÖĞ½øĞĞĞŞ¸Ä
+        //å®åœ¨è°ƒä¸äº†éŸ³é‡ï¼Œçƒ‚å°¾äº†ï¼Œ~~~~~~~~~~~~~~~~~~~~~~~~è¿™ä¸ªå‡½æ•°è¦è‡ªå·±å®ç°ï¼Œå…ˆçƒ‚å°¾äº†
+        //éœ€è¦ç”¨æ˜¯sliderEventä¸­è¿›è¡Œä¿®æ”¹
 
         UserDefault::getInstance()->setFloatForKey("musicVolume", percentVolume);
 
-        _displayedPercentage->setString(StringUtils::format("Percent %d", percentVolume));   //ÏÔÊ¾ËùÕ¼°Ù·Ö±È
+        _displayedPercentage->setString(StringUtils::format("Percent %d", percentVolume));   //æ˜¾ç¤ºæ‰€å ç™¾åˆ†æ¯”
 
     }
 }
 /****************************
-* Name £ºSettingsScene::settingsPlayCallBack
-* Summary  »Øµ÷º¯Êı
-* return £º
+* Name ï¼šSettingsScene::settingsPlayCallBack
+* Summary  å›è°ƒå‡½æ•°
+* return ï¼š
 * ***************************/
 
 void SettingsScene::settingsPlayCallBack(Ref* pSender)
@@ -263,9 +264,9 @@ void SettingsScene::settingsPlayCallBack(Ref* pSender)
     }
 }
 /****************************
-* Name £ºSettingsScene::settingsFPSCallBack
-* Summary  »Øµ÷º¯Êı
-* return £º
+* Name ï¼šSettingsScene::settingsFPSCallBack
+* Summary  å›è°ƒå‡½æ•°
+* return ï¼š
 * ***************************/
 
 void SettingsScene::settingsFPSCallBack(Ref* pSender)
