@@ -1,5 +1,9 @@
 //作者 : 王鹏
-//日期 : 2022-5-14
+//日期 : 2022-5-17
+//实现 ：框架搭建
+//作者 ：束赫
+//日期 : 2022-5-19
+//实现 ：具体功能实现
 #include "SettingsScene.h"
 #include "SimpleAudioEngine.h"
 
@@ -99,11 +103,11 @@ bool SettingsScene::init()
 
     auto musicSlider = Slider::create();
 
-     musicVolume = UserDefault::getInstance()->getFloatForKey("musicVolume");   //musicVolume 用于记录音量大小（百分制）
-    musicVolume = 50.0f;                                                        //定义初始值为50
+     _musicVolume = UserDefault::getInstance()->getFloatForKey("musicVolume");   //musicVolume 用于记录音量大小（百分制）
+    _musicVolume = 50.0f;                                                        //定义初始值为50
     _displayedPercentage->setString(StringUtils::format("Percent %d", 50));
 
-    musicSlider->setPercent(musicVolume);
+    musicSlider->setPercent(_musicVolume);
     musicSlider->loadBarTexture("progressFrame.png");
     musicSlider->loadProgressBarTexture("progressBlock.png");
     musicSlider->setPosition(Vec2(SETTINGS_SETTINGSMENU_POSITION_X, SETTINGS_SETTINGSMENU_POSITION_Y));
@@ -183,9 +187,6 @@ bool SettingsScene::init()
     addChild(_displayedFPSStates, 3);
 
     /*===================创建菜单结束========================*/
-
-
-
 
     /*=====================创建背景图开始======================*/
     auto background = Sprite::create("settingsBackground.png");

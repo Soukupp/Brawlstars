@@ -54,6 +54,7 @@ list(APPEND GAME_SOURCE
      Classes/SettingsScene.cpp
      Classes/GameScene.cpp
      Classes/GameOverScene.cpp
+     Classes/HeroScene.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -62,6 +63,7 @@ list(APPEND GAME_HEADER
      Classes/SettingsScene.h
      Classes/GameScene.h
      Classes/GameOverScene.h
+     Classes/HeroScene.h
      )
 
 if(ANDROID)

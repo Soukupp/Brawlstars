@@ -21,9 +21,9 @@
 #define MAINMENU_GAMENAME_LABEL_SIZE 96
 
 #include "cocos2d.h"
-//#include "GameScene.h"
-//#include "StoreScene.h"
-//#include "PlayerScene.h"
+#include "GameScene.h"
+#include "StoreScene.h"
+#include "HeroScene.h"
 #include "SettingsScene.h"
 
 class MainMenuScene : public cocos2d::Scene
