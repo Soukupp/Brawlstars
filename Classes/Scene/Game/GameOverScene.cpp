@@ -2,7 +2,6 @@
 //ÈÕÆÚ : 2022-5-18
 
 #include "GameOverScene.h"
-#include "MainMenuScene.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
@@ -46,22 +45,22 @@ bool GameOverScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto GameOverBackground = Sprite::create("GameOverBackground.png");
+    auto GameOverBackground = Sprite::create("background/GameOverBackground.png");
     GameOverBackground->setPosition(Vec2(origin.x + visibleSize.width / 2,
         origin.y + visibleSize.height / 2));
     this->addChild(GameOverBackground, 0);
 
 
     auto closeItem = MenuItemImage::create(
-        "CloseNormal.png",
-        "CloseSelected.png",
+        "ui/CloseNormal.png",
+        "ui/CloseSelected.png",
         CC_CALLBACK_1(GameOverScene::menuCloseCallback, this));
 
     if (closeItem == nullptr ||
         closeItem->getContentSize().width <= 0 ||
         closeItem->getContentSize().height <= 0)
     {
-        problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
+        problemLoading("'ui/CloseNormal.png' and 'ui/CloseSelected.png'");
     }
     else
     {

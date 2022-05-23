@@ -50,15 +50,15 @@ bool SettingsScene::init()
 
     //创建返回按钮
     auto settingsBackItem = MenuItemImage::create(
-        "backSettingsNormal.png",
-        "backSettingsSelected.png",
+        "ui/backSettingsNormal.png",
+        "ui/backSettingsSelected.png",
         CC_CALLBACK_1(SettingsScene::settingsBackCallback, this));
 
     if (settingsBackItem == nullptr ||
         settingsBackItem->getContentSize().width <= 0 ||
         settingsBackItem->getContentSize().height <= 0)
     {//错误处理
-        problemLoading("'backSettingsNormal.png' and 'backSettingsSelected.png'");
+        problemLoading("'ui/backSettingsNormal.png' and 'ui/backSettingsSelected.png'");
     }
     else
     {//设置位置
@@ -108,8 +108,8 @@ bool SettingsScene::init()
     _displayedPercentage->setString(StringUtils::format("Percent %d", 50));
 
     musicSlider->setPercent(_musicVolume);
-    musicSlider->loadBarTexture("progressFrame.png");
-    musicSlider->loadProgressBarTexture("progressBlock.png");
+    musicSlider->loadBarTexture("ui/progressFrame.png");
+    musicSlider->loadProgressBarTexture("ui/progressBlock.png");
     musicSlider->setPosition(Vec2(SETTINGS_SETTINGSMENU_POSITION_X, SETTINGS_SETTINGSMENU_POSITION_Y));
     musicSlider->addEventListener(CC_CALLBACK_2(SettingsScene::sliderEvent, this));
     musicSlider->setScale(0.5);
@@ -132,8 +132,8 @@ bool SettingsScene::init()
 
     /*===================创建菜单开始========================*/
 
-    auto musicOn = MenuItemImage::create("musicOn.png", "musicOn.png");
-    auto musicOff = MenuItemImage::create("musicOff.png", "musicOff.png");
+    auto musicOn = MenuItemImage::create("ui/musicOn.png", "ui/musicOn.png");
+    auto musicOff = MenuItemImage::create("ui/musicOff.png", "ui/musicOff.png");
 
     MenuItemToggle* musicOnOrOff = MenuItemToggle::createWithTarget(this,
         menu_selector(SettingsScene::settingsPlayCallBack), musicOn, musicOff, NULL);
@@ -155,8 +155,8 @@ bool SettingsScene::init()
 
  
 
-    auto FPSOn = MenuItemImage::create("FPSOn.png", "FPSOn.png");
-    auto FPSOff = MenuItemImage::create("FPSOff.png", "FPSOff.png");
+    auto FPSOn = MenuItemImage::create("ui/FPSOn.png", "ui/FPSOn.png");
+    auto FPSOff = MenuItemImage::create("ui/FPSOff.png", "ui/FPSOff.png");
 
     MenuItemToggle* FPSOnOrOff = MenuItemToggle::createWithTarget(this,
         menu_selector(SettingsScene::settingsFPSCallBack),FPSOn , FPSOff, NULL);
@@ -189,10 +189,10 @@ bool SettingsScene::init()
     /*===================创建菜单结束========================*/
 
     /*=====================创建背景图开始======================*/
-    auto background = Sprite::create("settingsBackground.png");
+    auto background = Sprite::create("background/settingsBackground.png");
     if (background == nullptr)
     {
-        problemLoading("'settingsBackground.png'");
+        problemLoading("'background/settingsBackground.png'");
     }
     else
     {

@@ -41,15 +41,15 @@ bool StoreScene::init()
 
     //创建返回按钮
     auto storeBackItem = MenuItemImage::create(
-        "backSettingsNormal.png",
-        "backSettingsSelected.png",
+        "ui/backSettingsNormal.png",
+        "ui/backSettingsSelected.png",
         CC_CALLBACK_1(StoreScene::storeBackCallback, this));
 
     if (storeBackItem == nullptr ||
         storeBackItem->getContentSize().width <= 0 ||
         storeBackItem->getContentSize().height <= 0)
     {//错误处理
-        problemLoading("'backSettingsNormal.png' and 'backSettingsSelected.png'");
+        problemLoading("'ui/backSettingsNormal.png' and 'ui/backSettingsSelected.png'");
     }
     else
     {//设置位置
@@ -87,10 +87,10 @@ bool StoreScene::init()
     /*=====================创建标题结束=======================*/
 
     /*=====================创建背景图开始======================*/
-    auto background = Sprite::create("storeBackground.png");
+    auto background = Sprite::create("background/storeBackground.png");
     if (background == nullptr)
     {
-        problemLoading("'storeBackground.png'");
+        problemLoading("'background/storeBackground.png'");
     }
     else
     {
@@ -116,7 +116,7 @@ bool StoreScene::init()
     storeView->setPosition(Vec2(STORE_STOREVIEW_POSITION_X, STORE_STOREVIEW_POSITION_Y));
 
 
-    auto storeContainer = Sprite::create("storeContainer.png");                 //设置商店背景
+    auto storeContainer = Sprite::create("ui/storeContainer.png");                 //设置商店背景
     storeContainer->setPosition(Vec2(STORE_STOREVIEW_POSITION_X,STORE_STOREVIEW_POSITION_Y));
     storeContainer->setScale(1.35);
     this->addChild(storeView,1);
@@ -126,23 +126,23 @@ bool StoreScene::init()
     /*=====================商品添加开始======================*/
 
     //测试用例
-    Button* object1 = Button::create("eg1Normal.png", "eg1Selected.png");
+    Button* object1 = Button::create("commodity/eg1Normal.png", "commodity/eg1Selected.png");
     object1->setPosition(Vec2(200,100));
     storeView->addChild(object1);
 
-    Button* object2 = Button::create("eg2Normal.png", "eg2Selected.png");
+    Button* object2 = Button::create("commodity/eg2Normal.png", "commodity/eg2Selected.png");
     object2->setPosition(Vec2(800, 150));
     storeView->addChild(object2);
 
-    Button* object3 = Button::create("eg3Normal.png", "eg3Selected.png");
+    Button* object3 = Button::create("commodity/eg3Normal.png", "commodity/eg3Selected.png");
     object3->setPosition(Vec2(500, 120));
     storeView->addChild(object3);
 
-    Button* object4 = Button::create("eg4Normal.png", "eg4Selected.png");
+    Button* object4 = Button::create("commodity/eg4Normal.png", "commodity/eg4Selected.png");
     object4->setPosition(Vec2(900, 130));
     storeView->addChild(object4);
 
-    Button* object5 = Button::create("eg1Normal.png", "eg1Selected.png");
+    Button* object5 = Button::create("commodity/eg1Normal.png", "commodity/eg1Selected.png");
     object5->setPosition(Vec2(400, 170));
     storeView->addChild(object5);
 

@@ -235,7 +235,7 @@ void MapLayer::setPlayerPosition(Vec2 position)
 		std::string collision = propValueMap["Collidable"].asString();
 		// ÔªËØ+true
 		if (collision == "true") { //Åö×²¼ì²â³É¹¦
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sound/empty.wav");
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/empty.wav");
 			return;
 		}
 	}

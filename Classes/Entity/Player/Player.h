@@ -25,6 +25,7 @@ class Player : public Entity
 public:
     Panel _panel;
     Slider* _healthBar;
+    Slider* 
 
     static Player* create(const std::string& filename);
     void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);

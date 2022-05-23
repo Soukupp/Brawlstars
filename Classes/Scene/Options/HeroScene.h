@@ -20,7 +20,7 @@
 #define HERO_CONFIRM_BUTTON_POSITION_X  origin.x + visibleSize.width / 4*3
 #define HERO_CONFIRM_BUTTON_POSITION_Y  origin.y + visibleSize.height / 5
 #include "cocos2d.h"
-#include "MainMenuScene.h"
+#include "Scene/MainMenu/MainMenuScene.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;

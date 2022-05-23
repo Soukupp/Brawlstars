@@ -6,6 +6,7 @@
 
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"  // “Ù–ß
+#include "Scene/MainMenu/MainMenuScene.h"
 
 using namespace CocosDenshion;  // “Ù–ß
 /**
