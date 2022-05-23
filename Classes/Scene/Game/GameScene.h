@@ -11,6 +11,9 @@
 
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
+#include "GameOverScene.h"
+#include "MapLayer.h"
+#include "Scene/Settings/GameSettingsScene.h"
 
 
 

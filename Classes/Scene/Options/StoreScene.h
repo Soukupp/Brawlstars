@@ -16,7 +16,7 @@
 #define STORE_STOREVIEW_POSITION_Y origin.x + visibleSize.height/2
 
 #include "cocos2d.h"
-#include "MainMenuScene.h"
+#include "Scene/MainMenu/MainMenuScene.h"
 
 class StoreScene : public cocos2d::Scene
 {

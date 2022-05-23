@@ -49,35 +49,43 @@ endif()
 # add cross-platforms source files and header files 
 list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
-     Classes/HelloWorldScene.cpp
-     Classes/MainMenuScene.cpp
-     Classes/SettingsScene.cpp
-     Classes/GameScene.cpp
-     Classes/GameOverScene.cpp
-     Classes/HeroScene.cpp
-     Classes/GameSettingsScene.cpp
-     Classes/MapLayer.cpp
+
      Classes/Entity/Entity.cpp
      Classes/Entity/Player/Player.cpp
      Classes/Entity/Player/Panel.cpp
      Classes/Entity/Weapon/Weapon.cpp
 
+     Classes/Scene/Game/GameScene.cpp
+     Classes/Scene/Game/GameOverScene.cpp
+     Classes/Scene/Game/MapLayer.cpp
+
+     Classes/Scene/MainMenu/MainMenuScene.cpp
+
+     Classes/Scene/Settings/SettingsScene.cpp
+     Classes/Scene/Settings/GameSettingsScene.cpp
+
+     Classes/Scene/Options/HeroScene.cpp
+     Classes/Scene/Options/StoreScene.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
-     Classes/HelloWorldScene.h
-     Classes/MainMenuScene.h
-     Classes/SettingsScene.h
-     Classes/GameScene.h
-     Classes/GameOverScene.h
-     Classes/HeroScene.h
-     Classes/GameSettingsScene.h
-     Classes/MapLayer.h
+
      Classes/Entity/Entity.h
      Classes/Entity/Player/Player.h
      Classes/Entity/Player/Panel.h
      Classes/Entity/Weapon/Weapon.h
 
+     Classes/Scene/Game/GameScene.h
+     Classes/Scene/Game/GameOverScene.h
+     Classes/Scene/Game/MapLayer.h
+
+     Classes/Scene/MainMenu/MainMenuScene.h
+
+     Classes/Scene/Settings/SettingsScene.h
+     Classes/Scene/Settings/GameSettingsScene.h
+
+     Classes/Scene/Options/HeroScene.h
+     Classes/Scene/Options/StoreScene.h
      )
 
 if(ANDROID)

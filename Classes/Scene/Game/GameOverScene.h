@@ -5,6 +5,7 @@
 #define __GAMEOVER_SCENE_H__
 
 #include "cocos2d.h"
+#include "Scene/MainMenu/MainMenuScene.h"
 
 class GameOverScene : public cocos2d::Layer
 {

@@ -39,10 +39,10 @@ bool HeroScene::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     /*=====================创建背景图开始======================*/
-    auto background = Sprite::create("settingsBackground.png");
+    auto background = Sprite::create("background/settingsBackground.png");
     if (background == nullptr)
     {
-        problemLoading("'settingsBackground.png'");
+        problemLoading("'background/settingsBackground.png'");
     }
     else
     {
@@ -57,15 +57,15 @@ bool HeroScene::init()
 
     //创建返回按钮
     auto heroBackItem = MenuItemImage::create(
-        "backSettingsNormal.png",
-        "backSettingsSelected.png",
+        "ui/backSettingsNormal.png",
+        "ui/backSettingsSelected.png",
         CC_CALLBACK_1(HeroScene::heroBackCallback, this));
 
     if (heroBackItem == nullptr ||
         heroBackItem->getContentSize().width <= 0 ||
         heroBackItem->getContentSize().height <= 0)
     {//错误处理
-        problemLoading("'backSettingsNormal.png' and 'backSettingsSelected.png'");
+        problemLoading("'ui/backSettingsNormal.png' and 'ui/backSettingsSelected.png'");
     }
     else
     {//设置位置
@@ -105,8 +105,8 @@ bool HeroScene::init()
     /*=====================创建英雄选项标签开始======================*/
 
     //HERO1
-    auto* hero1LabelImage = MenuItemImage::create("heroLabelNormal.png",
-        "heroLabelSelected.png", this, menu_selector(HeroScene::selectHero1Callback));
+    auto* hero1LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
+        "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero1Callback));
 
     auto* hero1LabelText = LabelTTF::create("HERO1", "Maiandra GD", 35);
     auto* hero1Label = MenuItemLabel::create(hero1LabelText,
@@ -118,8 +118,8 @@ bool HeroScene::init()
     this->addChild(hero1Button);
 
     //HERO2
-    auto* hero2LabelImage = MenuItemImage::create("heroLabelNormal.png",
-        "heroLabelSelected.png", this, menu_selector(HeroScene::selectHero2Callback));
+    auto* hero2LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
+        "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero2Callback));
 
     auto* hero2LabelText = LabelTTF::create("HERO2", "Maiandra GD", 35);
     auto* hero2Label = MenuItemLabel::create(hero2LabelText,
@@ -131,8 +131,8 @@ bool HeroScene::init()
     this->addChild(hero2Button);
 
     //HERO3
-    auto* hero3LabelImage = MenuItemImage::create("heroLabelNormal.png",
-        "heroLabelSelected.png", this, menu_selector(HeroScene::selectHero3Callback));
+    auto* hero3LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
+        "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero3Callback));
 
     auto* hero3LabelText = LabelTTF::create("HERO3", "Maiandra GD", 35);
     auto* hero3Label = MenuItemLabel::create(hero3LabelText,
@@ -144,8 +144,8 @@ bool HeroScene::init()
     this->addChild(hero3Button);
 
     //HERO4
-    auto* hero4LabelImage = MenuItemImage::create("heroLabelNormal.png",
-        "heroLabelSelected.png", this, menu_selector(HeroScene::selectHero4Callback));
+    auto* hero4LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
+        "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero4Callback));
 
     auto* hero4LabelText = LabelTTF::create("HERO4", "Maiandra GD", 35);
     auto* hero4Label = MenuItemLabel::create(hero4LabelText,
@@ -157,11 +157,11 @@ bool HeroScene::init()
     this->addChild(hero4Button);
 
     //未确认状态设置
-    auto* normal = Sprite::create("rightSignNormal.png");
+    auto* normal = Sprite::create("ui/rightSignNormal.png");
     //点击状态设置
-    auto* moving = Sprite::create("rightSignMoving.png");
+    auto* moving = Sprite::create("ui/rightSignMoving.png");
     //禁用状态设置
-    auto* selected = Sprite::create("rightSignSelected.png");
+    auto* selected = Sprite::create("ui/rightSignSelected.png");
     _confirmButton = MenuItemSprite::create(normal, moving, selected);
     auto* menu = CCMenu::create(_confirmButton, NULL);
     menu->setPosition(HERO_CONFIRM_BUTTON_POSITION_X, HERO_CONFIRM_BUTTON_POSITION_Y);
@@ -180,7 +180,7 @@ bool HeroScene::init()
 ****************************/
 void HeroScene::heroBackCallback(cocos2d::Ref* pSender)
 {
-    auto* mainMenuScene = MainMenuScene::createScene();
+    auto mainMenuScene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//过场动画设计
 }
 /****************************

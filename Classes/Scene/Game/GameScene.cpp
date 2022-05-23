@@ -6,10 +6,7 @@
 //将人物从Sprite类替换为Player类 
 
 #include "GameScene.h"
-#include "GameOverScene.h"
 #include "SimpleAudioEngine.h"
-#include "MapLayer.h"
-#include "GameSettingsScene.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -58,15 +55,15 @@ bool GameScene::init()
 	GameSettingLayer->changeWidthAndHeight(960, 720);
 	/*=====================创建关闭按钮开始======================*/
 	auto closeItem = MenuItemImage::create(
-		"CloseNormal.png",
-		"CloseSelected.png",
+		"ui/CloseNormal.png",
+		"ui/CloseSelected.png",
 		CC_CALLBACK_1(GameScene::menuCloseCallback, this));
 
 	if (closeItem == nullptr ||
 		closeItem->getContentSize().width <= 0 ||
 		closeItem->getContentSize().height <= 0)
 	{
-		problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
+		problemLoading("'ui/CloseNormal.png' and 'ui/CloseSelected.png'");
 	}
 	else
 	{
@@ -77,14 +74,14 @@ bool GameScene::init()
 
 		/*=====================创建设置按钮开始======================*/
 	auto SettingsItem = MenuItemImage::create(
-		"GameSettingsButton.png", "GameSettingsButton.png",
+		"ui/GameSettingsButton.png", "ui/GameSettingsButton.png",
 		CC_CALLBACK_1(GameScene::GameSettingsCallBack, this));
 
 	if (SettingsItem == nullptr ||
 		SettingsItem->getContentSize().width <= 0 ||
 		SettingsItem->getContentSize().height <= 0)
 	{
-		problemLoading("'GameSettingsButton.png'");
+		problemLoading("'ui/GameSettingsButton.png'");
 	}
 	else
 	{

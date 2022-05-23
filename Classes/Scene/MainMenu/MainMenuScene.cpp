@@ -1,7 +1,6 @@
 //作者 : 王鹏
 //日期 : 2022-5-14
 #include "MainMenuScene.h"
-#include "GameScene.h"
 #include "SimpleAudioEngine.h"
 USING_NS_CC;
 
@@ -44,15 +43,15 @@ bool MainMenuScene::init()
 
     //创建关闭按钮
     auto mainMenuCloseItem = MenuItemImage::create(
-        "exitMainMenuNormal.png",
-        "exitMainMenuSelected.png",
+        "ui/exitMainMenuNormal.png",
+        "ui/exitMainMenuSelected.png",
         CC_CALLBACK_1(MainMenuScene::menuCloseCallback, this));
 
     if (mainMenuCloseItem == nullptr ||
         mainMenuCloseItem->getContentSize().width <= 0 ||
         mainMenuCloseItem->getContentSize().height <= 0)
     {//错误处理
-        problemLoading("'exitMainMenuNormal.png' and 'exitMainMenuSelected.png'");
+        problemLoading("'ui/exitMainMenuNormal.png' and 'ui/exitMainMenuSelected.png'");
     }
     else
     {//设置位置
@@ -68,7 +67,7 @@ bool MainMenuScene::init()
     /*=====================创建背景音乐开始=======================*/
 
     if(ifMusicBegin)
-        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("sound/retro_fight_ingame_01.mp3",true);
+        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/retro_fight_ingame_01.mp3",true);
     ifMusicBegin = false;
     /*=====================创建背景音乐结束=======================*/
 
@@ -130,10 +129,10 @@ bool MainMenuScene::init()
     /*===================创建主菜单选项结束====================*/
 
     /*=====================创建背景图开始======================*/
-    auto background = Sprite::create("mainmenuBackground.png");
+    auto background = Sprite::create("background/mainmenuBackground.png");
     if (background == nullptr)
     {
-        problemLoading("'mainmenuBackground.png'");
+        problemLoading("'background/mainmenuBackground.png'");
     }
     else
     {

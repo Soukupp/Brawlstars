@@ -41,7 +41,7 @@
 
 
 #include "cocos2d.h"
-#include "MainMenuScene.h"
+#include "Scene/MainMenu/MainMenuScene.h"
 #include "../ui/UISlider.h"
 #include <cocos/ui/UIText.h>
 
