@@ -9,10 +9,12 @@ USING_NS_CC;
 * Summary ：初始化面板
 * return ：
 ****************************/
-void Panel::init(int& maxHealthPoint, int& attack, int& defence, float& skillAttackRate, float& attackRate)
+void Panel::init(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate, int maxMagicPoint)
 {
 	_maxHealthPoint = maxHealthPoint;
 	_healthPoint = maxHealthPoint;
+	_maxMagicPoint = maxMagicPoint;
+	_magicPoint = maxMagicPoint;
 	_attack = attack % (PANEL_MAX_ATTACK + 1);
 	_defence = defence % (PANEL_MAX_DEFENCE + 1);
 	_skillAttackRate = skillAttackRate;
@@ -43,6 +45,24 @@ int Panel::getHealthPoint()const
 int Panel::getMaxHealthPoint()const
 {
 	return _maxHealthPoint;
+}
+/****************************
+* Name ：Panel::getMagicPoint()const
+* Summary ：读取当前蓝量
+* return ：蓝量
+****************************/
+int Panel::getMagicPoint()const
+{
+	return _magicPoint;
+}
+/****************************
+* Name ：Panel::getMaxMagicPoint()const
+* Summary ：读取最大蓝量
+* return ：最大蓝量
+****************************/
+int Panel::getMaxMagicPoint()const
+{
+	return _maxMagicPoint;
 }
 /****************************
 * Name ：Panel::getSkillAttackRate()const
@@ -99,6 +119,8 @@ bool Panel::getCanBeSeen()const
 	return _canBeSeen;
 }
 
+
+
 /*===============================================================================*/
 /*============================以下是面板的直接设置===============================*/
 /*===============================================================================*/
@@ -108,16 +130,25 @@ bool Panel::getCanBeSeen()const
 * Summary ：设置当前血量
 * return ：
 ****************************/
-void Panel::setHealthPoint(int& healthPoint)
+void Panel::setHealthPoint(int healthPoint)
 {
 	_healthPoint = healthPoint;
+}
+/****************************
+* Name ：Panel::setMagicPoint
+* Summary ：设置当前蓝量
+* return ：
+****************************/
+void Panel::setMagicPoint(int magicPoint)
+{
+	_magicPoint = magicPoint;
 }
 /****************************
 * Name ：Panel::setAttack
 * Summary ：设置攻击力
 * return ：
 ****************************/
-void Panel::setAttack(int& attack)
+void Panel::setAttack(int attack)
 {
 	_attack = attack % (PANEL_MAX_ATTACK + 1);
 }
@@ -126,7 +157,7 @@ void Panel::setAttack(int& attack)
 * Summary ：设置防御力
 * return ：
 ****************************/
-void Panel::setDefence(int& defence)
+void Panel::setDefence(int defence)
 {
 	_defence = defence % (PANEL_MAX_DEFENCE + 1);
 }
@@ -181,10 +212,10 @@ int Panel::doSkillAttack()
 * Summary ：受攻击
 * return ：最终结算的伤害值
 ****************************/
-int Panel::hit(int& attack)
+int Panel::hit(int attack)
 {
 	//防御力的生效方式为百分比减伤
-	int hitPoint = attack * (1.0f - _defence / PANEL_MAX_DEFENCE);
+	int hitPoint = int(attack * (1.0f - _defence / PANEL_MAX_DEFENCE));
 	_healthPoint -= hitPoint;
 	if (_healthPoint <= 0) {//伤害溢出或击杀
 		_healthPoint = 0;
@@ -197,9 +228,19 @@ int Panel::hit(int& attack)
 * Summary ：受治疗
 * return ：受治疗量
 ****************************/
-int Panel::treat(int& healthPoint)
+int Panel::treat(int healthPoint)
 {
 	_healthPoint += healthPoint;
 	_healthPoint %= (_maxHealthPoint + 1);//避免溢出
 	return healthPoint;//返回治疗量
+}
+
+int Panel::restoreMagic(int magic)
+{
+	_magicPoint += magic;
+	if (_magicPoint >= _maxMagicPoint)
+	{
+		_magicPoint = _maxMagicPoint;
+	}
+	return magic;
 }

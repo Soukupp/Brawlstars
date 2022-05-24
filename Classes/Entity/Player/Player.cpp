@@ -18,13 +18,23 @@ void Player::initPlayer(int maxHealthPoint, int attack, int defence, float skill
 	//初始化面板
 	_panel.init(maxHealthPoint, attack, defence, skillAttackRate, attackRate);
 
+	/**
 	_healthBar = Slider::create();
-	_healthBar->setPercent(PLAYER_BLOOD_PERCENT);
+	_healthBar->setPercent(int(PLAYER_BLOOD_PERCENT));
 	_healthBar->loadBarTexture("/ui/playerHealthbarFrame.png");
 	_healthBar->loadProgressBarTexture("/ui/playerHealthbarBlock.png");
 	_healthBar->setScale(0.5);
 	_healthBar->setPosition(PLAYER_HEALTHBAR_POSITION);
 	this->addChild(_healthBar);
+
+	_magicBar = Slider::create();
+	_magicBar->setPercent(int(PLAYER_MAGIC_PERCENT));
+	_magicBar->loadBarTexture("/ui/playerMagicbarFrame.png");
+	_magicBar->loadProgressBarTexture("/ui/playerMagicbarBlock.png");
+	_magicBar->setScale(0.5);
+	_magicBar->setPosition(PLAYER_MAGICBAR_POSITION);
+	this->addChild(_magicBar);
+	/**/
 }
 /****************************
 * Name ：Player::init
@@ -35,13 +45,23 @@ void Player::initPlayer(Panel& panel)
 {
 	_panel = panel;
 
+	/**
 	_healthBar = Slider::create();
-	_healthBar->setPercent(PLAYER_BLOOD_PERCENT);
+	_healthBar->setPercent(int(PLAYER_BLOOD_PERCENT));
 	_healthBar->loadBarTexture("/ui/playerHealthbarFrame.png");
 	_healthBar->loadProgressBarTexture("/ui/playerHealthbarBlock.png");
 	_healthBar->setScale(0.5);
 	_healthBar->setPosition(PLAYER_HEALTHBAR_POSITION);
 	this->addChild(_healthBar);
+
+	_magicBar = Slider::create();
+	_magicBar->setPercent(int(PLAYER_MAGIC_PERCENT));
+	_magicBar->loadBarTexture("/ui/playerMagicbarFrame.png");
+	_magicBar->loadProgressBarTexture("/ui/playerMagicbarBlock.png");
+	_magicBar->setScale(0.5);
+	_magicBar->setPosition(PLAYER_MAGICBAR_POSITION);
+	this->addChild(_magicBar);
+	/**/
 }
 
 /****************************
@@ -83,11 +103,17 @@ void Player::launchAnAttack(Weapon* weapon, const std::string& attackType)
 {
 	if (attackType == "attack")
 	{
-		weapon->launchAnAttack(_panel.doAttack());
+		if (weapon->launchAnAttack(_panel.doAttack()))
+		{
+			restoreMagic();
+		}
 	}
 	else if (attackType == "skill")
 	{
-		weapon->launchAnSkill(_panel.doSkillAttack());
+		if (useMagic()) 
+		{
+			weapon->launchAnSkill(_panel.doSkillAttack());
+		}
 	}
 }
 /****************************
@@ -98,6 +124,38 @@ void Player::launchAnAttack(Weapon* weapon, const std::string& attackType)
 int Player::hitPlayer(int attack)
 {
 	return _panel.hit(attack);
+}
+
+void Player::restoreMagic()
+{
+	_panel.restoreMagic(34);
+}
+
+bool Player::magicIsFull()const
+{
+	return _panel.getMagicPoint() == _panel.getMaxMagicPoint();
+}
+
+bool Player::useMagic()
+{
+	if (magicIsFull()) 
+	{
+		_panel.setMagicPoint(0);
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
+}
+
+int Player::getHealthPercent()
+{
+	return PLAYER_BLOOD_PERCENT;
+}
+int Player::getMagicPercent()
+{
+	return PLAYER_MAGIC_PERCENT;
 }
 
 /*===============================================================================*/
@@ -123,22 +181,12 @@ void Player::runFlipxWithWeapon(bool flipx,Weapon* weapon)
 	this->runAction(FlipX::create(flipx));
 	weapon->runAction(FlipX::create(flipx));
 
-	float anchorPointX = 
+	_weaponAnchorPositionX = 
 		flipx ? 
 		PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT : 
 		PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT;
 
-	weapon->setAnchorPoint(Vec2(anchorPointX, PLAYER_WEAPON_ANCHOR_POSITION_Y));
-}
-/****************************
-* Name ：Player::setPositionWithWeapon
-* Summary ：带着武器移动
-* return ：
-****************************/
-void Player::setPositionWithWeapon(cocos2d::Vec2& position, Weapon* weapon)
-{
-	this->setPosition(position);
-	this->keepWeapon(weapon);
+	weapon->setAnchorPoint(Vec2(_weaponAnchorPositionX, _weaponAnchorPositionY));
 }
 
 /****************************
@@ -146,30 +194,46 @@ void Player::setPositionWithWeapon(cocos2d::Vec2& position, Weapon* weapon)
 * Summary ：保持血条位置
 * return ：
 ****************************/
-void Player::keepHealthBar()
+void Player::keepHealthBar(Slider* healthBar)
 {
-	_healthBar->setPosition(PLAYER_HEALTHBAR_POSITION);
+	healthBar->setPosition(PLAYER_HEALTHBAR_POSITION);
+}
+
+void Player::keepMagicBar(Slider* magicBar)
+{
+	magicBar->setPosition(PLAYER_MAGICBAR_POSITION);
 }
 /****************************
 * Name ：Player::setPositionWithAll
 * Summary ：整体移动
 * return ：
 ****************************/
-void Player::setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon)
+void Player::setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar)
 {
 	this->setPosition(position);
 	this->keepWeapon(weapon);
-	this->refreshHealthBar();
+	this->refreshHealthBar(healthBar);
+	this->refreshMagicBar(magicBar);
 }
 /****************************
 * Name ：Player::refreshHealthBar()
 * Summary ：更新血条
 * return ：
 ****************************/
-void Player::refreshHealthBar()
+void Player::refreshHealthBar(Slider* healthBar)
 {
-	_healthBar->setPercent(PLAYER_BLOOD_PERCENT);
-	keepHealthBar();
+	healthBar->setPercent(int(PLAYER_BLOOD_PERCENT));
+	keepHealthBar(healthBar);
+}
+/****************************
+* Name ：Player::refreshMagicBar()
+* Summary ：更新蓝条
+* return ：
+****************************/
+void Player::refreshMagicBar(Slider* magicBar)
+{
+	magicBar->setPercent(int(PLAYER_MAGIC_PERCENT));
+	keepMagicBar(magicBar);
 }
 /****************************
 * Name ：Player::refreshHealthBar()

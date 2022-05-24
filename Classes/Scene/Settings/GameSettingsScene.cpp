@@ -64,8 +64,8 @@ bool GameSettingsScene::init()
     }
     else
     {//设置位置
-        float x = SETTINGS_BACK_ITEM_POSITION_X;
-        float y = SETTINGS_BACK_ITEM_POSITION_Y;
+        float x = GAMESETTINGS_BACK_ITEM_POSITION_X;
+        float y = GAMESETTINGS_BACK_ITEM_POSITION_Y;
         settingsBackItem->setPosition(Vec2(x, y));
     }
     //创建返回菜单
@@ -79,7 +79,7 @@ bool GameSettingsScene::init()
     auto settingsNameLabel = Label::createWithTTF(
         "SETTINGS",
         "fonts/PixeloidSans.ttf",
-        SETTINGS_NAME_LABEL_SIZE
+        GAMESETTINGS_NAME_LABEL_SIZE
     );//创建文本
     if (settingsNameLabel == nullptr)
     {
@@ -90,8 +90,8 @@ bool GameSettingsScene::init()
         const Color4B settingsNameLabelColor(255, 245, 245, 255);//创建4B颜色
         settingsNameLabel->setTextColor(settingsNameLabelColor);
         settingsNameLabel->setPosition(
-            Vec2(SETTINGS_NAME_LABEL_POSITION_X,
-                SETTINGS_NAME_LABEL_POSITION_Y)
+            Vec2(GAMESETTINGS_NAME_LABEL_POSITION_X,
+                GAMESETTINGS_NAME_LABEL_POSITION_Y)
         );
 
         this->addChild(settingsNameLabel, 1);
@@ -101,7 +101,7 @@ bool GameSettingsScene::init()
     /*===================创建滑动条开始======================*/
 
     _displayedPercentage = Text::create("0", "fonts/PixeloidSans.ttf", 27);          //_displayedPercentage 用于显示滑块拖动后所占比例
-    _displayedPercentage->setPosition(Vec2(SETTINGS_SETTINGSMENU_POSITION_X, SETTINGS_SETTINGSMENU_POSITION_Y * 0.5));
+    _displayedPercentage->setPosition(Vec2(GAMESETTINGS_SETTINGSMENU_POSITION_X, GAMESETTINGS_SETTINGSMENU_POSITION_Y * 0.5));
 
     auto musicSlider = Slider::create();
 
@@ -109,10 +109,10 @@ bool GameSettingsScene::init()
     musicVolume = 50.0f;                                                        //定义初始值为50
     _displayedPercentage->setString(StringUtils::format("Percent %d", 50));
 
-    musicSlider->setPercent(musicVolume);
+    musicSlider->setPercent(int(musicVolume));
     musicSlider->loadBarTexture("ui/progressFrame.png");
     musicSlider->loadProgressBarTexture("ui/progressBlock.png");
-    musicSlider->setPosition(Vec2(SETTINGS_SETTINGSMENU_POSITION_X, SETTINGS_SETTINGSMENU_POSITION_Y));
+    musicSlider->setPosition(Vec2(GAMESETTINGS_SETTINGSMENU_POSITION_X, GAMESETTINGS_SETTINGSMENU_POSITION_Y));
     musicSlider->addEventListener(CC_CALLBACK_2(GameSettingsScene::sliderEvent, this));
     musicSlider->setScale(0.5);
 
@@ -124,7 +124,7 @@ bool GameSettingsScene::init()
     /*===================创建标签开始========================*/
 
     Label* settingsMusicLabel = Label::create("MUSIC SETTING", "fonts/PixeloidSans.ttf", 27);
-    settingsMusicLabel->setPosition(SETTINGS_SETTINGSMUSICLABEL_POSITION_X, SETTINGS_SETTINGSMUSICLABEL_POSITION_Y);
+    settingsMusicLabel->setPosition(GAMESETTINGS_SETTINGSMUSICLABEL_POSITION_X, GAMESETTINGS_SETTINGSMUSICLABEL_POSITION_Y);
     const Color4B settingsMusicLabelColor(255, 140, 15, 255);//创建4B颜色
     settingsMusicLabel->setTextColor(settingsMusicLabelColor);
 
@@ -153,7 +153,7 @@ bool GameSettingsScene::init()
     }
 
     _displayedMusicStates->setTextColor(settingsMusicLabelColor);
-    _displayedMusicStates->setPosition(Vec2(SETTINGS_SETTINGMUSICSTATES_POSITION_X, SETTINGS_SETTINGMUSICSTATES_POSITION_Y));
+    _displayedMusicStates->setPosition(Vec2(GAMESETTINGS_SETTINGMUSICSTATES_POSITION_X, GAMESETTINGS_SETTINGMUSICSTATES_POSITION_Y));
 
 
 
@@ -165,7 +165,7 @@ bool GameSettingsScene::init()
     //显示FPS显示或隐藏图标
 
 
-    FPSOnOrOff->setPosition(Vec2(SETTINGS_SETTINGFPSSTATES_POSITION_X, SETTINGS_SETTINGFPSSTATES_POSITION_Y));
+    FPSOnOrOff->setPosition(Vec2(GAMESETTINGS_SETTINGFPSSTATES_POSITION_X, GAMESETTINGS_SETTINGFPSSTATES_POSITION_Y));
 
     if (ifShowStates)
     {
@@ -179,7 +179,7 @@ bool GameSettingsScene::init()
     }
 
     _displayedFPSStates->setTextColor(settingsMusicLabelColor);
-    _displayedFPSStates->setPosition(Vec2(SETTINGS_SETTINGSFPSLABEL_POSITION_X, SETTINGS_SETTINGSFPSLABEL_POSITION_Y));
+    _displayedFPSStates->setPosition(Vec2(GAMESETTINGS_SETTINGSFPSLABEL_POSITION_X, GAMESETTINGS_SETTINGSFPSLABEL_POSITION_Y));
 
 
     Menu* GameSettingsMenu = Menu::create(musicOnOrOff, FPSOnOrOff, NULL);
@@ -202,8 +202,8 @@ bool GameSettingsScene::init()
     else
     {
         //将背景图放在中央
-        background->setPosition(Vec2(SETTINGS_BACKGROUND_POSITION_X,
-            SETTINGS_BACKGROUND_POSITION_Y));
+        background->setPosition(Vec2(GAMESETTINGS_BACKGROUND_POSITION_X,
+            GAMESETTINGS_BACKGROUND_POSITION_Y));
 
         this->addChild(background, 0);
     }
