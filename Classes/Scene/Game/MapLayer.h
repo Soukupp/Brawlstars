@@ -15,8 +15,12 @@ class MapLayer : public cocos2d::Layer
     cocos2d::TMXLayer* _collidable;
     cocos2d::TMXLayer* _watermonster;
     Player* _player;
+   /* Player _try1;
+    Player* _try1 = &_try1;*/
+    
+   
     Weapon* _weapon;//Weapon头文件已经包含在Player头文件里面
-
+// cocos2d:: Sprite* _groundmonster;
 public:
 
     virtual bool init();

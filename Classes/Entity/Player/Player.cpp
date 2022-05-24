@@ -44,6 +44,22 @@ void Player::initPlayer(Panel& panel)
 	this->addChild(_healthBar);
 }
 
+
+//Player* Player::createWithObject(ValueMap valueMap)
+//{
+//	Player* monster = new(std::nothrow)Player;
+//	if (monster && monster->initPlayer(valueMap))
+//	{
+//		monster->autorelease();
+//		return monster;
+//	}
+//	CC_SAFE_DELETE(monster);
+//	return nullptr;
+//}
+
+
+
+
 /****************************
 * Name ：Player::create
 * Summary ：创建人物

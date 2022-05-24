@@ -43,22 +43,21 @@ bool MapLayer::init()
 
 	/*======================创建地图开始=======================*/
 	//log("1"); 
-	_tileMap = TMXTiledMap::create("map/Mapupdated.tmx");
+	_tileMap = TMXTiledMap::create("map/Mapupdated2.tmx");
 	// 用老地图MiddleMap可以，不知道为啥新地图不可以，还在研究中......
 	// 	_tileMap = TMXTiledMap::create("map/MiddleMaper.tmx");
-	
-	  
 	addChild(_tileMap, 0, 100);
 	//log("2");
+
+	/*=====================创建角色开始========================*/
 	TMXObjectGroup* group = _tileMap->getObjectGroup("objects");
 	ValueMap spawnPoint = group->getObject("player");  // 新地图应该是player
-	 
-	//ValueMap spawnPoint = group->getObject("Colt");  // 从地图读取游戏人物的位置，游戏人物Colt
 
 	float _playerX = spawnPoint["x"].asFloat();
 	float _playerY = spawnPoint["y"].asFloat();
-	/*=====================创建角色开始========================*/
+	
 	_player = Player::create("Colt.png");
+	//_player->retain(); // 还是没用
 	_player->setPosition(Vec2(_playerX, _playerY));
 	_player->initPlayer(100, 2, 3, 4.0f, 5.0f);
 	addChild(_player, 2, 200);
@@ -70,6 +69,61 @@ bool MapLayer::init()
 	addChild(_weapon, 2, 200);
 	_player->keepWeapon(_weapon); 
 	/*=====================创建角色结束========================*/
+
+	/*=================创建groundmonster开始===================*/
+
+
+	//TMXObjectGroup* groupgm = _tileMap->getObjectGroup("try");
+	//ValueMap spawnPointgm = groupgm->getObject("try1"); // 读取示例精灵try1（应该是一个地点），需要由我来给照片
+
+	//float _tryX = spawnPointgm["x"].asFloat();
+	//float _tryY = spawnPointgm["y"].asFloat();
+	//log("point1");  // 坐标和对象都能够读取成功
+
+	//_player = Player::create("map/groundmonster.png");
+	////_player->retain(); // 还是没用
+	//_player->setPosition(Vec2(_tryX, _tryY));
+	//_player->initPlayer(100, 2, 3, 4.0f, 5.0f);
+	//addChild(_player, 3, 100);
+	////FileUtils::getInstance()->setSearchPaths({ "map" });
+	////Player _try1;
+	////_player = &_try1;
+	////_try1 = Player::create("map/groundmonster.png");  // 照片始终打不开；是因为_try1始终是一个空指针
+	////_try1->setPosition(Vec2(_tryX, _tryY));
+	//////_try->initPlayer(100, 2, 3, 4.0f, 5.0f);
+	////addChild(_try1, 3, 100);
+
+	auto layer = _tileMap->getObjectGroup("groundmonster");
+	auto Group = layer->getObjects();
+	for (auto obj : Group)
+	{
+		auto valueMap = obj.asValueMap();
+		auto monster = Player::create("map/groundmonster.png");
+		addChild(monster);
+	}
+
+
+
+
+
+
+
+	//float _groundmonsterX = spawnPointgm["x"].asFloat();
+	//float _groundmonsterY = spawnPointgm["y"].asFloat();
+
+	//_groundmonster = Sprite::create("map/groundmonster.png");
+	//_groundmonster->setPosition(Vec2(_groundmonsterX, _groundmonsterY));
+	////_groundmonster[1]->initPlayer(100, 2, 3, 4.0f, 5.0f);
+	//addChild(_groundmonster, 2, 200);
+
+
+
+
+
+
+	/*=================创建groundmonster结束===================*/
+
+	/*===================创建障碍物层开始======================*/
 	setViewpointCenter(_player->getPosition());
 
 	_collidable = _tileMap->getLayer("collidable");  //障碍物collidable
@@ -79,7 +133,7 @@ bool MapLayer::init()
 
 	setTouchEnabled(true);  // 开启触摸，必须继承于layer
 	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
-
+	/*===================创建障碍物层结束======================*/
 
 	/*======================控制键盘开始=======================*/
 	auto keyboardListener = EventListenerKeyboard::create();// 建立键盘监听器keyboardListener
