@@ -28,8 +28,8 @@ public:
 
     static Player* create(const std::string& filename);
     //static Player* createWithObject(ValueMap valueMap);
-    void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
-    void initPlayer(Panel& panel);
+    virtual void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
+    virtual void initPlayer(Panel& panel);
     Panel* getPanel();
 
     void launchAnAttack(Weapon* weapon, const std::string& attackType);
