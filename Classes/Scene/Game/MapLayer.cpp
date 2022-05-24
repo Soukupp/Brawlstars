@@ -72,7 +72,7 @@ bool MapLayer::init()
 
 	/*=================创建groundmonster开始===================*/
 
-
+	// 新做修改 Look at me！
 	//TMXObjectGroup* groupgm = _tileMap->getObjectGroup("try");
 	//ValueMap spawnPointgm = groupgm->getObject("try1"); // 读取示例精灵try1（应该是一个地点），需要由我来给照片
 
@@ -80,11 +80,16 @@ bool MapLayer::init()
 	//float _tryY = spawnPointgm["y"].asFloat();
 	//log("point1");  // 坐标和对象都能够读取成功
 
-	//_player = Player::create("map/groundmonster.png");
-	////_player->retain(); // 还是没用
-	//_player->setPosition(Vec2(_tryX, _tryY));
-	//_player->initPlayer(100, 2, 3, 4.0f, 5.0f);
-	//addChild(_player, 3, 100);
+	//_groundmonster = Monster::create("map/groundmonster.png");
+
+	//_groundmonster->setPosition(Vec2(_tryX, _tryY));
+	//_groundmonster->initMonster(100, 2, 3, 4.0f, 5.0f);
+	//addChild(_groundmonster, 3, 100);
+
+
+
+
+	//_player->retain(); // 还是没用
 	////FileUtils::getInstance()->setSearchPaths({ "map" });
 	////Player _try1;
 	////_player = &_try1;
@@ -93,14 +98,14 @@ bool MapLayer::init()
 	//////_try->initPlayer(100, 2, 3, 4.0f, 5.0f);
 	////addChild(_try1, 3, 100);
 
-	auto layer = _tileMap->getObjectGroup("groundmonster");
+	/*auto layer = _tileMap->getObjectGroup("groundmonster");
 	auto Group = layer->getObjects();
 	for (auto obj : Group)
 	{
 		auto valueMap = obj.asValueMap();
 		auto monster = Player::create("map/groundmonster.png");
 		addChild(monster);
-	}
+	}*/
 
 
 
@@ -129,7 +134,7 @@ bool MapLayer::init()
 	_collidable = _tileMap->getLayer("collidable");  //障碍物collidable
 	_collidable->setVisible(false);  // 对应透明度
 
-	_watermonster = _tileMap->getLayer("watermonster");
+	//_watermonster = _tileMap->getLayer("watermonster");
 
 	setTouchEnabled(true);  // 开启触摸，必须继承于layer
 	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
@@ -278,7 +283,8 @@ void MapLayer::setPlayerPosition(Vec2 position)
 	Vec2 tileCoord = this->tileCoordFromPosition(position);  //从像素点坐标转化为瓦片坐标
 
 	int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
-	int tileGid_watermonster=_watermonster->getTileGIDAt(tileCoord);
+	//int tileGid_watermonster=_watermonster->getTileGIDAt(tileCoord);  Look at me！！！
+	// 加上这句同样会使this变成空指针！？？？？
 	log("success1");
 
 	// 碰撞检测

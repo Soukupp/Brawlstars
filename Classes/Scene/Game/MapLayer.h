@@ -7,6 +7,7 @@
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
 #include "Entity/Player/Player.h"
+#include "Entity/Monster/Monster.h"
 
 
 class MapLayer : public cocos2d::Layer
@@ -17,6 +18,7 @@ class MapLayer : public cocos2d::Layer
     Player* _player;
    /* Player _try1;
     Player* _try1 = &_try1;*/
+    //Monster* _groundmonster;
     
    
     Weapon* _weapon;//Weapon头文件已经包含在Player头文件里面
