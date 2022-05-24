@@ -6,7 +6,7 @@
 
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
-#include "Entity/Player/Player.h"
+#include "Entity/Player/Hero/Hero1.h"
 
 
 class MapLayer : public cocos2d::Layer
@@ -14,8 +14,11 @@ class MapLayer : public cocos2d::Layer
     cocos2d::TMXTiledMap* _tileMap;
     cocos2d::TMXLayer* _collidable;
     cocos2d::TMXLayer* _watermonster;
-    Player* _player;
-    Weapon* _weapon;//Weapon头文件已经包含在Player头文件里面
+
+    Hero1* _player;
+    Weapon* _weapon;//头文件已经包含在Player头文件里面
+    Slider* _healthBar;
+    Slider* _magicBar;
 
 public:
 

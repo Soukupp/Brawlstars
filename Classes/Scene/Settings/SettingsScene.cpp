@@ -107,7 +107,7 @@ bool SettingsScene::init()
     _musicVolume = 50.0f;                                                        //定义初始值为50
     _displayedPercentage->setString(StringUtils::format("Percent %d", 50));
 
-    musicSlider->setPercent(_musicVolume);
+    musicSlider->setPercent(int(_musicVolume));
     musicSlider->loadBarTexture("ui/progressFrame.png");
     musicSlider->loadProgressBarTexture("ui/progressBlock.png");
     musicSlider->setPosition(Vec2(SETTINGS_SETTINGSMENU_POSITION_X, SETTINGS_SETTINGSMENU_POSITION_Y));

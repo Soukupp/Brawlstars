@@ -58,17 +58,34 @@ bool MapLayer::init()
 	float _playerX = spawnPoint["x"].asFloat();
 	float _playerY = spawnPoint["y"].asFloat();
 	/*=====================创建角色开始========================*/
-	_player = Player::create("Colt.png");
-	_player->setPosition(Vec2(_playerX, _playerY));
+	_player = Hero1::create("Character/Hero1/hero.png");
 	_player->initPlayer(100, 2, 3, 4.0f, 5.0f);
 	addChild(_player, 2, 200);
 
-	_weapon = Weapon::create("weaponWeapon.png");
+	_weapon = Weapon::create("Character/Hero1/empty.png");
 	_weapon->setAnchorPoint(
-		Vec2(PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT,
-			PLAYER_WEAPON_ANCHOR_POSITION_Y));
+		Vec2(_player->_weaponAnchorPositionX,
+			_player->_weaponAnchorPositionY));
 	addChild(_weapon, 2, 200);
-	_player->keepWeapon(_weapon); 
+
+	_healthBar = Slider::create();
+	_healthBar->setPercent(_player->getHealthPercent());
+	_healthBar->loadBarTexture("/ui/playerHealthbarFrame.png");
+	_healthBar->loadProgressBarTexture("/ui/playerHealthbarBlock.png");
+	_healthBar->setScale(0.5);
+	_healthBar->setAnchorPoint(Vec2(0.5f, 0.0f));
+	this->addChild(_healthBar);
+
+	_magicBar = Slider::create();
+	_magicBar->setPercent(_player->getMagicPercent());
+	_magicBar->loadBarTexture("/ui/playerMagicbarFrame.png");
+	_magicBar->loadProgressBarTexture("/ui/playerMagicbarBlock.png");
+	_magicBar->setScale(0.5);
+	_magicBar->setAnchorPoint(Vec2(0.5f, 0.0f));
+	this->addChild(_magicBar);
+
+	_player->setPositionWithAll(Vec2(_playerX, _playerY), _weapon, _healthBar, _magicBar);
+
 	/*=====================创建角色结束========================*/
 	setViewpointCenter(_player->getPosition());
 
@@ -252,8 +269,15 @@ void MapLayer::setPlayerPosition(Vec2 position)
 	//	}
 	//}
 	//移动精灵
-	//_player->hitPlayer(5);//对角色造成攻击
-	_player->setPositionWithAll(position, _weapon);
+	_player->setPositionWithAll(position, _weapon, _healthBar, _magicBar);
+	/**/
+	_player->launchAnAttack(_weapon, "skill");
+	_player->refreshMagicBar(_magicBar);
+	/**
+	_player->launchAnAttack(_weapon, "attack");
+	_player->refreshMagicBar(_magicBar);
+	/**/
+
 	//滚动地图
 	this->setViewpointCenter(_player->getPosition());
 }

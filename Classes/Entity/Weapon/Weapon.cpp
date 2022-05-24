@@ -33,19 +33,19 @@ Weapon* Weapon::getWeapon()
 /****************************
 * Name ：Weapon::launchAnAttack()
 * Summary ：发起攻击
-* return ：
+* return ：造成的伤害
 ****************************/
-void Weapon::launchAnAttack(int attack)
+int Weapon::launchAnAttack(int attack)
 {
-
+	return attack;
 }
 
 /****************************
 * Name ：Weapon::launchAnSkill()
 * Summary ：发起技能攻击
-* return ：
+* return ：造成的伤害
 ****************************/
-void Weapon::launchAnSkill(int attack)
+int Weapon::launchAnSkill(int attack)
 {
-
+	return attack;
 }

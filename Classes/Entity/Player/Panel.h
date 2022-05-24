@@ -13,19 +13,23 @@ class Panel
 {
 private:
     int _maxHealthPoint;//最大血量 
+    int _maxMagicPoint;//最大蓝量
     int _attack;//攻击力 
     int _defence;//防御力 
 	float _attackRate;//普攻倍率 
 	float _skillAttackRate;//技能倍率 
     int _healthPoint;//当前血量 
+    int _magicPoint;//当前蓝量 
 
     bool _survive;//是否存活
 	bool _canBeSeen;//是否可视(例如 躲草丛) 
 public:
-    void init(int& maxHealthPoint, int& attack, int& defence, float& skillAttackRate, float& attackRate);
+    void init(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate, int maxMagicPoint = 100);
     //直接读取原始面板
     int getHealthPoint()const;
     int getMaxHealthPoint()const;
+    int getMagicPoint()const;
+    int getMaxMagicPoint()const;
     float getSkillAttackRate()const;
     float getAttackRate()const;
 
@@ -34,10 +38,12 @@ public:
     
     bool getIsSurvive()const;
     bool getCanBeSeen()const;
+
    //设置面板
-    void setHealthPoint(int& healthPoint);
-    void setAttack(int& attack);
-    void setDefence(int& defence);
+    void setHealthPoint(int healthPoint);
+    void setMagicPoint(int magicPoint);
+    void setAttack(int attack);
+    void setDefence(int defence);
     
     void setIsSurvive(bool survive);
     void setCanBeSeen(bool canBeSeen);
@@ -45,9 +51,11 @@ public:
     int doAttack();
     int doSkillAttack();
     //受到攻击时结算受到的伤害
-    int hit(int& attack);
+    int hit(int attack);
     //结算受到的治疗
-    int treat(int& healthPoint);
+    int treat(int healthPoint);
+    //回蓝
+    int restoreMagic(int magic);
 };
 
 #endif
