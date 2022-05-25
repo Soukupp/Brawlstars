@@ -7,6 +7,8 @@
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
 #include "Entity/Player/Hero/Hero1.h"
+#include "Entity/Player/Hero/Hero2.h"
+//#include "Entity/Player/Hero/CreateHero.h"
 
 
 class MapLayer : public cocos2d::Layer
@@ -14,9 +16,14 @@ class MapLayer : public cocos2d::Layer
     cocos2d::TMXTiledMap* _tileMap;
     cocos2d::TMXLayer* _collidable;
     cocos2d::TMXLayer* _watermonster;
-
-    Hero1* _player;
-    Weapon* _weapon;//头文件已经包含在Player头文件里面
+    /**/
+    Hero1* _player1;
+    Weapon* _weapon1;
+    Slider* _healthBar1;
+    Slider* _magicBar1;
+    /**/
+    Hero2* _player;
+    Weapon* _weapon;
     Slider* _healthBar;
     Slider* _magicBar;
 
@@ -34,6 +41,10 @@ public:
     void setPlayerPosition(cocos2d::Vec2 position);
     cocos2d::Vec2 tileCoordFromPosition(cocos2d::Vec2 position);
     void setViewpointCenter(cocos2d::Vec2 position);
+
+    template<typename Hero>
+    void createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slider** magicBar, Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon);
+
 
     // implement the "static create()" method manually
     CREATE_FUNC(MapLayer);

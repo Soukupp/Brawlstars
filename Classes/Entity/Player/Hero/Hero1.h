@@ -38,9 +38,6 @@ using namespace cocos2d;
 //血、蓝百分比计算
 #define HERO1_BLOOD_PERCENT int(100 * float(_panel.getHealthPoint()) / float(_panel.getMaxHealthPoint()))
 #define HERO1_MAGIC_PERCENT int(100 * float(_panel.getMagicPoint()) / float(_panel.getMaxMagicPoint()))
-//素材
-#define HERO1_PNG_X (351.0f/7.0f)
-#define HERO1_PNG_Y (592.0f/16.0f)
 
 /*==============================!!!!!以上宏请勿修改!!!!!=================================*/
 
