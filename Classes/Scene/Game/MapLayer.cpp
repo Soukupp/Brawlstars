@@ -55,33 +55,8 @@ bool MapLayer::init()
 	float _playerX = spawnPoint["x"].asFloat();
 	float _playerY = spawnPoint["y"].asFloat();
 	/*=====================创建角色开始========================*/
-	_player = Hero1::create("Character/Hero1/hero.png");
-	_player->initPlayer(100, 2, 3, 4.0f, 5.0f);
-	addChild(_player, 2, 200);
-
-	_weapon = Weapon::create("Character/Hero1/empty.png");
-	_weapon->setAnchorPoint(
-		Vec2(_player->_weaponAnchorPositionX,
-			_player->_weaponAnchorPositionY));
-	addChild(_weapon, 2, 200);
-
-	_healthBar = Slider::create();
-	_healthBar->setPercent(_player->getHealthPercent());
-	_healthBar->loadBarTexture("/ui/playerHealthbarFrame.png");
-	_healthBar->loadProgressBarTexture("/ui/playerHealthbarBlock.png");
-	_healthBar->setScale(0.5);
-	_healthBar->setAnchorPoint(Vec2(0.5f, 0.0f));
-	this->addChild(_healthBar);
-
-	_magicBar = Slider::create();
-	_magicBar->setPercent(_player->getMagicPercent());
-	_magicBar->loadBarTexture("/ui/playerMagicbarFrame.png");
-	_magicBar->loadProgressBarTexture("/ui/playerMagicbarBlock.png");
-	_magicBar->setScale(0.5);
-	_magicBar->setAnchorPoint(Vec2(0.5f, 0.0f));
-	this->addChild(_magicBar);
-
-	_player->setPositionWithAll(Vec2(_playerX, _playerY), _weapon, _healthBar, _magicBar);
+	createHero(&_player, &_weapon, &_healthBar, &_magicBar, Vec2(_playerX, _playerY), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
+	createHero(&_player1, &_weapon1, &_healthBar1, &_magicBar1, Vec2(_playerX, _playerY), "Character/Hero1/hero.png", "Character/Hero1/empty.png");
 
 	/*=====================创建角色结束========================*/
 	setViewpointCenter(_player->getPosition());
@@ -268,7 +243,7 @@ void MapLayer::setPlayerPosition(Vec2 position)
 	//移动精灵
 	_player->setPositionWithAll(position, _weapon, _healthBar, _magicBar);
 	/**/
-	_player->launchAnAttack(_weapon, "skill");
+	_player->launchAnAttack(_weapon, "attack");
 	_player->refreshMagicBar(_magicBar);
 	/**
 	_player->launchAnAttack(_weapon, "attack");
@@ -327,3 +302,35 @@ void MapLayer::setViewpointCenter(Vec2 position)
 
 }
 
+template<typename Hero>
+void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slider** magicBar,
+	Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon)
+{
+	*hero = Hero::create(filenameHero);
+	(**hero).initPlayer(100, 2, 3, 4.0f, 5.0f);
+	addChild(*hero, 2, 200);
+
+	*weapon = Weapon::create(filenameWeapon);
+	(**weapon).setAnchorPoint(
+		Vec2((**hero)._weaponAnchorPositionX,
+			(**hero)._weaponAnchorPositionY));
+	addChild(*weapon, 2, 200);
+
+	*healthBar = Slider::create();
+	(**healthBar).setPercent((**hero).getHealthPercent());
+	(**healthBar).loadBarTexture("/ui/playerHealthbarFrame.png");
+	(**healthBar).loadProgressBarTexture("/ui/playerHealthbarBlock.png");
+	(**healthBar).setScale(0.5);
+	(**healthBar).setAnchorPoint(Vec2(0.5f, 0.0f));
+	addChild(*healthBar);
+
+	*magicBar = Slider::create();
+	(**magicBar).setPercent((**hero).getMagicPercent());
+	(**magicBar).loadBarTexture("/ui/playerMagicbarFrame.png");
+	(**magicBar).loadProgressBarTexture("/ui/playerMagicbarBlock.png");
+	(**magicBar).setScale(0.5);
+	(**magicBar).setAnchorPoint(Vec2(0.5f, 0.0f));
+	addChild(*magicBar);
+
+	(**hero).setPositionWithAll(position, *weapon, *healthBar, *magicBar);
+}
