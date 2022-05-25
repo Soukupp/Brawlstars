@@ -4,7 +4,9 @@
 #include "SimpleAudioEngine.h"
 USING_NS_CC;
 
-static bool ifMusicBegin = true;
+static bool firstSet = true;
+static bool firstPlay = true;
+
 /****************************
 * Name ：MainMenuScene::createScene
 * Summary ：创建场景
@@ -64,12 +66,6 @@ bool MainMenuScene::init()
     closeMenu->setPosition(Vec2::ZERO);
     this->addChild(closeMenu, 2);
     /*=====================创建关闭按钮结束====================*/
-    /*=====================创建背景音乐开始=======================*/
-
-    if(ifMusicBegin)
-        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/retro_fight_ingame_01.mp3",true);
-    ifMusicBegin = false;
-    /*=====================创建背景音乐结束=======================*/
 
     /*=====================创建游戏名开始======================*/
 
@@ -143,6 +139,24 @@ bool MainMenuScene::init()
         this->addChild(background, 0);
     }
     /*=====================创建背景图结束======================*/
+    
+    /*=====================设置UseDefault开始======================*/
+    if (firstSet) {
+        UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
+        UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
+        UserDefault::getInstance()->setIntegerForKey("musicVolume", 50);
+        firstSet = false;
+    }
+
+    /*=====================设置UseDefault结束======================*/
+
+    /*=====================创建背景音乐开始=======================*/
+
+    if (firstPlay)
+        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/retro_fight_ingame_01.mp3", true);
+    firstPlay = false;
+    /*=====================创建背景音乐结束=======================*/
+
     return true;
 }
 /****************************

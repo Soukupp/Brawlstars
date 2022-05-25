@@ -73,7 +73,6 @@ public:
 private:
     Text* _displayedPercentage;          //显示音量百分比
     Text* _displayedMusicStates = Text::create("MUSIC ON", "fonts/PixeloidSans.ttf", 27);    //显示音乐开关
-    float musicVolume;                   //储存的音量
     Text* _displayedFPSStates = Text::create("FPS DISPLAY", "fonts/PixeloidSans.ttf", 27);   //显示FPS显示或隐藏
 
 };
