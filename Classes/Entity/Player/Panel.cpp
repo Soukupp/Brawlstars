@@ -234,7 +234,11 @@ int Panel::treat(int healthPoint)
 	_healthPoint %= (_maxHealthPoint + 1);//避免溢出
 	return healthPoint;//返回治疗量
 }
-
+/****************************
+* Name ：Panel::restoreMagic
+* Summary ：恢复蓝量
+* return ：恢复的蓝量
+****************************/
 int Panel::restoreMagic(int magic)
 {
 	_magicPoint += magic;

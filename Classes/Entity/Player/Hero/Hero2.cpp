@@ -4,6 +4,11 @@
 
 USING_NS_CC;
 
+/****************************
+* Name ：create
+* Summary ：创建
+* return ：hero指针
+****************************/
 Hero2* Hero2::create(const std::string& filename)
 {
 	Hero2* player = new (std::nothrow) Hero2();
@@ -15,7 +20,11 @@ Hero2* Hero2::create(const std::string& filename)
 	CC_SAFE_DELETE(player);
 	return nullptr;
 }
-
+/****************************
+* Name ：create
+* Summary ：创建
+* return ：hero指针
+****************************/
 Hero2* Hero2::create(const std::string& filename, const Rect& rect)
 {
 	Hero2* player = new (std::nothrow) Hero2();
@@ -27,14 +36,22 @@ Hero2* Hero2::create(const std::string& filename, const Rect& rect)
 	CC_SAFE_DELETE(player);
 	return nullptr;
 }
-
+/****************************
+* Name ：initPlayer
+* Summary ：初始化
+* return ：
+****************************/
 void Hero2::initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate)
 {
 	//初始化面板
 	_panel.init(maxHealthPoint, attack, defence, skillAttackRate, attackRate);
 	this->setAnchorPoint(Vec2(0.5f, 0.5f));
 }
-
+/****************************
+* Name ：launchAnAttack
+* Summary ：发动攻击 输入"attack" "skill" 调用
+* return ：
+****************************/
 void Hero2::launchAnAttack(Weapon* weapon, const std::string& attackType)
 {
 	if (attackType == "attack")
@@ -51,7 +68,7 @@ void Hero2::launchAnAttack(Weapon* weapon, const std::string& attackType)
 			sprintf(szName, "Character/Hero2/attack/attack%02d.png", loop);
 			_animationAttack->addSpriteFrameWithFile(szName);
 		}
-		_animationAttack->setDelayPerUnit(0.5f / 20.0f);
+		_animationAttack->setDelayPerUnit(0.3f / 20.0f);
 		_animationAttack->setRestoreOriginalFrame(true);
 		auto _animateAttack = CCAnimate::create(_animationAttack);
 		//this->runAction(Hide::create());
@@ -84,23 +101,39 @@ void Hero2::launchAnAttack(Weapon* weapon, const std::string& attackType)
 		}
 	}
 }
-
+/****************************
+* Name ：keepHealthBar
+* Summary ：保持血条位置
+* return ：
+****************************/
 void Hero2::keepHealthBar(Slider* healthBar)
 {
 	healthBar->setPosition(HERO2_HEALTHBAR_POSITION);
 	//_healthBar->setPosition(position);
 }
-
+/****************************
+* Name ：keepMagicBar
+* Summary ：保持蓝条位置
+* return ：
+****************************/
 void Hero2::keepMagicBar(Slider* magicBar)
 {
 	magicBar->setPosition(HERO2_MAGICBAR_POSITION);
 }
-
-
+/****************************
+* Name ：keepWeapon
+* Summary ：保持武器位置
+* return ：
+****************************/
 void Hero2::keepWeapon(Weapon* weapon)
 {
 	weapon->setPosition(HERO2_WEAPON_POSITION_X, HERO2_WEAPON_POSITION_Y);
 }
+/****************************
+* Name ：runFlipxWithWeapon
+* Summary ：带着武器翻转
+* return ：
+****************************/
 void Hero2::runFlipxWithWeapon(bool flipx, Weapon* weapon)
 {
 

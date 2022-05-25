@@ -21,7 +21,7 @@ using namespace CocosDenshion;
 static void problemLoading(const char* filename)
 {
 	printf("Error while loading: %s\n", filename);
-	printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
+	printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in MapLayer.cpp\n");
 }
 
 
@@ -213,7 +213,7 @@ void MapLayer::setPlayerPosition(Vec2 position)
 	Vec2 tileCoord = this->tileCoordFromPosition(position);  //从像素点坐标转化为瓦片坐标
 
 	int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
-	int tileGid_watermonster=_watermonster->getTileGIDAt(tileCoord);
+	//int tileGid_watermonster=_watermonster->getTileGIDAt(tileCoord);
 	log("success1");
 
 	// 碰撞检测
@@ -301,10 +301,14 @@ void MapLayer::setViewpointCenter(Vec2 position)
 	this->setPosition(offset);
 
 }
-
+/****************************
+* Name ：MapLayer::createHero
+* Summary ：创建角色
+* return ：
+****************************/
 template<typename Hero>
 void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slider** magicBar,
-	Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon)
+	                      Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon)
 {
 	*hero = Hero::create(filenameHero);
 	(**hero).initPlayer(100, 2, 3, 4.0f, 5.0f);
