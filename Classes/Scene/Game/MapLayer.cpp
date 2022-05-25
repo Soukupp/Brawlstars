@@ -44,8 +44,6 @@ bool MapLayer::init()
 	/*======================创建地图开始=======================*/
 	//log("1"); 
 	_tileMap = TMXTiledMap::create("map/Mapupdated.tmx");
-	// 用老地图MiddleMap可以，不知道为啥新地图不可以，还在研究中......
-	// 	_tileMap = TMXTiledMap::create("map/MiddleMaper.tmx");
 	
 	  
 	addChild(_tileMap, 0, 100);
@@ -53,7 +51,6 @@ bool MapLayer::init()
 	TMXObjectGroup* group = _tileMap->getObjectGroup("objects");
 	ValueMap spawnPoint = group->getObject("player");  // 新地图应该是player
 	 
-	//ValueMap spawnPoint = group->getObject("Colt");  // 从地图读取游戏人物的位置，游戏人物Colt
 
 	float _playerX = spawnPoint["x"].asFloat();
 	float _playerY = spawnPoint["y"].asFloat();
