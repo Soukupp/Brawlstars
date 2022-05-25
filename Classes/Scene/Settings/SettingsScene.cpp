@@ -99,15 +99,13 @@ bool SettingsScene::init()
     /*===================创建滑动条开始======================*/
 
     _displayedPercentage = Text::create("0", "fonts/PixeloidSans.ttf", 27);          //_displayedPercentage 用于显示滑块拖动后所占比例
-    _displayedPercentage->setPosition(Vec2(SETTINGS_SETTINGSMENU_POSITION_X, SETTINGS_SETTINGSMENU_POSITION_Y * 0.5));
+    _displayedPercentage->setPosition(Vec2(SETTINGS_SETTINGSMENU_POSITION_X, SETTINGS_SETTINGSMENU_POSITION_Y));
 
     auto musicSlider = Slider::create();
 
-     _musicVolume = UserDefault::getInstance()->getFloatForKey("musicVolume");   //musicVolume 用于记录音量大小（百分制）
-    _musicVolume = 50.0f;                                                        //定义初始值为50
-    _displayedPercentage->setString(StringUtils::format("Percent %d", 50));
+    _displayedPercentage->setString(StringUtils::format("Percent %d", UserDefault::getInstance()->getIntegerForKey("musicVolume")));
 
-    musicSlider->setPercent(int(_musicVolume));
+    musicSlider->setPercent(UserDefault::getInstance()->getIntegerForKey("musicVolume"));
     musicSlider->loadBarTexture("ui/progressFrame.png");
     musicSlider->loadProgressBarTexture("ui/progressBlock.png");
     musicSlider->setPosition(Vec2(SETTINGS_SETTINGSMENU_POSITION_X, SETTINGS_SETTINGSMENU_POSITION_Y));
@@ -139,7 +137,7 @@ bool SettingsScene::init()
         menu_selector(SettingsScene::settingsPlayCallBack), musicOn, musicOff, NULL);
                                                                                         //显示音乐开始或静音图标
     
-    if (ifShowPlay)
+    if (UserDefault::getInstance()->getBoolForKey("ifPlayMusic", true))
     {
         musicOnOrOff->setSelectedIndex(0);
         _displayedMusicStates->setString(StringUtils::format("MUSIC ON"));
@@ -165,8 +163,9 @@ bool SettingsScene::init()
 
     FPSOnOrOff->setPosition(Vec2(SETTINGS_SETTINGFPSSTATES_POSITION_X, SETTINGS_SETTINGFPSSTATES_POSITION_Y));
 
-    if (ifShowStates)
+    if (UserDefault::getInstance()->getBoolForKey("ifShowFPS", true))
     {
+       
         FPSOnOrOff->setSelectedIndex(0);
         _displayedFPSStates->setString(StringUtils::format("DISPLAY FPS"));
     }
@@ -234,7 +233,7 @@ void SettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
         //实在调不了音量，烂尾了，~~~~~~~~~~~~~~~~~~~~~~~~这个函数要自己实现，先烂尾了
         //需要用是sliderEvent中进行修改
 
-        UserDefault::getInstance()->setFloatForKey("musicVolume", percentVolume);
+        UserDefault::getInstance()->setIntegerForKey("musicVolume", percentVolume);
 
         _displayedPercentage->setString(StringUtils::format("Percent %d", percentVolume));   //显示所占百分比
 
@@ -253,13 +252,13 @@ void SettingsScene::settingsPlayCallBack(Ref* pSender)
     if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
     {
         CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
-        ifShowPlay = false;
+        UserDefault::getInstance()->setBoolForKey("ifPlayMusic", false);
         _displayedMusicStates->setString(StringUtils::format("MUSIC OFF"));
     }
     else
     {
         CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
-        ifShowPlay = true;
+        UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
         _displayedMusicStates->setString(StringUtils::format("MUSIC ON"));
     }
 }
@@ -275,13 +274,13 @@ void SettingsScene::settingsFPSCallBack(Ref* pSender)
     if (director->isDisplayStats())
     {
         director->setDisplayStats(false);
-        ifShowStates = false;
+        UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
         _displayedFPSStates->setString(StringUtils::format("CONCEAL FPS"));
     }
     else
     {
         director->setDisplayStats(true);
-        ifShowStates = true;
+        UserDefault::getInstance()->setBoolForKey("ifShowFPS", true);
         _displayedFPSStates->setString(StringUtils::format("DISPLAY FPS"));
     }
 }
