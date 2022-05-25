@@ -17,24 +17,6 @@ void Player::initPlayer(int maxHealthPoint, int attack, int defence, float skill
 {
 	//初始化面板
 	_panel.init(maxHealthPoint, attack, defence, skillAttackRate, attackRate);
-
-	/**
-	_healthBar = Slider::create();
-	_healthBar->setPercent(int(PLAYER_BLOOD_PERCENT));
-	_healthBar->loadBarTexture("/ui/playerHealthbarFrame.png");
-	_healthBar->loadProgressBarTexture("/ui/playerHealthbarBlock.png");
-	_healthBar->setScale(0.5);
-	_healthBar->setPosition(PLAYER_HEALTHBAR_POSITION);
-	this->addChild(_healthBar);
-
-	_magicBar = Slider::create();
-	_magicBar->setPercent(int(PLAYER_MAGIC_PERCENT));
-	_magicBar->loadBarTexture("/ui/playerMagicbarFrame.png");
-	_magicBar->loadProgressBarTexture("/ui/playerMagicbarBlock.png");
-	_magicBar->setScale(0.5);
-	_magicBar->setPosition(PLAYER_MAGICBAR_POSITION);
-	this->addChild(_magicBar);
-	/**/
 }
 /****************************
 * Name ：Player::init
@@ -44,24 +26,6 @@ void Player::initPlayer(int maxHealthPoint, int attack, int defence, float skill
 void Player::initPlayer(Panel& panel)
 {
 	_panel = panel;
-
-	/**
-	_healthBar = Slider::create();
-	_healthBar->setPercent(int(PLAYER_BLOOD_PERCENT));
-	_healthBar->loadBarTexture("/ui/playerHealthbarFrame.png");
-	_healthBar->loadProgressBarTexture("/ui/playerHealthbarBlock.png");
-	_healthBar->setScale(0.5);
-	_healthBar->setPosition(PLAYER_HEALTHBAR_POSITION);
-	this->addChild(_healthBar);
-
-	_magicBar = Slider::create();
-	_magicBar->setPercent(int(PLAYER_MAGIC_PERCENT));
-	_magicBar->loadBarTexture("/ui/playerMagicbarFrame.png");
-	_magicBar->loadProgressBarTexture("/ui/playerMagicbarBlock.png");
-	_magicBar->setScale(0.5);
-	_magicBar->setPosition(PLAYER_MAGICBAR_POSITION);
-	this->addChild(_magicBar);
-	/**/
 }
 
 /****************************
@@ -125,17 +89,29 @@ int Player::hitPlayer(int attack)
 {
 	return _panel.hit(attack);
 }
-
+/****************************
+* Name ：Player::restoreMagic
+* Summary ：补充蓝量
+* return ：
+****************************/
 void Player::restoreMagic()
 {
 	_panel.restoreMagic(34);
 }
-
+/****************************
+* Name ：Player::magicIsFull()const
+* Summary ：蓝量已满
+* return ：true:满 false:未满
+****************************/
 bool Player::magicIsFull()const
 {
 	return _panel.getMagicPoint() == _panel.getMaxMagicPoint();
 }
-
+/****************************
+* Name ：Player::useMagic
+* Summary ：使用蓝
+* return ：true:使用成功 false:使用失败
+****************************/
 bool Player::useMagic()
 {
 	if (magicIsFull()) 
@@ -148,11 +124,20 @@ bool Player::useMagic()
 		return false;
 	}
 }
-
+/****************************
+* Name ：Player::getHealthPercent
+* Summary ：获取当前血量百分比
+* return ：血量百分比
+****************************/
 int Player::getHealthPercent()
 {
 	return PLAYER_BLOOD_PERCENT;
 }
+/****************************
+* Name ：Player::getMagicPercent
+* Summary ：获取当前蓝量百分比
+* return ：蓝量百分比
+****************************/
 int Player::getMagicPercent()
 {
 	return PLAYER_MAGIC_PERCENT;
@@ -198,7 +183,11 @@ void Player::keepHealthBar(Slider* healthBar)
 {
 	healthBar->setPosition(PLAYER_HEALTHBAR_POSITION);
 }
-
+/****************************
+* Name ：Player::keepMagicBar
+* Summary ：保持蓝条位置
+* return ：
+****************************/
 void Player::keepMagicBar(Slider* magicBar)
 {
 	magicBar->setPosition(PLAYER_MAGICBAR_POSITION);

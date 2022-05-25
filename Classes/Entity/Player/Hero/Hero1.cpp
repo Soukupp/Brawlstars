@@ -4,6 +4,11 @@
 
 USING_NS_CC;
 
+/****************************
+* Name ：create
+* Summary ：创建
+* return ：hero指针
+****************************/
 Hero1* Hero1::create(const std::string& filename)
 {
 	Hero1* player = new (std::nothrow) Hero1();
@@ -15,7 +20,11 @@ Hero1* Hero1::create(const std::string& filename)
 	CC_SAFE_DELETE(player);
 	return nullptr;
 }
-
+/****************************
+* Name ：create
+* Summary ：创建
+* return ：hero指针
+****************************/
 Hero1* Hero1::create(const std::string& filename, const Rect& rect)
 {
 	Hero1* player = new (std::nothrow) Hero1();
@@ -27,14 +36,22 @@ Hero1* Hero1::create(const std::string& filename, const Rect& rect)
 	CC_SAFE_DELETE(player);
 	return nullptr;
 }
-
+/****************************
+* Name ：initPlayer
+* Summary ：初始化
+* return ：
+****************************/
 void Hero1::initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate)
 {
 	//初始化面板
 	_panel.init(maxHealthPoint, attack, defence, skillAttackRate, attackRate);
 	this->setAnchorPoint(Vec2(0.5f, 0.5f));
 }
-
+/****************************
+* Name ：launchAnAttack
+* Summary ：发动攻击 输入"attack" "skill" 调用
+* return ：
+****************************/
 void Hero1::launchAnAttack(Weapon* weapon, const std::string& attackType)
 {
 	if (attackType == "attack")
@@ -84,23 +101,39 @@ void Hero1::launchAnAttack(Weapon* weapon, const std::string& attackType)
 		}
 	}
 }
-
+/****************************
+* Name ：keepHealthBar
+* Summary ：保持血条位置
+* return ：
+****************************/
 void Hero1::keepHealthBar(Slider* healthBar)
 {
 	healthBar->setPosition(HERO1_HEALTHBAR_POSITION);
 	//_healthBar->setPosition(position);
 }
-
+/****************************
+* Name ：keepMagicBar
+* Summary ：保持蓝条位置
+* return ：
+****************************/
 void Hero1::keepMagicBar(Slider* magicBar)
 {
 	magicBar->setPosition(HERO1_MAGICBAR_POSITION);
 }
-
-
+/****************************
+* Name ：keepWeapon
+* Summary ：保持武器位置
+* return ：
+****************************/
 void Hero1::keepWeapon(Weapon* weapon)
 {
 	weapon->setPosition(HERO1_WEAPON_POSITION_X, HERO1_WEAPON_POSITION_Y);
 }
+/****************************
+* Name ：runFlipxWithWeapon
+* Summary ：带着武器翻转
+* return ：
+****************************/
 void Hero1::runFlipxWithWeapon(bool flipx, Weapon* weapon)
 {
 
