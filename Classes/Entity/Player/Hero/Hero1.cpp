@@ -52,7 +52,7 @@ void Hero1::initPlayer(int maxHealthPoint, int attack, int defence, float skillA
 * Summary ：发动攻击 输入"attack" "skill" 调用
 * return ：
 ****************************/
-void Hero1::launchAnAttack(Weapon* weapon, const std::string& attackType)
+void Hero1::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar)
 {
 	if (attackType == "attack")
 	{
@@ -100,6 +100,7 @@ void Hero1::launchAnAttack(Weapon* weapon, const std::string& attackType)
 			//this->runAction(Show::create());
 		}
 	}
+	this->refreshMagicBar(magicBar);
 }
 /****************************
 * Name ：keepHealthBar
