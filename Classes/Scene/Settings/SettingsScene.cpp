@@ -212,6 +212,7 @@ bool SettingsScene::init()
 ****************************/
 void SettingsScene::settingsBackCallback(Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     auto mainMenuScene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//过场动画设计
 }
@@ -247,7 +248,7 @@ void SettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
 
 void SettingsScene::settingsPlayCallBack(Ref* pSender)
 {
-   
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
 
     if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
     {
@@ -270,6 +271,7 @@ void SettingsScene::settingsPlayCallBack(Ref* pSender)
 
 void SettingsScene::settingsFPSCallBack(Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     auto director = Director::getInstance();
     if (director->isDisplayStats())
     {

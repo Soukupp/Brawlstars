@@ -5,7 +5,7 @@
 #define __HERO2_H__
 
 #include "Entity/Player/player.h"
-
+#include "SimpleAudioEngine.h"
 using namespace cocos2d::ui;
 using namespace cocos2d;
 

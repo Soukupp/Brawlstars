@@ -216,6 +216,7 @@ bool GameSettingsScene::init()
 ****************************/
 void GameSettingsScene::settingsBackToGameCallback(Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     auto GS = GameScene::createScene();
     Director::getInstance()->popScene();//过场动画设计
 }
@@ -250,7 +251,7 @@ void GameSettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
 
 void GameSettingsScene::settingsPlayCallBack(Ref* pSender)
 {
-
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
 
     if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
     {
@@ -273,6 +274,7 @@ void GameSettingsScene::settingsPlayCallBack(Ref* pSender)
 
 void GameSettingsScene::settingsFPSCallBack(Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     auto director = Director::getInstance();
     if (director->isDisplayStats())
     {
