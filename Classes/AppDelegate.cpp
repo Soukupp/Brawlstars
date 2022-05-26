@@ -102,10 +102,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = MainMenuScene::createScene();
+    auto LS = LoadingScene::createScene();
 
     // run
-    director->runWithScene(scene);
+    director->runWithScene(LS);
 
     //初始化 音乐
     SimpleAudioEngine::getInstance()->preloadBackgroundMusic("sound/retro_fight_ingame_01.mp3");
@@ -123,10 +123,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
     SimpleAudioEngine::getInstance()->preloadEffect("music/if_hero_kill_monster.mp3");
     // 玩家战胜一只怪兽
     SimpleAudioEngine::getInstance()->preloadEffect("music/if_click_buttom_on_menu.mp3");
-    // 点设置按钮
+    // 点击设置按钮音效
 
     // 一下都和技能有关
-    SimpleAudioEngine::getInstance()->preloadEffect("music/gun_skill_3times.wav");
+    SimpleAudioEngine::getInstance()->preloadEffect("music/gun_skill_3times.mp3");
     SimpleAudioEngine::getInstance()->preloadEffect("music/gun_attack.mp3");
     SimpleAudioEngine::getInstance()->preloadEffect("music/laser_skill.mp3");
     SimpleAudioEngine::getInstance()->preloadEffect("music/laser_attack.mp3");
