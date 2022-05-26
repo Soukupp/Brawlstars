@@ -54,7 +54,7 @@ public:
 
 	void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
 
-	void launchAnAttack(Weapon* weapon, const std::string& attackType);
+	void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar);
 
 	void keepHealthBar(Slider* healthBar);
 	void keepMagicBar(Slider* magicBar);
