@@ -111,6 +111,7 @@ bool GameScene::init()
 ****************************/
 void GameScene::menuCloseCallback(Ref* pSender)
 {
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
 	auto GOS = GameOverScene::createScene();
 	Director::getInstance()->replaceScene(GOS);
 }
@@ -123,6 +124,7 @@ void GameScene::menuCloseCallback(Ref* pSender)
 ****************************/
 void GameScene::GameSettingsCallBack(cocos2d::Ref* pSender)
 {
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
 	auto GSS = GameSettingsScene::createScene();
 	Director::getInstance()->pushScene(GSS);  // 此处用push的方式，保留游戏进度
 }

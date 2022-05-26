@@ -5,48 +5,27 @@
 
 USING_NS_CC;
 
-/*===============================================================================*/
-/*============================以下是初始化与面板直接调用===========================*/
-/*===============================================================================*/
+
 
 /****************************
 * Name ：Monster::init
-* Summary ：怪兽初始化
+* Summary ：人物初始化
 * return ：
 ****************************/
 void Monster::initMonster(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate)
 {
 	//初始化面板
 	_panel.init(maxHealthPoint, attack, defence, skillAttackRate, attackRate);
-
-	_healthBar = Slider::create();
-	_healthBar->setPercent(MONSTER_BLOOD_PERCENT);
-	_healthBar->loadBarTexture("/ui/playerHealthbarFrame.png");
-	_healthBar->loadProgressBarTexture("/ui/playerHealthbarBlock.png");
-	_healthBar->setScale(0.5);
-	_healthBar->setPosition(MONSTER_HEALTHBAR_POSITION);
-	this->addChild(_healthBar);
 }
 /****************************
-* Name ：Monster::init
-* Summary ：怪兽初始化
+* Name ：Player::init
+* Summary ：人物初始化
 * return ：
 ****************************/
 void Monster::initMonster(Panel& panel)
 {
 	_panel = panel;
-
-	_healthBar = Slider::create();
-	_healthBar->setPercent(MONSTER_BLOOD_PERCENT);
-	_healthBar->loadBarTexture("/ui/playerHealthbarFrame.png");
-	_healthBar->loadProgressBarTexture("/ui/playerHealthbarBlock.png");
-	_healthBar->setScale(0.5);
-	_healthBar->setPosition(MONSTER_HEALTHBAR_POSITION);
-	this->addChild(_healthBar);
 }
-
-
-
 
 /****************************
 * Name ：Monster::create
@@ -64,8 +43,7 @@ Monster* Monster::create(const std::string& filename)
 	CC_SAFE_DELETE(monster);
 	return nullptr;
 }
- // 存在问题，始终返回nullptr
-
+// 存在问题，始终返回nullptr
 
 /****************************
 * Name ：Monster::getPanel()
@@ -75,4 +53,49 @@ Monster* Monster::create(const std::string& filename)
 Panel* Monster::getPanel()
 {
 	return &_panel;
+}
+
+
+
+
+/****************************
+* Name ：Monster::keepHealthBar()
+* Summary ：保持血条位置
+* return ：
+****************************/
+void Monster::keepHealthBar(Slider* healthBar)
+{
+	healthBar->setPosition(MONSTER_HEALTHBAR_POSITION);
+}
+
+/****************************
+* Name ：Monster::setPositionWithAll
+* Summary ：设置血条和人物位置，整体移动
+* return ：
+****************************/
+void Monster::setPositionWithAll(cocos2d::Vec2& position, Slider* healthBar)
+{
+	this->setPosition(position);
+	this->refreshHealthBar(healthBar);
+}
+
+/****************************
+* Name ：Monster::refreshHealthBar()
+* Summary ：更新血条
+* return ：
+****************************/
+void Monster::refreshHealthBar(Slider* healthBar)
+{
+	healthBar->setPercent(int(MONSTER_BLOOD_PERCENT));
+	keepHealthBar(healthBar);
+}
+
+/****************************
+* Name ：Monster::refreshHealthBar()
+* Summary ：更新怪兽血条
+* return ：
+****************************/
+void Monster::refreshPlayer()
+{
+
 }

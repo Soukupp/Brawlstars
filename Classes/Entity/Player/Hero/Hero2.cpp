@@ -3,7 +3,7 @@
 #include "Hero2.h"
 
 USING_NS_CC;
-
+using namespace CocosDenshion;
 /****************************
 * Name £ºcreate
 * Summary £º´´½¨
@@ -62,6 +62,7 @@ void Hero2::launchAnAttack(Weapon* weapon, const std::string& attackType)
 		}
 
 		auto _animationAttack = CCAnimation::create();
+		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
 		for (int loop = 1; loop <= 20; ++loop)
 		{
 			char szName[100] = { 0 };
@@ -84,11 +85,14 @@ void Hero2::launchAnAttack(Weapon* weapon, const std::string& attackType)
 			weapon->launchAnSkill(_panel.doSkillAttack());
 
 			auto _animationAttack = CCAnimation::create();
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
 			for (int loop = 1; loop <= 7; ++loop)
 			{
 				char szName[100] = { 0 };
 				sprintf(szName, "Character/Hero2/skill/skill%02d.png", loop);
 				_animationAttack->addSpriteFrameWithFile(szName);
+				if (loop % 3 == 0)
+					CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
 			}
 			_animationAttack->setDelayPerUnit(1.0f / 7.0f);
 			_animationAttack->setRestoreOriginalFrame(true);
