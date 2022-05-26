@@ -244,6 +244,9 @@ void MapLayer::setPlayerPosition(Vec2 position)
 	_player->setPositionWithAll(position, _weapon, _healthBar, _magicBar);
 	/**/
 	_player->launchAnAttack(_weapon, "skill", _magicBar);
+	//_player->launchAnAttack(_weapon, "attack");
+	//_player->launchAnAttack(_weapon, "skill");
+	//_player->refreshMagicBar(_magicBar);
 	/**
 	_player->launchAnAttack(_weapon, "attack");
 	/**/
