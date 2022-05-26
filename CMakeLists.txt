@@ -65,6 +65,7 @@ list(APPEND GAME_SOURCE
      Classes/Scene/Game/MapLayer.cpp
 
      Classes/Scene/MainMenu/MainMenuScene.cpp
+     Classes/Scene/MainMenu/LoadingScene.cpp
 
      Classes/Scene/Settings/SettingsScene.cpp
      Classes/Scene/Settings/GameSettingsScene.cpp
@@ -90,6 +91,7 @@ list(APPEND GAME_HEADER
      Classes/Scene/Game/MapLayer.h
 
      Classes/Scene/MainMenu/MainMenuScene.h
+     Classes/Scene/MainMenu/LoadingScene.h
 
      Classes/Scene/Settings/SettingsScene.h
      Classes/Scene/Settings/GameSettingsScene.h
