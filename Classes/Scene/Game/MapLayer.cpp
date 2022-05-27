@@ -55,8 +55,8 @@ bool MapLayer::init()
 	float _playerX = spawnPoint["x"].asFloat();
 	float _playerY = spawnPoint["y"].asFloat();
 	/*=====================创建角色开始========================*/
-	createHero(&_player, &_weapon, &_healthBar, &_magicBar, Vec2(_playerX, _playerY), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
-	createHero(&_player1, &_weapon1, &_healthBar1, &_magicBar1, Vec2(_playerX, _playerY), "Character/Hero1/hero.png", "Character/Hero1/empty.png");
+	createHero(&_player, &_weapon, &_healthBar, &_magicBar, Vec2(_playerX, _playerY), "Character/Hero2/hero.png", "Character/Hero2/emptyWeapon.png");
+	createHero(&_player1, &_weapon1, &_healthBar1, &_magicBar1, Vec2(_playerX, _playerY), "Character/Hero1/hero.png", "Character/Hero1/emptyWeapon.png");
 
 	/*=====================创建角色结束========================*/
 	setViewpointCenter(_player->getPosition());
