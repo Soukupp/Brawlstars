@@ -25,6 +25,8 @@ class MapLayer : public cocos2d::Layer
     Slider* _healthBar;
     Slider* _magicBar;
 
+    std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap; // 判断鼠标有误释放
+
 public:
 
     virtual bool init();
@@ -34,7 +36,10 @@ public:
     virtual void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // 必须要加作用域！！！
-  
+    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // 必须要加作用域！！！
+    void update(float delta);
+
+
     void setPlayerPosition(cocos2d::Vec2 position);
     cocos2d::Vec2 tileCoordFromPosition(cocos2d::Vec2 position);
     void setViewpointCenter(cocos2d::Vec2 position);

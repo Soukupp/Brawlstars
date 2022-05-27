@@ -66,17 +66,31 @@ bool LoadingScene::init()
 	/*=======================创建Logo结束=========================*/
 
 	/*=======================创建提示语开始========================*/
-	auto tip = LabelTTF::create("Moderate Games, Happy Life", "fonts/Marker Felt.ttf", 25);
-	tip->setColor(Color3B::WHITE);
-	tip->setPosition(Vec2(origin.x + visibleSize.width / 2,
-		visibleSize.height - 3 * tip->getContentSize().height));
-	this->addChild(tip);
+	auto tip1 = LabelTTF::create("Moderate Games, Happy Life", "fonts/Lilita one.ttf", 25);
+	tip1->setColor(Color3B::WHITE);
+	tip1->setPosition(Vec2(origin.x + visibleSize.width / 2,
+		visibleSize.height - 3 * tip1->getContentSize().height));
+	this->addChild(tip1);
+
+	auto tip2 = LabelTTF::create("WELCOME TO THE WILDERNESS JOURNEY!", "fonts/Lilita one.ttf", 25);
+	tip2->setColor(Color3B::WHITE);
+	tip2->setPosition(Vec2(origin.x + visibleSize.width / 2,
+		3 * tip2->getContentSize().height));
+	this->addChild(tip2);
+	log("WELCOME TO THE WILDERNESS JOURNEY!");
+
+	auto tip3 = LabelTTF::create("Shoot 'em up, blow 'em up, punch 'em out and win the BRAWL!", "fonts/Lilita one.ttf", 25);
+	tip3->setColor(Color3B::WHITE);
+	tip3->setPosition(Vec2(origin.x + visibleSize.width / 2,
+		5 * tip3->getContentSize().height));
+	this->addChild(tip3);
+	log("Shoot 'em up, blow 'em up, punch 'em out and win the BRAWL!");
 
 
 
 
 
-
+	/*=======================创建提示语结束========================*/
 	this->scheduleOnce(schedule_selector(LoadingScene::changeScene), 3.0f); // 开启计时器！
 
 	return true;
