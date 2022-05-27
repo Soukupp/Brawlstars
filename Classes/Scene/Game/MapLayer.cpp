@@ -75,13 +75,15 @@ bool MapLayer::init()
 
 	keyboardListener->onKeyPressed = CC_CALLBACK_2(MapLayer::onKeyPressed, this);  // 按键盘操作
 	// 没有设置成持续按压，持续前进
-    //keyboardListener->onKeyReleased = CC_CALLBACK_2(MapLayer::onKeyReleased, this); // 释放键盘操作
+    keyboardListener->onKeyReleased = CC_CALLBACK_2(MapLayer::onKeyReleased, this); // 释放键盘操作
 	
 	EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 	/*======================控制键盘结束=======================*/
 
 	/*======================创建地图结束=======================*/
+
+	this->schedule(schedule_selector(MapLayer::update), 0.15); //每一帧都进入 update 函数，判断键盘有没有被按压住
 
 	return true;
 }
@@ -98,6 +100,8 @@ void MapLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 	Vec2 playerPos = _player->getPosition();  // 获取玩家位置坐标
 
 	log("Key with keycode %d pressed", keyCode);
+	keyMap[keyCode] = true;
+
 	switch (keyCode) {
 		case EventKeyboard::KeyCode::KEY_D:
 		case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
@@ -134,6 +138,51 @@ void MapLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 }
 
 
+/****************************
+* Name ：MapLayer::onKeyReleased
+* Summary ：按下键盘后分别带来的操作
+* return ：无
+****************************/
+void MapLayer::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
+{
+
+	log("Key with keycode %d released", keyCode);
+	keyMap[keyCode] = false;
+}
+
+
+/****************************
+* Name ：MapLayer::update
+* Summary ：更新
+* return ：无
+****************************/
+void MapLayer::update(float delta)
+{
+	delta = 2.0;
+	Vec2 playerPos = _player->getPosition();  // 获取玩家位置坐标
+	if (keyMap[EventKeyboard::KeyCode::KEY_D] || keyMap[EventKeyboard::KeyCode::KEY_RIGHT_ARROW])
+	{
+		playerPos.x += _tileMap->getTileSize().width;
+		//_player->runAction(FlipX::create(false));
+		_player->runFlipxWithWeapon(false, _weapon);
+	}
+	else if (keyMap[EventKeyboard::KeyCode::KEY_A] || keyMap[EventKeyboard::KeyCode::KEY_LEFT_ARROW])
+	{
+		playerPos.x -= _tileMap->getTileSize().width;
+		//_player->runAction(FlipX::create(true));
+		_player->runFlipxWithWeapon(true, _weapon);
+	}
+	else if (keyMap[EventKeyboard::KeyCode::KEY_W] || keyMap[EventKeyboard::KeyCode::KEY_UP_ARROW])
+	{
+		playerPos.y += _tileMap->getTileSize().height;
+	}
+	else if (keyMap[EventKeyboard::KeyCode::KEY_S] || keyMap[EventKeyboard::KeyCode::KEY_DOWN_ARROW])
+	{
+		playerPos.y -= _tileMap->getTileSize().height;
+	}
+	this->setPlayerPosition(playerPos);
+}
+
 
 /****************************
 * Name ：MapLayer::onTouchBegan
@@ -146,6 +195,7 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 	return true;
 }
 
+
 /****************************
 * Name ：MapLayer::onTouchMoved
 * Summary ：触摸移动
@@ -156,6 +206,7 @@ void MapLayer::onTouchMoved(Touch* touch, Event* event)
 	log("onTouchMoved"); //日志
 }
  
+
 /****************************
 * Name ：MapLayer::onTouchEnded
 * Summary ：触摸结束
@@ -200,6 +251,7 @@ void MapLayer::onTouchEnded(Touch* touch, Event* event)
 	this->setPlayerPosition(playerPos);   // 判断可不可以走动
 	/*=======================通过鼠标控制人物走动结束===========================*/
 }
+
 
 /****************************
 * Name ：MapLayer::setPlayerPosition
@@ -252,6 +304,7 @@ void MapLayer::setPlayerPosition(Vec2 position)
 	this->setViewpointCenter(_player->getPosition());
 }
 
+
 /****************************
 * Name ：MapLayer::tileCoordFromPosition
 * Summary ：从像素点坐标转化为瓦片坐标
@@ -264,6 +317,7 @@ Vec2 MapLayer::tileCoordFromPosition(Vec2 pos)
 	int y = ((_tileMap->getMapSize().height * _tileMap->getTileSize().height) - pos.y) / _tileMap->getTileSize().height;
 	return Vec2(x, y);
 }
+
 
 /****************************
 * Name ：MapLayer::setViewpointCenter
@@ -299,6 +353,8 @@ void MapLayer::setViewpointCenter(Vec2 position)
 	this->setPosition(offset);
 
 }
+
+
 /****************************
 * Name ：MapLayer::createHero
 * Summary ：创建角色
