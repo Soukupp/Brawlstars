@@ -14,11 +14,11 @@ using namespace cocos2d;
 //面朝右时 武器的横向锚点
 #define HERO2_YOU_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT (0.0f)
 //武器的纵向锚点
-#define HERO2_YOU_WEAPON_ANCHOR_POSITION_Y (1.0f)
+#define HERO2_YOU_WEAPON_ANCHOR_POSITION_Y (0.5f)
 //面朝右时 武器相对人物的横向位置
-#define HERO2_YOU_WEAPON_POSITION_X (this->getContentSize().width / 2)
+#define HERO2_YOU_WEAPON_POSITION_X ( - this->getContentSize().width / 2)
 //武器相对人物的纵向位置
-#define HERO2_YOU_WEAPON_POSITION_Y (this->getContentSize().height/3)
+#define HERO2_YOU_WEAPON_POSITION_Y (this->getContentSize().height * 2 / 3)
 //血条、蓝条相对人物的纵向位置
 #define HERO2_YOU_BAR_POSITION (this->getContentSize().height / 2)
 

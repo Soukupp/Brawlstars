@@ -26,8 +26,8 @@ using namespace cocos2d;
 //血条位置 this->getContentSize().width / 2
 #define GROUNDMONSTER_HEALTHBAR_POSITION Vec2(this->getPosition().x, this->getPosition().y + GROUNDMONSTER_YOU_BAR_POSITION + healthBar->getContentSize().height / 2)
 //血、蓝百分比计算
-#define HERO1_BLOOD_PERCENT int(100 * float(_panel.getHealthPoint()) / float(_panel.getMaxHealthPoint()))
-#define HERO1_MAGIC_PERCENT int(100 * float(_panel.getMagicPoint()) / float(_panel.getMaxMagicPoint()))
+#define GROUNDMONSTER_BLOOD_PERCENT int(100 * float(_panel.getHealthPoint()) / float(_panel.getMaxHealthPoint()))
+#define GROUNDMONSTER_MAGIC_PERCENT int(100 * float(_panel.getMagicPoint()) / float(_panel.getMaxMagicPoint()))
 
 /*==============================!!!!!以上宏请勿修改!!!!!=================================*/
 
