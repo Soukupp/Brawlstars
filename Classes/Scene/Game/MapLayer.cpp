@@ -5,6 +5,11 @@
 //日期 : 2022-5-22
 //修改 : 增加键盘功能
 
+//修改 : 束赫
+//日期 : 2022-5-28
+//实现 : 实现和HeroScene的对接，英雄初始化玩家可以进行选择
+
+
 #include "MapLayer.h"
 #include "GameOverScene.h"
 
@@ -52,18 +57,35 @@ bool MapLayer::init()
 	ValueMap spawnPoint = group->getObject("player");  // 新地图应该是player
 	 
 
-	float _playerX = spawnPoint["x"].asFloat();
-	float _playerY = spawnPoint["y"].asFloat();
-	/*=====================创建角色开始========================*/
-	createHero(&_player, &_weapon, &_healthBar, &_magicBar, Vec2(_playerX, _playerY), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
-	createHero(&_player1, &_weapon1, &_healthBar1, &_magicBar1, Vec2(_playerX, _playerY), "Character/Hero1/hero.png", "Character/Hero1/empty.png");
 
+	/*=====================创建角色开始========================*/
+	int _playerX = spawnPoint["x"].asInt();
+	int _playerY = spawnPoint["y"].asInt();
+
+	int selectedHero = UserDefault::getInstance()->getIntegerForKey("selectedHero");   //selectedHero表示玩家选择的英雄
+
+	switch (selectedHero) {       //由于测试的需要，不同英雄的createHero的参数统一为一套
+	case 1:
+	createHero(&_player, &_weapon, &_healthBar, &_magicBar, 
+		Vec2(_playerX, _playerY), "Character/Hero1/hero.png", "Character/Hero1/empty.png");
+	break;
+	case 2:
+    createHero(&_player, &_weapon, &_healthBar, &_magicBar, 
+		Vec2(_playerX, _playerY), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
+	break;
+	case 3:
+	createHero(&_player, &_weapon, &_healthBar, &_magicBar,
+		Vec2(_playerX, _playerY), "Character/Hero3/hero.png", "Character/Hero3/empty.png");
+		break;
+	case 4:
+		break;
+	}
 	/*=====================创建角色结束========================*/
 	setViewpointCenter(_player->getPosition());
 
 	_collidable = _tileMap->getLayer("collidable");  //障碍物collidable
-	_collidable->setVisible(false);  // 对应透明度
-
+	_collidable->setVisible(false);                  // 对应collidable图层是否可见
+	 
 	_watermonster = _tileMap->getLayer("watermonster");
 
 	setTouchEnabled(true);  // 开启触摸，必须继承于layer
@@ -79,11 +101,11 @@ bool MapLayer::init()
 	
 	EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+	this->schedule(schedule_selector(MapLayer::update), 0.01); //每一帧都进入 update 函数，判断键盘有没有被按压住
 	/*======================控制键盘结束=======================*/
 
 	/*======================创建地图结束=======================*/
 
-	this->schedule(schedule_selector(MapLayer::update), 0.15); //每一帧都进入 update 函数，判断键盘有没有被按压住
 
 	return true;
 }
@@ -96,45 +118,9 @@ bool MapLayer::init()
 ****************************/
 void MapLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
-
-	Vec2 playerPos = _player->getPosition();  // 获取玩家位置坐标
-
 	log("Key with keycode %d pressed", keyCode);
 	keyMap[keyCode] = true;
 
-	switch (keyCode) {
-		case EventKeyboard::KeyCode::KEY_D:
-		case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-		{
-			playerPos.x += _tileMap->getTileSize().width;
-			//_player->runAction(FlipX::create(false));
-			_player->runFlipxWithWeapon(false, _weapon);
-			break;
-		}
-		case EventKeyboard::KeyCode::KEY_A:
-		case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-		{
-			playerPos.x -= _tileMap->getTileSize().width;
-			//_player->runAction(FlipX::create(true));
-			_player->runFlipxWithWeapon(true, _weapon);
-			break;
-		}
-		case EventKeyboard::KeyCode::KEY_W:
-		case EventKeyboard::KeyCode::KEY_UP_ARROW:
-		{
-			playerPos.y += _tileMap->getTileSize().height;
-			break;
-		}
-		case EventKeyboard::KeyCode::KEY_S:
-		case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-		{
-			playerPos.y -= _tileMap->getTileSize().height;
-			break;
-		}
-		default:
-			break;
-	}
-	this->setPlayerPosition(playerPos);
 }
 
 
@@ -153,32 +139,34 @@ void MapLayer::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 
 /****************************
 * Name ：MapLayer::update
-* Summary ：更新
+* Summary ：更新函数，改变player实施动态
 * return ：无
 ****************************/
 void MapLayer::update(float delta)
 {
-	delta = 2.0;
+
 	Vec2 playerPos = _player->getPosition();  // 获取玩家位置坐标
 	if (keyMap[EventKeyboard::KeyCode::KEY_D] || keyMap[EventKeyboard::KeyCode::KEY_RIGHT_ARROW])
 	{
-		playerPos.x += _tileMap->getTileSize().width;
+		playerPos.x +=4;
+
 		//_player->runAction(FlipX::create(false));
 		_player->runFlipxWithWeapon(false, _weapon);
 	}
 	else if (keyMap[EventKeyboard::KeyCode::KEY_A] || keyMap[EventKeyboard::KeyCode::KEY_LEFT_ARROW])
 	{
-		playerPos.x -= _tileMap->getTileSize().width;
+		playerPos.x -=4;
+
 		//_player->runAction(FlipX::create(true));
 		_player->runFlipxWithWeapon(true, _weapon);
 	}
 	else if (keyMap[EventKeyboard::KeyCode::KEY_W] || keyMap[EventKeyboard::KeyCode::KEY_UP_ARROW])
 	{
-		playerPos.y += _tileMap->getTileSize().height;
+		playerPos.y += 4;
 	}
 	else if (keyMap[EventKeyboard::KeyCode::KEY_S] || keyMap[EventKeyboard::KeyCode::KEY_DOWN_ARROW])
 	{
-		playerPos.y -= _tileMap->getTileSize().height;
+		playerPos.y -= 4;
 	}
 	this->setPlayerPosition(playerPos);
 }

@@ -145,6 +145,8 @@ bool MainMenuScene::init()
         UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
         UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
         UserDefault::getInstance()->setIntegerForKey("musicVolume", 50);
+        UserDefault::getInstance()->setIntegerForKey("selectedHero", 1);
+
         firstSet = false;
     }
 
