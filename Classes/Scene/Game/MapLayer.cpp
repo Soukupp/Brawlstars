@@ -1,13 +1,13 @@
-//×÷Õß : ÀîÔªÌØ
-//ÈÕÆÚ : 2022-5-20
+//ä½œè€… : æŽå…ƒç‰¹
+//æ—¥æœŸ : 2022-5-20
 
-//ÐÞ¸Ä : ÀîÔªÌØ
-//ÈÕÆÚ : 2022-5-22
-//ÐÞ¸Ä : Ôö¼Ó¼üÅÌ¹¦ÄÜ
+//ä¿®æ”¹ : æŽå…ƒç‰¹
+//æ—¥æœŸ : 2022-5-22
+//ä¿®æ”¹ : å¢žåŠ é”®ç›˜åŠŸèƒ½
 
-//ÐÞ¸Ä : ÊøºÕ
-//ÈÕÆÚ : 2022-5-28
-//ÊµÏÖ : ÊµÏÖºÍHeroSceneµÄ¶Ô½Ó£¬Ó¢ÐÛ³õÊ¼»¯Íæ¼Ò¿ÉÒÔ½øÐÐÑ¡Ôñ
+//ä¿®æ”¹ : æŸèµ«
+//æ—¥æœŸ : 2022-5-28
+//å®žçŽ° : å®žçŽ°å’ŒHeroSceneçš„å¯¹æŽ¥ï¼Œè‹±é›„åˆå§‹åŒ–çŽ©å®¶å¯ä»¥è¿›è¡Œé€‰æ‹©
 
 
 #include "MapLayer.h"
@@ -19,9 +19,9 @@ using namespace CocosDenshion;
 
 
 /****************************
-* Name £ºproblemLoading
-* Summary £º´íÎó´òÓ¡
-* return £º
+* Name ï¼šproblemLoading
+* Summary ï¼šé”™è¯¯æ‰“å°
+* return ï¼š
 ****************************/
 static void problemLoading(const char* filename)
 {
@@ -31,9 +31,9 @@ static void problemLoading(const char* filename)
 
 
 /****************************
-* Name £ºMapLayer::init
-* Summary £ºµØÍ¼²ã³õÊ¼»¯
-* return £º³õÊ¼»¯³É¹¦Óë·ñ
+* Name ï¼šMapLayer::init
+* Summary ï¼šåœ°å›¾å±‚åˆå§‹åŒ–
+* return ï¼šåˆå§‹åŒ–æˆåŠŸä¸Žå¦
 ****************************/
 bool MapLayer::init()
 {
@@ -46,7 +46,7 @@ bool MapLayer::init()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	 
 
-	/*======================´´½¨µØÍ¼¿ªÊ¼=======================*/
+	/*======================åˆ›å»ºåœ°å›¾å¼€å§‹=======================*/
 	//log("1"); 
 	_tileMap = TMXTiledMap::create("map/Mapupdated.tmx");
 	
@@ -54,17 +54,16 @@ bool MapLayer::init()
 	addChild(_tileMap, 0, 100);
 	//log("2");
 	TMXObjectGroup* group = _tileMap->getObjectGroup("objects");
-	ValueMap spawnPoint = group->getObject("player");  // ÐÂµØÍ¼Ó¦¸ÃÊÇplayer
+	ValueMap spawnPoint = group->getObject("player");  // æ–°åœ°å›¾åº”è¯¥æ˜¯player
 	 
 
-
-	/*=====================´´½¨½ÇÉ«¿ªÊ¼========================*/
+	/*=====================åˆ›å»ºè§’è‰²å¼€å§‹========================*/
 	int _playerX = spawnPoint["x"].asInt();
 	int _playerY = spawnPoint["y"].asInt();
 
-	int selectedHero = UserDefault::getInstance()->getIntegerForKey("selectedHero");   //selectedHero±íÊ¾Íæ¼ÒÑ¡ÔñµÄÓ¢ÐÛ
+	int selectedHero = UserDefault::getInstance()->getIntegerForKey("selectedHero");   //selectedHeroè¡¨ç¤ºçŽ©å®¶é€‰æ‹©çš„è‹±é›„
 
-	switch (selectedHero) {       //ÓÉÓÚ²âÊÔµÄÐèÒª£¬²»Í¬Ó¢ÐÛµÄcreateHeroµÄ²ÎÊýÍ³Ò»ÎªÒ»Ì×
+	switch (selectedHero) {       //ç”±äºŽæµ‹è¯•çš„éœ€è¦ï¼Œä¸åŒè‹±é›„çš„createHeroçš„å‚æ•°ç»Ÿä¸€ä¸ºä¸€å¥—
 	case 1:
 	createHero(&_player, &_weapon, &_healthBar, &_magicBar, 
 		Vec2(_playerX, _playerY), "Character/Hero1/hero.png", "Character/Hero1/empty.png");
@@ -80,31 +79,31 @@ bool MapLayer::init()
 	case 4:
 		break;
 	}
-	/*=====================´´½¨½ÇÉ«½áÊø========================*/
+	/*=====================åˆ›å»ºè§’è‰²ç»“æŸ========================*/
 	setViewpointCenter(_player->getPosition());
 
-	_collidable = _tileMap->getLayer("collidable");  //ÕÏ°­Îïcollidable
-	_collidable->setVisible(false);                  // ¶ÔÓ¦collidableÍ¼²ãÊÇ·ñ¿É¼û
+	_collidable = _tileMap->getLayer("collidable");  //éšœç¢ç‰©collidable
+	_collidable->setVisible(false);                  // å¯¹åº”collidableå›¾å±‚æ˜¯å¦å¯è§
 	 
 	_watermonster = _tileMap->getLayer("watermonster");
 
-	setTouchEnabled(true);  // ¿ªÆô´¥Ãþ£¬±ØÐë¼Ì³ÐÓÚlayer
+	setTouchEnabled(true);  // å¼€å¯è§¦æ‘¸ï¼Œå¿…é¡»ç»§æ‰¿äºŽlayer
 	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
 
 
-	/*======================¿ØÖÆ¼üÅÌ¿ªÊ¼=======================*/
-	auto keyboardListener = EventListenerKeyboard::create();// ½¨Á¢¼üÅÌ¼àÌýÆ÷keyboardListener
+	/*======================æŽ§åˆ¶é”®ç›˜å¼€å§‹=======================*/
+	auto keyboardListener = EventListenerKeyboard::create();// å»ºç«‹é”®ç›˜ç›‘å¬å™¨keyboardListener
 
-	keyboardListener->onKeyPressed = CC_CALLBACK_2(MapLayer::onKeyPressed, this);  // °´¼üÅÌ²Ù×÷
-	// Ã»ÓÐÉèÖÃ³É³ÖÐø°´Ñ¹£¬³ÖÐøÇ°½ø
-    keyboardListener->onKeyReleased = CC_CALLBACK_2(MapLayer::onKeyReleased, this); // ÊÍ·Å¼üÅÌ²Ù×÷
+	keyboardListener->onKeyPressed = CC_CALLBACK_2(MapLayer::onKeyPressed, this);  // æŒ‰é”®ç›˜æ“ä½œ
+	// æ²¡æœ‰è®¾ç½®æˆæŒç»­æŒ‰åŽ‹ï¼ŒæŒç»­å‰è¿›
+    keyboardListener->onKeyReleased = CC_CALLBACK_2(MapLayer::onKeyReleased, this); // é‡Šæ”¾é”®ç›˜æ“ä½œ
 	
 	EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
-	this->schedule(schedule_selector(MapLayer::update), 0.01); //Ã¿Ò»Ö¡¶¼½øÈë update º¯Êý£¬ÅÐ¶Ï¼üÅÌÓÐÃ»ÓÐ±»°´Ñ¹×¡
-	/*======================¿ØÖÆ¼üÅÌ½áÊø=======================*/
+	this->schedule(schedule_selector(MapLayer::update), 0.01); //æ¯ä¸€å¸§éƒ½è¿›å…¥ update å‡½æ•°ï¼Œåˆ¤æ–­é”®ç›˜æœ‰æ²¡æœ‰è¢«æŒ‰åŽ‹ä½
+	/*======================æŽ§åˆ¶é”®ç›˜ç»“æŸ=======================*/
 
-	/*======================´´½¨µØÍ¼½áÊø=======================*/
+	/*======================åˆ›å»ºåœ°å›¾ç»“æŸ=======================*/
 
 
 	return true;
@@ -112,9 +111,9 @@ bool MapLayer::init()
 
 
 /****************************
-* Name £ºMapLayer::onKeyPressed
-* Summary £º°´ÏÂ¼üÅÌºó·Ö±ð´øÀ´µÄ²Ù×÷
-* return £ºÎÞ
+* Name ï¼šMapLayer::onKeyPressed
+* Summary ï¼šæŒ‰ä¸‹é”®ç›˜åŽåˆ†åˆ«å¸¦æ¥çš„æ“ä½œ
+* return ï¼šæ— 
 ****************************/
 void MapLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
@@ -125,9 +124,9 @@ void MapLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 
 
 /****************************
-* Name £ºMapLayer::onKeyReleased
-* Summary £º°´ÏÂ¼üÅÌºó·Ö±ð´øÀ´µÄ²Ù×÷
-* return £ºÎÞ
+* Name ï¼šMapLayer::onKeyReleased
+* Summary ï¼šæŒ‰ä¸‹é”®ç›˜åŽåˆ†åˆ«å¸¦æ¥çš„æ“ä½œ
+* return ï¼šæ— 
 ****************************/
 void MapLayer::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
@@ -138,14 +137,14 @@ void MapLayer::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 
 
 /****************************
-* Name £ºMapLayer::update
-* Summary £º¸üÐÂº¯Êý£¬¸Ä±äplayerÊµÊ©¶¯Ì¬
-* return £ºÎÞ
+* Name ï¼šMapLayer::update
+* Summary ï¼šæ›´æ–°å‡½æ•°ï¼Œæ”¹å˜playerå®žæ–½åŠ¨æ€
+* return ï¼šæ— 
 ****************************/
 void MapLayer::update(float delta)
 {
 
-	Vec2 playerPos = _player->getPosition();  // »ñÈ¡Íæ¼ÒÎ»ÖÃ×ø±ê
+	Vec2 playerPos = _player->getPosition();  // èŽ·å–çŽ©å®¶ä½ç½®åæ ‡
 	if (keyMap[EventKeyboard::KeyCode::KEY_D] || keyMap[EventKeyboard::KeyCode::KEY_RIGHT_ARROW])
 	{
 		playerPos.x +=4;
@@ -173,49 +172,49 @@ void MapLayer::update(float delta)
 
 
 /****************************
-* Name £ºMapLayer::onTouchBegan
-* Summary £º´¥Ãþ¿ªÊ¼
-* return £ºÊÇ·ñÖ´ÐÐ
+* Name ï¼šMapLayer::onTouchBegan
+* Summary ï¼šè§¦æ‘¸å¼€å§‹
+* return ï¼šæ˜¯å¦æ‰§è¡Œ
 ****************************/
 bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 {
-	log("onTouchBegan"); //ÈÕÖ¾
+	log("onTouchBegan"); //æ—¥å¿—
 	return true;
 }
 
 
 /****************************
-* Name £ºMapLayer::onTouchMoved
-* Summary £º´¥ÃþÒÆ¶¯
-* return £ºÊÇ·ñÖ´ÐÐ
+* Name ï¼šMapLayer::onTouchMoved
+* Summary ï¼šè§¦æ‘¸ç§»åŠ¨
+* return ï¼šæ˜¯å¦æ‰§è¡Œ
 ****************************/
 void MapLayer::onTouchMoved(Touch* touch, Event* event)
 {
-	log("onTouchMoved"); //ÈÕÖ¾
+	log("onTouchMoved"); //æ—¥å¿—
 }
  
 
 /****************************
-* Name £ºMapLayer::onTouchEnded
-* Summary £º´¥Ãþ½áÊø
-* return £ºÊÇ·ñÖ´ÐÐ
+* Name ï¼šMapLayer::onTouchEnded
+* Summary ï¼šè§¦æ‘¸ç»“æŸ
+* return ï¼šæ˜¯å¦æ‰§è¡Œ
 ****************************/
 void MapLayer::onTouchEnded(Touch* touch, Event* event)
 {
-	log("onTouchEnded");  //ÈÕÖ¾ 
+	log("onTouchEnded");  //æ—¥å¿— 
 
-	/*================»ñÈ¡´¥ÃþµãµÄ×ø±ê£¬²¢×ª»¯Îªµ±Ç°²ãÄ£ÐÍ×ø±êÏµ==================*/
-	Vec2 touchLocation = touch->getLocation();  //»ñµÃÔÚOpenGL×ø±ê
-	touchLocation = this->convertToNodeSpace(touchLocation);  //×ª»»Îªµ±Ç°²ãµÄÄ£ÐÍ×ø±êÏµ
+	/*================èŽ·å–è§¦æ‘¸ç‚¹çš„åæ ‡ï¼Œå¹¶è½¬åŒ–ä¸ºå½“å‰å±‚æ¨¡åž‹åæ ‡ç³»==================*/
+	Vec2 touchLocation = touch->getLocation();  //èŽ·å¾—åœ¨OpenGLåæ ‡
+	touchLocation = this->convertToNodeSpace(touchLocation);  //è½¬æ¢ä¸ºå½“å‰å±‚çš„æ¨¡åž‹åæ ‡ç³»
 
-	Vec2 playerPos = _player->getPosition();  // »ñÈ¡Íæ¼ÒÎ»ÖÃ×ø±ê
+	Vec2 playerPos = _player->getPosition();  // èŽ·å–çŽ©å®¶ä½ç½®åæ ‡
 
-	Vec2 diff = touchLocation - playerPos;    // »ñÈ¡ÉÏÊöÁ½Õß×ø±ê²î 
+	Vec2 diff = touchLocation - playerPos;    // èŽ·å–ä¸Šè¿°ä¸¤è€…åæ ‡å·® 
 
-	/*=============================×ø±ê»ñÈ¡½áÊø================================*/
+	/*=============================åæ ‡èŽ·å–ç»“æŸ================================*/
 
 
-	/*=======================Í¨¹ýÊó±ê¿ØÖÆÈËÎï×ß¶¯¿ªÊ¼===========================*/
+	/*=======================é€šè¿‡é¼ æ ‡æŽ§åˆ¶äººç‰©èµ°åŠ¨å¼€å§‹===========================*/
 	if (abs(diff.x) > abs(diff.y)) {
 		if (diff.x > 0) {
 			playerPos.x += _tileMap->getTileSize().width;
@@ -236,34 +235,34 @@ void MapLayer::onTouchEnded(Touch* touch, Event* event)
 			playerPos.y -= _tileMap->getTileSize().height;
 		}
 	}
-	this->setPlayerPosition(playerPos);   // ÅÐ¶Ï¿É²»¿ÉÒÔ×ß¶¯
-	/*=======================Í¨¹ýÊó±ê¿ØÖÆÈËÎï×ß¶¯½áÊø===========================*/
+	this->setPlayerPosition(playerPos);   // åˆ¤æ–­å¯ä¸å¯ä»¥èµ°åŠ¨
+	/*=======================é€šè¿‡é¼ æ ‡æŽ§åˆ¶äººç‰©èµ°åŠ¨ç»“æŸ===========================*/
 }
 
 
 /****************************
-* Name £ºMapLayer::setPlayerPosition
-* Summary £ºÊÇ·ñ×ß¶¯
-* return £ºÎÞ
+* Name ï¼šMapLayer::setPlayerPosition
+* Summary ï¼šæ˜¯å¦èµ°åŠ¨
+* return ï¼šæ— 
 ****************************/
 void MapLayer::setPlayerPosition(Vec2 position)
 {
 	log("setPlayerPosition");
-	// ¶ÁÈ¡×ø±ê
-	Vec2 tileCoord = this->tileCoordFromPosition(position);  //´ÓÏñËØµã×ø±ê×ª»¯ÎªÍßÆ¬×ø±ê
+	// è¯»å–åæ ‡
+	Vec2 tileCoord = this->tileCoordFromPosition(position);  //ä»Žåƒç´ ç‚¹åæ ‡è½¬åŒ–ä¸ºç“¦ç‰‡åæ ‡
 
-	int tileGid = _collidable->getTileGIDAt(tileCoord);   //»ñµÃÍßÆ¬µÄGID
+	int tileGid = _collidable->getTileGIDAt(tileCoord);   //èŽ·å¾—ç“¦ç‰‡çš„GID
 	//int tileGid_watermonster=_watermonster->getTileGIDAt(tileCoord);
 	log("success1");
 
-	// Åö×²¼ì²â
+	// ç¢°æ’žæ£€æµ‹
 	if (tileGid > 0) {
 		Value prop = _tileMap->getPropertiesForGID(tileGid);
 		ValueMap propValueMap = prop.asValueMap();
 
 		std::string collision = propValueMap["Collidable"].asString();
-		// ÔªËØ+true
-		if (collision == "true") { //Åö×²¼ì²â³É¹¦
+		// å…ƒç´ +true
+		if (collision == "true") { //ç¢°æ’žæ£€æµ‹æˆåŠŸ
 			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/empty.wav");
 			return;
 		}
@@ -271,16 +270,16 @@ void MapLayer::setPlayerPosition(Vec2 position)
 	//if (tileGid_watermonster > 0) {
 	//	Value prop = _tileMap->getPropertiesForGID(tileGid_watermonster);
 	//	log("success2");
-	//	ValueMap propValueMap = prop.asValueMap();  // ±¨´í
+	//	ValueMap propValueMap = prop.asValueMap();  // æŠ¥é”™
 	//	log("success3");
 	//	std::string collision = propValueMap["crash"].asString();
-	//	// ÔªËØ+true
-	//	if (collision == "true") { //Åö×²¼ì²â³É¹¦
+	//	// å…ƒç´ +true
+	//	if (collision == "true") { //ç¢°æ’žæ£€æµ‹æˆåŠŸ
 	//		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sound/empty.wav");
 	//		return;
 	//	}
 	//}
-	//ÒÆ¶¯¾«Áé
+	//ç§»åŠ¨ç²¾çµ
 	_player->setPositionWithAll(position, _weapon, _healthBar, _magicBar);
 	/**/
 	_player->launchAnAttack(_weapon, "skill", _magicBar);
@@ -288,15 +287,15 @@ void MapLayer::setPlayerPosition(Vec2 position)
 	_player->launchAnAttack(_weapon, "attack");
 	/**/
 
-	//¹ö¶¯µØÍ¼
+	//æ»šåŠ¨åœ°å›¾
 	this->setViewpointCenter(_player->getPosition());
 }
 
 
 /****************************
-* Name £ºMapLayer::tileCoordFromPosition
-* Summary £º´ÓÏñËØµã×ø±ê×ª»¯ÎªÍßÆ¬×ø±ê
-* return £ºVec2(x,y)
+* Name ï¼šMapLayer::tileCoordFromPosition
+* Summary ï¼šä»Žåƒç´ ç‚¹åæ ‡è½¬åŒ–ä¸ºç“¦ç‰‡åæ ‡
+* return ï¼šVec2(x,y)
 ****************************/
 Vec2 MapLayer::tileCoordFromPosition(Vec2 pos)
 {
@@ -308,34 +307,34 @@ Vec2 MapLayer::tileCoordFromPosition(Vec2 pos)
 
 
 /****************************
-* Name £ºMapLayer::setViewpointCenter
-* Summary £º¹ö¶¯µØÍ¼
-* return £ºÎÞ
+* Name ï¼šMapLayer::setViewpointCenter
+* Summary ï¼šæ»šåŠ¨åœ°å›¾
+* return ï¼šæ— 
 ****************************/
 void MapLayer::setViewpointCenter(Vec2 position)
 {
-	log("setViewpointCenter"); //ÈÕÖ¾
+	log("setViewpointCenter"); //æ—¥å¿—
 
 	log("position (%f ,%f) ", position.x, position.y);
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-	//¿ÉÒÔ·ÀÖ¹£¬ÊÓÍ¼×ó±ß³¬³öÆÁÄ»Ö®Íâ¡£
+	//å¯ä»¥é˜²æ­¢ï¼Œè§†å›¾å·¦è¾¹è¶…å‡ºå±å¹•ä¹‹å¤–ã€‚
 	int x = MAX(position.x, visibleSize.width / 2);
 	int y = MAX(position.y, visibleSize.height / 2);
-	//¿ÉÒÔ·ÀÖ¹£¬ÊÓÍ¼ÓÒ±ß³¬³öÆÁÄ»Ö®Íâ¡£
+	//å¯ä»¥é˜²æ­¢ï¼Œè§†å›¾å³è¾¹è¶…å‡ºå±å¹•ä¹‹å¤–ã€‚
 	x = MIN(x, (_tileMap->getMapSize().width * _tileMap->getTileSize().width)
 		- visibleSize.width / 2);
 	y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height)
 		- visibleSize.height / 2);
 
-	//ÆÁÄ»ÖÐÐÄµã
+	//å±å¹•ä¸­å¿ƒç‚¹
 	Vec2 pointA = Vec2(visibleSize.width / 2, visibleSize.height / 2);
 
-	//Ê¹¾«Áé´¦ÓÚÆÁÄ»ÖÐÐÄ£¬ÒÆ¶¯µØÍ¼Ä¿±êÎ»ÖÃ
+	//ä½¿ç²¾çµå¤„äºŽå±å¹•ä¸­å¿ƒï¼Œç§»åŠ¨åœ°å›¾ç›®æ ‡ä½ç½®
 	Vec2 pointB = Vec2(x, y);
-	log("Ä¿±êÎ»ÖÃ (%f ,%f) ", pointB.x, pointB.y);
+	log("ç›®æ ‡ä½ç½® (%f ,%f) ", pointB.x, pointB.y);
 
-	//µØÍ¼ÒÆ¶¯Æ«ÒÆÁ¿
+	//åœ°å›¾ç§»åŠ¨åç§»é‡
 	Vec2 offset = pointA - pointB;
 	log("offset (%f ,%f) ", offset.x, offset.y);
 	this->setPosition(offset);
@@ -344,9 +343,9 @@ void MapLayer::setViewpointCenter(Vec2 position)
 
 
 /****************************
-* Name £ºMapLayer::createHero
-* Summary £º´´½¨½ÇÉ«
-* return £º
+* Name ï¼šMapLayer::createHero
+* Summary ï¼šåˆ›å»ºè§’è‰²
+* return ï¼š
 ****************************/
 template<typename Hero>
 void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slider** magicBar,

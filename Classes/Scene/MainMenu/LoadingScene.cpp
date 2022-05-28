@@ -125,5 +125,5 @@ bool LoadingScene::init()
 void LoadingScene::changeScene(float dt)
 {
 	auto MMS = MainMenuScene::createScene();
-	Director::getInstance()->replaceScene(TransitionJumpZoom::create(1, MMS));
+	Director::getInstance()->replaceScene(TransitionFade::create(1, MMS));
 }
