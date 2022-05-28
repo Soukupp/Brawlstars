@@ -86,11 +86,37 @@ bool LoadingScene::init()
 	this->addChild(tip3);
 	log("Shoot 'em up, blow 'em up, punch 'em out and win the BRAWL!");
 
-
-
-
-
 	/*=======================创建提示语结束========================*/
+
+	/*=======================预加载Audio开始=======================*/
+	 //初始化 音乐
+	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("sound/retro_fight_ingame_01.mp3");
+	// 游戏中的音乐
+	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("music/first_music.mp3");
+	// 进入游戏menu的音乐
+
+
+	//初始化 音效
+	SimpleAudioEngine::getInstance()->preloadEffect("sound/empty.wav");
+	// 障碍物碰撞
+	SimpleAudioEngine::getInstance()->preloadEffect("music/start_game_music.mp3");
+	// 设想在做一个初识进入游戏的界面
+
+	SimpleAudioEngine::getInstance()->preloadEffect("music/if_hero_kill_monster.mp3");
+	// 玩家战胜一只怪兽
+	SimpleAudioEngine::getInstance()->preloadEffect("music/if_click_buttom_on_menu.mp3");
+	// 点击设置按钮音效
+
+	// 一下都和技能有关
+	SimpleAudioEngine::getInstance()->preloadEffect("music/gun_skill_3times.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/gun_attack.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/laser_skill.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/laser_attack.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/knife_attack_2.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/knife_attack_1.mp3");
+
+	/*=======================预加载Audio结束=======================*/
+
 	this->scheduleOnce(schedule_selector(LoadingScene::changeScene), 3.0f); // 开启计时器！
 
 	return true;

@@ -42,11 +42,22 @@ public:
     //确认按钮回调函数
     void selectHeroConfirmCallback(cocos2d::Ref* pSender);
 
+    void animate1();
+    void animate2();
+    void animate3();
+    void animate4();
+
 
 private:
     MenuItemSprite* _confirmButton;  //确认按键
-    int _chooseNumber = 1;           //表示当前选择页面位于几号hero
+    int _chooseNumber = 0;           //表示当前选择页面位于几号hero
+    int _selectedHero = 0;
     CREATE_FUNC(HeroScene);
+
+    Sprite* hero1;
+    Sprite* hero2;
+    Sprite* hero3;
+    Sprite* hero4;
 
 };
 #endif  //__HERO_SCENE_H__

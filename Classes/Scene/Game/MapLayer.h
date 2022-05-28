@@ -25,6 +25,7 @@ class MapLayer : public cocos2d::Layer
     Slider* _healthBar;
     Slider* _magicBar;
 
+
     std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap; // ≈–∂œ Û±Í”–ŒÛ Õ∑≈
 
 public:
