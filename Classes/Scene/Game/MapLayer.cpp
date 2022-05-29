@@ -52,7 +52,7 @@ bool MapLayer::init()
 	
 	  
 	addChild(_tileMap, 0, 100);
-	//log("2");
+	//log("Map finished");
 	TMXObjectGroup* group = _tileMap->getObjectGroup("objects");
 	ValueMap spawnPoint = group->getObject("player");  // 新地图应该是player
 	 
@@ -63,7 +63,8 @@ bool MapLayer::init()
 
 	int selectedHero = UserDefault::getInstance()->getIntegerForKey("selectedHero");   //selectedHero表示玩家选择的英雄
 
-	switch (selectedHero) {       //由于测试的需要，不同英雄的createHero的参数统一为一套
+	switch (selectedHero)     //由于测试的需要，不同英雄的createHero的参数统一为一套
+	{       
 	case 1:
 	createHero(&_player, &_weapon, &_healthBar, &_magicBar, 
 		Vec2(_playerX, _playerY), "Character/Hero1/hero.png", "Character/Hero1/empty.png");
@@ -100,7 +101,9 @@ bool MapLayer::init()
 	
 	EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
-	this->schedule(schedule_selector(MapLayer::update), 0.01); //每一帧都进入 update 函数，判断键盘有没有被按压住
+
+	this->schedule(schedule_selector(MapLayer::update), 0.05); 
+	//每一帧都进入 update 函数，判断键盘有没有被按压住 参数（也可以控制行走速度）
 	/*======================控制键盘结束=======================*/
 
 	/*======================创建地图结束=======================*/
@@ -340,6 +343,9 @@ void MapLayer::setViewpointCenter(Vec2 position)
 	this->setPosition(offset);
 
 }
+
+
+
 
 
 /****************************

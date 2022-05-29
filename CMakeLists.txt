@@ -63,6 +63,7 @@ list(APPEND GAME_SOURCE
      Classes/Scene/Game/GameScene.cpp
      Classes/Scene/Game/GameOverScene.cpp
      Classes/Scene/Game/MapLayer.cpp
+     Classes/Scene/Game/SkillButton.cpp
 
      Classes/Scene/MainMenu/MainMenuScene.cpp
      Classes/Scene/MainMenu/LoadingScene.cpp
@@ -89,6 +90,7 @@ list(APPEND GAME_HEADER
      Classes/Scene/Game/GameScene.h
      Classes/Scene/Game/GameOverScene.h
      Classes/Scene/Game/MapLayer.h
+     Classes/Scene/Game/SkillButton.h
 
      Classes/Scene/MainMenu/MainMenuScene.h
      Classes/Scene/MainMenu/LoadingScene.h
