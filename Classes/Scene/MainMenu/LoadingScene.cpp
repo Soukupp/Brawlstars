@@ -107,13 +107,28 @@ bool LoadingScene::init()
 	SimpleAudioEngine::getInstance()->preloadEffect("music/if_click_buttom_on_menu.mp3");
 	// 点击设置按钮音效
 
-	// 一下都和技能有关
+	// 以下都和技能有关
 	SimpleAudioEngine::getInstance()->preloadEffect("music/gun_skill_3times.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/gun_attack.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/laser_skill.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/laser_attack.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/knife_attack_2.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/knife_attack_1.mp3");
+
+	// 以下介绍英雄出场（选择）时用到
+	SimpleAudioEngine::getInstance()->preloadEffect("music/hero1.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/hero2.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/hero3.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/hero4.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/hero5.mp3");
+
+
+	// 以下英雄杀死AI时候用到
+	SimpleAudioEngine::getInstance()->preloadEffect("music/gun_kill.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/gun2_kill.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/knife_kill.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/sword_kill.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/hero5_kill.mp3");
 
 	/*=======================预加载Audio结束=======================*/
 
