@@ -85,7 +85,11 @@ bool MapLayer::init()
 
 	_collidable = _tileMap->getLayer("collidable");  //障碍物collidable
 	_collidable->setVisible(false);                  // 对应collidable图层是否可见
-	 
+	_tree = _tileMap->getLayer("tree");
+	//addChild(_tree, 3);
+
+
+
 	_watermonster = _tileMap->getLayer("watermonster");
 
 	setTouchEnabled(true);  // 开启触摸，必须继承于layer
@@ -171,6 +175,7 @@ void MapLayer::update(float delta)
 		playerPos.y -= 4;
 	}
 	this->setPlayerPosition(playerPos);
+	this->setTreeOpacity(playerPos);
 }
 
 
@@ -216,8 +221,21 @@ void MapLayer::onTouchEnded(Touch* touch, Event* event)
 
 	/*=============================坐标获取结束================================*/
 
+	/*=============================角度获取开始================================*/
+	float playerWeaponAngle;
+	if (fabs(touchLocation.x - playerPos.x) < 1e-6 && touchLocation.y > playerPos.y)      //横坐标相等，纵坐标不等，向上90°
+		playerWeaponAngle = 0.5 * M_PI;
+	else if (fabs(touchLocation.x - playerPos.x) < 1e-6 && touchLocation.y <= playerPos.y)  //横坐标相等，纵坐标不等，向下90°
+		playerWeaponAngle = -0.5 * M_PI;
+	else
+		playerWeaponAngle = atan((touchLocation.y - playerPos.y) / (touchLocation.x - playerPos.x));
+	log("playerWeaponAngle is %lf", playerWeaponAngle);
+	/*=============================角度获取结束================================*/
 
-	/*=======================通过鼠标控制人物走动开始===========================*/
+
+
+
+	/*=======================通过鼠标控制人物走动开始===========================*
 	if (abs(diff.x) > abs(diff.y)) {
 		if (diff.x > 0) {
 			playerPos.x += _tileMap->getTileSize().width;
@@ -294,6 +312,54 @@ void MapLayer::setPlayerPosition(Vec2 position)
 	this->setViewpointCenter(_player->getPosition());
 }
 
+/****************************
+* Name ：MapLayer::setTreeOpacity
+* Summary ：树的透明度
+* return ：无
+****************************/
+void MapLayer::setTreeOpacity(Vec2 pos)
+{
+	log("setTreeOpacity");
+	static std::vector<Vec2> playerVisionArea = {};
+	
+	for (int i = 0; i < playerVisionArea.size(); ++i)
+	{
+		Vec2 treetileCoord = this->tileCoordFromPosition(playerVisionArea[i]);
+		if (_tree->getTileAt(treetileCoord))
+		{
+			_treecell = _tree->getTileAt(treetileCoord); //通过tile坐标访问指定草丛单元格
+			_treecell->setOpacity(255);  //不透明
+		}
+	}
+	Vec2 cellsize = _tileMap->getTileSize();
+
+	playerVisionArea = {
+		pos,
+		Vec2(pos.x + cellsize.x,pos.y),
+		Vec2(pos.x - cellsize.x,pos.y),
+		Vec2(pos.x,pos.y + cellsize.y),
+		Vec2(pos.x,pos.y - cellsize.y),
+	};
+	
+	for (int i = 0; i < playerVisionArea.size(); ++i)
+	{
+		Vec2 treetileCoord = this->tileCoordFromPosition(playerVisionArea[i]);
+		if (_tree->getTileAt(treetileCoord))
+		{
+			_treecell = _tree->getTileAt(treetileCoord); //通过tile坐标访问指定草丛单元格
+			_treecell->setOpacity(100);  //透明
+		}
+	}
+
+
+}
+
+
+
+
+
+
+
 
 /****************************
 * Name ：MapLayer::tileCoordFromPosition
@@ -307,6 +373,7 @@ Vec2 MapLayer::tileCoordFromPosition(Vec2 pos)
 	int y = ((_tileMap->getMapSize().height * _tileMap->getTileSize().height) - pos.y) / _tileMap->getTileSize().height;
 	return Vec2(x, y);
 }
+
 
 
 /****************************

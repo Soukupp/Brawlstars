@@ -13,6 +13,7 @@ public:
     static Weapon* create(const std::string& filename);
     Weapon* getWeapon();
 
+    void createWeaponPhysicsBody();
     virtual int launchAnAttack(int attack);
     virtual int launchAnSkill(int attack);
 };

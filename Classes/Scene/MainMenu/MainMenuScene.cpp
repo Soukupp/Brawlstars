@@ -71,12 +71,12 @@ bool MainMenuScene::init()
 
     auto gameNameLabel = Label::createWithTTF(
         "BRAWLSTARS", 
-        "fonts/PixeloidSans.ttf", 
+        "fonts/Marker Felt.ttf", 
         MAINMENU_GAMENAME_LABEL_SIZE
     );//创建文本
     if (gameNameLabel == nullptr)
     {
-        problemLoading("'fonts/PixeloidSans.ttf'");
+        problemLoading("'fonts/Marker Felt.ttf'");
     }
     else
     {
@@ -92,8 +92,8 @@ bool MainMenuScene::init()
     /*=====================创建游戏名结束======================*/
 
     /*===================创建主菜单选项开始====================*/
-    MenuItemFont::setFontName("fonts/PixeloidMono.ttf");
-    MenuItemFont::setFontSize(64);
+    MenuItemFont::setFontName("fonts/Segoe Print.ttf");
+    MenuItemFont::setFontSize(50);
     const Color3B menuItemColor(MAINMENU_TEXT_RGB_COLOR);//创建3B颜色
 
     //创建单个菜单项
@@ -125,10 +125,10 @@ bool MainMenuScene::init()
     /*===================创建主菜单选项结束====================*/
 
     /*=====================创建背景图开始======================*/
-    auto background = Sprite::create("background/mainmenuBackground.png");
+    auto background = Sprite::create("background/beachbackground.jpg");
     if (background == nullptr)
     {
-        problemLoading("'background/mainmenuBackground.png'");
+        problemLoading("'background/beachbackground.jpg'");
     }
     else
     {
