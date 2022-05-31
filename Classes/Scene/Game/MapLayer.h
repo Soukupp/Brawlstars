@@ -8,12 +8,16 @@
 #include "SimpleAudioEngine.h"
 #include "Entity/Player/Hero/Hero1.h"
 #include "Entity/Player/Hero/Hero2.h"
+#include <vector>
+#include <string>
 
 class MapLayer : public cocos2d::Layer
 {
     cocos2d::TMXTiledMap* _tileMap;
     cocos2d::TMXLayer* _collidable;
     cocos2d::TMXLayer* _watermonster;
+    cocos2d::TMXLayer* _tree;
+    Sprite* _treecell;
     /**/
     Hero1* _player1;
     Weapon* _weapon1;
@@ -42,6 +46,7 @@ public:
 
 
     void setPlayerPosition(cocos2d::Vec2 position);
+    void setTreeOpacity(cocos2d::Vec2 position);
     cocos2d::Vec2 tileCoordFromPosition(cocos2d::Vec2 position);
     void setViewpointCenter(cocos2d::Vec2 position);
 
