@@ -54,6 +54,10 @@ using namespace cocos2d::ui;
 //血、蓝百分比计算
 #define PLAYER_BLOOD_PERCENT int(100 * float(_panel.getHealthPoint()) / float(_panel.getMaxHealthPoint()))
 #define PLAYER_MAGIC_PERCENT int(100 * float(_panel.getMagicPoint()) / float(_panel.getMaxMagicPoint()))
+//等级位置
+#define PLAYER_LEVELTEXT_POSITION Vec2(this->getPosition().x, this->getPosition().y + PLAYER_YOU_BAR_POSITION + bar->getContentSize().height)
+//最高等级
+#define PLAYER_MAX_GRADE 10
 /*==============================!!!!!以上宏请勿修改!!!!!=================================*/
 
 class Player : public Entity
@@ -63,8 +67,7 @@ private:
     float _weaponAnchorPositionY = PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT;
 public:
     Panel _panel;
-    //Slider* _healthBar;
-    //Slider* _magicBar;
+    int _level = 0;
 
     static Player* create(const std::string& filename);
     virtual void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
@@ -73,24 +76,25 @@ public:
 
     virtual void launchAnAttack(Weapon* weapon, const std::string& attackType);
     int hitPlayer(int attack);
-
     void restoreMagic();
     bool magicIsFull()const;
     bool useMagic();
-
-    virtual void keepWeapon(Weapon* weapon);
-    virtual void runFlipxWithWeapon(bool flipx,Weapon* weapon);
-
-    virtual void keepHealthBar(Slider* healthBar);
-    virtual void keepMagicBar(Slider* magicBar);
-
     int getHealthPercent();
     int getMagicPercent();
 
-    void setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar);
+    virtual void keepWeapon(Weapon* weapon);
+    virtual void keepHealthBar(Slider* healthBar);
+    virtual void keepMagicBar(Slider* magicBar);
+    virtual void keepLevelText(cocos2d::Label* levelText, Slider* bar);
+
+    virtual void runFlipxWithWeapon(bool flipx, Weapon* weapon);
+
+    virtual void setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar,cocos2d::Label* levelText);
+
     void refreshHealthBar(Slider* healthBar);
     void refreshMagicBar(Slider* magicBar);
     void refreshPlayer();
+    virtual void upgrade(cocos2d::Label* levelText, Slider* bar);
 };
 
 #endif
