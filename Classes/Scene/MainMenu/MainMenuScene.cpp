@@ -16,6 +16,8 @@ Scene* MainMenuScene::createScene()
 {
     return MainMenuScene::create();
 }
+
+
 /****************************
 * Name ：problemLoading
 * Summary ：错误打印
@@ -26,6 +28,8 @@ static void problemLoading(const char* filename)
     printf("Error while loading: %s\n", filename);
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in MainMenuScene.cpp\n");
 }
+
+
 /****************************
 * Name ：MainMenuScene::init
 * Summary ：主菜单初始化
@@ -61,11 +65,31 @@ bool MainMenuScene::init()
         float y = MAINMENU_CLOSE_ITEM_POSITION_Y;
         mainMenuCloseItem->setPosition(Vec2(x, y));
     }
+
+    auto mainMenuInfoItem = MenuItemImage::create(
+        "ui/button_info.png", 
+        "ui/button_info.png",
+        CC_CALLBACK_1(MainMenuScene::menuInfoCallback, this));
+    if (mainMenuInfoItem == nullptr ||
+        mainMenuInfoItem->getContentSize().width <= 0 ||
+        mainMenuInfoItem->getContentSize().height <= 0)
+    {//错误处理
+        problemLoading("'ui/button_info.png' and 'ui/button_info.png'");
+    }
+    else
+    {//设置位置
+        float x = MAINMENU_INFO_ITEM_POSITION_X;
+        float y = MAINMENU_INFO_ITEM_POSITION_Y;
+        mainMenuInfoItem->setPosition(Vec2(x, y));
+    }
+
     //创建关闭菜单
-    auto closeMenu = Menu::create(mainMenuCloseItem, NULL);
+    auto closeMenu = Menu::create(mainMenuCloseItem, mainMenuInfoItem, NULL);
     closeMenu->setPosition(Vec2::ZERO);
     this->addChild(closeMenu, 2);
     /*=====================创建关闭按钮结束====================*/
+
+
 
     /*=====================创建游戏名开始======================*/
 
@@ -80,7 +104,7 @@ bool MainMenuScene::init()
     }
     else
     {
-        const Color4B gameNameLabelColor(MAINMENU_TEXT_RGB_COLOR,255);//创建4B颜色
+        const Color4B gameNameLabelColor(MAINMENU_TITLE_RGB_COLOR,255);//创建4B颜色
         gameNameLabel->setTextColor(gameNameLabelColor);
         gameNameLabel->setPosition(
             Vec2(MAINMENU_GAMENAME_LABEL_POSITION_X,
@@ -124,11 +148,12 @@ bool MainMenuScene::init()
     this->addChild(mainMenu,1);
     /*===================创建主菜单选项结束====================*/
 
+
     /*=====================创建背景图开始======================*/
-    auto background = Sprite::create("background/beachbackground.jpg");
+    auto background = Sprite::create("background/MainMenuBackground.jpg");
     if (background == nullptr)
     {
-        problemLoading("'background/beachbackground.jpg'");
+        problemLoading("'background/MainMenuBackground.jpg'");
     }
     else
     {
@@ -155,12 +180,23 @@ bool MainMenuScene::init()
     /*=====================创建背景音乐开始=======================*/
 
     if (firstPlay)
-        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/retro_fight_ingame_01.mp3", true);
+        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/first_music.mp3", true);
     firstPlay = false;
+    if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
+    {
+        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/first_music.mp3", true);
+    }
+    /*else
+    {
+        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/first_music.mp3", true);
+        CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
+    }*/
     /*=====================创建背景音乐结束=======================*/
 
     return true;
 }
+
+
 /****************************
 * Name ：MainMenuScene::menuCloseCallback
 * Summary ：主菜单关闭按钮回调
@@ -171,6 +207,18 @@ void MainMenuScene::menuCloseCallback(Ref* pSender)
     Director::getInstance()->end();
 }
 
+
+/****************************
+* Name ：MainMenuScene::menuInfoCallback
+* Summary ：主菜单关闭按钮回调
+* return ：
+****************************/
+void MainMenuScene::menuInfoCallback(Ref* pSender)
+{
+    Director::getInstance()->end();
+}
+
+
 /****************************
 * Name ：menuStartCallback
 * Summary ：主菜单开始按钮回调
@@ -178,9 +226,12 @@ void MainMenuScene::menuCloseCallback(Ref* pSender)
 ****************************/
 void MainMenuScene::menuStartCallback(cocos2d::Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
 	auto gameScene = GameScene::createScene();   // 转入GameScene
     Director::getInstance()->replaceScene(gameScene);//mainmenu已被释放
 }
+
+
 /****************************
 * Name ：menuStoreCallback
 * Summary ：主菜单商店按钮回调
@@ -188,9 +239,12 @@ void MainMenuScene::menuStartCallback(cocos2d::Ref* pSender)
 ****************************/
 void MainMenuScene::menuStoreCallback(cocos2d::Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
 	auto storeScene = StoreScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, storeScene));//mainmenu未被释放 使用popScene返回
 }
+
+
 /****************************
 * Name ：menuHerosCallback
 * Summary ：主菜单人物按钮回调
@@ -198,9 +252,12 @@ void MainMenuScene::menuStoreCallback(cocos2d::Ref* pSender)
 ****************************/
 void MainMenuScene::menuHerosCallback(cocos2d::Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
 	auto heroScene = HeroScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, heroScene));//mainmenu未被释放 使用popScene返回
 }
+
+
 /****************************
 * Name ：menuSettingsCallback
 * Summary ：主菜单设置按钮回调
@@ -208,7 +265,18 @@ void MainMenuScene::menuHerosCallback(cocos2d::Ref* pSender)
 ****************************/
 void MainMenuScene::menuSettingsCallback(cocos2d::Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     auto settingsScene = SettingsScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, settingsScene));//mainmenu未被释放 使用popScene返回
 }
 
+
+void MainMenuScene::onEnterTransitionDidFinish()
+{
+    Scene::onEnterTransitionDidFinish();
+    ParticleSystem* system;
+    system = ParticleFireworks::create();
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    system->setPosition(Vec2(visibleSize.width / 2, visibleSize.height));
+    this->addChild(system,5);
+}

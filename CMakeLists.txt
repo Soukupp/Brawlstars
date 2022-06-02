@@ -73,6 +73,8 @@ list(APPEND GAME_SOURCE
 
      Classes/Scene/Options/HeroScene.cpp
      Classes/Scene/Options/StoreScene.cpp
+
+     Classes/Scene/Information/InformationPopLayer.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -100,6 +102,8 @@ list(APPEND GAME_HEADER
 
      Classes/Scene/Options/HeroScene.h
      Classes/Scene/Options/StoreScene.h
+
+     Classes/Scene/Information/InformationPopLayer.h
      )
 
 if(ANDROID)
