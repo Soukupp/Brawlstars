@@ -51,15 +51,18 @@ bool MapLayer::init()
 	 
 
 	/*======================创建地图开始=======================*/
-	//log("1"); 
-	_tileMap = TMXTiledMap::create("map/Mapupdated.tmx");
+	log("Map begin"); 
+	_tileMap = TMXTiledMap::create("map/Mapupdated1.tmx");
+	//	_tileMap = TMXTiledMap::create("map/Mapupdated3.tmx");  // 也可以用了，Mapupdated2是Mapupdated3的材料，不可删去
 	
 	  
 	addChild(_tileMap, 0, 100);
-	//log("Map finished");
+	log("Map finished");
+
 	TMXObjectGroup* group = _tileMap->getObjectGroup("objects");
+	log("Get Player finished");
 	ValueMap spawnPoint = group->getObject("player");  // 新地图应该是player
-	 
+	
 
 	/*=====================创建角色开始========================*/
 	int _playerX = spawnPoint["x"].asInt();
@@ -94,7 +97,7 @@ bool MapLayer::init()
 
 
 
-	_watermonster = _tileMap->getLayer("watermonster");
+	//_watermonster = _tileMap->getLayer("watermonster");
 
 	setTouchEnabled(true);  // 开启触摸，必须继承于layer
 	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
@@ -278,7 +281,7 @@ void MapLayer::setPlayerPosition(Vec2 position)
 
 	int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
 	//int tileGid_watermonster=_watermonster->getTileGIDAt(tileCoord);
-	log("success1");
+	log("get TileGIDAt");
 
 	// 碰撞检测
 	if (tileGid > 0) {
