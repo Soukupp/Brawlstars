@@ -17,20 +17,20 @@ private:
     int _attack;//攻击力 
     int _defence;//防御力 
 	float _attackRate;//普攻倍率 
-	float _skillAttackRate;//技能倍率 
+	float _skillRate;//技能倍率 
     int _healthPoint;//当前血量 
     int _magicPoint;//当前蓝量 
 
     bool _survive;//是否存活
 	bool _canBeSeen;//是否可视(例如 躲草丛) 
 public:
-    void init(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate, int maxMagicPoint = 100);
+    void init(int maxHealthPoint, int attack, int defence, float skillRate, float attackRate, int maxMagicPoint = 100);
     //直接读取原始面板
     int getHealthPoint()const;
     int getMaxHealthPoint()const;
     int getMagicPoint()const;
     int getMaxMagicPoint()const;
-    float getSkillAttackRate()const;
+    float getSkillRate()const;
     float getAttackRate()const;
 
     int getAttack()const;
@@ -40,10 +40,13 @@ public:
     bool getCanBeSeen()const;
 
    //设置面板
+    void setMaxHealthPoint(int maxHealthPoint);
     void setHealthPoint(int healthPoint);
     void setMagicPoint(int magicPoint);
     void setAttack(int attack);
     void setDefence(int defence);
+    void setAttackRate(int attackRate);
+    void setSkillRate(int skillRate);
     
     void setIsSurvive(bool survive);
     void setCanBeSeen(bool canBeSeen);

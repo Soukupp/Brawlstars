@@ -38,6 +38,19 @@ using namespace cocos2d;
 //血、蓝百分比计算
 #define HERO2_BLOOD_PERCENT int(100 * float(_panel.getHealthPoint()) / float(_panel.getMaxHealthPoint()))
 #define HERO2_MAGIC_PERCENT int(100 * float(_panel.getMagicPoint()) / float(_panel.getMaxMagicPoint()))
+//等级位置
+#define HERO2_LEVELTEXT_POSITION Vec2(this->getPosition().x, this->getPosition().y + HERO2_YOU_BAR_POSITION + bar->getContentSize().height)
+//初始面板
+#define HERO2_INIT_MAXHEALTHPOINT 1050
+#define HERO2_INIT_ATTACK 140
+#define HERO2_INIT_DEFENCE 150
+#define HERO2_INIT_SKILLRATE 2.7f
+#define HERO2_INIT_ATTACKRATE 1.2f
+//动画时长、帧数
+#define HERO2_YOU_ATTACK_TIME 0.3f
+#define HERO2_YOU_ATTACK_FRAME 20
+#define HERO2_YOU_SKILL_TIME 1.0f
+#define HERO2_YOU_SKILL_FRAME 7
 
 /*==============================!!!!!以上宏请勿修改!!!!!=================================*/
 
@@ -53,14 +66,19 @@ public:
 	static Hero2* create(const std::string& filename, const Rect& rect);
 
 	void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
+	void initPlayer();
 
 	void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar);
 
 	void keepHealthBar(Slider* healthBar);
 	void keepMagicBar(Slider* magicBar);
-
 	void keepWeapon(Weapon* weapon);
+	void keepLevelText(cocos2d::Label* levelText, Slider* bar);
+
 	void runFlipxWithWeapon(bool flipx, Weapon* weapon);
+	void setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar, cocos2d::Label* levelText);
+
+	void upgrade(cocos2d::Label* levelText, Slider* bar);
 };
 
 #endif

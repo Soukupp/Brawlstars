@@ -5,7 +5,7 @@
 USING_NS_CC;
 
 /*===============================================================================*/
-/*==========================以下是初始化与面板直接调用===========================*/
+/*==============================以下是创建与初始化===============================*/
 /*===============================================================================*/
 
 /****************************
@@ -25,7 +25,7 @@ void Player::initPlayer(int maxHealthPoint, int attack, int defence, float skill
 ****************************/
 void Player::initPlayer(Panel& panel)
 {
-	_panel = panel;
+	_panel.init(panel.getMaxHealthPoint(), panel.getAttack(), panel.getDefence(), panel.getSkillRate(), panel.getAttackRate());
 }
 
 /****************************
@@ -55,7 +55,7 @@ Panel* Player::getPanel()
 }
 
 /*===============================================================================*/
-/*=====================================以下是行为================================*/
+/*================================以下是角色行为=================================*/
 /*===============================================================================*/
 
 /****************************
@@ -65,6 +65,7 @@ Panel* Player::getPanel()
 ****************************/
 void Player::launchAnAttack(Weapon* weapon, const std::string& attackType)
 {
+	//根据不同角色做了不同设计
 	if (attackType == "attack")
 	{
 		if (weapon->launchAnAttack(_panel.doAttack()))
@@ -87,6 +88,7 @@ void Player::launchAnAttack(Weapon* weapon, const std::string& attackType)
 ****************************/
 int Player::hitPlayer(int attack)
 {
+	//结算伤害后可以通过panel的getIsSurvive获取是否存活
 	return _panel.hit(attack);
 }
 /****************************
@@ -96,6 +98,7 @@ int Player::hitPlayer(int attack)
 ****************************/
 void Player::restoreMagic()
 {
+	//三次回满
 	_panel.restoreMagic(34);
 }
 /****************************
@@ -119,10 +122,7 @@ bool Player::useMagic()
 		_panel.setMagicPoint(0);
 		return true;
 	}
-	else 
-	{
-		return false;
-	}
+	return false;
 }
 /****************************
 * Name ：Player::getHealthPercent
@@ -193,17 +193,32 @@ void Player::keepMagicBar(Slider* magicBar)
 	magicBar->setPosition(PLAYER_MAGICBAR_POSITION);
 }
 /****************************
+* Name ：Player::keepLevelText
+* Summary ：保持等级位置
+* return ：
+****************************/
+void Player::keepLevelText(cocos2d::Label* levelText, Slider* bar)
+{
+	levelText->setPosition(PLAYER_LEVELTEXT_POSITION);
+}
+/****************************
 * Name ：Player::setPositionWithAll
 * Summary ：整体移动
 * return ：
 ****************************/
-void Player::setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar)
+void Player::setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar, cocos2d::Label* levelText)
 {
 	this->setPosition(position);
 	this->keepWeapon(weapon);
 	this->refreshHealthBar(healthBar);
 	this->refreshMagicBar(magicBar);
+	this->keepLevelText(levelText, magicBar);
 }
+
+/*===============================================================================*/
+/*==================================以下是状态相关===============================*/
+/*===============================================================================*/
+
 /****************************
 * Name ：Player::refreshHealthBar()
 * Summary ：更新血条
@@ -230,6 +245,15 @@ void Player::refreshMagicBar(Slider* magicBar)
 * return ：
 ****************************/
 void Player::refreshPlayer()
+{
+
+}
+/****************************
+* Name ：Player::upgrade()
+* Summary ：人物升级
+* return ：
+****************************/
+void Player::upgrade(cocos2d::Label* levelText, Slider* bar)
 {
 
 }

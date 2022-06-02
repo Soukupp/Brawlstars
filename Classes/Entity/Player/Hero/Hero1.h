@@ -22,6 +22,11 @@ using namespace cocos2d;
 #define HERO1_YOU_WEAPON_POSITION_Y (this->getContentSize().height * 2 / 3)
 //血条、蓝条相对人物的纵向位置
 #define HERO1_YOU_BAR_POSITION (this->getContentSize().height / 2)
+//动画时长、帧数
+#define HERO1_YOU_ATTACK_TIME 0.2f
+#define HERO1_YOU_ATTACK_FRAME 7
+#define HERO1_YOU_SKILL_TIME 1.5f
+#define HERO1_YOU_SKILL_FRAME 18
 
 /*==============================以上是你需要修改的宏定义=================================*/
 
@@ -39,6 +44,14 @@ using namespace cocos2d;
 //血、蓝百分比计算
 #define HERO1_BLOOD_PERCENT int(100 * float(_panel.getHealthPoint()) / float(_panel.getMaxHealthPoint()))
 #define HERO1_MAGIC_PERCENT int(100 * float(_panel.getMagicPoint()) / float(_panel.getMaxMagicPoint()))
+//等级位置
+#define HERO1_LEVELTEXT_POSITION Vec2(this->getPosition().x, this->getPosition().y + HERO1_YOU_BAR_POSITION + bar->getContentSize().height)
+//初始面板
+#define HERO1_INIT_MAXHEALTHPOINT 950
+#define HERO1_INIT_ATTACK 160
+#define HERO1_INIT_DEFENCE 100
+#define HERO1_INIT_SKILLRATE 2.3f
+#define HERO1_INIT_ATTACKRATE 1.2f
 
 /*==============================!!!!!以上宏请勿修改!!!!!=================================*/
 
@@ -54,14 +67,19 @@ public:
 	static Hero1* create(const std::string& filename, const Rect& rect);
 
 	void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
+	void initPlayer();
 
 	void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar);
 
 	void keepHealthBar(Slider* healthBar);
 	void keepMagicBar(Slider* magicBar);
-
 	void keepWeapon(Weapon* weapon);
+	void keepLevelText(cocos2d::Label* levelText, Slider* bar);
+
 	void runFlipxWithWeapon(bool flipx, Weapon* weapon);
+	void setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar, cocos2d::Label* levelText);
+
+	void upgrade(cocos2d::Label* levelText, Slider* bar);
 };
 
 #endif
