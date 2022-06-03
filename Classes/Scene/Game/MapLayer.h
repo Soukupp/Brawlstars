@@ -62,4 +62,4 @@ public:
     CREATE_FUNC(MapLayer);
 };
 
-#endif // __GAME_SCENE_H__
+#endif // __Map_Layer_H__

@@ -94,7 +94,7 @@ bool MapLayer::init()
 
 	int _ai7X = _tileMap->getObjectGroup("AI")->getObject("ai7").at("x").asInt();
 	int _ai7Y = _tileMap->getObjectGroup("AI")->getObject("ai7").at("y").asInt();
-	createHero(&_player1, &_weapon1, &_healthBar1, &_magicBar1,
+	createHero(&_player1, &_weapon1, &_healthBar1, &_magicBar1, &_levelText,
 		Vec2(_ai7X, _ai7Y), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
 
 

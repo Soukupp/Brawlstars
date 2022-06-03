@@ -28,7 +28,8 @@ private:
 	float _attackRate;             //普攻倍率 
 	float _skillAttackRate;        //技能倍率 
     int _healthPoint;              //当前血量 
-    int _magicPoint;               //当前蓝量   
+    int _magicPoint;               //当前蓝量
+    float _skillRate;
 
     bool _survive;                 //是否存活
 	bool _canBeSeen;               //是否可视(例如 躲草丛) 
