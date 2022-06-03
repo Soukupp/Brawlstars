@@ -11,6 +11,10 @@
 USING_NS_CC;
 using namespace CocosDenshion;
 
+static bool ifShowPlay = true;          //是否播放音乐
+static bool ifShowStates = false;       //是否显示FPS
+
+
 /****************************
 * Name ：GameScene::createScene
 * Summary ：创建场景，实质layer
@@ -55,22 +59,20 @@ bool GameScene::init()
 	GameSettingLayer->changeWidthAndHeight(960, 720);
 
 	/*=====================创建关闭按钮开始======================*/
-	auto closeItem = MenuItemImage::create(
-		"ui/CloseNormal.png",
-		"ui/CloseSelected.png",
-		CC_CALLBACK_1(GameScene::menuCloseCallback, this));
+	auto BackToMenuItem = MenuItemImage::create(
+		"ui/button_close.png",
+		"ui/button_close.png",
+		CC_CALLBACK_1(GameScene::menuCallback, this));
 
-	if (closeItem == nullptr ||
-		closeItem->getContentSize().width <= 0 ||
-		closeItem->getContentSize().height <= 0)
+	if (BackToMenuItem == nullptr ||
+		BackToMenuItem->getContentSize().width <= 0 ||
+		BackToMenuItem->getContentSize().height <= 0)
 	{
-		problemLoading("'ui/CloseNormal.png' and 'ui/CloseSelected.png'");
+		problemLoading("'ui/button_close.png' and 'ui/button_close.png'");
 	}
 	else
 	{
-		float x = origin.x + visibleSize.width - closeItem->getContentSize().width / 2;
-		float y = origin.y + closeItem->getContentSize().height / 2;
-		closeItem->setPosition(Vec2(x, y));
+		BackToMenuItem->setPosition(Vec2(GAME_BACK_TO_MENU_POSITION_X, GAME_BACK_TO_MENU_POSITION_Y));
 	}  // 关闭菜单需要改为固定位置（且此处关闭菜单表示跳到结束界面）
 
 	/*=====================创建设置按钮开始======================*/
@@ -86,24 +88,17 @@ bool GameScene::init()
 	}
 	else
 	{
-		float x = origin.x + visibleSize.width - 3 * SettingsItem->getContentSize().width / 2;
-		float y = visibleSize.height - SettingsItem->getContentSize().height / 2;
-		SettingsItem->setPosition(Vec2(x, y));
+		SettingsItem->setPosition(Vec2(GAME_SETTING_POSITION_X, GAME_SETTING_POSITION_Y));
 	}
-	auto menu = Menu::create(closeItem, SettingsItem, NULL);
+
+	auto menu = Menu::create(BackToMenuItem, SettingsItem, NULL);
 	menu->setPosition(Vec2::ZERO);
     /*=====================创建设置按钮结束====================*/
 
 	auto SkillButton = SkillButton::create("ui/buttonForSkill.png", "ui/buttonShadow.png", 30);
-	float x = origin.x + 1.5 * 40;
-	float y = origin.y + 1.5 * 40;
-	SkillButton->setPosition(Vec2(x, y));
-	this->addChild(SkillButton, 100);
 
-	
-
-
-
+	SkillButton->setPosition(Vec2(GAME_SKILL_BUTTON_POSITION_X, GAME_SKILL_BUTTON_POSITION_X));
+	this->addChild(SkillButton, 100); // 放在最前面
 
 
 	GameSettingLayer->addChild(menu);
@@ -114,6 +109,16 @@ bool GameScene::init()
 	auto MapLayer1 = MapLayer::create();
 	this->addChild(MapLayer1, 0);
 
+
+	/*=====================创建背景音乐开始=======================*/
+	if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
+	{
+		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/retro_fight_ingame_01.mp3", true);
+	}
+	
+	/*=====================创建背景音乐结束=======================*/
+
+
 	return true;
 }
 
@@ -123,7 +128,7 @@ bool GameScene::init()
 * Summary ：跳到GameOverScene
 * return ：无
 ****************************/
-void GameScene::menuCloseCallback(Ref* pSender)
+void GameScene::menuCallback(Ref* pSender)
 {
 	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
 	auto GOS = GameOverScene::createScene();

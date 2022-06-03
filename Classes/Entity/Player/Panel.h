@@ -1,6 +1,6 @@
 #pragma once
-//×÷Õß : ÍõÅô
-//ÈÕÆÚ : 2022-5-18
+//ä½œè€… : ç‹é¹
+//æ—¥æœŸ : 2022-5-18
 #ifndef __PANEL_H__
 #define __PANEL_H__
 
@@ -9,45 +9,45 @@
 
 #include "cocos2d.h"
 
-enum playerstates {               //ÈËÎï×´Ì¬µÄÃ¶¾Ù
-    NORMAL,                       //Õı³£×´Ì¬
-    MOVING,                       //ÒÆ¶¯×´Ì¬
-    ATTACK,                       //¹¥»÷×´Ì¬
-    HURT,                         //ÊÜÉË×´Ì¬
-    SKILL,                        //´óÕĞ×´Ì¬
-    DEAD                          //ËÀÍö×´Ì¬
+enum playerstates {               //äººç‰©çŠ¶æ€çš„æšä¸¾
+    NORMAL,                       //æ­£å¸¸çŠ¶æ€
+    MOVING,                       //ç§»åŠ¨çŠ¶æ€
+    ATTACK,                       //æ”»å‡»çŠ¶æ€
+    HURT,                         //å—ä¼¤çŠ¶æ€
+    SKILL,                        //å¤§æ‹›çŠ¶æ€
+    DEAD                          //æ­»äº¡çŠ¶æ€
 };
 
 class Panel
 {
 private:
-    int _maxHealthPoint;           //×î´óÑªÁ¿ 
-    int _maxMagicPoint;            //×î´óÀ¶Á¿
-    int _attack;                   //¹¥»÷Á¦ 
-    int _defence;                  //·ÀÓùÁ¦ 
-	float _attackRate;             //ÆÕ¹¥±¶ÂÊ 
-	float _skillAttackRate;        //¼¼ÄÜ±¶ÂÊ 
-    int _healthPoint;              //µ±Ç°ÑªÁ¿ 
-    int _magicPoint;               //µ±Ç°À¶Á¿   
+    int _maxHealthPoint;           //æœ€å¤§è¡€é‡ 
+    int _maxMagicPoint;            //æœ€å¤§è“é‡
+    int _attack;                   //æ”»å‡»åŠ› 
+    int _defence;                  //é˜²å¾¡åŠ› 
+	float _attackRate;             //æ™®æ”»å€ç‡ 
+	float _skillAttackRate;        //æŠ€èƒ½å€ç‡ 
+    int _healthPoint;              //å½“å‰è¡€é‡ 
+    int _magicPoint;               //å½“å‰è“é‡   
 
-    bool _survive;                 //ÊÇ·ñ´æ»î
-	bool _canBeSeen;               //ÊÇ·ñ¿ÉÊÓ(ÀıÈç ¶ã²İ´Ô) 
+    bool _survive;                 //æ˜¯å¦å­˜æ´»
+	bool _canBeSeen;               //æ˜¯å¦å¯è§†(ä¾‹å¦‚ èº²è‰ä¸›) 
 
-    int _playerstase;              //½ÇÉ«µÄ×´Ì¬
+    int _playerstase;              //è§’è‰²çš„çŠ¶æ€
 
-    bool _ifPlayAttackAnimation = true;               //µ±Ç°ÊÇ·ñ²¥·Å¹¥»÷¶¯»­
-    bool _ifPlayNormalAnimationInUpdate2 = false;     //µ±Ç°ÊÇ·ñÔÚupdate2ÖĞ²¥·Ånormal¶¯»­
+    bool _ifPlayAttackAnimation = true;               //å½“å‰æ˜¯å¦æ’­æ”¾æ”»å‡»åŠ¨ç”»
+    bool _ifPlayNormalAnimationInUpdate2 = false;     //å½“å‰æ˜¯å¦åœ¨update2ä¸­æ’­æ”¾normalåŠ¨ç”»
+  
 public:
+    void init(int maxHealthPoint, int attack, int defence, float skillRate, float attackRate, int maxMagicPoint = 100);
 
-    void init(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate, int maxMagicPoint = 100);
-
-    //Ö±½Ó¶ÁÈ¡Ô­Ê¼Ãæ°å
+    //ç›´æ¥è¯»å–åŸå§‹é¢æ¿
 
     int getHealthPoint()const;
     int getMaxHealthPoint()const;
     int getMagicPoint()const;
     int getMaxMagicPoint()const;
-    float getSkillAttackRate()const;
+    float getSkillRate()const;
     float getAttackRate()const;
 
     int getAttack()const;
@@ -60,12 +60,14 @@ public:
     bool getIfPlayAttackAnimation()const;
     bool getIfPlayNormalAnimationInUpdate2()const;
 
-   //ÉèÖÃÃæ°å
-
+   //è®¾ç½®é¢æ¿
+    void setMaxHealthPoint(int maxHealthPoint);
     void setHealthPoint(int healthPoint);
     void setMagicPoint(int magicPoint);
     void setAttack(int attack);
     void setDefence(int defence);
+    void setAttackRate(int attackRate);
+    void setSkillRate(int skillRate);
     
     void setIsSurvive(bool survive);
     void setCanBeSeen(bool canBeSeen);
@@ -74,14 +76,14 @@ public:
     void setIfPlayAttackAnimation(bool ifplay);
     void setIfPlayNormalAnimationInUpdate2(bool ifplay);
 
-    //·¢¶¯¹¥»÷Ê±½áËãÊä³öµÄÉËº¦
+    //å‘åŠ¨æ”»å‡»æ—¶ç»“ç®—è¾“å‡ºçš„ä¼¤å®³
     int doAttack();
     int doSkillAttack();
-    //ÊÜµ½¹¥»÷Ê±½áËãÊÜµ½µÄÉËº¦
+    //å—åˆ°æ”»å‡»æ—¶ç»“ç®—å—åˆ°çš„ä¼¤å®³
     int hit(int attack);
-    //½áËãÊÜµ½µÄÖÎÁÆ
+    //ç»“ç®—å—åˆ°çš„æ²»ç–—
     int treat(int healthPoint);
-    //»ØÀ¶
+    //å›è“
     int restoreMagic(int magic);
 };
 

@@ -14,7 +14,7 @@ USING_NS_CC;
 * Summary ：初始化面板
 * return ：
 ****************************/
-void Panel::init(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate, int maxMagicPoint)
+void Panel::init(int maxHealthPoint, int attack, int defence, float skillRate, float attackRate, int maxMagicPoint)
 {
 	_maxHealthPoint = maxHealthPoint;
 	_healthPoint = maxHealthPoint;
@@ -22,7 +22,7 @@ void Panel::init(int maxHealthPoint, int attack, int defence, float skillAttackR
 	_magicPoint = maxMagicPoint;
 	_attack = attack % (PANEL_MAX_ATTACK + 1);
 	_defence = defence % (PANEL_MAX_DEFENCE + 1);
-	_skillAttackRate = skillAttackRate;
+	_skillRate = skillRate;
 	_attackRate = attackRate;
 
 	_survive = true;
@@ -74,9 +74,9 @@ int Panel::getMaxMagicPoint()const
 * Summary ：读取技能倍率
 * return ：技能倍率
 ****************************/
-float Panel::getSkillAttackRate()const
+float Panel::getSkillRate()const
 {
-	return _skillAttackRate;
+	return _skillRate;
 }
 /****************************
 * Name ：Panel::getAttackRate()const
@@ -131,6 +131,15 @@ bool Panel::getCanBeSeen()const
 /*===============================================================================*/
 
 /****************************
+* Name ：Panel::setMaxHealthPoint
+* Summary ：设置最大血量
+* return ：
+****************************/
+void Panel::setMaxHealthPoint(int maxHealthPoint)
+{
+	_maxHealthPoint = maxHealthPoint;
+}
+/****************************
 * Name ：Panel::setHealthPoint
 * Summary ：设置当前血量
 * return ：
@@ -165,6 +174,24 @@ void Panel::setAttack(int attack)
 void Panel::setDefence(int defence)
 {
 	_defence = defence % (PANEL_MAX_DEFENCE + 1);
+}
+/****************************
+* Name ：Panel::setAttackRate
+* Summary ：设置普攻倍率
+* return ：
+****************************/
+void Panel::setAttackRate(int attackRate)
+{
+	_attackRate = attackRate;
+}
+/****************************
+* Name ：Panel::setSkillRate
+* Summary ：设置普攻倍率
+* return ：
+****************************/
+void Panel::setSkillRate(int skillRate)
+{
+	_skillRate = skillRate;
 }
 /****************************
 * Name ：setIsSurvive
@@ -205,7 +232,7 @@ int Panel::doAttack()
 ****************************/
 int Panel::doSkillAttack()
 {
-	return int(_attack * _skillAttackRate);
+	return int(_attack * _skillRate);
 }
 
 /*===============================================================================*/

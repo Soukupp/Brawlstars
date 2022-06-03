@@ -23,11 +23,13 @@ class MapLayer : public cocos2d::Layer
     Weapon* _weapon1;
     Slider* _healthBar1;
     Slider* _magicBar1;
+    cocos2d::Label* _levelText1;
     /**/
     Hero2* _player;
     Weapon* _weapon;
     Slider* _healthBar;
     Slider* _magicBar;
+    cocos2d::Label* _levelText;
 
 
     std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap; // ≈–∂œ Û±Í”–ŒÛ Õ∑≈
@@ -52,7 +54,8 @@ public:
     void setViewpointCenter(cocos2d::Vec2 position);
 
     template<typename Hero>
-    void createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slider** magicBar, Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon);
+    void createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slider** magicBar, Label** levelText,
+        Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon);
 
     Animation* getAnimationByName(std::string fileName, float interval, int fileNum, int if_repeat = -1);
     // implement the "static create()" method manually

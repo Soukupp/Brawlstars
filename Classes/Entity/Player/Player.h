@@ -1,6 +1,6 @@
 #pragma once
-//◊˜’ﬂ : Õı≈Ù
-//»’∆⁄ : 2022-5-18
+//‰ΩúËÄÖ : ÁéãÈπè
+//Êó•Êúü : 2022-5-18
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
@@ -26,36 +26,40 @@ using namespace cocos2d::ui;
 #define PLAYER_MAGIC_PERCENT 100 * float(_panel.getMagicPoint()) / float(_panel.getMaxMagicPoint())
 /**/
 
-/*==============================“‘œ¬ «ƒ„–Ë“™–ﬁ∏ƒµƒ∫Í∂®“Â=================================*/
+/*==============================‰ª•‰∏ãÊòØ‰Ω†ÈúÄË¶Å‰øÆÊîπÁöÑÂÆèÂÆö‰πâ=================================*/
 
-//√Ê≥Ø”“ ± Œ‰∆˜µƒ∫·œÚ√™µ„
+//Èù¢ÊúùÂè≥Êó∂ Ê≠¶Âô®ÁöÑÊ®™ÂêëÈîöÁÇπ
 #define PLAYER_YOU_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT (0.0f)
-//Œ‰∆˜µƒ◊›œÚ√™µ„
+//Ê≠¶Âô®ÁöÑÁ∫µÂêëÈîöÁÇπ
 #define PLAYER_YOU_WEAPON_ANCHOR_POSITION_Y (1.0f)
-//√Ê≥Ø”“ ± Œ‰∆˜œ‡∂‘»ÀŒÔµƒ∫·œÚŒª÷√
+//Èù¢ÊúùÂè≥Êó∂ Ê≠¶Âô®Áõ∏ÂØπ‰∫∫Áâ©ÁöÑÊ®™Âêë‰ΩçÁΩÆ
 #define PLAYER_YOU_WEAPON_POSITION_X (this->getContentSize().width / 2)
-//Œ‰∆˜œ‡∂‘»ÀŒÔµƒ◊›œÚŒª÷√
+//Ê≠¶Âô®Áõ∏ÂØπ‰∫∫Áâ©ÁöÑÁ∫µÂêë‰ΩçÁΩÆ
 #define PLAYER_YOU_WEAPON_POSITION_Y (this->getContentSize().height/3)
-//—™Ãı°¢¿∂Ãıœ‡∂‘»ÀŒÔµƒ◊›œÚŒª÷√
+//Ë°ÄÊù°„ÄÅËìùÊù°Áõ∏ÂØπ‰∫∫Áâ©ÁöÑÁ∫µÂêë‰ΩçÁΩÆ
 #define PLAYER_YOU_BAR_POSITION (this->getContentSize().height / 2)
 
-/*==============================“‘…œ «ƒ„–Ë“™–ﬁ∏ƒµƒ∫Í∂®“Â=================================*/
+/*==============================‰ª•‰∏äÊòØ‰Ω†ÈúÄË¶Å‰øÆÊîπÁöÑÂÆèÂÆö‰πâ=================================*/
 
-/*==============================!!!!!“‘œ¬∫Í«ÎŒ–ﬁ∏ƒ!!!!!=================================*/
-//Œ‰∆˜√™µ„
+/*==============================!!!!!‰ª•‰∏ãÂÆèËØ∑Âãø‰øÆÊîπ!!!!!=================================*/
+//Ê≠¶Âô®ÈîöÁÇπ
 #define PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT PLAYER_YOU_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT
 #define PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT 1.0f - PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT
 #define PLAYER_WEAPON_ANCHOR_POSITION_Y 1.0f
-//Œ‰∆˜Œª÷√
+//Ê≠¶Âô®‰ΩçÁΩÆ
 #define PLAYER_WEAPON_POSITION_X (this->getPosition().x + PLAYER_YOU_WEAPON_POSITION_X * _direct)
 #define PLAYER_WEAPON_POSITION_Y (this->getPosition().y + PLAYER_YOU_WEAPON_POSITION_Y)
-//—™Ãı ¿∂ÃıŒª÷√ this->getContentSize().width / 2
+//Ë°ÄÊù° ËìùÊù°‰ΩçÁΩÆ this->getContentSize().width / 2
 #define PLAYER_HEALTHBAR_POSITION Vec2(this->getPosition().x, this->getPosition().y + PLAYER_YOU_BAR_POSITION + healthBar->getContentSize().height / 2)
 #define PLAYER_MAGICBAR_POSITION Vec2(this->getPosition().x, this->getPosition().y + PLAYER_YOU_BAR_POSITION)
-//—™°¢¿∂∞Ÿ∑÷±»º∆À„
+//Ë°Ä„ÄÅËìùÁôæÂàÜÊØîËÆ°ÁÆó
 #define PLAYER_BLOOD_PERCENT int(100 * float(_panel.getHealthPoint()) / float(_panel.getMaxHealthPoint()))
 #define PLAYER_MAGIC_PERCENT int(100 * float(_panel.getMagicPoint()) / float(_panel.getMaxMagicPoint()))
-/*==============================!!!!!“‘…œ∫Í«ÎŒ–ﬁ∏ƒ!!!!!=================================*/
+//Á≠âÁ∫ß‰ΩçÁΩÆ
+#define PLAYER_LEVELTEXT_POSITION Vec2(this->getPosition().x, this->getPosition().y + PLAYER_YOU_BAR_POSITION + bar->getContentSize().height)
+//ÊúÄÈ´òÁ≠âÁ∫ß
+#define PLAYER_MAX_GRADE 10
+/*==============================!!!!!‰ª•‰∏äÂÆèËØ∑Âãø‰øÆÊîπ!!!!!=================================*/
 
 class Player : public Entity
 {
@@ -64,9 +68,9 @@ private:
     float _weaponAnchorPositionY = PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT;
 public:
     Panel _panel;
-    //Slider* _healthBar;
-    //Slider* _magicBar;
-    float _direct = 1.0f;//±Ì æ∑ΩœÚ
+    
+    float _direct = 1.0f;//Ë°®Á§∫ÊñπÂêë
+    int _level = 0;
 
     static Player* create(const std::string& filename);
     virtual void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
@@ -75,26 +79,28 @@ public:
 
     virtual void launchAnAttack(Weapon* weapon, const std::string& attackType);
     int hitPlayer(int attack);
-
     void restoreMagic();
     bool magicIsFull()const;
     bool useMagic();
-
-    virtual void keepWeapon(Weapon* weapon);
-    virtual void runFlipxWithWeapon(bool flipx,Weapon* weapon);
-
-    virtual void keepHealthBar(Slider* healthBar);
-    virtual void keepMagicBar(Slider* magicBar);
-
     int getHealthPercent();
     int getMagicPercent();
 
-    void setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar);
+    virtual void keepWeapon(Weapon* weapon);
+    virtual void keepHealthBar(Slider* healthBar);
+    virtual void keepMagicBar(Slider* magicBar);
+    virtual void keepLevelText(cocos2d::Label* levelText, Slider* bar);
+
+    virtual void runFlipxWithWeapon(bool flipx, Weapon* weapon);
+
+    virtual void setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar,cocos2d::Label* levelText);
+
     void refreshHealthBar(Slider* healthBar);
     void refreshMagicBar(Slider* magicBar);
     void refreshPlayer();
 
     bool playerCollisionTest1(Player* target, Weapon* weapon);
+
+    virtual void upgrade(cocos2d::Label* levelText, Slider* bar);
 
 };
 

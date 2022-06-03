@@ -121,7 +121,7 @@ bool SettingsScene::init()
 
     Label* settingsMusicLabel = Label::create("MUSIC SETTING", "fonts/PixeloidSans.ttf", 27);
     settingsMusicLabel->setPosition(SETTINGS_SETTINGSMUSICLABEL_POSITION_X, SETTINGS_SETTINGSMUSICLABEL_POSITION_Y);
-    const Color4B settingsMusicLabelColor(SETTINGS_TEXT_RGB_COLOR, 255);//创建4B颜色
+    const Color4B settingsMusicLabelColor(255, 140, 15, 255);//创建4B颜色
     settingsMusicLabel->setTextColor(settingsMusicLabelColor);
     
     this->addChild(settingsMusicLabel, 3);
@@ -188,10 +188,10 @@ bool SettingsScene::init()
     /*===================创建菜单结束========================*/
 
     /*=====================创建背景图开始======================*/
-    auto background = Sprite::create("background/settingsBackground.png");
+    auto background = Sprite::create("background/GameSettingsBackground.png");
     if (background == nullptr)
     {
-        problemLoading("'background/settingsBackground.png'");
+        problemLoading("'background/GameSettingsBackground.png'");
     }
     else
     {
@@ -229,10 +229,7 @@ void SettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
         Slider* slider = dynamic_cast<Slider*>(pSender);
         int percentVolume = slider->getPercent();
 
-
         CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(float(percentVolume) / 100);
-        //实在调不了音量，烂尾了，~~~~~~~~~~~~~~~~~~~~~~~~这个函数要自己实现，先烂尾了
-        //需要用是sliderEvent中进行修改
 
         UserDefault::getInstance()->setIntegerForKey("musicVolume", percentVolume);
 
@@ -249,7 +246,7 @@ void SettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
 void SettingsScene::settingsPlayCallBack(Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("music/first_music.mp3");//预加载音乐
     if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
     {
         CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();

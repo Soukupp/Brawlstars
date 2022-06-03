@@ -5,6 +5,10 @@
 //日期 : 2022-5-22
 //修改 : 增加键盘功能
 
+//修改 : 王鹏
+//日期 : 2022-5-25
+//修改 : 人物初始化函数 解决冲突
+
 //修改 : 束赫
 //日期 : 2022-5-28
 //实现 : 实现和HeroScene的对接，英雄初始化玩家可以进行选择
@@ -44,19 +48,19 @@ bool MapLayer::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	 
-
-	/*===================Tilemap相关设置开始==================*/
-
-
-	_tileMap = TMXTiledMap::create("map/Mapupdated.tmx");
+  /*===================Tilemap相关设置开始==================*/
+	log("Map begin"); 
+	_tileMap = TMXTiledMap::create("map/Mapupdated1.tmx");
+	//	_tileMap = TMXTiledMap::create("map/Mapupdated3.tmx");  // 也可以用了，Mapupdated2是Mapupdated3的材料，不可删去
 	
 	  
 	addChild(_tileMap, 0, 100);
-	//log("Map finished");
+	log("Map finished");
+
 	TMXObjectGroup* group = _tileMap->getObjectGroup("objects");
+	log("Get Player finished");
 	ValueMap spawnPoint = group->getObject("player");  // 新地图应该是player
-
-
+  
 	/*=====================创建角色开始========================*/
 
 
@@ -68,16 +72,16 @@ bool MapLayer::init()
 	switch (selectedHero)     //由于测试的需要，不同英雄的createHero的参数统一为一套
 	{       
 	case 1:
-	createHero(&_player, &_weapon, &_healthBar, &_magicBar, 
-		Vec2(_playerX, _playerY), "Character/Hero1/hero.png", "Character/Hero1/empty.png");
-	break;
+		createHero(&_player, &_weapon, &_healthBar, &_magicBar, &_levelText,
+			Vec2(_playerX, _playerY), "Character/Hero1/hero.png", "Character/Hero1/emptyWeapon.png");
+		break;
 	case 2:
-    createHero(&_player, &_weapon, &_healthBar, &_magicBar, 
-		Vec2(_playerX, _playerY), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
-	break;
+		createHero(&_player, &_weapon, &_healthBar, &_magicBar, &_levelText,
+			Vec2(_playerX, _playerY), "Character/Hero2/hero.png", "Character/Hero2/emptyWeapon.png");
+		break;
 	case 3:
-	createHero(&_player, &_weapon, &_healthBar, &_magicBar,
-		Vec2(_playerX, _playerY), "Character/Hero3/hero.png", "Character/Hero3/empty.png");
+		createHero(&_player, &_weapon, &_healthBar, &_magicBar, &_levelText,
+			Vec2(_playerX, _playerY), "Character/Hero3/hero.png", "Character/Hero3/emptyWeapon.png");
 		break;
 	case 4:
 		break;
@@ -107,8 +111,8 @@ bool MapLayer::init()
 	_collidable->setVisible(false);                  // 对应collidable图层是否可见
 	_tree = _tileMap->getLayer("tree");
 	//addChild(_tree, 3);
-
-	_watermonster = _tileMap->getLayer("watermonster");
+  
+	//_watermonster = _tileMap->getLayer("watermonster");
 
 	setTouchEnabled(true);  // 开启触摸，必须继承于layer
 	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
@@ -380,6 +384,8 @@ void MapLayer::setPlayerPosition(Vec2 position)
 
 	int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
 	//int tileGid_watermonster=_watermonster->getTileGIDAt(tileCoord);
+  
+	log("get TileGIDAt");
 
 	// 碰撞检测
 	if (tileGid > 0) {
@@ -406,9 +412,9 @@ void MapLayer::setPlayerPosition(Vec2 position)
 	//	}
 	//}
 	//移动精灵
-	_player->setPositionWithAll(position, _weapon, _healthBar, _magicBar);
+	_player->setPositionWithAll(position, _weapon, _healthBar, _magicBar, _levelText);
 	/**/
-	_player->launchAnAttack(_weapon, "skill", _magicBar);
+	//_player->launchAnAttack(_weapon, "attack", _magicBar);
 	/**
 	_player->launchAnAttack(_weapon, "attack");
 	/**/
@@ -458,8 +464,6 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 
 }
 
-
-
 /****************************
 * Name ：MapLayer::tileCoordFromPosition
 * Summary ：从像素点坐标转化为瓦片坐标
@@ -471,8 +475,6 @@ Vec2 MapLayer::tileCoordFromPosition(Vec2 pos)
 	int y = ((_tileMap->getMapSize().height * _tileMap->getTileSize().height) - pos.y) / _tileMap->getTileSize().height;
 	return Vec2(x, y);
 }
-
-
 
 /****************************
 * Name ：MapLayer::setViewpointCenter
@@ -508,22 +510,17 @@ void MapLayer::setViewpointCenter(Vec2 position)
 	this->setPosition(offset);
 
 }
-
-
-
-
-
 /****************************
 * Name ：MapLayer::createHero
 * Summary ：创建角色
 * return ：
 ****************************/
 template<typename Hero>
-void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slider** magicBar,
+void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slider** magicBar, Label** levelText,
 	                      Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon)
 {
 	*hero = Hero::create(filenameHero);
-	(**hero).initPlayer(100, 2, 3, 4.0f, 5.0f);
+	(**hero).initPlayer();
 	addChild(*hero, 2, 200);
 
 	*weapon = Weapon::create(filenameWeapon);
@@ -547,11 +544,15 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 	(**magicBar).setScale(0.5);
 	(**magicBar).setAnchorPoint(Vec2(0.5f, 0.0f));
 	addChild(*magicBar);
+  	*levelText = Label::createWithTTF("Lv.0","fonts/Marker Felt.ttf", 24);
+	(**levelText).setString((std::string("Lv.") + std::to_string((**hero)._level)));
+	(**levelText).setScale(0.5);
+	(**levelText).setAnchorPoint(Vec2(0.5f, 0.0f));
+	addChild(*levelText);
 
-	(**hero).setPositionWithAll(position, *weapon, *healthBar, *magicBar);
-
-
+	(**hero).setPositionWithAll(position, *weapon, *healthBar, *magicBar, *levelText);
 }
+
 
 /****************************
 * Name ：MapLayer::update2
@@ -575,3 +576,4 @@ void MapLayer::update2(float delta)
 		}
 	}
 }
+

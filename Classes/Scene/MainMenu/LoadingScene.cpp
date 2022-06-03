@@ -19,7 +19,7 @@ Scene* LoadingScene::createScene()
 /****************************
 * Name ：problemLoading
 * Summary ：错误打印
-* return ：
+* return ：无
 ****************************/
 static void problemLoading(const char* filename)
 {
@@ -47,42 +47,35 @@ bool LoadingScene::init()
 
 	/*=======================创建背景开始=========================*/
 	Sprite* bg = Sprite::create("background/LoadingBackground.png");
-	bg->setPosition(Vec2(origin.x + visibleSize.width / 2,
-		origin.y + visibleSize.height / 2));
+	bg->setPosition(Vec2(LOADING_BACKGROUND_POSITION));
 	this->addChild(bg);
 	/*=======================创建背景结束=========================*/
 
 	/*=======================创建Logo开始=========================*/
 	Sprite* BrawlStars = Sprite::create("BrawlStarsLogo.png");
-	BrawlStars->setPosition(Vec2(origin.x + visibleSize.width / 2,
-		origin.y + visibleSize.height / 2));
+	BrawlStars->setPosition(Vec2(LOADING_BSLOGO_POSITION));
 	this->addChild(BrawlStars);
 
     Sprite* Tongji = Sprite::create("TongjiLogo.png");
-	float x = origin.x + visibleSize.width - Tongji->getContentSize().width;
-	float y = visibleSize.height - Tongji->getContentSize().height / 2;
-	Tongji->setPosition(Vec2(x, y));
+	Tongji->setPosition(Vec2(LOADING_TJLOGO_POSITION));
 	this->addChild(Tongji);
 	/*=======================创建Logo结束=========================*/
 
 	/*=======================创建提示语开始========================*/
-	auto tip1 = LabelTTF::create("Moderate Games, Happy Life", "fonts/Lilita one.ttf", 25);
+	auto tip1 = LabelTTF::create("Moderate Games, Happy Life", "fonts/Lilita one.ttf", 28);
 	tip1->setColor(Color3B::WHITE);
-	tip1->setPosition(Vec2(origin.x + visibleSize.width / 2,
-		visibleSize.height - 3 * tip1->getContentSize().height));
+	tip1->setPosition(Vec2(LOADING_TIP1_POSITION));
 	this->addChild(tip1);
 
-	auto tip2 = LabelTTF::create("WELCOME TO THE WILDERNESS JOURNEY!", "fonts/Lilita one.ttf", 25);
+	auto tip2 = LabelTTF::create("WELCOME TO THE WILDERNESS JOURNEY!", "fonts/Lilita one.ttf", 28);
 	tip2->setColor(Color3B::WHITE);
-	tip2->setPosition(Vec2(origin.x + visibleSize.width / 2,
-		3 * tip2->getContentSize().height));
+	tip2->setPosition(Vec2(LOADING_TIP2_POSITION));
 	this->addChild(tip2);
 	log("WELCOME TO THE WILDERNESS JOURNEY!");
 
-	auto tip3 = LabelTTF::create("Shoot 'em up, blow 'em up, punch 'em out and win the BRAWL!", "fonts/Lilita one.ttf", 25);
+	auto tip3 = LabelTTF::create("Shoot 'em up, blow 'em up, punch 'em out and win the BRAWL!", "fonts/Lilita one.ttf", 28);
 	tip3->setColor(Color3B::WHITE);
-	tip3->setPosition(Vec2(origin.x + visibleSize.width / 2,
-		5 * tip3->getContentSize().height));
+	tip3->setPosition(Vec2(LOADING_TIP3_POSITION));
 	this->addChild(tip3);
 	log("Shoot 'em up, blow 'em up, punch 'em out and win the BRAWL!");
 
@@ -100,7 +93,6 @@ bool LoadingScene::init()
 	SimpleAudioEngine::getInstance()->preloadEffect("sound/empty.wav");
 	// 障碍物碰撞
 	SimpleAudioEngine::getInstance()->preloadEffect("music/start_game_music.mp3");
-	// 设想在做一个初识进入游戏的界面
 
 	SimpleAudioEngine::getInstance()->preloadEffect("music/if_hero_kill_monster.mp3");
 	// 玩家战胜一只怪兽
@@ -137,6 +129,12 @@ bool LoadingScene::init()
 	return true;
 }
 
+
+/****************************
+* Name ：LoadingScene::changeScene
+* Summary ：进入菜单界面
+* return ：无
+****************************/
 void LoadingScene::changeScene(float dt)
 {
 	auto MMS = MainMenuScene::createScene();

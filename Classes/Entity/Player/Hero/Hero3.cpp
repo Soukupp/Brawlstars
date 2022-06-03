@@ -1,22 +1,22 @@
-//‰ΩúËÄÖ : ÁéãÈπè
-//Êó•Êúü : 2022-5-23
-#include "Hero1.h"
+//◊˜’ﬂ : Õı≈Ù
+//»’∆⁄ : 2022-6-2
+#include "Hero3.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
 
 /*===============================================================================*/
-/*=============================‰ª•‰∏ãÊòØÂàõÂª∫‰∏éÂàùÂßãÂåñ================================*/
+/*=============================“‘œ¬ «¥¥Ω®”Î≥ı ºªØ================================*/
 /*===============================================================================*/
 
 /****************************
-* Name Ôºöcreate
-* Summary ÔºöÂàõÂª∫
-* return ÔºöheroÊåáÈíà
+* Name £∫create
+* Summary £∫¥¥Ω®
+* return £∫hero÷∏’Î
 ****************************/
-Hero1* Hero1::create(const std::string& filename)
+Hero3* Hero3::create(const std::string& filename)
 {
-	Hero1* player = new (std::nothrow) Hero1();
+	Hero3* player = new (std::nothrow) Hero3();
 	if (player && player->initWithFile(filename))
 	{
 		player->autorelease();
@@ -26,13 +26,13 @@ Hero1* Hero1::create(const std::string& filename)
 	return nullptr;
 }
 /****************************
-* Name Ôºöcreate
-* Summary ÔºöÂàõÂª∫
-* return ÔºöheroÊåáÈíà
+* Name £∫create
+* Summary £∫¥¥Ω®
+* return £∫hero÷∏’Î
 ****************************/
-Hero1* Hero1::create(const std::string& filename, const Rect& rect)
+Hero3* Hero3::create(const std::string& filename, const Rect& rect)
 {
-	Hero1* player = new (std::nothrow) Hero1();
+	Hero3* player = new (std::nothrow) Hero3();
 	if (player && player->initWithFile(filename, rect))
 	{
 		player->autorelease();
@@ -42,56 +42,56 @@ Hero1* Hero1::create(const std::string& filename, const Rect& rect)
 	return nullptr;
 }
 /****************************
-* Name ÔºöinitPlayer
-* Summary ÔºöËá™ÂÆö‰πâÂÄºÂàùÂßãÂåñ
-* return Ôºö
+* Name £∫initPlayer
+* Summary £∫◊‘∂®“Â÷µ≥ı ºªØ
+* return £∫
 ****************************/
-void Hero1::initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate)
+void Hero3::initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate)
 {
-	//ÂàùÂßãÂåñÈù¢Êùø
+	//≥ı ºªØ√Ê∞Â
 	_panel.init(maxHealthPoint, attack, defence, skillAttackRate, attackRate);
 	this->setAnchorPoint(Vec2(0.5f, 0.5f));
 }
 /****************************
-* Name ÔºöinitPlayer
-* Summary ÔºöÊåâÈªòËÆ§ÂÄºÂàùÂßãÂåñ
-* return Ôºö
+* Name £∫initPlayer
+* Summary £∫∞¥ƒ¨»œ÷µ≥ı ºªØ
+* return £∫
 ****************************/
-void Hero1::initPlayer()
+void Hero3::initPlayer()
 {
-	//ÂàùÂßãÂåñÈù¢Êùø
-	_panel.init(HERO1_INIT_MAXHEALTHPOINT, HERO1_INIT_ATTACK, HERO1_INIT_DEFENCE, HERO1_INIT_SKILLRATE, HERO1_INIT_ATTACKRATE);
+	//≥ı ºªØ√Ê∞Â
+	_panel.init(HERO3_INIT_MAXHEALTHPOINT, HERO3_INIT_ATTACK, HERO3_INIT_DEFENCE, HERO3_INIT_SKILLRATE, HERO3_INIT_ATTACKRATE);
 	this->setAnchorPoint(Vec2(0.5f, 0.5f));
 }
 
 /*===============================================================================*/
-/*============================‰ª•‰∏ãÊòØÂèëÂä®ÊîªÂáª‰∏éÂä®Áîª===============================*/
+/*============================“‘œ¬ «∑¢∂Øπ•ª˜”Î∂Øª≠===============================*/
 /*===============================================================================*/
 
 /****************************
-* Name ÔºölaunchAnAttack
-* Summary ÔºöÂèëÂä®ÊîªÂáª ËæìÂÖ•"attack" "skill" Ë∞ÉÁî®
-* return Ôºö
+* Name £∫launchAnAttack
+* Summary £∫∑¢∂Øπ•ª˜  ‰»Î"attack" "skill" µ˜”√
+* return £∫
 ****************************/
-void Hero1::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar)
+void Hero3::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar)
 {
 	if (attackType == "attack")
 	{
 		if (weapon->launchAnAttack(_panel.doAttack()))
 		{
-			//ÊàêÂäüÈÄ†Êàê‰º§ÂÆ≥ÊâçÂõûËÉΩ
+			//≥…π¶‘Ï≥……À∫¶≤≈ªÿƒ‹
 			restoreMagic();
 		}
 
 		auto _animationAttack = CCAnimation::create();
 		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-		for (int loop = 1; loop <= HERO1_YOU_ATTACK_FRAME; ++loop)
+		for (int loop = 1; loop <= HERO3_YOU_ATTACK_FRAME; ++loop)
 		{
 			char szName[100] = { 0 };
-			sprintf(szName, "Character/Hero1/attack/attack%d.png", loop);
+			sprintf(szName, "Character/Hero3/attack/attack%d.png", loop);
 			_animationAttack->addSpriteFrameWithFile(szName);
 		}
-		_animationAttack->setDelayPerUnit(HERO1_YOU_ATTACK_TIME / HERO1_YOU_ATTACK_FRAME);
+		_animationAttack->setDelayPerUnit(HERO3_YOU_ATTACK_TIME / HERO3_YOU_ATTACK_FRAME);
 		_animationAttack->setRestoreOriginalFrame(true);
 		auto _animateAttack = CCAnimate::create(_animationAttack);
 		//this->runAction(Hide::create());
@@ -108,17 +108,17 @@ void Hero1::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider
 
 			auto _animationAttack = CCAnimation::create();
 			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-			for (int loop = 1; loop <= HERO1_YOU_SKILL_FRAME; ++loop)
+			for (int loop = 1; loop <= HERO3_YOU_SKILL_FRAME; ++loop)
 			{
 				char szName[100] = { 0 };
-				sprintf(szName, "Character/Hero1/skill/skill%02d.png", loop);
+				sprintf(szName, "Character/Hero3/skill/skill%02d.png", loop);
 				_animationAttack->addSpriteFrameWithFile(szName);
 				if (loop % 7 == 0)
 				{
 					CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
 				}
 			}
-			_animationAttack->setDelayPerUnit(HERO1_YOU_SKILL_TIME / HERO1_YOU_SKILL_FRAME);
+			_animationAttack->setDelayPerUnit(HERO3_YOU_SKILL_TIME / HERO3_YOU_SKILL_FRAME);
 			_animationAttack->setRestoreOriginalFrame(true);
 			auto _animateAttack = CCAnimate::create(_animationAttack);
 			//this->runAction(Hide::create());
@@ -132,57 +132,57 @@ void Hero1::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider
 }
 
 /*===============================================================================*/
-/*=======================‰ª•‰∏ãÊòØUI„ÄÅÊ≠¶Âô®Á≠âÁöÑ‰ΩçÁΩÆ‰øùÊåÅË∑üÈöè==========================*/
+/*=======================“‘œ¬ «UI°¢Œ‰∆˜µ»µƒŒª÷√±£≥÷∏˙ÀÊ==========================*/
 /*===============================================================================*/
 
 /****************************
-* Name ÔºökeepHealthBar
-* Summary Ôºö‰øùÊåÅË°ÄÊù°‰ΩçÁΩÆ
-* return Ôºö
+* Name £∫keepHealthBar
+* Summary £∫±£≥÷—™ÃıŒª÷√
+* return £∫
 ****************************/
-void Hero1::keepHealthBar(Slider* healthBar)
+void Hero3::keepHealthBar(Slider* healthBar)
 {
-	healthBar->setPosition(HERO1_HEALTHBAR_POSITION);
+	healthBar->setPosition(HERO3_HEALTHBAR_POSITION);
 	//_healthBar->setPosition(position);
 }
 /****************************
-* Name ÔºökeepMagicBar
-* Summary Ôºö‰øùÊåÅËìùÊù°‰ΩçÁΩÆ
-* return Ôºö
+* Name £∫keepMagicBar
+* Summary £∫±£≥÷¿∂ÃıŒª÷√
+* return £∫
 ****************************/
-void Hero1::keepMagicBar(Slider* magicBar)
+void Hero3::keepMagicBar(Slider* magicBar)
 {
-	magicBar->setPosition(HERO1_MAGICBAR_POSITION);
+	magicBar->setPosition(HERO3_MAGICBAR_POSITION);
 }
 /****************************
-* Name ÔºökeepWeapon
-* Summary Ôºö‰øùÊåÅÊ≠¶Âô®‰ΩçÁΩÆ
-* return Ôºö
+* Name £∫keepWeapon
+* Summary £∫±£≥÷Œ‰∆˜Œª÷√
+* return £∫
 ****************************/
-void Hero1::keepWeapon(Weapon* weapon)
+void Hero3::keepWeapon(Weapon* weapon)
 {
-	weapon->setPosition(HERO1_WEAPON_POSITION_X, HERO1_WEAPON_POSITION_Y);
+	weapon->setPosition(HERO3_WEAPON_POSITION_X, HERO3_WEAPON_POSITION_Y);
 }
 /****************************
-* Name ÔºökeepLevelText
-* Summary Ôºö‰øùÊåÅÁ≠âÁ∫ß‰ΩçÁΩÆ
-* return Ôºö
+* Name £∫keepLevelText
+* Summary £∫±£≥÷µ»º∂Œª÷√
+* return £∫
 ****************************/
-void Hero1::keepLevelText(cocos2d::Label* levelText,Slider* bar)
+void Hero3::keepLevelText(cocos2d::Label* levelText,Slider* bar)
 {
-	levelText->setPosition(HERO1_LEVELTEXT_POSITION);
+	levelText->setPosition(HERO3_LEVELTEXT_POSITION);
 }
 /****************************
-* Name ÔºörunFlipxWithWeapon
-* Summary ÔºöÂ∏¶ÁùÄÊ≠¶Âô®ÁøªËΩ¨
-* return Ôºö
+* Name £∫runFlipxWithWeapon
+* Summary £∫¥¯◊≈Œ‰∆˜∑≠◊™
+* return £∫
 ****************************/
-void Hero1::runFlipxWithWeapon(bool flipx, Weapon* weapon)
+void Hero3::runFlipxWithWeapon(bool flipx, Weapon* weapon)
 {
 
 	_weaponAnchorPositionX = (flipx ?
-		HERO1_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT :
-		HERO1_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT);
+		HERO3_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT :
+		HERO3_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT);
 	_direct = (flipx ? -1.0f : 1.0f);
 
 	weapon->setAnchorPoint(Vec2(_weaponAnchorPositionX, _weaponAnchorPositionY));
@@ -191,41 +191,12 @@ void Hero1::runFlipxWithWeapon(bool flipx, Weapon* weapon)
 	this->runAction(FlipX::create(flipx));
 	weapon->runAction(FlipX::create(flipx));
 }
-
-//bool Hero1::initWalkAction()
-//{
-//
-//	auto* frameCache = CCSpriteFrameCache::getInstance();
-//	frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Walk.plist", "Character/Hero1/hero1_Walk.png");
-//
-//	Vector<CCSpriteFrame*> playerFrameArray;
-//	for (int i = 0; i < 6; i++)
-//	{
-//		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("adventurer-run-0%d.png", i)->getCString());
-//		playerFrameArray.pushBack(frame);
-//	}
-//
-//	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
-//	this->setwalkAction(RepeatForever::create(Animate::create(animation)));
-//
-//	if (_walkAction != nullptr)
-//	{
-//		log("flase");
-//		return true;
-//	}
-//	else
-//	{
-//		log("true");
-//		return false;
-//	}
-//}
-
 /****************************
-* Name ÔºösetPositionWithAll
-* Summary ÔºöÊï¥‰ΩìÁßªÂä®
-* return Ôºö
+* Name £∫setPositionWithAll
+* Summary £∫’˚ÃÂ“∆∂Ø
+* return £∫
 ****************************/
-void Hero1::setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar, cocos2d::Label* levelText)
+void Hero3::setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar, cocos2d::Label* levelText)
 {
 	this->setPosition(position);
 	this->keepWeapon(weapon);
@@ -235,26 +206,25 @@ void Hero1::setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* 
 }
 
 /*===============================================================================*/
-/*==================================‰ª•‰∏ãÊòØÂçáÁ∫ß===================================*/
+/*==================================“‘œ¬ «…˝º∂===================================*/
 /*===============================================================================*/
 
 /****************************
-* Name ÔºöHero1::upgrade()
-* Summary Ôºö‰∫∫Áâ©ÂçáÁ∫ß
-* return Ôºö
+* Name £∫Hero3::upgrade()
+* Summary £∫»ÀŒÔ…˝º∂
+* return £∫
 ****************************/
-void Hero1::upgrade(cocos2d::Label* levelText, Slider* bar)
+void Hero3::upgrade(cocos2d::Label* levelText, Slider* bar)
 {
 	if (_level < PLAYER_MAX_GRADE) {
 		_level++;
 		levelText->setString((std::string("Lv.") + std::to_string(_level)));
-		_panel.setMaxHealthPoint(HERO1_INIT_MAXHEALTHPOINT / 10 + _panel.getMaxHealthPoint());
-		_panel.setAttack(HERO1_INIT_ATTACK / 10 + _panel.getAttack());
-		_panel.setDefence(HERO1_INIT_DEFENCE / 10 + _panel.getDefence());
+		_panel.setMaxHealthPoint(HERO3_INIT_MAXHEALTHPOINT / 10 + _panel.getMaxHealthPoint());
+		_panel.setAttack(HERO3_INIT_ATTACK / 10 + _panel.getAttack());
+		_panel.setDefence(HERO3_INIT_DEFENCE / 10 + _panel.getDefence());
 		_panel.setAttackRate(0.1f + _panel.getAttackRate());
 		_panel.setSkillRate(0.1f + _panel.getSkillRate());
-		_panel.setHealthPoint(HERO1_INIT_MAXHEALTHPOINT / 10 + _panel.getHealthPoint());
+		_panel.setHealthPoint(HERO3_INIT_MAXHEALTHPOINT / 10 + _panel.getHealthPoint());
 		this->keepLevelText(levelText, bar);
 	}
 }
-

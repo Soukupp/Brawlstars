@@ -48,6 +48,7 @@ bool GameSettingsScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("music/retro_fight_ingame_01.mp3"); //预加载音乐
     /*=====================创建返回按钮开始======================*/
 
     //创建返回按钮
@@ -87,7 +88,7 @@ bool GameSettingsScene::init()
     }
     else
     {
-        const Color4B settingsNameLabelColor(255, 245, 245, 255);//创建4B颜色
+        const Color4B settingsNameLabelColor(GAMESETTINGS_TEXT_RGB_COLOR, 255);//创建4B颜色
         settingsNameLabel->setTextColor(settingsNameLabelColor);
         settingsNameLabel->setPosition(
             Vec2(GAMESETTINGS_NAME_LABEL_POSITION_X,
@@ -252,7 +253,6 @@ void GameSettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
 void GameSettingsScene::settingsPlayCallBack(Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-
     if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
     {
         CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();

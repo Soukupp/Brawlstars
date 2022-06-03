@@ -1,6 +1,6 @@
 #pragma once
-//×÷Õß : ÍõÅô
-//ÈÕÆÚ : 2022-5-18
+//ä½œè€… : ç‹é¹
+//æ—¥æœŸ : 2022-5-18
 #ifndef __HERO1_H__
 #define __HERO1_H__
 
@@ -10,37 +10,50 @@
 using namespace cocos2d::ui;
 using namespace cocos2d;
 
-/*==============================ÒÔÏÂÊÇÄãĞèÒªĞŞ¸ÄµÄºê¶¨Òå=================================*/
+/*==============================ä»¥ä¸‹æ˜¯ä½ éœ€è¦ä¿®æ”¹çš„å®å®šä¹‰=================================*/
 
-//Ãæ³¯ÓÒÊ± ÎäÆ÷µÄºáÏòÃªµã
+//é¢æœå³æ—¶ æ­¦å™¨çš„æ¨ªå‘é”šç‚¹
 #define HERO1_YOU_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT (0.0f)
-//ÎäÆ÷µÄ×İÏòÃªµã
+//æ­¦å™¨çš„çºµå‘é”šç‚¹
 #define HERO1_YOU_WEAPON_ANCHOR_POSITION_Y (0.5f)
-//Ãæ³¯ÓÒÊ± ÎäÆ÷Ïà¶ÔÈËÎïµÄºáÏòÎ»ÖÃ
+//é¢æœå³æ—¶ æ­¦å™¨ç›¸å¯¹äººç‰©çš„æ¨ªå‘ä½ç½®
 #define HERO1_YOU_WEAPON_POSITION_X ( - this->getContentSize().width / 2)
-//ÎäÆ÷Ïà¶ÔÈËÎïµÄ×İÏòÎ»ÖÃ
+//æ­¦å™¨ç›¸å¯¹äººç‰©çš„çºµå‘ä½ç½®
 #define HERO1_YOU_WEAPON_POSITION_Y (this->getContentSize().height * 2 / 3)
-//ÑªÌõ¡¢À¶ÌõÏà¶ÔÈËÎïµÄ×İÏòÎ»ÖÃ
+//è¡€æ¡ã€è“æ¡ç›¸å¯¹äººç‰©çš„çºµå‘ä½ç½®
 #define HERO1_YOU_BAR_POSITION (this->getContentSize().height / 2)
+//åŠ¨ç”»æ—¶é•¿ã€å¸§æ•°
+#define HERO1_YOU_ATTACK_TIME 0.2f
+#define HERO1_YOU_ATTACK_FRAME 7
+#define HERO1_YOU_SKILL_TIME 1.5f
+#define HERO1_YOU_SKILL_FRAME 18
 
-/*==============================ÒÔÉÏÊÇÄãĞèÒªĞŞ¸ÄµÄºê¶¨Òå=================================*/
+/*==============================ä»¥ä¸Šæ˜¯ä½ éœ€è¦ä¿®æ”¹çš„å®å®šä¹‰=================================*/
 
-/*==============================!!!!!ÒÔÏÂºêÇëÎğĞŞ¸Ä!!!!!=================================*/
-//ÎäÆ÷Ãªµã
+/*==============================!!!!!ä»¥ä¸‹å®è¯·å‹¿ä¿®æ”¹!!!!!=================================*/
+//æ­¦å™¨é”šç‚¹
 #define HERO1_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT HERO1_YOU_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT
 #define HERO1_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT 1.0f - HERO1_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT
 #define HERO1_WEAPON_ANCHOR_POSITION_Y 1.0f
-//ÎäÆ÷Î»ÖÃ
+//æ­¦å™¨ä½ç½®
 #define HERO1_WEAPON_POSITION_X (this->getPosition().x + HERO1_YOU_WEAPON_POSITION_X * _direct)
 #define HERO1_WEAPON_POSITION_Y (this->getPosition().y + HERO1_YOU_WEAPON_POSITION_Y)
-//ÑªÌõ À¶ÌõÎ»ÖÃ this->getContentSize().width / 2
+//è¡€æ¡ è“æ¡ä½ç½® this->getContentSize().width / 2
 #define HERO1_HEALTHBAR_POSITION Vec2(this->getPosition().x, this->getPosition().y + HERO1_YOU_BAR_POSITION + healthBar->getContentSize().height / 2)
 #define HERO1_MAGICBAR_POSITION Vec2(this->getPosition().x, this->getPosition().y + HERO1_YOU_BAR_POSITION)
-//Ñª¡¢À¶°Ù·Ö±È¼ÆËã
+//è¡€ã€è“ç™¾åˆ†æ¯”è®¡ç®—
 #define HERO1_BLOOD_PERCENT int(100 * float(_panel.getHealthPoint()) / float(_panel.getMaxHealthPoint()))
 #define HERO1_MAGIC_PERCENT int(100 * float(_panel.getMagicPoint()) / float(_panel.getMaxMagicPoint()))
+//ç­‰çº§ä½ç½®
+#define HERO1_LEVELTEXT_POSITION Vec2(this->getPosition().x, this->getPosition().y + HERO1_YOU_BAR_POSITION + bar->getContentSize().height)
+//åˆå§‹é¢æ¿
+#define HERO1_INIT_MAXHEALTHPOINT 950
+#define HERO1_INIT_ATTACK 160
+#define HERO1_INIT_DEFENCE 100
+#define HERO1_INIT_SKILLRATE 2.3f
+#define HERO1_INIT_ATTACKRATE 1.2f
 
-/*==============================!!!!!ÒÔÉÏºêÇëÎğĞŞ¸Ä!!!!!=================================*/
+/*==============================!!!!!ä»¥ä¸Šå®è¯·å‹¿ä¿®æ”¹!!!!!=================================*/
 
 class Hero1 : public Player
 {
@@ -53,14 +66,20 @@ public:
 	static Hero1* create(const std::string& filename, const Rect& rect);
 
 	void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
+	void initPlayer();
 
 	void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar);
 
 	void keepHealthBar(Slider* healthBar);
 	void keepMagicBar(Slider* magicBar);
-
 	void keepWeapon(Weapon* weapon);
+	void keepLevelText(cocos2d::Label* levelText, Slider* bar);
+
 	void runFlipxWithWeapon(bool flipx, Weapon* weapon);
+
+	void setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar, cocos2d::Label* levelText);
+
+	void upgrade(cocos2d::Label* levelText, Slider* bar);
 
 };
 

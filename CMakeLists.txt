@@ -55,6 +55,8 @@ list(APPEND GAME_SOURCE
      Classes/Entity/Player/Panel.cpp
      Classes/Entity/Player/Hero/Hero1.cpp
      Classes/Entity/Player/Hero/Hero2.cpp
+     Classes/Entity/Player/Hero/Hero3.cpp
+     Classes/Entity/Player/Hero/Hero4.cpp
 
      Classes/Entity/Monster/Monster.cpp
      Classes/Entity/Monster/GroundMonster.cpp
@@ -73,7 +75,7 @@ list(APPEND GAME_SOURCE
 
      Classes/Scene/Options/HeroScene.cpp
      Classes/Scene/Options/StoreScene.cpp
-
+     Classes/Scene/Information/InformationPopLayer.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -83,6 +85,8 @@ list(APPEND GAME_HEADER
      Classes/Entity/Player/Panel.h
      Classes/Entity/Player/Hero/Hero1.h
      Classes/Entity/Player/Hero/Hero2.h
+     Classes/Entity/Player/Hero/Hero3.h
+     Classes/Entity/Player/Hero/Hero4.h
 
      Classes/Entity/Monster/Monster.h
      Classes/Entity/Monster/GroundMonster.h
@@ -101,8 +105,8 @@ list(APPEND GAME_HEADER
 
      Classes/Scene/Options/HeroScene.h
      Classes/Scene/Options/StoreScene.h
-
      Classes/Entity/Define/Definitions.h
+     Classes/Scene/Information/InformationPopLayer.h
      )
 
 if(ANDROID)

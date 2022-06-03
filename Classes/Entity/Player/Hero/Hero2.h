@@ -1,6 +1,6 @@
 #pragma once
-//×÷Õß : ÍõÅô
-//ÈÕÆÚ : 2022-5-18
+//ä½œè€… : ç‹é¹
+//æ—¥æœŸ : 2022-5-18
 #ifndef __HERO2_H__
 #define __HERO2_H__
 
@@ -9,37 +9,50 @@
 using namespace cocos2d::ui;
 using namespace cocos2d;
 
-/*==============================ÒÔÏÂÊÇÄãĞèÒªĞŞ¸ÄµÄºê¶¨Òå=================================*/
+/*==============================ä»¥ä¸‹æ˜¯ä½ éœ€è¦ä¿®æ”¹çš„å®å®šä¹‰=================================*/
 
-//Ãæ³¯ÓÒÊ± ÎäÆ÷µÄºáÏòÃªµã
+//é¢æœå³æ—¶ æ­¦å™¨çš„æ¨ªå‘é”šç‚¹
 #define HERO2_YOU_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT (0.0f)
-//ÎäÆ÷µÄ×İÏòÃªµã
+//æ­¦å™¨çš„çºµå‘é”šç‚¹
 #define HERO2_YOU_WEAPON_ANCHOR_POSITION_Y (0.5f)
-//Ãæ³¯ÓÒÊ± ÎäÆ÷Ïà¶ÔÈËÎïµÄºáÏòÎ»ÖÃ
+//é¢æœå³æ—¶ æ­¦å™¨ç›¸å¯¹äººç‰©çš„æ¨ªå‘ä½ç½®
 #define HERO2_YOU_WEAPON_POSITION_X ( - this->getContentSize().width / 2)
-//ÎäÆ÷Ïà¶ÔÈËÎïµÄ×İÏòÎ»ÖÃ
+//æ­¦å™¨ç›¸å¯¹äººç‰©çš„çºµå‘ä½ç½®
 #define HERO2_YOU_WEAPON_POSITION_Y (this->getContentSize().height * 2 / 3)
-//ÑªÌõ¡¢À¶ÌõÏà¶ÔÈËÎïµÄ×İÏòÎ»ÖÃ
+//è¡€æ¡ã€è“æ¡ç›¸å¯¹äººç‰©çš„çºµå‘ä½ç½®
 #define HERO2_YOU_BAR_POSITION (this->getContentSize().height / 2)
 
-/*==============================ÒÔÉÏÊÇÄãĞèÒªĞŞ¸ÄµÄºê¶¨Òå=================================*/
+/*==============================ä»¥ä¸Šæ˜¯ä½ éœ€è¦ä¿®æ”¹çš„å®å®šä¹‰=================================*/
 
-/*==============================!!!!!ÒÔÏÂºêÇëÎğĞŞ¸Ä!!!!!=================================*/
-//ÎäÆ÷Ãªµã
+/*==============================!!!!!ä»¥ä¸‹å®è¯·å‹¿ä¿®æ”¹!!!!!=================================*/
+//æ­¦å™¨é”šç‚¹
 #define HERO2_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT HERO2_YOU_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT
 #define HERO2_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT 1.0f - HERO2_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT
 #define HERO2_WEAPON_ANCHOR_POSITION_Y 1.0f
-//ÎäÆ÷Î»ÖÃ
+//æ­¦å™¨ä½ç½®
 #define HERO2_WEAPON_POSITION_X (this->getPosition().x + HERO2_YOU_WEAPON_POSITION_X * _direct)
 #define HERO2_WEAPON_POSITION_Y (this->getPosition().y + HERO2_YOU_WEAPON_POSITION_Y)
-//ÑªÌõ À¶ÌõÎ»ÖÃ this->getContentSize().width / 2
+//è¡€æ¡ è“æ¡ä½ç½® this->getContentSize().width / 2
 #define HERO2_HEALTHBAR_POSITION Vec2(this->getPosition().x, this->getPosition().y + HERO2_YOU_BAR_POSITION + healthBar->getContentSize().height / 2)
 #define HERO2_MAGICBAR_POSITION Vec2(this->getPosition().x, this->getPosition().y + HERO2_YOU_BAR_POSITION)
-//Ñª¡¢À¶°Ù·Ö±È¼ÆËã
+//è¡€ã€è“ç™¾åˆ†æ¯”è®¡ç®—
 #define HERO2_BLOOD_PERCENT int(100 * float(_panel.getHealthPoint()) / float(_panel.getMaxHealthPoint()))
 #define HERO2_MAGIC_PERCENT int(100 * float(_panel.getMagicPoint()) / float(_panel.getMaxMagicPoint()))
+//ç­‰çº§ä½ç½®
+#define HERO2_LEVELTEXT_POSITION Vec2(this->getPosition().x, this->getPosition().y + HERO2_YOU_BAR_POSITION + bar->getContentSize().height)
+//åˆå§‹é¢æ¿
+#define HERO2_INIT_MAXHEALTHPOINT 1050
+#define HERO2_INIT_ATTACK 140
+#define HERO2_INIT_DEFENCE 150
+#define HERO2_INIT_SKILLRATE 2.7f
+#define HERO2_INIT_ATTACKRATE 1.2f
+//åŠ¨ç”»æ—¶é•¿ã€å¸§æ•°
+#define HERO2_YOU_ATTACK_TIME 0.3f
+#define HERO2_YOU_ATTACK_FRAME 20
+#define HERO2_YOU_SKILL_TIME 1.0f
+#define HERO2_YOU_SKILL_FRAME 7
 
-/*==============================!!!!!ÒÔÉÏºêÇëÎğĞŞ¸Ä!!!!!=================================*/
+/*==============================!!!!!ä»¥ä¸Šå®è¯·å‹¿ä¿®æ”¹!!!!!=================================*/
 
 class Hero2 : public Player
 {
@@ -53,17 +66,19 @@ public:
 	static Hero2* create(const std::string& filename, const Rect& rect);
 
 	void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
+	void initPlayer();
 
 	void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar);
 
 	void keepHealthBar(Slider* healthBar);
 	void keepMagicBar(Slider* magicBar);
-
 	void keepWeapon(Weapon* weapon);
-	void runFlipxWithWeapon(bool flipx, Weapon* weapon);
+	void keepLevelText(cocos2d::Label* levelText, Slider* bar);
 
-	//CC_SYTHESIZE_RETAINÏàµ±ÓÚÍ¬Ê±µÃµ½getxxxActionºÍsetxxxActionÁ½¸öº¯Êı
-	//ÔÚhero1~hero4ÖĞ¶¼ĞèÒªÌí¼Ó
+	void runFlipxWithWeapon(bool flipx, Weapon* weapon);
+  
+	//CC_SYTHESIZE_RETAINç›¸å½“äºåŒæ—¶å¾—åˆ°getxxxActionå’ŒsetxxxActionä¸¤ä¸ªå‡½æ•°
+	//åœ¨hero1~hero4ä¸­éƒ½éœ€è¦æ·»åŠ 
 	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _walkAction, WalkAction);       
 	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _normalAction, NormalAction);
 	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _attackAction, AttackAction);
@@ -72,6 +87,10 @@ public:
 	bool initWalkAction();
 	bool initNormalAction();
 	bool initAttackAction();
+  
+	void setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar, cocos2d::Label* levelText);
+
+	void upgrade(cocos2d::Label* levelText, Slider* bar);
 
 };
 
