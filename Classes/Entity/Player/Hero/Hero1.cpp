@@ -153,3 +153,32 @@ void Hero1::runFlipxWithWeapon(bool flipx, Weapon* weapon)
 	this->runAction(FlipX::create(flipx));
 	weapon->runAction(FlipX::create(flipx));
 }
+
+//
+//bool Hero1::initWalkAction()
+//{
+//
+//	auto* frameCache = CCSpriteFrameCache::getInstance();
+//	frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Walk.plist", "Character/Hero1/hero1_Walk.png");
+//
+//	Vector<CCSpriteFrame*> playerFrameArray;
+//	for (int i = 0; i < 6; i++)
+//	{
+//		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("adventurer-run-0%d.png", i)->getCString());
+//		playerFrameArray.pushBack(frame);
+//	}
+//
+//	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+//	this->setwalkAction(RepeatForever::create(Animate::create(animation)));
+//
+//	if (_walkAction != nullptr)
+//	{
+//		log("flase");
+//		return true;
+//	}
+//	else
+//	{
+//		log("true");
+//		return false;
+//	}
+//}

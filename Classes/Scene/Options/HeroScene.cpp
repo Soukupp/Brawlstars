@@ -3,6 +3,7 @@
 
 #include "HeroScene.h"
 #include "SimpleAudioEngine.h"
+#include "Entity/Player/Player.h"
 
 USING_NS_CC;
 

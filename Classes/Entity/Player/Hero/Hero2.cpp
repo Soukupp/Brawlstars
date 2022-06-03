@@ -1,5 +1,10 @@
 //作者 : 王鹏
 //日期 : 2022-5-23
+
+//修改 : 束赫
+//日期 : 2022-6-3
+//实现 : 人物动画功能函数接口
+
 #include "Hero2.h"
 
 USING_NS_CC;
@@ -153,3 +158,92 @@ void Hero2::runFlipxWithWeapon(bool flipx, Weapon* weapon)
 	this->runAction(FlipX::create(flipx));
 	weapon->runAction(FlipX::create(flipx));
 }
+
+/****************************
+* Name ：initWalkAction
+* Summary ：初始化_walkAction(Action型变量)
+****************************/
+bool Hero2::initWalkAction()
+{
+
+	auto* frameCache = CCSpriteFrameCache::getInstance();
+	frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Walk.plist", "Character/Hero1/hero1_Walk.png");
+
+	Vector<CCSpriteFrame*> playerFrameArray;
+	for (int i = 0; i < 6; i++)
+	{
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("adventurer-run-0%d.png", i)->getCString());
+		playerFrameArray.pushBack(frame);
+	}
+
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+
+	this->setWalkAction(RepeatForever::create(Animate::create(animation)));
+
+	if (_walkAction != nullptr)
+		return true;
+	else
+		return false;
+
+}
+
+/****************************
+* Name ：initNormalAction
+* Summary ：初始化_normalAction(Action型变量)
+****************************/
+bool Hero2::initNormalAction()
+{
+
+	auto* frameCache = CCSpriteFrameCache::getInstance();
+	frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Idle.plist", "Character/Hero1/hero1_Idle.png");
+
+	Vector<CCSpriteFrame*> playerFrameArray;
+	for (int i = 1; i < 5; i++)
+	{
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("adventurer-idle%d.png", i)->getCString());
+		playerFrameArray.pushBack(frame);
+	}
+
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+	this->setNormalAction(RepeatForever::create(Animate::create(animation)));
+
+	if (_normalAction != nullptr)
+		return true;
+	else
+		return false;
+
+}
+/****************************
+* Name ：initAttackAction
+* Summary ：初始化_attackAction(Action型变量)
+****************************/
+bool Hero2::initAttackAction()
+{
+
+	auto* frameCache = CCSpriteFrameCache::getInstance();
+	frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Attack.plist", "Character/Hero1/hero1_Attack.png");
+
+	Vector<CCSpriteFrame*> playerFrameArray;
+	for (int i = 1; i < 13; i++)
+	{
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("adventurer-attack%d.png", i)->getCString());
+		playerFrameArray.pushBack(frame);
+	}
+
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+	animation->setLoops(1);
+	auto* animate = Animate::create(animation);
+	this->setAttackAction(animate);
+
+	if (_normalAction != nullptr)
+		return true;
+	else
+		return false;
+}
+
+
+
+
+
+
+

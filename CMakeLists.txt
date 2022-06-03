@@ -73,6 +73,7 @@ list(APPEND GAME_SOURCE
 
      Classes/Scene/Options/HeroScene.cpp
      Classes/Scene/Options/StoreScene.cpp
+
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -100,6 +101,8 @@ list(APPEND GAME_HEADER
 
      Classes/Scene/Options/HeroScene.h
      Classes/Scene/Options/StoreScene.h
+
+     Classes/Entity/Define/Definitions.h
      )
 
 if(ANDROID)

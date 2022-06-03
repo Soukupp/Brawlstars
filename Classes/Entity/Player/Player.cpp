@@ -1,6 +1,7 @@
 //作者 : 王鹏
 //日期 : 2022-5-18
 #include "Player.h"
+#include <SimpleAudioEngine.h>
 
 USING_NS_CC;
 
@@ -69,7 +70,7 @@ void Player::launchAnAttack(Weapon* weapon, const std::string& attackType)
 	{
 		if (weapon->launchAnAttack(_panel.doAttack()))
 		{
-			restoreMagic();
+			restoreMagic();                           //游戏机制：发动进攻就补充蓝量
 		}
 	}
 	else if (attackType == "skill")
@@ -233,3 +234,32 @@ void Player::refreshPlayer()
 {
 
 }
+
+/****************************
+* Name ：palyerCollisionTest1
+* Summary ：近距离攻击碰撞检测
+* 参数说明 : target : 攻击对象
+*           weapon : 武器对象
+****************************/
+bool Player::playerCollisionTest1(Player* target,Weapon* weapon)
+{
+	float targetX = target->getPosition().x;                    //目标位置X
+	float targetY = target->getPosition().y;                    //目标位置Y
+    float targetWidth = target->getContentSize().width;         //目标的宽度
+	float targetHeight = target->getContentSize().height;       //目标的高度
+	float weaponWidth = weapon->getContentSize().width;         //武器的宽度
+
+	if (fabs(PLAYER_WEAPON_POSITION_X - targetX) < (targetWidth / 2 + weaponWidth)) {           //范围判定
+		if (fabs(PLAYER_WEAPON_POSITION_Y-16 - targetY) < targetHeight / 3) {
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
+			return true;
+		}
+		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
+			return false;
+	}
+	else {
+		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
+		return false;
+	}
+}
+

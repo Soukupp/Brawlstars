@@ -42,8 +42,9 @@ public:
 
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // 必须要加作用域！！！
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // 必须要加作用域！！！
-    void update(float delta);
 
+    void update(float delta);
+    void update2(float delta);
 
     void setPlayerPosition(cocos2d::Vec2 position);
     void setTreeOpacity(cocos2d::Vec2 position);
@@ -53,6 +54,7 @@ public:
     template<typename Hero>
     void createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slider** magicBar, Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon);
 
+    Animation* getAnimationByName(std::string fileName, float interval, int fileNum, int if_repeat = -1);
     // implement the "static create()" method manually
     CREATE_FUNC(MapLayer);
 };

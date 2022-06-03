@@ -9,6 +9,7 @@
 #include "Panel.h"
 #include "Entity/Weapon/Weapon.h"
 #include "../ui/UISlider.h"
+#include "Entity/Define/Definitions.h"
 //#include "HealthBar.h"
 
 using namespace cocos2d::ui;
@@ -65,6 +66,7 @@ public:
     Panel _panel;
     //Slider* _healthBar;
     //Slider* _magicBar;
+    float _direct = 1.0f;//表示方向
 
     static Player* create(const std::string& filename);
     virtual void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
@@ -91,6 +93,9 @@ public:
     void refreshHealthBar(Slider* healthBar);
     void refreshMagicBar(Slider* magicBar);
     void refreshPlayer();
+
+    bool playerCollisionTest1(Player* target, Weapon* weapon);
+
 };
 
 #endif

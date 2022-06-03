@@ -44,12 +44,12 @@ using namespace cocos2d;
 class Hero2 : public Player
 {
 public:
-	float _direct = 1.0f;//表示方向
+	
 
 	float _weaponAnchorPositionX = HERO2_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT;
 	float _weaponAnchorPositionY = HERO2_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT;
 
-	static Hero2* create(const std::string& filename);
+	static Hero2* create(const std::string& filename);	
 	static Hero2* create(const std::string& filename, const Rect& rect);
 
 	void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
@@ -61,6 +61,18 @@ public:
 
 	void keepWeapon(Weapon* weapon);
 	void runFlipxWithWeapon(bool flipx, Weapon* weapon);
+
+	//CC_SYTHESIZE_RETAIN相当于同时得到getxxxAction和setxxxAction两个函数
+	//在hero1~hero4中都需要添加
+	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _walkAction, WalkAction);       
+	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _normalAction, NormalAction);
+	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _attackAction, AttackAction);
+
+
+	bool initWalkAction();
+	bool initNormalAction();
+	bool initAttackAction();
+
 };
 
 #endif

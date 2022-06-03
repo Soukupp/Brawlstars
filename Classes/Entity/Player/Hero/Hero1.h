@@ -45,7 +45,6 @@ using namespace cocos2d;
 class Hero1 : public Player
 {
 public:
-	float _direct = 1.0f;//表示方向
 
 	float _weaponAnchorPositionX = HERO1_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT;
 	float _weaponAnchorPositionY = HERO1_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT;
@@ -62,6 +61,7 @@ public:
 
 	void keepWeapon(Weapon* weapon);
 	void runFlipxWithWeapon(bool flipx, Weapon* weapon);
+
 };
 
 #endif

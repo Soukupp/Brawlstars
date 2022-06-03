@@ -13,7 +13,6 @@
 #include "MapLayer.h"
 #include "GameOverScene.h"
 
-
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -46,8 +45,9 @@ bool MapLayer::init()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	 
 
-	/*======================创建地图开始=======================*/
-	//log("1"); 
+	/*===================Tilemap相关设置开始==================*/
+
+
 	_tileMap = TMXTiledMap::create("map/Mapupdated.tmx");
 	
 	  
@@ -55,9 +55,11 @@ bool MapLayer::init()
 	//log("Map finished");
 	TMXObjectGroup* group = _tileMap->getObjectGroup("objects");
 	ValueMap spawnPoint = group->getObject("player");  // 新地图应该是player
-	 
+
 
 	/*=====================创建角色开始========================*/
+
+
 	int _playerX = spawnPoint["x"].asInt();
 	int _playerY = spawnPoint["y"].asInt();
 
@@ -80,7 +82,25 @@ bool MapLayer::init()
 	case 4:
 		break;
 	}
+
 	/*=====================创建角色结束========================*/
+
+	/*=====================测试对象创建开始=====================*/
+
+
+	int _ai7X = _tileMap->getObjectGroup("AI")->getObject("ai7").at("x").asInt();
+	int _ai7Y = _tileMap->getObjectGroup("AI")->getObject("ai7").at("y").asInt();
+	createHero(&_player1, &_weapon1, &_healthBar1, &_magicBar1,
+		Vec2(_ai7X, _ai7Y), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
+
+
+	/*=====================测试对象创建结束=====================*/
+
+	_player->initWalkAction();
+	_player->initNormalAction();
+	_player->initAttackAction();
+	_player->setScale(1.3);
+
 	setViewpointCenter(_player->getPosition());
 
 	_collidable = _tileMap->getLayer("collidable");  //障碍物collidable
@@ -88,15 +108,20 @@ bool MapLayer::init()
 	_tree = _tileMap->getLayer("tree");
 	//addChild(_tree, 3);
 
-
-
 	_watermonster = _tileMap->getLayer("watermonster");
 
 	setTouchEnabled(true);  // 开启触摸，必须继承于layer
 	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
 
 
-	/*======================控制键盘开始=======================*/
+    /*===================Tilemap相关设置结束===================*/
+
+
+	/*====================控制键盘开始==========================*/
+
+
+	_player->runAction(_player->getNormalAction());
+
 	auto keyboardListener = EventListenerKeyboard::create();// 建立键盘监听器keyboardListener
 
 	keyboardListener->onKeyPressed = CC_CALLBACK_2(MapLayer::onKeyPressed, this);  // 按键盘操作
@@ -108,14 +133,13 @@ bool MapLayer::init()
 
 	this->schedule(schedule_selector(MapLayer::update), 0.05); 
 	//每一帧都进入 update 函数，判断键盘有没有被按压住 参数（也可以控制行走速度）
-	/*======================控制键盘结束=======================*/
 
-	/*======================创建地图结束=======================*/
+
+	/*=====================控制键盘结束===========================*/
 
 
 	return true;
 }
-
 
 /****************************
 * Name ：MapLayer::onKeyPressed
@@ -124,9 +148,31 @@ bool MapLayer::init()
 ****************************/
 void MapLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
-	log("Key with keycode %d pressed", keyCode);
-	keyMap[keyCode] = true;
+	log("Key with keycode %d pressed++++++++++++++++++++++++++++++++", keyCode);
+	if (
+		keyCode== EventKeyboard::KeyCode:: KEY_RIGHT_ARROW||                 //忽略其他非功能按键
+		keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW ||
+		keyCode == EventKeyboard::KeyCode::KEY_UP_ARROW ||
+		keyCode == EventKeyboard::KeyCode::KEY_DOWN_ARROW ||
+		keyCode == EventKeyboard::KeyCode::KEY_W ||
+		keyCode == EventKeyboard::KeyCode::KEY_S ||
+		keyCode == EventKeyboard::KeyCode::KEY_A ||
+		keyCode == EventKeyboard::KeyCode::KEY_D 
+		) {
+		keyMap[keyCode] = true;
+        if (_player->_panel.getPlayerState() != MOVING) {
 
+			_player->_panel.setPlayerState(MOVING);
+
+		}
+
+		_player->_panel.setIfPlayNormalAnimationInUpdate2(false);        //调用normal动画有两个函数，为此函数和update2函数
+			                                                             //为避免 攻击->移动->（调用onKeyReleased）停下 这一过程和
+			                                                             //攻击->（调用update2）停下 这两个过程发生冲突，用_ifPlayNormalAnimationInUpdate2
+			                                                             //判断是否还要调用update2
+		_player->stopAllActions();
+		_player->runAction(_player->getWalkAction());
+	}
 }
 
 
@@ -138,8 +184,44 @@ void MapLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 void MapLayer::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
 
-	log("Key with keycode %d released", keyCode);
-	keyMap[keyCode] = false;
+	log("Key with keycode %d released*******************************", keyCode);
+	if (
+
+		keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW ||                   //忽略其他非功能按键
+		keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW ||
+		keyCode == EventKeyboard::KeyCode::KEY_UP_ARROW ||
+		keyCode == EventKeyboard::KeyCode::KEY_DOWN_ARROW ||
+		keyCode == EventKeyboard::KeyCode::KEY_W ||
+		keyCode == EventKeyboard::KeyCode::KEY_S ||
+		keyCode == EventKeyboard::KeyCode::KEY_A ||
+		keyCode == EventKeyboard::KeyCode::KEY_D
+
+		) {
+
+		keyMap[keyCode] = false;
+
+		if (                                  
+
+			_player->_panel.getPlayerState() != NORMAL                          //当从其他状态将要转成NORAL时
+			&& keyMap[EventKeyboard::KeyCode::KEY_RIGHT_ARROW] == false         //当所有功能按键都释放时
+			&& keyMap[EventKeyboard::KeyCode::KEY_LEFT_ARROW] == false
+	    	&& keyMap[EventKeyboard::KeyCode::KEY_UP_ARROW] == false
+			&& keyMap[EventKeyboard::KeyCode::KEY_DOWN_ARROW] == false
+			&& keyMap[EventKeyboard::KeyCode::KEY_W] == false
+			&& keyMap[EventKeyboard::KeyCode::KEY_S] == false
+			&& keyMap[EventKeyboard::KeyCode::KEY_A] == false
+			&& keyMap[EventKeyboard::KeyCode::KEY_D] == false
+
+			) {
+
+			_player->stopAllActions();
+			_player->_panel.setPlayerState(NORMAL);
+			_player->_panel.setIfPlayAttackAnimation(true); 
+			_player->runAction(_player->getNormalAction());
+
+		}
+	}
+
 }
 
 
@@ -155,24 +237,26 @@ void MapLayer::update(float delta)
 	if (keyMap[EventKeyboard::KeyCode::KEY_D] || keyMap[EventKeyboard::KeyCode::KEY_RIGHT_ARROW])
 	{
 		playerPos.x +=4;
-
+		_player->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
 		//_player->runAction(FlipX::create(false));
 		_player->runFlipxWithWeapon(false, _weapon);
 	}
 	else if (keyMap[EventKeyboard::KeyCode::KEY_A] || keyMap[EventKeyboard::KeyCode::KEY_LEFT_ARROW])
 	{
 		playerPos.x -=4;
-
+		_player->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
 		//_player->runAction(FlipX::create(true));
 		_player->runFlipxWithWeapon(true, _weapon);
 	}
 	else if (keyMap[EventKeyboard::KeyCode::KEY_W] || keyMap[EventKeyboard::KeyCode::KEY_UP_ARROW])
 	{
 		playerPos.y += 4;
+		_player->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
 	}
 	else if (keyMap[EventKeyboard::KeyCode::KEY_S] || keyMap[EventKeyboard::KeyCode::KEY_DOWN_ARROW])
 	{
 		playerPos.y -= 4;
+		_player->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
 	}
 	this->setPlayerPosition(playerPos);
 	this->setTreeOpacity(playerPos);
@@ -187,6 +271,27 @@ void MapLayer::update(float delta)
 bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 {
 	log("onTouchBegan"); //日志
+
+	//下面是针对近距离攻击英雄的示范，远距离英雄未实现
+	if (_player->_panel.getIfPlayAttackAnimation()&&_player->_panel.getPlayerState()!=MOVING) {        //保证不会实现连续攻击，不会实现一边位移一边攻击
+		
+		if (_player->_panel.getPlayerState() != ATTACK) {
+			_player->_panel.setPlayerState(ATTACK);
+			_player->stopAllActions();
+			_player->runAction(_player->getAttackAction());
+
+			_player->_panel.setIfPlayAttackAnimation(false);                                          //保证不会实现连续攻击
+			
+			_player->playerCollisionTest1(_player1, _weapon);                                                //检测攻击时是否碰到_player1
+		    //此处仅为测试，_player1是哪个对象需要后期遍历算法得到（目前_player1为ai7）
+
+			_player->_panel.setIfPlayNormalAnimationInUpdate2(true);                                  //使得可以调用update2
+
+			this->scheduleOnce(schedule_selector(MapLayer::update2), 1.0f);  //1.0f是动画时间，1.0f后进入update2执行一次normal动画
+		}
+
+	}
+	
 	return true;
 }
 
@@ -210,6 +315,8 @@ void MapLayer::onTouchMoved(Touch* touch, Event* event)
 void MapLayer::onTouchEnded(Touch* touch, Event* event)
 {
 	log("onTouchEnded");  //日志 
+
+
 
 	/*================获取触摸点的坐标，并转化为当前层模型坐标系==================*/
 	Vec2 touchLocation = touch->getLocation();  //获得在OpenGL坐标
@@ -268,13 +375,11 @@ void MapLayer::onTouchEnded(Touch* touch, Event* event)
 ****************************/
 void MapLayer::setPlayerPosition(Vec2 position)
 {
-	log("setPlayerPosition");
 	// 读取坐标
 	Vec2 tileCoord = this->tileCoordFromPosition(position);  //从像素点坐标转化为瓦片坐标
 
 	int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
 	//int tileGid_watermonster=_watermonster->getTileGIDAt(tileCoord);
-	log("success1");
 
 	// 碰撞检测
 	if (tileGid > 0) {
@@ -319,7 +424,6 @@ void MapLayer::setPlayerPosition(Vec2 position)
 ****************************/
 void MapLayer::setTreeOpacity(Vec2 pos)
 {
-	log("setTreeOpacity");
 	static std::vector<Vec2> playerVisionArea = {};
 	
 	for (int i = 0; i < playerVisionArea.size(); ++i)
@@ -356,11 +460,6 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 
 
 
-
-
-
-
-
 /****************************
 * Name ：MapLayer::tileCoordFromPosition
 * Summary ：从像素点坐标转化为瓦片坐标
@@ -368,7 +467,6 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 ****************************/
 Vec2 MapLayer::tileCoordFromPosition(Vec2 pos)
 {
-	log("tileCoordFromPosition");
 	int x = pos.x / _tileMap->getTileSize().width;
 	int y = ((_tileMap->getMapSize().height * _tileMap->getTileSize().height) - pos.y) / _tileMap->getTileSize().height;
 	return Vec2(x, y);
@@ -383,9 +481,9 @@ Vec2 MapLayer::tileCoordFromPosition(Vec2 pos)
 ****************************/
 void MapLayer::setViewpointCenter(Vec2 position)
 {
-	log("setViewpointCenter"); //日志
+	//log("setViewpointCenter"); //日志
 
-	log("position (%f ,%f) ", position.x, position.y);
+	//log("position (%f ,%f) ", position.x, position.y);
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	//可以防止，视图左边超出屏幕之外。
@@ -402,11 +500,11 @@ void MapLayer::setViewpointCenter(Vec2 position)
 
 	//使精灵处于屏幕中心，移动地图目标位置
 	Vec2 pointB = Vec2(x, y);
-	log("目标位置 (%f ,%f) ", pointB.x, pointB.y);
+	//log("目标位置 (%f ,%f) ", pointB.x, pointB.y);
 
 	//地图移动偏移量
 	Vec2 offset = pointA - pointB;
-	log("offset (%f ,%f) ", offset.x, offset.y);
+	//log("offset (%f ,%f) ", offset.x, offset.y);
 	this->setPosition(offset);
 
 }
@@ -451,4 +549,29 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 	addChild(*magicBar);
 
 	(**hero).setPositionWithAll(position, *weapon, *healthBar, *magicBar);
+
+
+}
+
+/****************************
+* Name ：MapLayer::update2
+* Summary ：实现在attack动画执行后可以执行normal动画
+* return ：
+****************************/
+/*解释：由于执行normal动画如果只添加在onKeyRealeased，
+       而鼠标点击开始执行attack动画，如果在鼠标结束后加入normal动画
+	   会屏蔽attack动画。如果attack和normal都放在onTouchEnded也
+	   会造成attack动画被屏蔽为了。解决这个问题，只能延时调用update2*/
+void MapLayer::update2(float delta)
+{
+
+	if (_player->_panel.getIfPlayNormalAnimationInUpdate2())
+	{
+		_player->_panel.setPlayerState(NORMAL);
+		_player->_panel.setIfPlayAttackAnimation(true);
+		if (_player->_panel.getPlayerState() == NORMAL) {
+			_player->stopAllActions();
+			_player->runAction(_player->getNormalAction());
+		}
+	}
 }
