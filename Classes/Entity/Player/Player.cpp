@@ -1,27 +1,28 @@
-//×÷Õß : ÍõÅô
-//ÈÕÆÚ : 2022-5-18
+//ä½œè€… : ç‹é¹
+//æ—¥æœŸ : 2022-5-18
 #include "Player.h"
+#include <SimpleAudioEngine.h>
 
 USING_NS_CC;
 
 /*===============================================================================*/
-/*==============================ÒÔÏÂÊÇ´´½¨Óë³õÊ¼»¯===============================*/
+/*==============================ä»¥ä¸‹æ˜¯åˆ›å»ºä¸åˆå§‹åŒ–===============================*/
 /*===============================================================================*/
 
 /****************************
-* Name £ºPlayer::init
-* Summary £ºÈËÎï³õÊ¼»¯
-* return £º
+* Name ï¼šPlayer::init
+* Summary ï¼šäººç‰©åˆå§‹åŒ–
+* return ï¼š
 ****************************/
 void Player::initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate)
 {
-	//³õÊ¼»¯Ãæ°å
+	//åˆå§‹åŒ–é¢æ¿
 	_panel.init(maxHealthPoint, attack, defence, skillAttackRate, attackRate);
 }
 /****************************
-* Name £ºPlayer::init
-* Summary £ºÈËÎï³õÊ¼»¯
-* return £º
+* Name ï¼šPlayer::init
+* Summary ï¼šäººç‰©åˆå§‹åŒ–
+* return ï¼š
 ****************************/
 void Player::initPlayer(Panel& panel)
 {
@@ -29,9 +30,9 @@ void Player::initPlayer(Panel& panel)
 }
 
 /****************************
-* Name £ºPlayer::create
-* Summary £º´´½¨ÈËÎï
-* return £ºÈËÎïÖ¸Õë
+* Name ï¼šPlayer::create
+* Summary ï¼šåˆ›å»ºäººç‰©
+* return ï¼šäººç‰©æŒ‡é’ˆ
 ****************************/
 Player* Player::create(const std::string& filename)
 {
@@ -45,9 +46,9 @@ Player* Player::create(const std::string& filename)
 	return nullptr;
 }
 /****************************
-* Name £ºPlayer::getPanel()
-* Summary £º»ñÈ¡Ãæ°å
-* return £ºÃæ°åÖ¸Õë
+* Name ï¼šPlayer::getPanel()
+* Summary ï¼šè·å–é¢æ¿
+* return ï¼šé¢æ¿æŒ‡é’ˆ
 ****************************/
 Panel* Player::getPanel()
 {
@@ -55,22 +56,22 @@ Panel* Player::getPanel()
 }
 
 /*===============================================================================*/
-/*================================ÒÔÏÂÊÇ½ÇÉ«ĞĞÎª=================================*/
+/*================================ä»¥ä¸‹æ˜¯è§’è‰²è¡Œä¸º=================================*/
 /*===============================================================================*/
 
 /****************************
-* Name £ºPlayer::launchAnAttack()
-* Summary £º·¢Æğ¹¥»÷(Çë´«Èë "attack" »ò "skill")
-* return £º
+* Name ï¼šPlayer::launchAnAttack()
+* Summary ï¼šå‘èµ·æ”»å‡»(è¯·ä¼ å…¥ "attack" æˆ– "skill")
+* return ï¼š
 ****************************/
 void Player::launchAnAttack(Weapon* weapon, const std::string& attackType)
 {
-	//¸ù¾İ²»Í¬½ÇÉ«×öÁË²»Í¬Éè¼Æ
+	//æ ¹æ®ä¸åŒè§’è‰²åšäº†ä¸åŒè®¾è®¡
 	if (attackType == "attack")
 	{
 		if (weapon->launchAnAttack(_panel.doAttack()))
 		{
-			restoreMagic();
+			restoreMagic();                           //æ¸¸æˆæœºåˆ¶ï¼šå‘åŠ¨è¿›æ”»å°±è¡¥å……è“é‡
 		}
 	}
 	else if (attackType == "skill")
@@ -82,38 +83,38 @@ void Player::launchAnAttack(Weapon* weapon, const std::string& attackType)
 	}
 }
 /****************************
-* Name £ºPlayer::hitPlayer
-* Summary £º¶Ô½ÇÉ«½øĞĞ¹¥»÷
-* return £ºÔì³ÉµÄÉËº¦
+* Name ï¼šPlayer::hitPlayer
+* Summary ï¼šå¯¹è§’è‰²è¿›è¡Œæ”»å‡»
+* return ï¼šé€ æˆçš„ä¼¤å®³
 ****************************/
 int Player::hitPlayer(int attack)
 {
-	//½áËãÉËº¦ºó¿ÉÒÔÍ¨¹ıpanelµÄgetIsSurvive»ñÈ¡ÊÇ·ñ´æ»î
+	//ç»“ç®—ä¼¤å®³åå¯ä»¥é€šè¿‡panelçš„getIsSurviveè·å–æ˜¯å¦å­˜æ´»
 	return _panel.hit(attack);
 }
 /****************************
-* Name £ºPlayer::restoreMagic
-* Summary £º²¹³äÀ¶Á¿
-* return £º
+* Name ï¼šPlayer::restoreMagic
+* Summary ï¼šè¡¥å……è“é‡
+* return ï¼š
 ****************************/
 void Player::restoreMagic()
 {
-	//Èı´Î»ØÂú
+	//ä¸‰æ¬¡å›æ»¡
 	_panel.restoreMagic(34);
 }
 /****************************
-* Name £ºPlayer::magicIsFull()const
-* Summary £ºÀ¶Á¿ÒÑÂú
-* return £ºtrue:Âú false:Î´Âú
+* Name ï¼šPlayer::magicIsFull()const
+* Summary ï¼šè“é‡å·²æ»¡
+* return ï¼štrue:æ»¡ false:æœªæ»¡
 ****************************/
 bool Player::magicIsFull()const
 {
 	return _panel.getMagicPoint() == _panel.getMaxMagicPoint();
 }
 /****************************
-* Name £ºPlayer::useMagic
-* Summary £ºÊ¹ÓÃÀ¶
-* return £ºtrue:Ê¹ÓÃ³É¹¦ false:Ê¹ÓÃÊ§°Ü
+* Name ï¼šPlayer::useMagic
+* Summary ï¼šä½¿ç”¨è“
+* return ï¼štrue:ä½¿ç”¨æˆåŠŸ false:ä½¿ç”¨å¤±è´¥
 ****************************/
 bool Player::useMagic()
 {
@@ -125,18 +126,18 @@ bool Player::useMagic()
 	return false;
 }
 /****************************
-* Name £ºPlayer::getHealthPercent
-* Summary £º»ñÈ¡µ±Ç°ÑªÁ¿°Ù·Ö±È
-* return £ºÑªÁ¿°Ù·Ö±È
+* Name ï¼šPlayer::getHealthPercent
+* Summary ï¼šè·å–å½“å‰è¡€é‡ç™¾åˆ†æ¯”
+* return ï¼šè¡€é‡ç™¾åˆ†æ¯”
 ****************************/
 int Player::getHealthPercent()
 {
 	return PLAYER_BLOOD_PERCENT;
 }
 /****************************
-* Name £ºPlayer::getMagicPercent
-* Summary £º»ñÈ¡µ±Ç°À¶Á¿°Ù·Ö±È
-* return £ºÀ¶Á¿°Ù·Ö±È
+* Name ï¼šPlayer::getMagicPercent
+* Summary ï¼šè·å–å½“å‰è“é‡ç™¾åˆ†æ¯”
+* return ï¼šè“é‡ç™¾åˆ†æ¯”
 ****************************/
 int Player::getMagicPercent()
 {
@@ -144,22 +145,22 @@ int Player::getMagicPercent()
 }
 
 /*===============================================================================*/
-/*==================================ÒÔÏÂÊÇÒÆ¶¯Ïà¹Ø===============================*/
+/*==================================ä»¥ä¸‹æ˜¯ç§»åŠ¨ç›¸å…³===============================*/
 /*===============================================================================*/
 
 /****************************
-* Name £ºPlayer::keepWeapon
-* Summary £º±£³ÖÎäÆ÷Î»ÖÃ
-* return £º
+* Name ï¼šPlayer::keepWeapon
+* Summary ï¼šä¿æŒæ­¦å™¨ä½ç½®
+* return ï¼š
 ****************************/
 void Player::keepWeapon(Weapon* weapon)
 {
 	weapon->setPosition(this->getPosition());
 }
 /****************************
-* Name £ºPlayer::runFlipxWithWeapon
-* Summary £º´ø×ÅÎäÆ÷·­×ª
-* return £º
+* Name ï¼šPlayer::runFlipxWithWeapon
+* Summary ï¼šå¸¦ç€æ­¦å™¨ç¿»è½¬
+* return ï¼š
 ****************************/
 void Player::runFlipxWithWeapon(bool flipx,Weapon* weapon)
 {
@@ -175,36 +176,36 @@ void Player::runFlipxWithWeapon(bool flipx,Weapon* weapon)
 }
 
 /****************************
-* Name £ºPlayer::keepHealthBar()
-* Summary £º±£³ÖÑªÌõÎ»ÖÃ
-* return £º
+* Name ï¼šPlayer::keepHealthBar()
+* Summary ï¼šä¿æŒè¡€æ¡ä½ç½®
+* return ï¼š
 ****************************/
 void Player::keepHealthBar(Slider* healthBar)
 {
 	healthBar->setPosition(PLAYER_HEALTHBAR_POSITION);
 }
 /****************************
-* Name £ºPlayer::keepMagicBar
-* Summary £º±£³ÖÀ¶ÌõÎ»ÖÃ
-* return £º
+* Name ï¼šPlayer::keepMagicBar
+* Summary ï¼šä¿æŒè“æ¡ä½ç½®
+* return ï¼š
 ****************************/
 void Player::keepMagicBar(Slider* magicBar)
 {
 	magicBar->setPosition(PLAYER_MAGICBAR_POSITION);
 }
 /****************************
-* Name £ºPlayer::keepLevelText
-* Summary £º±£³ÖµÈ¼¶Î»ÖÃ
-* return £º
+* Name ï¼šPlayer::keepLevelText
+* Summary ï¼šä¿æŒç­‰çº§ä½ç½®
+* return ï¼š
 ****************************/
 void Player::keepLevelText(cocos2d::Label* levelText, Slider* bar)
 {
 	levelText->setPosition(PLAYER_LEVELTEXT_POSITION);
 }
 /****************************
-* Name £ºPlayer::setPositionWithAll
-* Summary £ºÕûÌåÒÆ¶¯
-* return £º
+* Name ï¼šPlayer::setPositionWithAll
+* Summary ï¼šæ•´ä½“ç§»åŠ¨
+* return ï¼š
 ****************************/
 void Player::setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar, cocos2d::Label* levelText)
 {
@@ -216,13 +217,13 @@ void Player::setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider*
 }
 
 /*===============================================================================*/
-/*==================================ÒÔÏÂÊÇ×´Ì¬Ïà¹Ø===============================*/
+/*==================================ä»¥ä¸‹æ˜¯çŠ¶æ€ç›¸å…³===============================*/
 /*===============================================================================*/
 
 /****************************
-* Name £ºPlayer::refreshHealthBar()
-* Summary £º¸üĞÂÑªÌõ
-* return £º
+* Name ï¼šPlayer::refreshHealthBar()
+* Summary ï¼šæ›´æ–°è¡€æ¡
+* return ï¼š
 ****************************/
 void Player::refreshHealthBar(Slider* healthBar)
 {
@@ -230,9 +231,9 @@ void Player::refreshHealthBar(Slider* healthBar)
 	keepHealthBar(healthBar);
 }
 /****************************
-* Name £ºPlayer::refreshMagicBar()
-* Summary £º¸üĞÂÀ¶Ìõ
-* return £º
+* Name ï¼šPlayer::refreshMagicBar()
+* Summary ï¼šæ›´æ–°è“æ¡
+* return ï¼š
 ****************************/
 void Player::refreshMagicBar(Slider* magicBar)
 {
@@ -240,18 +241,47 @@ void Player::refreshMagicBar(Slider* magicBar)
 	keepMagicBar(magicBar);
 }
 /****************************
-* Name £ºPlayer::refreshHealthBar()
-* Summary £º¸üĞÂÈËÎï
-* return £º
+* Name ï¼šPlayer::refreshHealthBar()
+* Summary ï¼šæ›´æ–°äººç‰©
+* return ï¼š
 ****************************/
 void Player::refreshPlayer()
 {
 
 }
+
 /****************************
-* Name £ºPlayer::upgrade()
-* Summary £ºÈËÎïÉı¼¶
-* return £º
+* Name ï¼špalyerCollisionTest1
+* Summary ï¼šè¿‘è·ç¦»æ”»å‡»ç¢°æ’æ£€æµ‹
+* å‚æ•°è¯´æ˜ : target : æ”»å‡»å¯¹è±¡
+*           weapon : æ­¦å™¨å¯¹è±¡
+****************************/
+bool Player::playerCollisionTest1(Player* target,Weapon* weapon)
+{
+	float targetX = target->getPosition().x;                    //ç›®æ ‡ä½ç½®X
+	float targetY = target->getPosition().y;                    //ç›®æ ‡ä½ç½®Y
+    float targetWidth = target->getContentSize().width;         //ç›®æ ‡çš„å®½åº¦
+	float targetHeight = target->getContentSize().height;       //ç›®æ ‡çš„é«˜åº¦
+	float weaponWidth = weapon->getContentSize().width;         //æ­¦å™¨çš„å®½åº¦
+
+	if (fabs(PLAYER_WEAPON_POSITION_X - targetX) < (targetWidth / 2 + weaponWidth)) {           //èŒƒå›´åˆ¤å®š
+		if (fabs(PLAYER_WEAPON_POSITION_Y-16 - targetY) < targetHeight / 3) {
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
+			return true;
+		}
+		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
+			return false;
+	}
+	else {
+		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
+		return false;
+	}
+}
+
+/****************************
+* Name ï¼šPlayer::upgrade()
+* Summary ï¼šäººç‰©å‡çº§
+* return ï¼š
 ****************************/
 void Player::upgrade(cocos2d::Label* levelText, Slider* bar)
 {

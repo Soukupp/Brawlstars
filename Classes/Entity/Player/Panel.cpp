@@ -1,5 +1,10 @@
 //作者 : 王鹏
 //日期 : 2022-5-18
+
+//修改 : 束赫
+//日期 : 2022-6-3
+//实现 : 新增判断变量和相应函数
+
 #include "Panel.h"
 
 USING_NS_CC;
@@ -274,4 +279,81 @@ int Panel::restoreMagic(int magic)
 		_magicPoint = _maxMagicPoint;
 	}
 	return magic;
+}
+/****************************
+* Name ：Panel::getPlayerState
+* Summary ：获得player的状态（共五种）
+* return ：状态对应的枚举量
+*         具体状态和枚举量见Panel.h
+****************************/
+int Panel::getPlayerState()const
+{
+	return _playerstase;
+}
+
+/****************************
+* Name ：Panel::setPlayerState
+* Summary ：设置player的状态（共五种）
+           具体状态和枚举量见Panel.h
+****************************/
+void Panel::setPlayerState(int state)
+{
+	switch (state) {
+	case NORMAL:
+		_playerstase = NORMAL;
+		break;
+	case MOVING:
+		_playerstase = MOVING;
+		break;
+	case ATTACK:
+		_playerstase = ATTACK;
+		break;
+	case HURT:
+		_playerstase = HURT;
+		break;
+	case SKILL:
+		_playerstase = SKILL;
+		break;
+	case DEAD:
+		_playerstase = DEAD;
+		break;
+	}
+}
+
+/****************************
+* Name ：Panel::getIfPlayAttackAnimation
+* Summary ：获得当前是否播放attack动画
+* return ： _ifPlayAttackAnimation
+****************************/
+bool Panel::getIfPlayAttackAnimation()const
+{
+	return _ifPlayAttackAnimation;
+}
+/****************************
+* Name ：Panel::setIfPlayAttackAnimation
+* Summary : 设置当前是否播放攻击动画
+****************************/
+void Panel::setIfPlayAttackAnimation(bool ifplay)
+{
+	_ifPlayAttackAnimation = ifplay;
+}
+
+/****************************
+* Name ：Panel::getIfPlayNormalAnimationInUpdate2
+* Summary ：获得当前是否在update2中播放normal动画
+* return ：_ifPlayNormalAnimationInUpdate2
+****************************/
+bool Panel::getIfPlayNormalAnimationInUpdate2()const
+{
+	return _ifPlayNormalAnimationInUpdate2;
+}
+
+/****************************
+* Name ：Panel::getIfPlayNormalAnimationInUpdate2
+* Summary : 设置当前是否在update2中播放normal动画
+****************************/
+void Panel::setIfPlayNormalAnimationInUpdate2(bool ifplay)
+{
+	_ifPlayNormalAnimationInUpdate2 = ifplay;
+
 }

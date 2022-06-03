@@ -1,6 +1,6 @@
 #pragma once
-//×÷Õß : ÍõÅô
-//ÈÕÆÚ : 2022-5-18
+//ä½œè€… : ç‹é¹
+//æ—¥æœŸ : 2022-5-18
 #ifndef __PANEL_H__
 #define __PANEL_H__
 
@@ -9,23 +9,40 @@
 
 #include "cocos2d.h"
 
+enum playerstates {               //äººç‰©çŠ¶æ€çš„æšä¸¾
+    NORMAL,                       //æ­£å¸¸çŠ¶æ€
+    MOVING,                       //ç§»åŠ¨çŠ¶æ€
+    ATTACK,                       //æ”»å‡»çŠ¶æ€
+    HURT,                         //å—ä¼¤çŠ¶æ€
+    SKILL,                        //å¤§æ‹›çŠ¶æ€
+    DEAD                          //æ­»äº¡çŠ¶æ€
+};
+
 class Panel
 {
 private:
-    int _maxHealthPoint;//×î´óÑªÁ¿ 
-    int _maxMagicPoint;//×î´óÀ¶Á¿
-    int _attack;//¹¥»÷Á¦ 
-    int _defence;//·ÀÓùÁ¦ 
-	float _attackRate;//ÆÕ¹¥±¶ÂÊ 
-	float _skillRate;//¼¼ÄÜ±¶ÂÊ 
-    int _healthPoint;//µ±Ç°ÑªÁ¿ 
-    int _magicPoint;//µ±Ç°À¶Á¿ 
+    int _maxHealthPoint;           //æœ€å¤§è¡€é‡ 
+    int _maxMagicPoint;            //æœ€å¤§è“é‡
+    int _attack;                   //æ”»å‡»åŠ› 
+    int _defence;                  //é˜²å¾¡åŠ› 
+	float _attackRate;             //æ™®æ”»å€ç‡ 
+	float _skillAttackRate;        //æŠ€èƒ½å€ç‡ 
+    int _healthPoint;              //å½“å‰è¡€é‡ 
+    int _magicPoint;               //å½“å‰è“é‡   
 
-    bool _survive;//ÊÇ·ñ´æ»î
-	bool _canBeSeen;//ÊÇ·ñ¿ÉÊÓ(ÀıÈç ¶ã²İ´Ô) 
+    bool _survive;                 //æ˜¯å¦å­˜æ´»
+	bool _canBeSeen;               //æ˜¯å¦å¯è§†(ä¾‹å¦‚ èº²è‰ä¸›) 
+
+    int _playerstase;              //è§’è‰²çš„çŠ¶æ€
+
+    bool _ifPlayAttackAnimation = true;               //å½“å‰æ˜¯å¦æ’­æ”¾æ”»å‡»åŠ¨ç”»
+    bool _ifPlayNormalAnimationInUpdate2 = false;     //å½“å‰æ˜¯å¦åœ¨update2ä¸­æ’­æ”¾normalåŠ¨ç”»
+  
 public:
     void init(int maxHealthPoint, int attack, int defence, float skillRate, float attackRate, int maxMagicPoint = 100);
-    //Ö±½Ó¶ÁÈ¡Ô­Ê¼Ãæ°å
+
+    //ç›´æ¥è¯»å–åŸå§‹é¢æ¿
+
     int getHealthPoint()const;
     int getMaxHealthPoint()const;
     int getMagicPoint()const;
@@ -39,7 +56,11 @@ public:
     bool getIsSurvive()const;
     bool getCanBeSeen()const;
 
-   //ÉèÖÃÃæ°å
+    int getPlayerState()const;
+    bool getIfPlayAttackAnimation()const;
+    bool getIfPlayNormalAnimationInUpdate2()const;
+
+   //è®¾ç½®é¢æ¿
     void setMaxHealthPoint(int maxHealthPoint);
     void setHealthPoint(int healthPoint);
     void setMagicPoint(int magicPoint);
@@ -50,14 +71,19 @@ public:
     
     void setIsSurvive(bool survive);
     void setCanBeSeen(bool canBeSeen);
-    //·¢¶¯¹¥»÷Ê±½áËãÊä³öµÄÉËº¦
+
+    void setPlayerState(int state);
+    void setIfPlayAttackAnimation(bool ifplay);
+    void setIfPlayNormalAnimationInUpdate2(bool ifplay);
+
+    //å‘åŠ¨æ”»å‡»æ—¶ç»“ç®—è¾“å‡ºçš„ä¼¤å®³
     int doAttack();
     int doSkillAttack();
-    //ÊÜµ½¹¥»÷Ê±½áËãÊÜµ½µÄÉËº¦
+    //å—åˆ°æ”»å‡»æ—¶ç»“ç®—å—åˆ°çš„ä¼¤å®³
     int hit(int attack);
-    //½áËãÊÜµ½µÄÖÎÁÆ
+    //ç»“ç®—å—åˆ°çš„æ²»ç–—
     int treat(int healthPoint);
-    //»ØÀ¶
+    //å›è“
     int restoreMagic(int magic);
 };
 

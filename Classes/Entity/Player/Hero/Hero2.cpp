@@ -1,18 +1,23 @@
-//×÷Õß : ÍõÅô
-//ÈÕÆÚ : 2022-5-23
+//ä½œè€… : çŽ‹é¹
+//æ—¥æœŸ : 2022-5-23
+
+//ä¿®æ”¹ : æŸèµ«
+//æ—¥æœŸ : 2022-6-3
+//å®žçŽ° : äººç‰©åŠ¨ç”»åŠŸèƒ½å‡½æ•°æŽ¥å£
+
 #include "Hero2.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
 
 /*===============================================================================*/
-/*=============================ÒÔÏÂÊÇ´´½¨Óë³õÊ¼»¯================================*/
+/*=============================ä»¥ä¸‹æ˜¯åˆ›å»ºä¸Žåˆå§‹åŒ–================================*/
 /*===============================================================================*/
 
 /****************************
-* Name £ºcreate
-* Summary £º´´½¨
-* return £ºheroÖ¸Õë
+* Name ï¼šcreate
+* Summary ï¼šåˆ›å»º
+* return ï¼šheroæŒ‡é’ˆ
 ****************************/
 Hero2* Hero2::create(const std::string& filename)
 {
@@ -26,9 +31,9 @@ Hero2* Hero2::create(const std::string& filename)
 	return nullptr;
 }
 /****************************
-* Name £ºcreate
-* Summary £º´´½¨
-* return £ºheroÖ¸Õë
+* Name ï¼šcreate
+* Summary ï¼šåˆ›å»º
+* return ï¼šheroæŒ‡é’ˆ
 ****************************/
 Hero2* Hero2::create(const std::string& filename, const Rect& rect)
 {
@@ -42,36 +47,36 @@ Hero2* Hero2::create(const std::string& filename, const Rect& rect)
 	return nullptr;
 }
 /****************************
-* Name £ºinitPlayer
-* Summary £º³õÊ¼»¯
-* return £º
+* Name ï¼šinitPlayer
+* Summary ï¼šåˆå§‹åŒ–
+* return ï¼š
 ****************************/
 void Hero2::initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate)
 {
-	//³õÊ¼»¯Ãæ°å
+	//åˆå§‹åŒ–é¢æ¿
 	_panel.init(maxHealthPoint, attack, defence, skillAttackRate, attackRate);
 	this->setAnchorPoint(Vec2(0.5f, 0.5f));
 }
 /****************************
-* Name £ºinitPlayer
-* Summary £º°´Ä¬ÈÏÖµ³õÊ¼»¯
-* return £º
+* Name ï¼šinitPlayer
+* Summary ï¼šæŒ‰é»˜è®¤å€¼åˆå§‹åŒ–
+* return ï¼š
 ****************************/
 void Hero2::initPlayer()
 {
-	//³õÊ¼»¯Ãæ°å
+	//åˆå§‹åŒ–é¢æ¿
 	_panel.init(HERO2_INIT_MAXHEALTHPOINT, HERO2_INIT_ATTACK, HERO2_INIT_DEFENCE, HERO2_INIT_SKILLRATE, HERO2_INIT_ATTACKRATE);
 	this->setAnchorPoint(Vec2(0.5f, 0.5f));
 }
 
 /*===============================================================================*/
-/*============================ÒÔÏÂÊÇ·¢¶¯¹¥»÷Óë¶¯»­===============================*/
+/*============================ä»¥ä¸‹æ˜¯å‘åŠ¨æ”»å‡»ä¸ŽåŠ¨ç”»===============================*/
 /*===============================================================================*/
 
 /****************************
-* Name £ºlaunchAnAttack
-* Summary £º·¢¶¯¹¥»÷ ÊäÈë"attack" "skill" µ÷ÓÃ
-* return £º
+* Name ï¼šlaunchAnAttack
+* Summary ï¼šå‘åŠ¨æ”»å‡» è¾“å…¥"attack" "skill" è°ƒç”¨
+* return ï¼š
 ****************************/
 void Hero2::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar)
 {
@@ -129,13 +134,13 @@ void Hero2::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider
 }
 
 /*===============================================================================*/
-/*=======================ÒÔÏÂÊÇUI¡¢ÎäÆ÷µÈµÄÎ»ÖÃ±£³Ö¸úËæ==========================*/
+/*=======================ä»¥ä¸‹æ˜¯UIã€æ­¦å™¨ç­‰çš„ä½ç½®ä¿æŒè·Ÿéš==========================*/
 /*===============================================================================*/
 
 /****************************
-* Name £ºkeepHealthBar
-* Summary £º±£³ÖÑªÌõÎ»ÖÃ
-* return £º
+* Name ï¼škeepHealthBar
+* Summary ï¼šä¿æŒè¡€æ¡ä½ç½®
+* return ï¼š
 ****************************/
 void Hero2::keepHealthBar(Slider* healthBar)
 {
@@ -143,36 +148,36 @@ void Hero2::keepHealthBar(Slider* healthBar)
 	//_healthBar->setPosition(position);
 }
 /****************************
-* Name £ºkeepMagicBar
-* Summary £º±£³ÖÀ¶ÌõÎ»ÖÃ
-* return £º
+* Name ï¼škeepMagicBar
+* Summary ï¼šä¿æŒè“æ¡ä½ç½®
+* return ï¼š
 ****************************/
 void Hero2::keepMagicBar(Slider* magicBar)
 {
 	magicBar->setPosition(HERO2_MAGICBAR_POSITION);
 }
 /****************************
-* Name £ºkeepWeapon
-* Summary £º±£³ÖÎäÆ÷Î»ÖÃ
-* return £º
+* Name ï¼škeepWeapon
+* Summary ï¼šä¿æŒæ­¦å™¨ä½ç½®
+* return ï¼š
 ****************************/
 void Hero2::keepWeapon(Weapon* weapon)
 {
 	weapon->setPosition(HERO2_WEAPON_POSITION_X, HERO2_WEAPON_POSITION_Y);
 }
 /****************************
-* Name £ºkeepLevelText
-* Summary £º±£³ÖµÈ¼¶Î»ÖÃ
-* return £º
+* Name ï¼škeepLevelText
+* Summary ï¼šä¿æŒç­‰çº§ä½ç½®
+* return ï¼š
 ****************************/
 void Hero2::keepLevelText(cocos2d::Label* levelText, Slider* bar)
 {
 	levelText->setPosition(HERO2_LEVELTEXT_POSITION);
 }
 /****************************
-* Name £ºrunFlipxWithWeapon
-* Summary £º´ø×ÅÎäÆ÷·­×ª
-* return £º
+* Name ï¼šrunFlipxWithWeapon
+* Summary ï¼šå¸¦ç€æ­¦å™¨ç¿»è½¬
+* return ï¼š
 ****************************/
 void Hero2::runFlipxWithWeapon(bool flipx, Weapon* weapon)
 {
@@ -189,9 +194,91 @@ void Hero2::runFlipxWithWeapon(bool flipx, Weapon* weapon)
 	weapon->runAction(FlipX::create(flipx));
 }
 /****************************
-* Name £ºsetPositionWithAll
-* Summary £ºÕûÌåÒÆ¶¯
-* return £º
+* Name ï¼šinitWalkAction
+* Summary ï¼šåˆå§‹åŒ–_walkAction(Actionåž‹å˜é‡)
+****************************/
+bool Hero2::initWalkAction()
+{
+
+	auto* frameCache = CCSpriteFrameCache::getInstance();
+	frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Walk.plist", "Character/Hero1/hero1_Walk.png");
+
+	Vector<CCSpriteFrame*> playerFrameArray;
+	for (int i = 0; i < 6; i++)
+	{
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("adventurer-run-0%d.png", i)->getCString());
+		playerFrameArray.pushBack(frame);
+	}
+
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+
+	this->setWalkAction(RepeatForever::create(Animate::create(animation)));
+
+	if (_walkAction != nullptr)
+		return true;
+	else
+		return false;
+
+}
+
+/****************************
+* Name ï¼šinitNormalAction
+* Summary ï¼šåˆå§‹åŒ–_normalAction(Actionåž‹å˜é‡)
+****************************/
+bool Hero2::initNormalAction()
+{
+
+	auto* frameCache = CCSpriteFrameCache::getInstance();
+	frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Idle.plist", "Character/Hero1/hero1_Idle.png");
+
+	Vector<CCSpriteFrame*> playerFrameArray;
+	for (int i = 1; i < 5; i++)
+	{
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("adventurer-idle%d.png", i)->getCString());
+		playerFrameArray.pushBack(frame);
+	}
+
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+	this->setNormalAction(RepeatForever::create(Animate::create(animation)));
+
+	if (_normalAction != nullptr)
+		return true;
+	else
+		return false;
+
+}
+/****************************
+* Name ï¼šinitAttackAction
+* Summary ï¼šåˆå§‹åŒ–_attackAction(Actionåž‹å˜é‡)
+****************************/
+bool Hero2::initAttackAction()
+{
+
+	auto* frameCache = CCSpriteFrameCache::getInstance();
+	frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Attack.plist", "Character/Hero1/hero1_Attack.png");
+
+	Vector<CCSpriteFrame*> playerFrameArray;
+	for (int i = 1; i < 13; i++)
+	{
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("adventurer-attack%d.png", i)->getCString());
+		playerFrameArray.pushBack(frame);
+	}
+
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+	animation->setLoops(1);
+	auto* animate = Animate::create(animation);
+	this->setAttackAction(animate);
+
+	if (_normalAction != nullptr)
+		return true;
+	else
+		return false;
+}
+
+/****************************
+* Name ï¼šsetPositionWithAll
+* Summary ï¼šæ•´ä½“ç§»åŠ¨
+* return ï¼š
 ****************************/
 void Hero2::setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar, cocos2d::Label* levelText)
 {
@@ -203,13 +290,13 @@ void Hero2::setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* 
 }
 
 /*===============================================================================*/
-/*==================================ÒÔÏÂÊÇÉý¼¶===================================*/
+/*==================================ä»¥ä¸‹æ˜¯å‡çº§===================================*/
 /*===============================================================================*/
 
 /****************************
-* Name £ºHero2::upgrade()
-* Summary £ºÈËÎïÉý¼¶
-* return £º
+* Name ï¼šHero2::upgrade()
+* Summary ï¼šäººç‰©å‡çº§
+* return ï¼š
 ****************************/
 void Hero2::upgrade(cocos2d::Label* levelText, Slider* bar)
 {
@@ -225,3 +312,4 @@ void Hero2::upgrade(cocos2d::Label* levelText, Slider* bar)
 		this->keepLevelText(levelText, bar);
 	}
 }
+

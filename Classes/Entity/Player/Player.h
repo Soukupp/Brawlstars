@@ -1,6 +1,6 @@
 #pragma once
-//×÷Õß : ÍõÅô
-//ÈÕÆÚ : 2022-5-18
+//ä½œè€… : ç‹é¹
+//æ—¥æœŸ : 2022-5-18
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
@@ -9,6 +9,7 @@
 #include "Panel.h"
 #include "Entity/Weapon/Weapon.h"
 #include "../ui/UISlider.h"
+#include "Entity/Define/Definitions.h"
 //#include "HealthBar.h"
 
 using namespace cocos2d::ui;
@@ -25,40 +26,40 @@ using namespace cocos2d::ui;
 #define PLAYER_MAGIC_PERCENT 100 * float(_panel.getMagicPoint()) / float(_panel.getMaxMagicPoint())
 /**/
 
-/*==============================ÒÔÏÂÊÇÄãĞèÒªĞŞ¸ÄµÄºê¶¨Òå=================================*/
+/*==============================ä»¥ä¸‹æ˜¯ä½ éœ€è¦ä¿®æ”¹çš„å®å®šä¹‰=================================*/
 
-//Ãæ³¯ÓÒÊ± ÎäÆ÷µÄºáÏòÃªµã
+//é¢æœå³æ—¶ æ­¦å™¨çš„æ¨ªå‘é”šç‚¹
 #define PLAYER_YOU_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT (0.0f)
-//ÎäÆ÷µÄ×İÏòÃªµã
+//æ­¦å™¨çš„çºµå‘é”šç‚¹
 #define PLAYER_YOU_WEAPON_ANCHOR_POSITION_Y (1.0f)
-//Ãæ³¯ÓÒÊ± ÎäÆ÷Ïà¶ÔÈËÎïµÄºáÏòÎ»ÖÃ
+//é¢æœå³æ—¶ æ­¦å™¨ç›¸å¯¹äººç‰©çš„æ¨ªå‘ä½ç½®
 #define PLAYER_YOU_WEAPON_POSITION_X (this->getContentSize().width / 2)
-//ÎäÆ÷Ïà¶ÔÈËÎïµÄ×İÏòÎ»ÖÃ
+//æ­¦å™¨ç›¸å¯¹äººç‰©çš„çºµå‘ä½ç½®
 #define PLAYER_YOU_WEAPON_POSITION_Y (this->getContentSize().height/3)
-//ÑªÌõ¡¢À¶ÌõÏà¶ÔÈËÎïµÄ×İÏòÎ»ÖÃ
+//è¡€æ¡ã€è“æ¡ç›¸å¯¹äººç‰©çš„çºµå‘ä½ç½®
 #define PLAYER_YOU_BAR_POSITION (this->getContentSize().height / 2)
 
-/*==============================ÒÔÉÏÊÇÄãĞèÒªĞŞ¸ÄµÄºê¶¨Òå=================================*/
+/*==============================ä»¥ä¸Šæ˜¯ä½ éœ€è¦ä¿®æ”¹çš„å®å®šä¹‰=================================*/
 
-/*==============================!!!!!ÒÔÏÂºêÇëÎğĞŞ¸Ä!!!!!=================================*/
-//ÎäÆ÷Ãªµã
+/*==============================!!!!!ä»¥ä¸‹å®è¯·å‹¿ä¿®æ”¹!!!!!=================================*/
+//æ­¦å™¨é”šç‚¹
 #define PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT PLAYER_YOU_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT
 #define PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT 1.0f - PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT
 #define PLAYER_WEAPON_ANCHOR_POSITION_Y 1.0f
-//ÎäÆ÷Î»ÖÃ
+//æ­¦å™¨ä½ç½®
 #define PLAYER_WEAPON_POSITION_X (this->getPosition().x + PLAYER_YOU_WEAPON_POSITION_X * _direct)
 #define PLAYER_WEAPON_POSITION_Y (this->getPosition().y + PLAYER_YOU_WEAPON_POSITION_Y)
-//ÑªÌõ À¶ÌõÎ»ÖÃ this->getContentSize().width / 2
+//è¡€æ¡ è“æ¡ä½ç½® this->getContentSize().width / 2
 #define PLAYER_HEALTHBAR_POSITION Vec2(this->getPosition().x, this->getPosition().y + PLAYER_YOU_BAR_POSITION + healthBar->getContentSize().height / 2)
 #define PLAYER_MAGICBAR_POSITION Vec2(this->getPosition().x, this->getPosition().y + PLAYER_YOU_BAR_POSITION)
-//Ñª¡¢À¶°Ù·Ö±È¼ÆËã
+//è¡€ã€è“ç™¾åˆ†æ¯”è®¡ç®—
 #define PLAYER_BLOOD_PERCENT int(100 * float(_panel.getHealthPoint()) / float(_panel.getMaxHealthPoint()))
 #define PLAYER_MAGIC_PERCENT int(100 * float(_panel.getMagicPoint()) / float(_panel.getMaxMagicPoint()))
-//µÈ¼¶Î»ÖÃ
+//ç­‰çº§ä½ç½®
 #define PLAYER_LEVELTEXT_POSITION Vec2(this->getPosition().x, this->getPosition().y + PLAYER_YOU_BAR_POSITION + bar->getContentSize().height)
-//×î¸ßµÈ¼¶
+//æœ€é«˜ç­‰çº§
 #define PLAYER_MAX_GRADE 10
-/*==============================!!!!!ÒÔÉÏºêÇëÎğĞŞ¸Ä!!!!!=================================*/
+/*==============================!!!!!ä»¥ä¸Šå®è¯·å‹¿ä¿®æ”¹!!!!!=================================*/
 
 class Player : public Entity
 {
@@ -67,6 +68,8 @@ private:
     float _weaponAnchorPositionY = PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT;
 public:
     Panel _panel;
+    
+    float _direct = 1.0f;//è¡¨ç¤ºæ–¹å‘
     int _level = 0;
 
     static Player* create(const std::string& filename);
@@ -94,7 +97,11 @@ public:
     void refreshHealthBar(Slider* healthBar);
     void refreshMagicBar(Slider* magicBar);
     void refreshPlayer();
+
+    bool playerCollisionTest1(Player* target, Weapon* weapon);
+
     virtual void upgrade(cocos2d::Label* levelText, Slider* bar);
+
 };
 
 #endif
