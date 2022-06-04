@@ -21,7 +21,7 @@
 #include "MapLayer.h"
 #include "GameOverScene.h"
 
-USING_NS_CC;
+//USING_NS_CC;
 using namespace CocosDenshion;
 
 
