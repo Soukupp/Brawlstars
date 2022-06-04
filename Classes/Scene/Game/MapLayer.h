@@ -7,6 +7,7 @@
 
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
+#include "GameScene.h"
 #include "Entity/Player/Hero/Hero1.h"
 #include "Entity/Player/Hero/Hero2.h"
 #include "Entity/Player/Hero/Hero3.h"
@@ -14,6 +15,14 @@
 #include "Entity/Weapon/Weapon.h"
 #include <vector>
 #include <string>
+
+#define MAP_SAFEAREA_SIZE 1920
+#define MAP_SAFEAREA_POSITION MAP_SAFEAREA_SIZE / 2,  MAP_SAFEAREA_SIZE / 2
+#define MAP_SAFEAREA_APPEAR_TIMES 15
+#define MAP_SAFEAREA_DELAY_LAST 10.0f
+#define MAP_SAFEAREA_INTERVAL_LAST 0.5f
+#define MAP_FOG_DENSITY 16
+
 
 class MapLayer : public cocos2d::Layer
 {
@@ -35,11 +44,15 @@ class MapLayer : public cocos2d::Layer
     Slider* _magicBar;
     cocos2d::Label* _levelText;
 
+    bool FogIsPlaced[1920][1920];
 
-    std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap; // 判断鼠标有误释放
+    std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap; // 判断鼠标有无释放
 
 public:
 
+    cocos2d::Sprite* _SafeArea;
+
+    static cocos2d::Scene* createScene();
     virtual bool init();
 
     virtual bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
@@ -51,6 +64,9 @@ public:
 
     void update(float delta);
     void update2(float delta);
+    void updateForFog(float delta);
+    void updatePlayerHurtByFog(float delta);
+    void updateOutsideFog(float delta);
 
     void setPlayerPosition(cocos2d::Vec2 position);
     void setTreeOpacity(cocos2d::Vec2 position);

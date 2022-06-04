@@ -35,6 +35,10 @@ public:
 
     virtual bool init();
 
+    //cocos2d::Sprite* _SafeArea;
+
+    //void updateForSafeArea(float delta);
+
 
     void menuCallback(cocos2d::Ref* pSender);
     void GameSettingsCallBack(cocos2d::Ref* pSender);

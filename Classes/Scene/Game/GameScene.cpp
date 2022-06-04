@@ -23,6 +23,8 @@ static bool ifShowStates = false;       //是否显示FPS
 Scene* GameScene::createScene()
 {
 	auto GameScene = Scene::create();
+	//auto MapLayer = MapLayer::create();
+	//GameScene->addChild(MapLayer);
 	auto MapLayer = GameScene::create();
 	GameScene->addChild(MapLayer);
 	return GameScene;
@@ -57,6 +59,9 @@ bool GameScene::init()
 	
 	auto GameSettingLayer = LayerColor::create();
 	GameSettingLayer->changeWidthAndHeight(960, 720);
+
+
+
 
 	/*=====================创建关闭按钮开始======================*/
 	auto BackToMenuItem = MenuItemImage::create(
@@ -145,3 +150,6 @@ void GameScene::GameSettingsCallBack(cocos2d::Ref* pSender)
 	auto GSS = GameSettingsScene::createScene();
 	Director::getInstance()->pushScene(GSS);  // 此处用push的方式，保留游戏进度
 }
+
+
+
