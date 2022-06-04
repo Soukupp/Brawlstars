@@ -16,6 +16,11 @@
 
 #include "MapLayer.h"
 #include "GameOverScene.h"
+#include "Entity/Player/Hero/Hero1.h"
+#include "Entity/Player/Hero/Hero2.h"
+#include "Entity/Player/Hero/Hero3.h"
+#include "Entity/Player/Hero/Hero4.h"
+#include "Entity/Weapon/Weapon.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -94,7 +99,7 @@ bool MapLayer::init()
 
 	int _ai7X = _tileMap->getObjectGroup("AI")->getObject("ai7").at("x").asInt();
 	int _ai7Y = _tileMap->getObjectGroup("AI")->getObject("ai7").at("y").asInt();
-	createHero(&_player1, &_weapon1, &_healthBar1, &_magicBar1, &_levelText,
+	createHero(&_player1, &_weapon1, &_healthBar1, &_magicBar1, &_levelText1,
 		Vec2(_ai7X, _ai7Y), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
 
 
@@ -282,7 +287,9 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 		if (_player->_panel.getPlayerState() != ATTACK) {
 			_player->_panel.setPlayerState(ATTACK);
 			_player->stopAllActions();
-			_player->runAction(_player->getAttackAction());
+			//_player->runAction(_player->getAttackAction());
+			//pz 为了测试暂时写死成player1
+			_player->launchAnAttack(_weapon, "attack", _magicBar,_player1,_healthBar1);
 
 			_player->_panel.setIfPlayAttackAnimation(false);                                          //保证不会实现连续攻击
 			
@@ -412,12 +419,8 @@ void MapLayer::setPlayerPosition(Vec2 position)
 	//	}
 	//}
 	//移动精灵
+	//
 	_player->setPositionWithAll(position, _weapon, _healthBar, _magicBar, _levelText);
-	/**/
-	//_player->launchAnAttack(_weapon, "attack", _magicBar);
-	/**
-	_player->launchAnAttack(_weapon, "attack");
-	/**/
 
 	//滚动地图
 	this->setViewpointCenter(_player->getPosition());

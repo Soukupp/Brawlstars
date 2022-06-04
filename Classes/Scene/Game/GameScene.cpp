@@ -109,7 +109,6 @@ bool GameScene::init()
 	auto MapLayer1 = MapLayer::create();
 	this->addChild(MapLayer1, 0);
 
-
 	/*=====================创建背景音乐开始=======================*/
 	if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
 	{
@@ -117,7 +116,6 @@ bool GameScene::init()
 	}
 	
 	/*=====================创建背景音乐结束=======================*/
-
 
 	return true;
 }

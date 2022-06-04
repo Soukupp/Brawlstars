@@ -1,7 +1,10 @@
 //作者 : 王鹏
 //日期 : 2022-6-2
+#include "Hero1.h"
+#include "Hero2.h"
+#include "Hero3.h"
 #include "Hero4.h"
-
+//#include "Entity/Weapon/Weapon.h"
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -73,13 +76,15 @@ void Hero4::initPlayer()
 * Summary ：发动攻击 输入"attack" "skill" 调用
 * return ：
 ****************************/
-void Hero4::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar)
+template<typename Enemy>
+void Hero4::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Enemy* enemy, Slider* enemyHealthBar)
 {
 	if (attackType == "attack")
 	{
-		if (weapon->launchAnAttack(_panel.doAttack()))
+		if (weapon->launchAnAttack(_panel.doAttack(), enemy))
 		{
 			restoreMagic();
+			enemy->refreshHealthBar(enemyHealthBar);
 		}
 
 		auto _animationAttack = CCAnimation::create();
@@ -103,7 +108,8 @@ void Hero4::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider
 	{
 		if (useMagic())
 		{
-			weapon->launchAnSkill(_panel.doSkillAttack());
+			weapon->launchAnAttack(_panel.doSkillAttack(), enemy);
+			enemy->refreshHealthBar(enemyHealthBar);
 
 			auto _animationAttack = CCAnimation::create();
 			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");

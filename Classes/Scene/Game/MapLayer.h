@@ -1,3 +1,4 @@
+#pragma once
 //作者 : 李元特
 //日期 : 2022-5-20
 
@@ -8,6 +9,9 @@
 #include "SimpleAudioEngine.h"
 #include "Entity/Player/Hero/Hero1.h"
 #include "Entity/Player/Hero/Hero2.h"
+#include "Entity/Player/Hero/Hero3.h"
+#include "Entity/Player/Hero/Hero4.h"
+#include "Entity/Weapon/Weapon.h"
 #include <vector>
 #include <string>
 

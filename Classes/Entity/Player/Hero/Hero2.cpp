@@ -5,8 +5,11 @@
 //日期 : 2022-6-3
 //实现 : 人物动画功能函数接口
 
+#include "Hero1.h"
 #include "Hero2.h"
-
+#include "Hero3.h"
+#include "Hero4.h"
+//#include "Entity/Weapon/Weapon.h"
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -78,15 +81,20 @@ void Hero2::initPlayer()
 * Summary ：发动攻击 输入"attack" "skill" 调用
 * return ：
 ****************************/
-void Hero2::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar)
+//template<typename Enemy>
+void Hero2::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar)
 {
 	if (attackType == "attack")
 	{
-		if (weapon->launchAnAttack(_panel.doAttack()))
+		if (weapon->launchAnAttack(_panel.doAttack(), enemy))
 		{
 			restoreMagic();
+			enemy->refreshHealthBar(enemyHealthBar);
 		}
 
+		this->runAction(this->getAttackAction());
+
+		/**
 		auto _animationAttack = CCAnimation::create();
 		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
 		for (int loop = 1; loop <= HERO2_YOU_ATTACK_FRAME; ++loop)
@@ -103,12 +111,14 @@ void Hero2::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider
 		this->runAction(_animateAttack);
 		this->setAnchorPoint(Vec2(0.5f, 0.5f));
 		//this->runAction(Show::create());
+		/**/
 	}
 	else if (attackType == "skill")
 	{
 		if (useMagic())
 		{
-			weapon->launchAnSkill(_panel.doSkillAttack());
+			weapon->launchAnAttack(_panel.doSkillAttack(), enemy);
+			enemy->refreshHealthBar(enemyHealthBar);
 
 			auto _animationAttack = CCAnimation::create();
 			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");

@@ -7,6 +7,11 @@
 //内容 : 增加了武器需要的物理碰撞，但不确定你具体想怎么实现，可以参考
 
 #include "Weapon.h"
+#include "Entity/Player/Player.h"
+#include "Entity/Player/Hero/Hero1.h"
+#include "Entity/Player/Hero/Hero2.h"
+#include "Entity/Player/Hero/Hero3.h"
+#include "Entity/Player/Hero/Hero4.h"
 
 USING_NS_CC;
 
@@ -41,19 +46,11 @@ Weapon* Weapon::getWeapon()
 * Summary ：发起攻击
 * return ：造成的伤害
 ****************************/
-int Weapon::launchAnAttack(int attack)
+//template<typename Enemy>
+int Weapon::launchAnAttack(int attack, Player* enemy)
 {
-	return attack;
-}
-
-/****************************
-* Name ：Weapon::launchAnSkill()
-* Summary ：发起技能攻击
-* return ：造成的伤害
-****************************/
-int Weapon::launchAnSkill(int attack)
-{
-	return attack;
+	//pz
+	return enemy->hitPlayer(attack);
 }
 
 
