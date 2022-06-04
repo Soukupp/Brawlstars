@@ -13,12 +13,30 @@
 //日期 : 2022-5-28
 //实现 : 实现和HeroScene的对接，英雄初始化玩家可以进行选择
 
+//修改 : 李元特
+//日期 : 2022-6-4
+//实现 : Fog
+
 
 #include "MapLayer.h"
 #include "GameOverScene.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
+
+
+/****************************
+* Name ：MapLayer::createScene
+* Summary ：创建MapLayer
+* return ：MapLayer
+****************************/
+Scene* MapLayer::createScene()
+{
+	auto MapLayer = Scene::create();
+	auto layer = MapLayer::create();
+	MapLayer->addChild(layer);
+	return MapLayer;
+}
 
 
 /****************************
@@ -47,6 +65,9 @@ bool MapLayer::init()
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+
+
 	 
   /*===================Tilemap相关设置开始==================*/
 	log("Map begin"); 
@@ -88,6 +109,15 @@ bool MapLayer::init()
 	}
 
 	/*=====================创建角色结束========================*/
+
+
+	log("Safe Area added");
+	_SafeArea = Sprite::create("ui/SafeAreaLarge.png");
+	_SafeArea->setAnchorPoint(Vec2(0.5, 0.5));
+	_SafeArea->setPosition(MAP_SAFEAREA_POSITION);
+	//_SafeArea->setVisible(false);
+	this->addChild(_SafeArea, 100);
+
 
 	/*=====================测试对象创建开始=====================*/
 
@@ -137,9 +167,17 @@ bool MapLayer::init()
 
 	this->schedule(schedule_selector(MapLayer::update), 0.05); 
 	//每一帧都进入 update 函数，判断键盘有没有被按压住 参数（也可以控制行走速度）
-
-
 	/*=====================控制键盘结束===========================*/
+
+	/*=====================控制毒圈开始===========================*/
+	memset(FogIsPlaced, 0, sizeof(FogIsPlaced));
+	//this->scheduleOnce(schedule_selector(MapLayer::updateForFog), 5.0); // 第一次缩圈
+	//this->scheduleOnce(schedule_selector(MapLayer::updateForFog), 5.0); // 第二次缩圈
+	//this->scheduleOnce(schedule_selector(MapLayer::updateForFog), 5.0); // 第三次缩圈
+	this->schedule(schedule_selector(MapLayer::updateForFog), MAP_SAFEAREA_INTERVAL_LAST, MAP_SAFEAREA_APPEAR_TIMES, MAP_SAFEAREA_DELAY_LAST); // 持续到结束
+	this->schedule(schedule_selector(MapLayer::updateOutsideFog));
+	this->schedule(schedule_selector(MapLayer::updatePlayerHurtByFog), 0.01);
+
 
 
 	return true;
@@ -576,4 +614,55 @@ void MapLayer::update2(float delta)
 		}
 	}
 }
+
+
+void MapLayer::updateForFog(float delta)
+{
+	//_SafeArea;
+
+	/*ScaleBy* SafeAreaScaleBy = ScaleBy::create(2.0f, 0.8f);*/
+	_SafeArea->runAction(ScaleBy::create(2.0f, 0.8f));
+
+	/*for (int position_x = 0; position_x <= MAP_SAFEAREA_SIZE; position_x += MAP_FOG_DENSITY)
+	{
+		for (int position_y = 0; position_y <= MAP_SAFEAREA_SIZE; position_y += MAP_FOG_DENSITY)
+		{
+			if ((!_SafeArea->boundingBox().containsPoint(Vec2(position_x, position_y))) && (FogIsPlaced[position_x][position_y] == false))
+			{
+				auto FogFullfill = Sprite::create("ui/purple_fog3.png");
+				FogFullfill->setAnchorPoint(Vec2(0.5, 0.5));
+				FogFullfill->setPosition(position_x, position_y);
+				this->addChild(FogFullfill, 100);
+				FogIsPlaced[position_x][position_y] = true;
+			}
+		}
+	}*/
+
+}
+
+void MapLayer::updateOutsideFog(float delta)
+{
+	for (int position_x = 0; position_x <= MAP_SAFEAREA_SIZE; position_x += MAP_FOG_DENSITY)
+	{
+		for (int position_y = 0; position_y <= MAP_SAFEAREA_SIZE; position_y += MAP_FOG_DENSITY)
+		{
+			if ((!_SafeArea->boundingBox().containsPoint(Vec2(position_x, position_y))) && (FogIsPlaced[position_x][position_y] == false))
+			{
+				auto FogFullfill = Sprite::create("ui/purple_fog3.png");
+				FogFullfill->setAnchorPoint(Vec2(0.5, 0.5));
+				FogFullfill->setPosition(position_x, position_y);
+				this->addChild(FogFullfill, 100);
+				FogIsPlaced[position_x][position_y] = true;
+			}
+		}
+	}
+}
+
+void MapLayer::updatePlayerHurtByFog(float delta)
+{
+	if (!_SafeArea->boundingBox().containsPoint(Vec2(_player->getPosition())))
+		//扣血
+		log("hurt!");
+}
+
 
