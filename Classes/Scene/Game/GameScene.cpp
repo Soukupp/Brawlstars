@@ -126,7 +126,6 @@ bool GameScene::init()
 	}
 	
 	/*=====================´´½¨±³¾°ÒôÀÖ½áÊø=======================*/
-	//this->schedule(schedule_selector(GameScene::updateForSafeArea), 0.05);
 
 	return true;
 }
