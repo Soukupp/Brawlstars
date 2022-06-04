@@ -623,21 +623,6 @@ void MapLayer::updateForFog(float delta)
 	/*ScaleBy* SafeAreaScaleBy = ScaleBy::create(2.0f, 0.8f);*/
 	_SafeArea->runAction(ScaleBy::create(2.0f, 0.8f));
 
-	/*for (int position_x = 0; position_x <= MAP_SAFEAREA_SIZE; position_x += MAP_FOG_DENSITY)
-	{
-		for (int position_y = 0; position_y <= MAP_SAFEAREA_SIZE; position_y += MAP_FOG_DENSITY)
-		{
-			if ((!_SafeArea->boundingBox().containsPoint(Vec2(position_x, position_y))) && (FogIsPlaced[position_x][position_y] == false))
-			{
-				auto FogFullfill = Sprite::create("ui/purple_fog3.png");
-				FogFullfill->setAnchorPoint(Vec2(0.5, 0.5));
-				FogFullfill->setPosition(position_x, position_y);
-				this->addChild(FogFullfill, 100);
-				FogIsPlaced[position_x][position_y] = true;
-			}
-		}
-	}*/
-
 }
 
 void MapLayer::updateOutsideFog(float delta)

@@ -60,10 +60,6 @@ bool GameScene::init()
 	auto GameSettingLayer = LayerColor::create();
 	GameSettingLayer->changeWidthAndHeight(960, 720);
 
-	//log("Safe Area added");
-	//_SafeArea = Sprite::create("ui/SafeArea.png");
-	//_SafeArea->setPosition(MAP_SAFEAREA_POSITION);
-	//this->addChild(_SafeArea, 100);
 
 
 
@@ -158,9 +154,3 @@ void GameScene::GameSettingsCallBack(cocos2d::Ref* pSender)
 
 
 
-//void GameScene::updateForSafeArea(float delta)
-//{
-//	//_SafeArea;
-//	ScaleBy* SafeAreaScaleBy = ScaleBy::create(0.5f, 0.5f);
-//	_SafeArea->runAction(ScaleBy::create(5.0f, 0.5f));
-//}
