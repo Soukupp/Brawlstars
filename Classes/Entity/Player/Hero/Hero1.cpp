@@ -1,7 +1,10 @@
 //作者 : 王鹏
 //日期 : 2022-5-23
 #include "Hero1.h"
-
+#include "Hero2.h"
+#include "Hero3.h"
+#include "Hero4.h"
+//#include "Entity/Weapon/Weapon.h"
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -73,14 +76,16 @@ void Hero1::initPlayer()
 * Summary ：发动攻击 输入"attack" "skill" 调用
 * return ：
 ****************************/
-void Hero1::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar)
+template<typename Enemy>
+void Hero1::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Enemy* enemy, Slider* enemyHealthBar)
 {
 	if (attackType == "attack")
 	{
-		if (weapon->launchAnAttack(_panel.doAttack()))
+		if (weapon->launchAnAttack(_panel.doAttack(), enemy))
 		{
 			//成功造成伤害才回能
 			restoreMagic();
+			enemy->refreshHealthBar(enemyHealthBar);
 		}
 
 		auto _animationAttack = CCAnimation::create();
@@ -94,6 +99,7 @@ void Hero1::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider
 		_animationAttack->setDelayPerUnit(HERO1_YOU_ATTACK_TIME / HERO1_YOU_ATTACK_FRAME);
 		_animationAttack->setRestoreOriginalFrame(true);
 		auto _animateAttack = CCAnimate::create(_animationAttack);
+
 		//this->runAction(Hide::create());
 		this->setAnchorPoint(Vec2(0.5f - _direct * 0.1f, 0.5f));
 		this->runAction(_animateAttack);
@@ -104,7 +110,8 @@ void Hero1::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider
 	{
 		if (useMagic())
 		{
-			weapon->launchAnSkill(_panel.doSkillAttack());
+			weapon->launchAnAttack(_panel.doSkillAttack(), enemy);
+			enemy->refreshHealthBar(enemyHealthBar);
 
 			auto _animationAttack = CCAnimation::create();
 			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
@@ -121,6 +128,7 @@ void Hero1::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider
 			_animationAttack->setDelayPerUnit(HERO1_YOU_SKILL_TIME / HERO1_YOU_SKILL_FRAME);
 			_animationAttack->setRestoreOriginalFrame(true);
 			auto _animateAttack = CCAnimate::create(_animationAttack);
+
 			//this->runAction(Hide::create());
 			this->setAnchorPoint(Vec2(0.5f - _direct * 0.1f, 0.5f));
 			this->runAction(_animateAttack);

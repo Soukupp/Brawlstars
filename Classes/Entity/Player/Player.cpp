@@ -1,6 +1,7 @@
 //作者 : 王鹏
 //日期 : 2022-5-18
 #include "Player.h"
+#include "Entity/Weapon/Weapon.h"
 #include <SimpleAudioEngine.h>
 
 USING_NS_CC;
@@ -64,22 +65,22 @@ Panel* Player::getPanel()
 * Summary ：发起攻击(请传入 "attack" 或 "skill")
 * return ：
 ****************************/
-void Player::launchAnAttack(Weapon* weapon, const std::string& attackType)
+void Player::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar)
 {
 	//根据不同角色做了不同设计
 	if (attackType == "attack")
 	{
-		if (weapon->launchAnAttack(_panel.doAttack()))
-		{
+		//if (weapon->launchAnAttack(_panel.doAttack(), enemy))
+		//{
 			restoreMagic();                           //游戏机制：发动进攻就补充蓝量
-		}
+		//}
 	}
 	else if (attackType == "skill")
 	{
-		if (useMagic()) 
-		{
-			weapon->launchAnSkill(_panel.doSkillAttack());
-		}
+		//if (useMagic()) 
+		//{
+			//weapon->launchAnAttack(_panel.doSkillAttack(), enemy);
+		//}
 	}
 }
 /****************************
