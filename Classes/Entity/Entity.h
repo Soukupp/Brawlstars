@@ -5,6 +5,7 @@
 #define __ENTITY_H__
 
 #include "cocos2d.h"
+#include "../ui/UISlider.h"
 
 class Entity : public cocos2d::Sprite
 {

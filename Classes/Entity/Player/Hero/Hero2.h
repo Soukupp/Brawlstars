@@ -6,6 +6,7 @@
 
 #include "Entity/Player/player.h"
 #include "SimpleAudioEngine.h"
+#include "Entity/Weapon/Weapon.h"
 using namespace cocos2d::ui;
 using namespace cocos2d;
 
@@ -21,6 +22,11 @@ using namespace cocos2d;
 #define HERO2_YOU_WEAPON_POSITION_Y (this->getContentSize().height * 2 / 3)
 //血条、蓝条相对人物的纵向位置
 #define HERO2_YOU_BAR_POSITION (this->getContentSize().height / 2)
+//动画时长、帧数
+#define HERO2_YOU_ATTACK_TIME 0.3f
+#define HERO2_YOU_ATTACK_FRAME 20
+#define HERO2_YOU_SKILL_TIME 1.0f
+#define HERO2_YOU_SKILL_FRAME 7
 
 /*==============================以上是你需要修改的宏定义=================================*/
 
@@ -46,14 +52,12 @@ using namespace cocos2d;
 #define HERO2_INIT_DEFENCE 150
 #define HERO2_INIT_SKILLRATE 2.7f
 #define HERO2_INIT_ATTACKRATE 1.2f
-//动画时长、帧数
-#define HERO2_YOU_ATTACK_TIME 0.3f
-#define HERO2_YOU_ATTACK_FRAME 20
-#define HERO2_YOU_SKILL_TIME 1.0f
-#define HERO2_YOU_SKILL_FRAME 7
 
 /*==============================!!!!!以上宏请勿修改!!!!!=================================*/
-
+class Hero1;
+class Hero3;
+class Hero4;
+//class Weapon;
 class Hero2 : public Player
 {
 public:
@@ -68,7 +72,8 @@ public:
 	void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
 	void initPlayer();
 
-	void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar);
+	//template<typename Enemy>
+	void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar);
 
 	void keepHealthBar(Slider* healthBar);
 	void keepMagicBar(Slider* magicBar);

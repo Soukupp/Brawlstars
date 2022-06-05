@@ -6,7 +6,7 @@
 
 #include "Entity/Player/player.h"
 #include "SimpleAudioEngine.h"
-
+#include "Entity/Weapon/Weapon.h"
 using namespace cocos2d::ui;
 using namespace cocos2d;
 
@@ -54,7 +54,10 @@ using namespace cocos2d;
 #define HERO1_INIT_ATTACKRATE 1.2f
 
 /*==============================!!!!!以上宏请勿修改!!!!!=================================*/
-
+class Hero2;
+class Hero3;
+class Hero4;
+//class Weapon;
 class Hero1 : public Player
 {
 public:
@@ -68,7 +71,8 @@ public:
 	void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
 	void initPlayer();
 
-	void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar);
+	template<typename Enemy>
+	void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Enemy* enemy, Slider* enemyHealthBar);
 
 	void keepHealthBar(Slider* healthBar);
 	void keepMagicBar(Slider* magicBar);

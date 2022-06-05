@@ -13,12 +13,51 @@
 //日期 : 2022-5-28
 //实现 : 实现和HeroScene的对接，英雄初始化玩家可以进行选择
 
+//修改 : 李元特
+//日期 : 2022-6-4
+//实现 : Fog
+
+
+/*
+	对象所在层数：
+	_tileMap 0层
+	_tree, _collidable 在_tileMap 上 （一部分）
+	_portal 系列 1层
+	*hero, *weapon （包括AI） 2层
+	_SafeArea 100层
+
+
+
+
+*/
+
+
+
 
 #include "MapLayer.h"
 #include "GameOverScene.h"
+#include "Entity/Player/Hero/Hero1.h"
+#include "Entity/Player/Hero/Hero2.h"
+#include "Entity/Player/Hero/Hero3.h"
+#include "Entity/Player/Hero/Hero4.h"
+#include "Entity/Weapon/Weapon.h"
 
-USING_NS_CC;
+//USING_NS_CC;
 using namespace CocosDenshion;
+
+
+/****************************
+* Name ：MapLayer::createScene
+* Summary ：创建MapLayer
+* return ：MapLayer
+****************************/
+Scene* MapLayer::createScene()
+{
+	auto MapLayer = Scene::create();
+	auto layer = MapLayer::create();
+	MapLayer->addChild(layer);
+	return MapLayer;
+}
 
 
 /****************************
@@ -47,6 +86,9 @@ bool MapLayer::init()
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+
+
 	 
   /*===================Tilemap相关设置开始==================*/
 	log("Map begin"); 
@@ -111,6 +153,15 @@ bool MapLayer::init()
 
 	/*=====================创建角色结束========================*/
 
+
+	log("Safe Area added");
+	_SafeArea = Sprite::create("ui/SafeAreaLarge.png");
+	_SafeArea->setAnchorPoint(Vec2(0.5, 0.5));
+	_SafeArea->setPosition(MAP_SAFEAREA_POSITION);
+	//_SafeArea->setVisible(false);
+	this->addChild(_SafeArea, 100);
+
+
 	/*=====================测试对象创建开始=====================*/
 
 	int _ai7X = _tileMap->getObjectGroup("AI")->getObject("ai7").at("x").asInt();
@@ -139,10 +190,80 @@ bool MapLayer::init()
 	_tree = _tileMap->getLayer("tree");
 	//addChild(_tree, 3);
   
-	//_watermonster = _tileMap->getLayer("watermonster");
+
+
+	/*===================传送阵起点创建开始===================*/
+	TMXObjectGroup* portalGroup = _tileMap->getObjectGroup("portal");
+	log("Get Portal Finished");
+	ValueMap portal_1_Position = portalGroup->getObject("portal1");
+	ValueMap portal_2_Position = portalGroup->getObject("portal2");
+	ValueMap portal_3_Position = portalGroup->getObject("portal3");
+	ValueMap portal_4_Position = portalGroup->getObject("portal4");
+
+	_portal_1 = Sprite::create("ui/scrap.png");
+	_portal_1->setPosition(portal_1_Position["x"].asInt(), portal_1_Position["y"].asInt());
+	this->addChild(_portal_1, 1);
+	/*double x=_portal_1->getPositionX();
+	log("p-1-position-x %lf", x);
+	double y = _portal_1->getPositionY();
+	log("p-1-position-y %lf", y);*/
+
+	_portal_2 = Sprite::create("ui/scrap.png");
+	_portal_2->setPosition(portal_2_Position["x"].asInt(), portal_2_Position["y"].asInt());
+	this->addChild(_portal_2, 1);
+
+	_portal_3 = Sprite::create("ui/scrap.png");
+	_portal_3->setPosition(portal_3_Position["x"].asInt(), portal_3_Position["y"].asInt());
+	this->addChild(_portal_3, 1);
+
+	_portal_4 = Sprite::create("ui/scrap.png");
+	_portal_4->setPosition(portal_4_Position["x"].asInt(), portal_4_Position["y"].asInt());
+	this->addChild(_portal_4, 1);
+	/*===================传送阵起点创建结束===================*/
+
+	/*===================传送阵终点创建开始===================*/
+
+	TMXObjectGroup* portalDeterminationGroup = _tileMap->getObjectGroup("portalDetermination");
+	log("Get Portal Determination Finished");
+	ValueMap portal_Determination_1_Position = portalDeterminationGroup->getObject("portalDetermination1");
+	ValueMap portal_Determination_2_Position = portalDeterminationGroup->getObject("portalDetermination2");
+	ValueMap portal_Determination_3_Position = portalDeterminationGroup->getObject("portalDetermination3");
+	ValueMap portal_Determination_4_Position = portalDeterminationGroup->getObject("portalDetermination4");
+
+	_portal_Determination_1 = Sprite::create("ui/scrapDetermination.png");
+	_portal_Determination_1->setPosition(portal_Determination_1_Position["x"].asInt(), 
+		portal_Determination_1_Position["y"].asInt());
+	this->addChild(_portal_Determination_1, 1);
+
+	_portal_Determination_2 = Sprite::create("ui/scrapDetermination.png");
+	_portal_Determination_2->setPosition(portal_Determination_2_Position["x"].asInt(), 
+		portal_Determination_2_Position["y"].asInt());
+	this->addChild(_portal_Determination_2, 1);
+
+	_portal_Determination_3 = Sprite::create("ui/scrapDetermination.png");
+	_portal_Determination_3->setPosition(portal_Determination_3_Position["x"].asInt(), 
+		portal_Determination_3_Position["y"].asInt());
+	this->addChild(_portal_Determination_3, 1);
+
+	_portal_Determination_4 = Sprite::create("ui/scrapDetermination.png");
+	_portal_Determination_4->setPosition(portal_Determination_4_Position["x"].asInt(), 
+		portal_Determination_4_Position["y"].asInt());
+	this->addChild(_portal_Determination_4, 1);
+
+
+
+
+
+
+
+
 
 	setTouchEnabled(true);  // 开启触摸，必须继承于layer
 	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
+
+
+
+
 
 
     /*===================Tilemap相关设置结束===================*/
@@ -164,9 +285,18 @@ bool MapLayer::init()
 
 	this->schedule(schedule_selector(MapLayer::update), 0.05); 
 	//每一帧都进入 update 函数，判断键盘有没有被按压住 参数（也可以控制行走速度）
-
-
 	/*=====================控制键盘结束===========================*/
+
+	/*=====================控制毒圈开始===========================*/
+	memset(FogIsPlaced, 0, sizeof(FogIsPlaced));
+	//this->scheduleOnce(schedule_selector(MapLayer::updateForFog), 5.0); // 第一次缩圈
+	//this->scheduleOnce(schedule_selector(MapLayer::updateForFog), 5.0); // 第二次缩圈
+	//this->scheduleOnce(schedule_selector(MapLayer::updateForFog), 5.0); // 第三次缩圈
+	this->schedule(schedule_selector(MapLayer::updateForFog), MAP_SAFEAREA_INTERVAL_LAST, MAP_SAFEAREA_APPEAR_TIMES, MAP_SAFEAREA_DELAY_LAST); // 持续到结束
+	this->schedule(schedule_selector(MapLayer::updateOutsideFog));
+	this->schedule(schedule_selector(MapLayer::updatePlayerHurtByFog), 0.01);
+	this->schedule(schedule_selector(MapLayer::updateForPortal));
+	/*=====================控制毒圈结束===========================*/
 
 
 	return true;
@@ -310,7 +440,9 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 		if (_player->_panel.getPlayerState() != ATTACK) {
 			_player->_panel.setPlayerState(ATTACK);
 			_player->stopAllActions();
-			_player->runAction(_player->getAttackAction());
+			//_player->runAction(_player->getAttackAction());
+			//pz 为了测试暂时写死成player1
+			_player->launchAnAttack(_weapon, "attack", _magicBar,_player1,_healthBar1);
 
 			_player->_panel.setIfPlayAttackAnimation(false);                                          //保证不会实现连续攻击
 																									  //检测攻击时是否碰到_player1
@@ -445,12 +577,8 @@ void MapLayer::setPlayerPosition(Vec2 position)
 	//	}
 	//}
 	//移动精灵
+	//
 	_player->setPositionWithAll(position, _weapon, _healthBar, _magicBar, _levelText);
-	/**/
-	//_player->launchAnAttack(_weapon, "attack", _magicBar);
-	/**
-	_player->launchAnAttack(_weapon, "attack");
-	/**/
 
 	//滚动地图
 	this->setViewpointCenter(_player->getPosition());
@@ -522,19 +650,19 @@ void MapLayer::setViewpointCenter(Vec2 position)
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	//可以防止，视图左边超出屏幕之外。
-	int x = MAX(position.x, visibleSize.width / 2);
-	int y = MAX(position.y, visibleSize.height / 2);
+	int visible_x = MAX(position.x, visibleSize.width / 2);
+	int visible_y = MAX(position.y, visibleSize.height / 2);
 	//可以防止，视图右边超出屏幕之外。
-	x = MIN(x, (_tileMap->getMapSize().width * _tileMap->getTileSize().width)
+	visible_x = MIN(visible_x, (_tileMap->getMapSize().width * _tileMap->getTileSize().width)
 		- visibleSize.width / 2);
-	y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height)
+	visible_y = MIN(visible_y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height)
 		- visibleSize.height / 2);
 
 	//屏幕中心点
 	Vec2 pointA = Vec2(visibleSize.width / 2, visibleSize.height / 2);
 
 	//使精灵处于屏幕中心，移动地图目标位置
-	Vec2 pointB = Vec2(x, y);
+	Vec2 pointB = Vec2(visible_x, visible_y);
 	//log("目标位置 (%f ,%f) ", pointB.x, pointB.y);
 
 	//地图移动偏移量
@@ -610,4 +738,90 @@ void MapLayer::update2(float delta)
 		}
 	}
 }
+
+
+void MapLayer::updateForPortal(float delta)
+{
+	log("turned in");
+	/*float x = _player->getPositionX();
+	log("player-position-x %lf", x);
+	float y = _player->getPositionY();
+	log("player-position-y %lf", y);*/
+	if (_player->getPositionX()<= (_portal_1->getPositionX() + MAP_PORTAL_SIZE)&&
+		_player->getPositionX() >= (_portal_1->getPositionX() - MAP_PORTAL_SIZE)&&
+		_player->getPositionY() <= (_portal_1->getPositionY() + MAP_PORTAL_SIZE) &&
+		_player->getPositionY() >= (_portal_1->getPositionY() - MAP_PORTAL_SIZE))
+	{
+		log("_player Teleport One!");
+		_player->setPosition(_portal_Determination_1->getPosition());
+	}
+
+	if (_player->getPositionX() <= (_portal_2->getPositionX() + MAP_PORTAL_SIZE) &&
+		_player->getPositionX() >= (_portal_2->getPositionX() - MAP_PORTAL_SIZE) &&
+		_player->getPositionY() <= (_portal_2->getPositionY() + MAP_PORTAL_SIZE) &&
+		_player->getPositionY() >= (_portal_2->getPositionY() - MAP_PORTAL_SIZE))
+	{
+		log("_player Teleport Two!");
+		_player->setPosition(_portal_Determination_2->getPosition());
+	}
+	if (_player->getPositionX() <= (_portal_3->getPositionX() + MAP_PORTAL_SIZE) &&
+		_player->getPositionX() >= (_portal_3->getPositionX() - MAP_PORTAL_SIZE) &&
+		_player->getPositionY() <= (_portal_3->getPositionY() + MAP_PORTAL_SIZE) &&
+		_player->getPositionY() >= (_portal_3->getPositionY() - MAP_PORTAL_SIZE))
+	{
+		log("_player Teleport Three!");
+		_player->setPosition(_portal_Determination_3->getPosition());
+	}
+
+	if (_player->getPositionX() <= (_portal_4->getPositionX() + MAP_PORTAL_SIZE) &&
+		_player->getPositionX() >= (_portal_4->getPositionX() - MAP_PORTAL_SIZE) &&
+		_player->getPositionY() <= (_portal_4->getPositionY() + MAP_PORTAL_SIZE) &&
+		_player->getPositionY() >= (_portal_4->getPositionY() - MAP_PORTAL_SIZE))
+	{
+		log("_player Teleport Four!");
+		_player->setPosition(_portal_Determination_4->getPosition());
+	}
+
+
+}
+
+
+void MapLayer::updateForFog(float delta)
+{
+	//_SafeArea;
+
+	/*ScaleBy* SafeAreaScaleBy = ScaleBy::create(2.0f, 0.8f);*/
+	_SafeArea->runAction(ScaleBy::create(2.0f, 0.8f));
+
+}
+
+void MapLayer::updateOutsideFog(float delta)
+{
+	for (int position_x = 0; position_x <= MAP_SAFEAREA_SIZE; position_x += MAP_FOG_DENSITY)
+	{
+		for (int position_y = 0; position_y <= MAP_SAFEAREA_SIZE; position_y += MAP_FOG_DENSITY)
+		{
+			if ((!_SafeArea->boundingBox().containsPoint(Vec2(position_x, position_y))) && (FogIsPlaced[position_x][position_y] == false))
+			{
+				auto FogFullfill = Sprite::create("ui/purple_fog3.png");
+				FogFullfill->setAnchorPoint(Vec2(0.5, 0.5));
+				FogFullfill->setPosition(position_x, position_y);
+				this->addChild(FogFullfill, 100);
+				FogIsPlaced[position_x][position_y] = true;
+			}
+		}
+	}
+}
+
+void MapLayer::updatePlayerHurtByFog(float delta)
+{
+	if (!_SafeArea->boundingBox().containsPoint(Vec2(_player->getPosition())))
+	{
+		//扣血
+		log("hurt!");
+		_player->_panel.hit(MAP_FOG_DAMAGE_TO_PLAYER);
+		_player->refreshHealthBar(_healthBar);
+	}
+}
+
 

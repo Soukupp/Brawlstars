@@ -7,8 +7,6 @@
 #include "cocos2d.h"
 #include "Entity/Entity.h"
 #include "Panel.h"
-#include "Entity/Weapon/Weapon.h"
-#include "../ui/UISlider.h"
 #include "Entity/Define/Definitions.h"
 //#include "HealthBar.h"
 
@@ -60,7 +58,7 @@ using namespace cocos2d::ui;
 //最高等级
 #define PLAYER_MAX_GRADE 10
 /*==============================!!!!!以上宏请勿修改!!!!!=================================*/
-
+class Weapon;
 class Player : public Entity
 {
 private:
@@ -77,7 +75,7 @@ public:
     virtual void initPlayer(Panel& panel);
     Panel* getPanel();
 
-    virtual void launchAnAttack(Weapon* weapon, const std::string& attackType);
+    virtual void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar);
     int hitPlayer(int attack);
     void restoreMagic();
     bool magicIsFull()const;
