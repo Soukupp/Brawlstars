@@ -98,10 +98,27 @@ public:
     void refreshMagicBar(Slider* magicBar);
     void refreshPlayer();
 
-    bool playerCollisionTest1(Player* target, Weapon* weapon);
+    virtual bool playerCollisionTest1(Player* target, Weapon* weapon);
 
     virtual void upgrade(cocos2d::Label* levelText, Slider* bar);
 
+
+    virtual bool initWalkAction();
+    virtual bool initNormalAction();
+    virtual bool initAttackAction();
+    virtual bool initSkillAction();
+
+    CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _walkAction, WalkAction);
+    CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _normalAction, NormalAction);
+    CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _attackAction, AttackAction);
+
+    const int _width = 26;
+    const int _height = 44;
+
+    virtual int getID();
+
+private:
+    int ID = 0;
 };
 
 #endif

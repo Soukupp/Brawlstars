@@ -8,6 +8,9 @@
 #include "SimpleAudioEngine.h"
 #include "Entity/Player/Hero/Hero1.h"
 #include "Entity/Player/Hero/Hero2.h"
+#include "Entity/Player/Hero/Hero3.h"
+#include "Entity/Player/Hero/Hero4.h"
+
 #include <vector>
 #include <string>
 
@@ -25,7 +28,25 @@ class MapLayer : public cocos2d::Layer
     Slider* _magicBar1;
     cocos2d::Label* _levelText1;
     /**/
-    Hero2* _player;
+    Hero2* _player2;
+    Weapon* _weapon2;
+    Slider* _healthBar2;
+    Slider* _magicBar2;
+    cocos2d::Label* _levelText2;
+
+    Hero3* _player3;
+    Weapon* _weapon3;
+    Slider* _healthBar3;
+    Slider* _magicBar3;
+    cocos2d::Label* _levelText3;
+
+    Hero4* _player4;
+    Weapon* _weapon4;
+    Slider* _healthBar4;
+    Slider* _magicBar4;
+    cocos2d::Label* _levelText4;
+
+    Player* _player;
     Weapon* _weapon;
     Slider* _healthBar;
     Slider* _magicBar;

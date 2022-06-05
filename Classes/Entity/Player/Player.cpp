@@ -155,7 +155,9 @@ int Player::getMagicPercent()
 ****************************/
 void Player::keepWeapon(Weapon* weapon)
 {
-	weapon->setPosition(this->getPosition());
+	weapon->setPosition(
+		this->getPosition().x+this->getContentSize().width+weapon->getContentSize().width,
+		this->getPosition().y);
 }
 /****************************
 * Name ：Player::runFlipxWithWeapon
@@ -258,24 +260,7 @@ void Player::refreshPlayer()
 ****************************/
 bool Player::playerCollisionTest1(Player* target,Weapon* weapon)
 {
-	float targetX = target->getPosition().x;                    //目标位置X
-	float targetY = target->getPosition().y;                    //目标位置Y
-    float targetWidth = target->getContentSize().width;         //目标的宽度
-	float targetHeight = target->getContentSize().height;       //目标的高度
-	float weaponWidth = weapon->getContentSize().width;         //武器的宽度
-
-	if (fabs(PLAYER_WEAPON_POSITION_X - targetX) < (targetWidth / 2 + weaponWidth)) {           //范围判定
-		if (fabs(PLAYER_WEAPON_POSITION_Y-16 - targetY) < targetHeight / 3) {
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
-			return true;
-		}
-		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-			return false;
-	}
-	else {
-		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-		return false;
-	}
+	return true;
 }
 
 /****************************
@@ -286,4 +271,25 @@ bool Player::playerCollisionTest1(Player* target,Weapon* weapon)
 void Player::upgrade(cocos2d::Label* levelText, Slider* bar)
 {
 
+}
+
+bool Player::initWalkAction()
+{
+	return true;
+}
+bool Player::initNormalAction()
+{
+	return true;
+}
+bool Player::initAttackAction()
+{
+	return true;
+}
+bool Player::initSkillAction()
+{
+	return true;
+}
+int Player::getID()
+{
+	return ID;
 }

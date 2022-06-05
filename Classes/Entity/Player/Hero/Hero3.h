@@ -80,6 +80,22 @@ public:
 	void setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar, cocos2d::Label* levelText);
 
 	void upgrade(cocos2d::Label* levelText, Slider* bar);
+
+	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _walkAction, WalkAction);
+	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _normalAction, NormalAction);
+	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _attackAction, AttackAction);
+
+    bool initWalkAction();
+    bool initNormalAction();
+	bool initAttackAction();
+
+	bool playerCollisionTest1(Player* target, Weapon* weapon);
+	const int _width = 26;
+	const int _height = 44;
+
+	int getID();
+private:
+	int ID = 3;
 };
 
 #endif

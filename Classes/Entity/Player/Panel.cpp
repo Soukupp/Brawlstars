@@ -357,3 +357,12 @@ void Panel::setIfPlayNormalAnimationInUpdate2(bool ifplay)
 	_ifPlayNormalAnimationInUpdate2 = ifplay;
 
 }
+
+void Panel::addHitnum()
+{
+	_hitnum++;
+}
+int Panel::getHitnum()
+{
+	return _hitnum;
+}

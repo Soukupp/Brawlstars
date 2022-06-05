@@ -38,6 +38,8 @@ private:
 
     bool _ifPlayAttackAnimation = true;               //当前是否播放攻击动画
     bool _ifPlayNormalAnimationInUpdate2 = false;     //当前是否在update2中播放normal动画
+
+    int _hitnum = 0;
   
 public:
     void init(int maxHealthPoint, int attack, int defence, float skillRate, float attackRate, int maxMagicPoint = 100);
@@ -86,6 +88,9 @@ public:
     int treat(int healthPoint);
     //回蓝
     int restoreMagic(int magic);
+
+    void addHitnum();
+    int getHitnum();
 };
 
 #endif

@@ -95,10 +95,10 @@ bool GameScene::init()
 	menu->setPosition(Vec2::ZERO);
     /*=====================创建设置按钮结束====================*/
 
-	auto SkillButton = SkillButton::create("ui/buttonForSkill.png", "ui/buttonShadow.png", 30);
+	//auto SkillButton = SkillButton::create("ui/buttonForSkill.png", "ui/buttonShadow.png", 30);
 
-	SkillButton->setPosition(Vec2(GAME_SKILL_BUTTON_POSITION_X, GAME_SKILL_BUTTON_POSITION_X));
-	this->addChild(SkillButton, 100); // 放在最前面
+	//SkillButton->setPosition(Vec2(GAME_SKILL_BUTTON_POSITION_X, GAME_SKILL_BUTTON_POSITION_X));
+	//this->addChild(SkillButton, 100); // 放在最前面
 
 
 	GameSettingLayer->addChild(menu);

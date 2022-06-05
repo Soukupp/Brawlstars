@@ -72,18 +72,40 @@ bool MapLayer::init()
 	switch (selectedHero)     //由于测试的需要，不同英雄的createHero的参数统一为一套
 	{       
 	case 1:
-		createHero(&_player, &_weapon, &_healthBar, &_magicBar, &_levelText,
+		createHero(&_player1, &_weapon1, &_healthBar1, &_magicBar1, &_levelText1,
 			Vec2(_playerX, _playerY), "Character/Hero1/hero.png", "Character/Hero1/emptyWeapon.png");
+		 _player = _player1;
+		 _weapon = _weapon1;
+		 _healthBar = _healthBar1;
+		 _magicBar = _magicBar1;
+		 _levelText = _levelText1;
 		break;
 	case 2:
-		createHero(&_player, &_weapon, &_healthBar, &_magicBar, &_levelText,
+		createHero(&_player2, &_weapon2, &_healthBar2, &_magicBar2, &_levelText2,
 			Vec2(_playerX, _playerY), "Character/Hero2/hero.png", "Character/Hero2/emptyWeapon.png");
+		_player = _player2;
+		_weapon = _weapon2;
+		_healthBar = _healthBar2;
+		_magicBar = _magicBar2;
+		_levelText = _levelText2;
 		break;
 	case 3:
-		createHero(&_player, &_weapon, &_healthBar, &_magicBar, &_levelText,
+		createHero(&_player3, &_weapon3, &_healthBar3, &_magicBar3, &_levelText3,
 			Vec2(_playerX, _playerY), "Character/Hero3/hero.png", "Character/Hero3/emptyWeapon.png");
+		_player = _player3;
+		_weapon = _weapon3;
+		_healthBar = _healthBar3;
+		_magicBar = _magicBar3;
+		_levelText = _levelText3;
 		break;
 	case 4:
+		createHero(&_player4, &_weapon4, &_healthBar4, &_magicBar4, &_levelText4,
+			Vec2(_playerX, _playerY), "Character/Hero4/hero.png", "Character/Hero4/emptyWeapon.png");
+		_player = _player4;
+		_weapon = _weapon4;
+		_healthBar = _healthBar4;
+		_magicBar = _magicBar4;
+		_levelText = _levelText4;
 		break;
 	}
 
@@ -91,20 +113,25 @@ bool MapLayer::init()
 
 	/*=====================测试对象创建开始=====================*/
 
-
 	int _ai7X = _tileMap->getObjectGroup("AI")->getObject("ai7").at("x").asInt();
 	int _ai7Y = _tileMap->getObjectGroup("AI")->getObject("ai7").at("y").asInt();
-	createHero(&_player1, &_weapon1, &_healthBar1, &_magicBar1, &_levelText,
+	createHero(&_player4, &_weapon4, &_healthBar4, &_magicBar4, &_levelText4,
 		Vec2(_ai7X, _ai7Y), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
 
 
 	/*=====================测试对象创建结束=====================*/
 
+	auto SkillButton = SkillButton::create("ui/buttonForSkill.png", "ui/buttonShadow.png", 30);
+
+	SkillButton->setPosition(Vec2(GAME_SKILL_BUTTON_POSITION_X, GAME_SKILL_BUTTON_POSITION_X));
+	this->addChild(SkillButton, 100); // 放在最前面
+
+
 	_player->initWalkAction();
 	_player->initNormalAction();
 	_player->initAttackAction();
 	_player->setScale(1.3);
-
+	log("%d ID", _player->getID());
 	setViewpointCenter(_player->getPosition());
 
 	_collidable = _tileMap->getLayer("collidable");  //障碍物collidable
@@ -152,7 +179,7 @@ bool MapLayer::init()
 ****************************/
 void MapLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
-	log("Key with keycode %d pressed++++++++++++++++++++++++++++++++", keyCode);
+	log("Key with keycode %d pressed", keyCode);
 	if (
 		keyCode== EventKeyboard::KeyCode:: KEY_RIGHT_ARROW||                 //忽略其他非功能按键
 		keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW ||
@@ -188,7 +215,7 @@ void MapLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 void MapLayer::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
 
-	log("Key with keycode %d released*******************************", keyCode);
+	log("Key with keycode %d released", keyCode);
 	if (
 
 		keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW ||                   //忽略其他非功能按键
@@ -238,6 +265,7 @@ void MapLayer::update(float delta)
 {
 
 	Vec2 playerPos = _player->getPosition();  // 获取玩家位置坐标
+
 	if (keyMap[EventKeyboard::KeyCode::KEY_D] || keyMap[EventKeyboard::KeyCode::KEY_RIGHT_ARROW])
 	{
 		playerPos.x +=4;
@@ -285,13 +313,18 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 			_player->runAction(_player->getAttackAction());
 
 			_player->_panel.setIfPlayAttackAnimation(false);                                          //保证不会实现连续攻击
-			
-			_player->playerCollisionTest1(_player1, _weapon);                                                //检测攻击时是否碰到_player1
+																									  //检测攻击时是否碰到_player1
 		    //此处仅为测试，_player1是哪个对象需要后期遍历算法得到（目前_player1为ai7）
 
 			_player->_panel.setIfPlayNormalAnimationInUpdate2(true);                                  //使得可以调用update2
 
-			this->scheduleOnce(schedule_selector(MapLayer::update2), 1.0f);  //1.0f是动画时间，1.0f后进入update2执行一次normal动画
+			if(_player->getID()==1)
+				this->scheduleOnce(schedule_selector(MapLayer::update2), 0.5f);  //1.0f是动画时间，1.0f后进入update2执行一次normal动画
+			else if(_player->getID()==2)
+				this->scheduleOnce(schedule_selector(MapLayer::update2), 0.8f);
+			else if(_player->getID()==3)
+				this->scheduleOnce(schedule_selector(MapLayer::update2), 0.67f);
+
 		}
 
 	}
@@ -384,8 +417,8 @@ void MapLayer::setPlayerPosition(Vec2 position)
 
 	int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
 	//int tileGid_watermonster=_watermonster->getTileGIDAt(tileCoord);
-  
-	log("get TileGIDAt");
+  /*
+	log("get TileGIDAt");*/
 
 	// 碰撞检测
 	if (tileGid > 0) {
@@ -521,7 +554,7 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 {
 	*hero = Hero::create(filenameHero);
 	(**hero).initPlayer();
-	addChild(*hero, 2, 200);
+	addChild(*hero, 3, 200);
 
 	*weapon = Weapon::create(filenameWeapon);
 	(**weapon).setAnchorPoint(
@@ -568,6 +601,7 @@ void MapLayer::update2(float delta)
 
 	if (_player->_panel.getIfPlayNormalAnimationInUpdate2())
 	{
+		_player->playerCollisionTest1(_player4, _weapon);
 		_player->_panel.setPlayerState(NORMAL);
 		_player->_panel.setIfPlayAttackAnimation(true);
 		if (_player->_panel.getPlayerState() == NORMAL) {

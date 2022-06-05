@@ -136,7 +136,6 @@ bool HeroScene::init()
     auto* hero3LabelText = LabelTTF::create("HERO3", "Maiandra GD", 35);
     auto* hero3Label = MenuItemLabel::create(hero3LabelText,
         this, menu_selector(HeroScene::selectHero3Callback));
-
     auto* hero3Button = Menu::create(hero3LabelImage, hero3Label, NULL);
     hero3Button->setPosition(HERO3_SELECTED_BUTTON_POSITION_X, HERO3_SELECTED_BUTTON_POSITION_Y);
 
@@ -148,7 +147,7 @@ bool HeroScene::init()
 
     auto* hero4LabelText = LabelTTF::create("HERO4", "Maiandra GD", 35);
     auto* hero4Label = MenuItemLabel::create(hero4LabelText,
-        this, menu_selector(HeroScene::selectHero3Callback));
+        this, menu_selector(HeroScene::selectHero4Callback));
 
     auto* hero4Button = Menu::create(hero4LabelImage, hero4Label, NULL);
     hero4Button->setPosition(HERO4_SELECTED_BUTTON_POSITION_X, HERO4_SELECTED_BUTTON_POSITION_Y);
@@ -184,6 +183,7 @@ bool HeroScene::init()
             animate3();
             break;
         case 4:
+            animate4();
             break;
         }
         _confirmButton->setEnabled(false);
@@ -207,6 +207,7 @@ void HeroScene::heroBackCallback(cocos2d::Ref* pSender)
     auto mainMenuScene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//过场动画设计
 }
+
 /****************************
 * Name ：selectHero1Callback
 * Summary ：进入hero1界面回调函数
@@ -281,7 +282,6 @@ void HeroScene::selectHero3Callback(cocos2d::Ref* pSender)
 //同上
 void HeroScene::selectHero4Callback(cocos2d::Ref* pSender)
 {
-    _chooseNumber = 4;
     if (_selectedHero == 4)
         _confirmButton->setEnabled(false);
     else
@@ -362,17 +362,18 @@ void HeroScene::animate2()
     hero2->setPosition(700, 350);
     addChild(hero2);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero2/hero2_Start.plist", "Character/Hero2/hero2_Start.png");
+    m_frameCache->addSpriteFramesWithFile("Character/Hero2/hero2_Normal.plist", "Character/Hero2/hero2_Normal.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero2.mp3");
     Vector<CCSpriteFrame*> hero2FrameArray;
-    for (int i = 1; i < 8; i++)
+    for (int i = 0; i < 8; i++)
     {
-        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("skill0%d.png", i)->getCString());
+        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("Idle-%d.png", i)->getCString());
         hero2FrameArray.pushBack(frame);
     }
     auto* animation1 = Animation::createWithSpriteFrames(hero2FrameArray);
     animation1->setDelayPerUnit(0.1f);
     animation1->setRestoreOriginalFrame(true);
+    animation1->setLoops(-1);
     hero2->setScale(5.0f);
     auto* action1 = Animate::create(animation1);
 
@@ -392,15 +393,15 @@ void HeroScene::animate3()
     m_frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Start.plist", "Character/Hero3/hero3_Start.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero3.mp3");
     Vector<CCSpriteFrame*> hero3FrameArray;
-    for (int i = 1; i < 7; i++)
+    for (int i = 0; i < 6; i++)
     {
-        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("Idle_0%d.png", i)->getCString());
+        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("Idle3-%d.png", i)->getCString());
         hero3FrameArray.pushBack(frame);
     }
     auto* animation = Animation::createWithSpriteFrames(hero3FrameArray);
     animation->setDelayPerUnit(0.1f);
     animation->setLoops(-1);
-    hero3->setScale(3.0f);
+    hero3->setScale(5.0f);
     auto* action = Animate::create(animation);
     hero3->runAction(action);
 }
@@ -411,5 +412,24 @@ void HeroScene::animate3()
 ****************************/
 void HeroScene::animate4()
 {
-
+    log("true");
+    hero4 = Sprite::create("Character/Hero4/hero.png");
+    hero4->setPosition(700, 350);
+    addChild(hero4);
+    auto* m_frameCache = CCSpriteFrameCache::getInstance();
+    m_frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Normal.plist", "Character/Hero4/hero4_Normal.png");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4.mp3");
+    Vector<CCSpriteFrame*> hero4FrameArray;
+    for (int i = 1; i < 6; i++)
+    {
+        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("idle sheet-Sheet_0%d.png", i)->getCString());
+        hero4FrameArray.pushBack(frame);
+        log("true");
+    }
+    auto* animation = Animation::createWithSpriteFrames(hero4FrameArray);
+    animation->setDelayPerUnit(0.1f);
+    animation->setLoops(-1);
+    hero4->setScale(5.0f);
+    auto* action = Animate::create(animation);
+    hero4->runAction(action);
 }
