@@ -20,8 +20,10 @@
 #define MAP_SAFEAREA_POSITION MAP_SAFEAREA_SIZE / 2,  MAP_SAFEAREA_SIZE / 2
 #define MAP_SAFEAREA_APPEAR_TIMES 15
 #define MAP_SAFEAREA_DELAY_LAST 10.0f
-#define MAP_SAFEAREA_INTERVAL_LAST 0.5f
+#define MAP_SAFEAREA_INTERVAL_LAST 10.0f
 #define MAP_FOG_DENSITY 16
+#define MAP_FOG_DAMAGE_TO_PLAYER 4
+#define MAP_PORTAL_SIZE 6
 
 
 class MapLayer : public cocos2d::Layer
@@ -46,6 +48,18 @@ class MapLayer : public cocos2d::Layer
 
     bool FogIsPlaced[1920][1920];
 
+    Sprite* _portal_1;
+    Sprite* _portal_2;
+    Sprite* _portal_3;
+    Sprite* _portal_4;
+
+    Sprite* _portal_Determination_1;
+    Sprite* _portal_Determination_2;
+    Sprite* _portal_Determination_3;
+    Sprite* _portal_Determination_4;
+
+
+
     std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap; // 判断鼠标有无释放
 
 public:
@@ -64,7 +78,9 @@ public:
 
     void update(float delta);
     void update2(float delta);
+    void updateForPortal(float delta);
     void updateForFog(float delta);
+    //void updateForFogTwice(float delta);
     void updatePlayerHurtByFog(float delta);
     void updateOutsideFog(float delta);
 
