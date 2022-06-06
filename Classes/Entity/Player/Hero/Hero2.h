@@ -72,7 +72,6 @@ public:
 	void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
 	void initPlayer();
 
-	//template<typename Enemy>
 	void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar);
 
 	void keepHealthBar(Slider* healthBar);
@@ -84,29 +83,18 @@ public:
   
 	//CC_SYTHESIZE_RETAIN相当于同时得到getxxxAction和setxxxAction两个函数
 	//在hero1~hero4中都需要添加
+	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _walkAction, WalkAction);       
+	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _normalAction, NormalAction);
+	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _attackAction, AttackAction);
 
 
 	bool initWalkAction();
 	bool initNormalAction();
 	bool initAttackAction();
-
-	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _walkAction, WalkAction);
-	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _normalAction, NormalAction);
-	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _attackAction, AttackAction);
   
 	void setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar, cocos2d::Label* levelText);
 
 	void upgrade(cocos2d::Label* levelText, Slider* bar);
-
-	bool Hero2::playerCollisionTest1(Player* target, Weapon* weapon);
-
-	const int _width = 26;
-	const int _height = 44;
-
-	int getID();
-
-private:
-	int ID = 2;
 
 };
 
