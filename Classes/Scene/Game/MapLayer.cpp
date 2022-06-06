@@ -166,11 +166,11 @@ bool MapLayer::init()
 
 	int _ai7X = _tileMap->getObjectGroup("AI")->getObject("ai7").at("x").asInt();
 	int _ai7Y = _tileMap->getObjectGroup("AI")->getObject("ai7").at("y").asInt();
-	createHero(&_player4, &_weapon4, &_healthBar4, &_magicBar4, &_levelText4,
-		Vec2(_ai7X, _ai7Y), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
+	//createHero(&_player4, &_weapon4, &_healthBar4, &_magicBar4, &_levelText4,
+	//	Vec2(_ai7X, _ai7Y), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
 
 	createHero(&_AIplayer1, &_AIweapon1, &_AIhealthBar1, &_AImagicBar1, &_AIlevelText1,
-		Vec2(_ai7X, _ai7Y), "Character/Hero1/hero.png", "Character/Hero1/empty.png");
+		Vec2(_ai7X, _ai7Y), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
 	srand((unsigned)time(0));
 
 	this->schedule(schedule_selector(MapLayer::updateAIMove), 0.05f);
@@ -735,7 +735,7 @@ void MapLayer::update2(float delta)
 
 	if (_player->_panel.getIfPlayNormalAnimationInUpdate2())
 	{
-		_player->playerCollisionTest1(_player4, _weapon);
+		//_player->playerCollisionTest1(_player4, _weapon);
 		_player->_panel.setPlayerState(NORMAL);
 		_player->_panel.setIfPlayAttackAnimation(true);
 		if (_player->_panel.getPlayerState() == NORMAL) {
