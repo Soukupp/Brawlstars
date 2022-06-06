@@ -230,3 +230,8 @@ void Hero4::upgrade(cocos2d::Label* levelText, Slider* bar)
 		this->keepLevelText(levelText, bar);
 	}
 }
+
+int Hero4::getID()
+{
+	return ID;
+}
