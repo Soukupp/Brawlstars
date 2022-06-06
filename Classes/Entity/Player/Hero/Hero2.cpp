@@ -81,7 +81,6 @@ void Hero2::initPlayer()
 * Summary ：发动攻击 输入"attack" "skill" 调用
 * return ：
 ****************************/
-//template<typename Enemy>
 void Hero2::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar)
 {
 	if (attackType == "attack")

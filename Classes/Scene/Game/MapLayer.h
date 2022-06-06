@@ -23,11 +23,11 @@ class MapLayer : public cocos2d::Layer
     cocos2d::TMXLayer* _tree;
     Sprite* _treecell;
     /**/
-    Hero1* _player1;
-    Weapon* _weapon1;
-    Slider* _healthBar1;
-    Slider* _magicBar1;
-    cocos2d::Label* _levelText1;
+    Hero1* _AIplayer1;
+    Weapon* _AIweapon1;
+    Slider* _AIhealthBar1;
+    Slider* _AImagicBar1;
+    cocos2d::Label* _AIlevelText1;
     /**/
     Hero2* _player;
     Weapon* _weapon;
@@ -51,6 +51,8 @@ public:
 
     void update(float delta);
     void update2(float delta);
+    void updateAIMove(float delta);
+    void updateAIAttack(float delta);
 
     void setPlayerPosition(cocos2d::Vec2 position);
     void setTreeOpacity(cocos2d::Vec2 position);
