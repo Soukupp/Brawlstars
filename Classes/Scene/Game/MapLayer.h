@@ -51,6 +51,11 @@ public:
 
     void update(float delta);
     void update2(float delta);
+    void updateForPortal(float delta);
+    void updateForFog(float delta);
+    //void updateForFogTwice(float delta);
+    void updatePlayerHurtByFog(float delta);
+    void updateOutsideFog(float delta);
     void updateAIMove(float delta);
     void updateAIAttack(float delta);
 
