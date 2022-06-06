@@ -296,7 +296,6 @@ void HeroScene::selectHero3Callback(cocos2d::Ref* pSender)
 void HeroScene::selectHero4Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    _chooseNumber = 4;
     if (_selectedHero == 4)
         _confirmButton->setEnabled(false);
     else
