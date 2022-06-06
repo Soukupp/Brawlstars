@@ -14,6 +14,7 @@
 #include "Entity/Player/Hero/Hero3.h"
 #include "Entity/Player/Hero/Hero4.h"
 #include "Entity/Weapon/Weapon.h"
+#include "Entity/Monster/Monster.h"
 #include <vector>
 #include <string>
 
@@ -72,6 +73,9 @@ class MapLayer : public cocos2d::Layer
     Slider* _AImagicBar1;
     cocos2d::Label* _AIlevelText1;
 
+    Monster* _monster;
+    Slider* _monsterHealthBar;
+
     bool FogIsPlaced[1920][1920];
 
     Sprite* _portal_1;
@@ -121,6 +125,9 @@ public:
     template<typename Hero>
     void createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slider** magicBar, Label** levelText,
         Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon);
+
+    void createMonster(Monster** monster, Slider** healthBar,
+        Vec2& position, const std::string& filenameMonster);
 
     Animation* getAnimationByName(std::string fileName, float interval, int fileNum, int if_repeat = -1);
     // implement the "static create()" method manually
