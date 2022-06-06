@@ -76,8 +76,7 @@ void Hero4::initPlayer()
 * Summary ：发动攻击 输入"attack" "skill" 调用
 * return ：
 ****************************/
-template<typename Enemy>
-void Hero4::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Enemy* enemy, Slider* enemyHealthBar)
+void Hero4::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar)
 {
 	if (attackType == "attack")
 	{
@@ -230,4 +229,9 @@ void Hero4::upgrade(cocos2d::Label* levelText, Slider* bar)
 		_panel.setHealthPoint(HERO4_INIT_MAXHEALTHPOINT / 10 + _panel.getHealthPoint());
 		this->keepLevelText(levelText, bar);
 	}
+}
+
+int Hero4::getID()
+{
+	return ID;
 }

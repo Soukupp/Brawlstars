@@ -76,8 +76,7 @@ void Hero3::initPlayer()
 * Summary ：发动攻击 输入"attack" "skill" 调用
 * return ：
 ****************************/
-template<typename Enemy>
-void Hero3::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Enemy* enemy, Slider* enemyHealthBar)
+void Hero3::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar)
 {
 	if (attackType == "attack")
 	{
@@ -148,8 +147,12 @@ void Hero3::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider
 ****************************/
 void Hero3::keepHealthBar(Slider* healthBar)
 {
-	healthBar->setPosition(HERO3_HEALTHBAR_POSITION);
+	/*healthBar->setPosition(HERO3_HEALTHBAR_POSITION);*/
 	//_healthBar->setPosition(position);
+	float x = this->getPosition().x;
+	float y = this->getPosition().y + 30;
+
+	healthBar->setPosition(Vec2::Vec2(x, y));
 }
 /****************************
 * Name ：keepMagicBar
@@ -158,7 +161,11 @@ void Hero3::keepHealthBar(Slider* healthBar)
 ****************************/
 void Hero3::keepMagicBar(Slider* magicBar)
 {
-	magicBar->setPosition(HERO3_MAGICBAR_POSITION);
+	//magicBar->setPosition(HERO3_MAGICBAR_POSITION);
+	float x = this->getPosition().x;
+	float y = this->getPosition().y + 25;
+
+	magicBar->setPosition(Vec2::Vec2(x, y));
 }
 /****************************
 * Name ：keepWeapon
@@ -174,9 +181,13 @@ void Hero3::keepWeapon(Weapon* weapon)
 * Summary ：保持等级位置
 * return ：
 ****************************/
-void Hero3::keepLevelText(cocos2d::Label* levelText,Slider* bar)
+void Hero3::keepLevelText(cocos2d::Label* levelText, Slider* bar)
 {
-	levelText->setPosition(HERO3_LEVELTEXT_POSITION);
+	//levelText->setPosition(HERO3_LEVELTEXT_POSITION);
+	float x = this->getPosition().x;
+	float y = this->getPosition().y + 35;
+
+	levelText->setPosition(Vec2::Vec2(x, y));
 }
 /****************************
 * Name ：runFlipxWithWeapon
@@ -233,4 +244,133 @@ void Hero3::upgrade(cocos2d::Label* levelText, Slider* bar)
 		_panel.setHealthPoint(HERO3_INIT_MAXHEALTHPOINT / 10 + _panel.getHealthPoint());
 		this->keepLevelText(levelText, bar);
 	}
+}
+
+bool Hero3::initWalkAction()
+{
+	auto* frameCache = CCSpriteFrameCache::getInstance();
+	frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Run.plist", "Character/Hero3/hero3_Run.png");
+
+	Vector<CCSpriteFrame*> playerFrameArray;
+	for (int i = 1; i < 6; i++)
+	{
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("Run-%d.png", i)->getCString());
+		playerFrameArray.pushBack(frame);
+	}
+
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+
+	this->setWalkAction(RepeatForever::create(Animate::create(animation)));
+
+	if (_walkAction != nullptr)
+		return true;
+	else
+		return false;
+}
+
+bool Hero3::initNormalAction()
+{
+	auto* frameCache = CCSpriteFrameCache::getInstance();
+	frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Start.plist", "Character/Hero3/hero3_Start.png");
+
+	Vector<CCSpriteFrame*> playerFrameArray;
+	for (int i = 0; i < 6; i++)
+	{
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("Idle3-%d.png", i)->getCString());
+		playerFrameArray.pushBack(frame);
+	}
+
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 9.0);
+	this->setNormalAction(RepeatForever::create(Animate::create(animation)));
+
+	if (_normalAction != nullptr)
+		return true;
+	else
+		return false;
+}
+
+bool Hero3::initAttackAction()
+{
+	auto* frameCache = CCSpriteFrameCache::getInstance();
+	frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Attack.plist", "Character/Hero3/hero3_Attack.png");
+
+	Vector<CCSpriteFrame*> playerFrameArray;
+	for (int i = 0; i < 8; i++)
+	{
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("Attack2-%d.png", i)->getCString());
+		playerFrameArray.pushBack(frame);
+	}
+
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+	animation->setLoops(1);
+	auto* animate = Animate::create(animation);
+	this->setAttackAction(animate);
+
+	if (_normalAction != nullptr)
+		return true;
+	else
+		return false;
+}
+
+
+bool Hero3::playerCollisionTest1(Player* target, Weapon* weapon)
+{
+	float targetX = target->getPosition().x;                           //目标位置X
+	float targetY = target->getPosition().y;                           //目标位置Y
+	float targetWidth = target->_width;         //目标的宽度
+	float targetHeight = target->_height;        //目标的高度
+	float weaponWidth = 50.0f;                //攻击范围的宽度
+
+	float judgearea = 80;
+
+	log("**this->getPosition().x        %f", this->getPosition().x);
+	log("**this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
+	log("**targetWidth / 2                      %f", targetWidth / 2);
+
+
+
+	if (_direct == 1) {
+		if ((targetX - this->getPosition().x) < judgearea && (this->getPosition().x - targetX) <= 0) {           //范围判定
+			if (fabs(this->getPosition().y - targetY) < targetHeight / 4 + 10) {
+				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
+				log("true++++++++++++++++++++++++++++++++++++++++++");
+				return true;
+			}
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
+			log("true----------------------------------------");
+			return false;
+		}
+		else {
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
+			log("true----------------------------------------");
+			return false;
+		}
+	}
+	if (_direct == -1) {
+
+		log("this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
+		log("targetWidth / 2                      %f", targetWidth / 2);
+
+		if ((this->getPosition().x - targetX) < judgearea && (this->getPosition().x - targetX) >= 0) {           //范围判定
+			if (fabs(this->getPosition().y - targetY) < targetHeight / 4 + 10) {
+				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
+				log("true++++++++++++++++++++++++++++++++++++++++++");
+
+				return true;
+			}
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
+			log("true----------------------------------------");
+			return false;
+		}
+		else {
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
+			log("true----------------------------------------");
+			return false;
+		}
+	}
+}
+
+int Hero3::getID()
+{
+	return ID;
 }

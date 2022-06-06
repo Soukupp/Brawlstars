@@ -72,8 +72,7 @@ public:
 	void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
 	void initPlayer();
 
-	template<typename Enemy>
-	void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Enemy* enemy, Slider* enemyHealthBar);
+	void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar);
 
 	void keepHealthBar(Slider* healthBar);
 	void keepMagicBar(Slider* magicBar);
@@ -84,6 +83,13 @@ public:
 	void setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar, cocos2d::Label* levelText);
 
 	void upgrade(cocos2d::Label* levelText, Slider* bar);
+
+	const int _width = 26;
+	const int _height = 44;
+	int getID();
+
+private:
+	int ID = 4;
 };
 
 #endif

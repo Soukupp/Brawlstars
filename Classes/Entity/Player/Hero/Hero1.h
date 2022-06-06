@@ -25,7 +25,7 @@ using namespace cocos2d;
 //动画时长、帧数
 #define HERO1_YOU_ATTACK_TIME 0.2f
 #define HERO1_YOU_ATTACK_FRAME 7
-#define HERO1_YOU_SKILL_TIME 1.5f
+#define HERO1_YOU_SKILL_TIME 1.0f
 #define HERO1_YOU_SKILL_FRAME 18
 
 /*==============================以上是你需要修改的宏定义=================================*/
@@ -71,8 +71,7 @@ public:
 	void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
 	void initPlayer();
 
-	template<typename Enemy>
-	void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Enemy* enemy, Slider* enemyHealthBar);
+	void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar);
 
 	void keepHealthBar(Slider* healthBar);
 	void keepMagicBar(Slider* magicBar);
@@ -84,6 +83,24 @@ public:
 	void setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar, cocos2d::Label* levelText);
 
 	void upgrade(cocos2d::Label* levelText, Slider* bar);
+
+	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _walkAction, WalkAction);
+	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _normalAction, NormalAction);
+	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _attackAction, AttackAction);
+
+	bool initWalkAction();
+	bool initNormalAction();
+	bool initAttackAction();
+	bool initSkillAction();
+	bool playerCollisionTest1(Player* target, Weapon* weapon);
+	const int _width = 26;
+	const int _height = 44;
+
+	int getID();
+
+private:
+	int ID = 1;
+
 
 };
 

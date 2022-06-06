@@ -42,11 +42,35 @@ class MapLayer : public cocos2d::Layer
     Slider* _magicBar1;
     cocos2d::Label* _levelText1;
     /**/
-    Hero2* _player;
+    Hero2* _player2;
+    Weapon* _weapon2;
+    Slider* _healthBar2;
+    Slider* _magicBar2;
+    cocos2d::Label* _levelText2;
+
+    Hero3* _player3;
+    Weapon* _weapon3;
+    Slider* _healthBar3;
+    Slider* _magicBar3;
+    cocos2d::Label* _levelText3;
+
+    Hero4* _player4;
+    Weapon* _weapon4;
+    Slider* _healthBar4;
+    Slider* _magicBar4;
+    cocos2d::Label* _levelText4;
+
+    Player* _player;
     Weapon* _weapon;
     Slider* _healthBar;
     Slider* _magicBar;
     cocos2d::Label* _levelText;
+
+    Hero1* _AIplayer1;
+    Weapon* _AIweapon1;
+    Slider* _AIhealthBar1;
+    Slider* _AImagicBar1;
+    cocos2d::Label* _AIlevelText1;
 
     bool FogIsPlaced[1920][1920];
 
@@ -85,6 +109,9 @@ public:
     //void updateForFogTwice(float delta);
     void updatePlayerHurtByFog(float delta);
     void updateOutsideFog(float delta);
+
+    void updateAIMove(float delta);
+    void updateAIAttack(float delta);
 
     void setPlayerPosition(cocos2d::Vec2 position);
     void setTreeOpacity(cocos2d::Vec2 position);
