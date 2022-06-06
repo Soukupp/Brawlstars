@@ -219,6 +219,7 @@ void HeroScene::heroBackCallback(cocos2d::Ref* pSender)
 }
 
 
+
 /****************************
 * Name ：selectHero1Callback
 * Summary ：进入hero1界面回调函数
@@ -295,6 +296,7 @@ void HeroScene::selectHero3Callback(cocos2d::Ref* pSender)
 //同上
 void HeroScene::selectHero4Callback(cocos2d::Ref* pSender)
 {
+
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     if (_selectedHero == 4)
         _confirmButton->setEnabled(false);
