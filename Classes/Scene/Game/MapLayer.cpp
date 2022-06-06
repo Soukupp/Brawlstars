@@ -17,6 +17,10 @@
 //日期 : 2022-6-4
 //实现 : Fog
 
+//修改 : 王鹏
+//日期 : 2022-6-5
+//实现 : ai
+
 
 /*
 	对象所在层数：
@@ -180,6 +184,9 @@ bool MapLayer::init()
 
 	this->schedule(schedule_selector(MapLayer::updateAIMove), 0.05f);
 	this->schedule(schedule_selector(MapLayer::updateAIAttack), 2.0f);
+
+	createMonster(&_monster,&_monsterHealthBar,
+		Vec2(_playerX, _playerY), "Character/Hero3/hero.png");
 
 	/*=====================测试对象创建结束=====================*/
 
@@ -452,8 +459,8 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 			_player->_panel.setPlayerState(ATTACK);
 			_player->stopAllActions();
 			//_player->runAction(_player->getAttackAction());
-			//pz 为了测试暂时写死成player1
-			_player->launchAnAttack(_weapon, "attack", _magicBar,_player1,_healthBar1);
+			//pz 为了测试暂时写死成AIplayer1
+			_player->launchAnAttack(_weapon, "attack", _magicBar,_AIplayer1,_AIhealthBar1);
 
 			_player->_panel.setIfPlayAttackAnimation(false);                                          //保证不会实现连续攻击
 																									  //检测攻击时是否碰到_player1
@@ -725,6 +732,23 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 	(**hero).setPositionWithAll(position, *weapon, *healthBar, *magicBar, *levelText);
 }
 
+void MapLayer::createMonster(Monster** monster, Slider** healthBar,
+	Vec2& position, const std::string& filenameMonster)
+{
+	*monster = Monster::create(filenameMonster);
+	(**monster).initMonster(1000,0,100,0,0);//无用数据直接空置
+	addChild(*monster, 3, 200);
+
+	*healthBar = Slider::create();
+	(**healthBar).setPercent((**monster).getHealthPercent());
+	(**healthBar).loadBarTexture("/ui/playerHealthbarFrame.png");
+	(**healthBar).loadProgressBarTexture("/ui/playerHealthbarBlock.png");
+	(**healthBar).setScale(0.5);
+	(**healthBar).setAnchorPoint(Vec2(0.5f, 0.0f));
+	addChild(*healthBar);
+
+	(**monster).setPositionWithAll(position, *healthBar);
+}
 
 /****************************
 * Name ：MapLayer::update2
@@ -872,26 +896,26 @@ void MapLayer::updateAIMove(float delta)
 		Vec2 playerPos = _AIplayer1->getPosition();  // 获取位置坐标
 		if (direct == 0)
 		{
-			playerPos.x += 4;
+			playerPos.x += 2;
 			_AIplayer1->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
 			//_player->runAction(FlipX::create(false));
 			_AIplayer1->runFlipxWithWeapon(false, _AIweapon1);
 		}
 		else if (direct == 1)
 		{
-			playerPos.x -= 4;
+			playerPos.x -= 2;
 			_AIplayer1->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
 			//_player->runAction(FlipX::create(true));
 			_AIplayer1->runFlipxWithWeapon(true, _AIweapon1);
 		}
 		else if (direct == 2)
 		{
-			playerPos.y += 4;
+			playerPos.y += 2;
 			_AIplayer1->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
 		}
 		else if (direct == 3)
 		{
-			playerPos.y -= 4;
+			playerPos.y -= 2;
 			_AIplayer1->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
 		}
 		/*=====================以上由键盘操作改写=====================*/
