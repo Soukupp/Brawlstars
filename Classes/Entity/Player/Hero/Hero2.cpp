@@ -81,7 +81,6 @@ void Hero2::initPlayer()
 * Summary ：发动攻击 输入"attack" "skill" 调用
 * return ：
 ****************************/
-//template<typename Enemy>
 void Hero2::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar)
 {
 	if (attackType == "attack")
@@ -154,12 +153,8 @@ void Hero2::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider
 ****************************/
 void Hero2::keepHealthBar(Slider* healthBar)
 {
-//	healthBar->setPosition(HERO2_HEALTHBAR_POSITION);
+	healthBar->setPosition(HERO2_HEALTHBAR_POSITION);
 	//_healthBar->setPosition(position);
-	float x = this->getPosition().x;
-	float y = this->getPosition().y + 30;
-
-	healthBar->setPosition(Vec2::Vec2(x, y));
 }
 /****************************
 * Name ：keepMagicBar
@@ -168,11 +163,7 @@ void Hero2::keepHealthBar(Slider* healthBar)
 ****************************/
 void Hero2::keepMagicBar(Slider* magicBar)
 {
-	//magicBar->setPosition(HERO2_MAGICBAR_POSITION);
-	float x = this->getPosition().x;
-	float y = this->getPosition().y + 25;
-
-	magicBar->setPosition(Vec2::Vec2(x, y));
+	magicBar->setPosition(HERO2_MAGICBAR_POSITION);
 }
 /****************************
 * Name ：keepWeapon
@@ -190,12 +181,7 @@ void Hero2::keepWeapon(Weapon* weapon)
 ****************************/
 void Hero2::keepLevelText(cocos2d::Label* levelText, Slider* bar)
 {
-	//levelText->setPosition(HERO2_LEVELTEXT_POSITION);
-
-	float x = this->getPosition().x;
-	float y = this->getPosition().y + 35;
-
-	levelText->setPosition(Vec2::Vec2(x, y));
+	levelText->setPosition(HERO2_LEVELTEXT_POSITION);
 }
 /****************************
 * Name ：runFlipxWithWeapon
@@ -224,12 +210,12 @@ bool Hero2::initWalkAction()
 {
 
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero2/hero2_Run.plist", "Character/Hero2/hero2_Run.png");
+	frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Walk.plist", "Character/Hero1/hero1_Walk.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
-	for (int i = 1; i < 9; i++)
+	for (int i = 0; i < 6; i++)
 	{
-		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("Run_0%d.png", i)->getCString());
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("adventurer-run-0%d.png", i)->getCString());
 		playerFrameArray.pushBack(frame);
 	}
 
@@ -252,12 +238,12 @@ bool Hero2::initNormalAction()
 {
 
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero2/hero2_Normal.plist", "Character/Hero2/hero2_Normal.png");
+	frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Idle.plist", "Character/Hero1/hero1_Idle.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
-	for (int i = 0; i < 8; i++)
+	for (int i = 1; i < 5; i++)
 	{
-		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("Idle-%d.png", i)->getCString());
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("adventurer-idle%d.png", i)->getCString());
 		playerFrameArray.pushBack(frame);
 	}
 
@@ -278,16 +264,16 @@ bool Hero2::initAttackAction()
 {
 
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero2/hero2_Attack.plist", "Character/Hero2/hero2_Attack.png");
+	frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Attack.plist", "Character/Hero1/hero1_Attack.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
-	for (int i = 1; i < 5; i++)
+	for (int i = 1; i < 13; i++)
 	{
-		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("Attack-%d.png", i)->getCString());
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("adventurer-attack%d.png", i)->getCString());
 		playerFrameArray.pushBack(frame);
 	}
 
-	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 5.0);
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
 	animation->setLoops(1);
 	auto* animate = Animate::create(animation);
 	this->setAttackAction(animate);
@@ -336,62 +322,3 @@ void Hero2::upgrade(cocos2d::Label* levelText, Slider* bar)
 	}
 }
 
-bool Hero2::playerCollisionTest1(Player* target, Weapon* weapon)
-{
-	float targetX = target->getPosition().x;                           //目标位置X
-	float targetY = target->getPosition().y;                           //目标位置Y
-	float targetWidth = target->_width;         //目标的宽度
-	float targetHeight = target->_height;        //目标的高度
-	float weaponWidth = 50.0f;                //攻击范围的宽度
-
-	float judgearea = 83;
-
-	log("**this->getPosition().x        %f", this->getPosition().x);
-	log("**this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
-	log("**targetWidth / 2                      %f", targetWidth / 2);
-
-
-
-	if (_direct == 1) {
-		if ((targetX - this->getPosition().x) <judgearea && (this->getPosition().x - targetX) <= 0) {           //范围判定
-			if (fabs(this->getPosition().y- targetY) < targetHeight / 4+10) {
-				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
-				log("true++++++++++++++++++++++++++++++++++++++++++");
-				return true;
-			}
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-			log("true----------------------------------------");
-			return false;
-		}
-		else {
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-			log("true----------------------------------------");
-			return false;
-		}
-	}
-	if (_direct == -1) {
-
-		log("this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
-		log("targetWidth / 2                      %f", targetWidth / 2);
-
-		if ((this->getPosition().x - targetX) < judgearea && (this->getPosition().x - targetX) >= 0) {           //范围判定
-			if (fabs(this->getPosition().y - targetY) < targetHeight / 4+10) {
-				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
-				log("true++++++++++++++++++++++++++++++++++++++++++");
-				return true;
-			}
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-			log("true----------------------------------------");
-			return false;
-		}
-		else {
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-			log("true----------------------------------------");
-			return false;
-		}
-	}
-}
-int Hero2::getID()
-{
-	return ID;
-}

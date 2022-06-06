@@ -169,6 +169,12 @@ bool MapLayer::init()
 	createHero(&_player4, &_weapon4, &_healthBar4, &_magicBar4, &_levelText4,
 		Vec2(_ai7X, _ai7Y), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
 
+	createHero(&_AIplayer1, &_AIweapon1, &_AIhealthBar1, &_AImagicBar1, &_AIlevelText1,
+		Vec2(_ai7X, _ai7Y), "Character/Hero1/hero.png", "Character/Hero1/empty.png");
+	srand((unsigned)time(0));
+
+	this->schedule(schedule_selector(MapLayer::updateAIMove), 0.05f);
+	this->schedule(schedule_selector(MapLayer::updateAIAttack), 2.0f);
 
 	/*=====================测试对象创建结束=====================*/
 
@@ -824,4 +830,82 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 	}
 }
 
+void MapLayer::updateAIMove(float delta)
+{
+	/*
+	* 这里应当判断ai的角色的当前状态 比如如果在攻击则不移动 现在暂时写成一直移动
+	*/
+	if (1) {
+		static int direct = 1;//需要保存原方向 所以static
+		int tempDirect = rand() % 60;
+		if (tempDirect <= 3)//除去原本的方向，每一帧有3/60的几率转向
+		{//这样是为了保证ai基本可以走一段路 而不是原地不停转向
+			direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
+		}
+		/*=====================以下由键盘操作改写=====================*/
+		Vec2 playerPos = _AIplayer1->getPosition();  // 获取位置坐标
+		if (direct == 0)
+		{
+			playerPos.x += 4;
+			_AIplayer1->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
+			//_player->runAction(FlipX::create(false));
+			_AIplayer1->runFlipxWithWeapon(false, _AIweapon1);
+		}
+		else if (direct == 1)
+		{
+			playerPos.x -= 4;
+			_AIplayer1->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
+			//_player->runAction(FlipX::create(true));
+			_AIplayer1->runFlipxWithWeapon(true, _AIweapon1);
+		}
+		else if (direct == 2)
+		{
+			playerPos.y += 4;
+			_AIplayer1->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
+		}
+		else if (direct == 3)
+		{
+			playerPos.y -= 4;
+			_AIplayer1->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
+		}
+		/*=====================以上由键盘操作改写=====================*/
 
+		/*=====================以下由位置移动改写=====================*/
+		// 读取坐标
+		Vec2 tileCoord = this->tileCoordFromPosition(playerPos);  //从像素点坐标转化为瓦片坐标
+
+		int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
+
+		// 碰撞检测
+		if (tileGid > 0) {
+			Value prop = _tileMap->getPropertiesForGID(tileGid);
+			ValueMap propValueMap = prop.asValueMap();
+
+			std::string collision = propValueMap["Collidable"].asString();
+			// 元素+true
+			if (collision == "true") { //碰撞检测成功
+				direct = rand() % 4;//当ai撞墙 每一帧有3/4概率转向 一秒有几十帧 则基本可以做到撞墙即转向
+				return;
+			}
+		}
+		_AIplayer1->setPositionWithAll(playerPos, _AIweapon1, _AIhealthBar1, _AImagicBar1, _AIlevelText1);
+		/*=====================以上由位置移动改写=====================*/
+
+		//this->setTreeOpacity(playerPos);//
+	}
+}
+
+void MapLayer::updateAIAttack(float delta)
+{
+	//在下面进行碰撞检测
+
+	//在上面进行碰撞检测
+
+	if (1)//修改这里 改成碰撞检测成功 现在暂时是一直发动攻击
+	{
+		//这里暂时写成始终攻击玩家
+		//后续改成所碰撞到的角色
+		_AIplayer1->launchAnAttack(_AIweapon1, "attack", _AImagicBar1, _player, _healthBar);
+	}
+	//碰撞检测失败则不做操作
+}
