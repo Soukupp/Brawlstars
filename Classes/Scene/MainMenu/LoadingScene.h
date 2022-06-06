@@ -1,3 +1,9 @@
+//作者：李元特
+//日期：2022-6-6
+//实现：loading界面完工
+
+
+
 #ifndef __LOADING_SCENE_H__
 #define __LODING_SCENE_H__
 
@@ -10,6 +16,10 @@
 #define LOADING_TIP1_POSITION origin.x + visibleSize.width / 2, visibleSize.height - 3 * tip1->getContentSize().height
 #define LOADING_TIP2_POSITION origin.x + visibleSize.width / 2, 3 * tip2->getContentSize().height
 #define LOADING_TIP3_POSITION origin.x + visibleSize.width / 2, 5 * tip3->getContentSize().height
+
+#define LOADING_TIP1_SHADOW Size(5.0f, -5.0f), 150, 10, true
+#define LOADING_TIP2_SHADOW Size(5.0f, -5.0f), 150, 10, true
+#define LOADING_TIP3_SHADOW Size(5.0f, -5.0f), 150, 10, true
 
 
 class LoadingScene : public cocos2d::Scene

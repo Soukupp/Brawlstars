@@ -8,6 +8,7 @@
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
 #include "GameScene.h"
+#include "GameOverScene.h"
 #include "Entity/Player/Hero/Hero1.h"
 #include "Entity/Player/Hero/Hero2.h"
 #include "Entity/Player/Hero/Hero3.h"
@@ -21,6 +22,7 @@
 #define MAP_SAFEAREA_APPEAR_TIMES 15
 #define MAP_SAFEAREA_DELAY_LAST 10.0f
 #define MAP_SAFEAREA_INTERVAL_LAST 10.0f
+
 #define MAP_FOG_DENSITY 16
 #define MAP_FOG_DAMAGE_TO_PLAYER 4
 #define MAP_PORTAL_SIZE 6

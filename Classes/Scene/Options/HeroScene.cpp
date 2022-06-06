@@ -1,6 +1,10 @@
 //作者：束赫
 //时间：2022-5-20
 
+//作者：李元特
+//时间: 2022-6-6
+//修改：音乐，音效，背景update
+
 #include "HeroScene.h"
 #include "SimpleAudioEngine.h"
 #include "Entity/Player/Player.h"
@@ -16,6 +20,7 @@ Scene* HeroScene::createScene()
 {
     return HeroScene::create();
 }
+
 
 /****************************
 * Name ：problemLoading
@@ -38,22 +43,26 @@ bool HeroScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/to_a_new_scene.mp3");
+
     /*=====================创建背景图开始======================*/
-    auto background = Sprite::create("background/settingsBackground.png");
-    if (background == nullptr)
+    auto heroBackground = Sprite::create("background/heroBackground.jpg");
+    heroBackground->setOpacity(200);
+    if (heroBackground == nullptr)
     {
-        problemLoading("'background/settingsBackground.png'");
+        problemLoading("'background/heroBackground.jpg'");
     }
     else
     {
-        //将背景图放在中央
-        background->setPosition(Vec2(SETTINGS_BACKGROUND_POSITION_X,
+        heroBackground->setPosition(Vec2(SETTINGS_BACKGROUND_POSITION_X,
             SETTINGS_BACKGROUND_POSITION_Y));
 
-        this->addChild(background, 0);
+        this->addChild(heroBackground, 0);
     }
     /*=====================创建背景图结束======================*/
-     /*=====================创建返回按钮开始======================*/
+
+
+    /*=====================创建返回按钮开始====================*/
 
     //创建返回按钮
     auto heroBackItem = MenuItemImage::create(
@@ -64,20 +73,18 @@ bool HeroScene::init()
     if (heroBackItem == nullptr ||
         heroBackItem->getContentSize().width <= 0 ||
         heroBackItem->getContentSize().height <= 0)
-    {//错误处理
+    {
         problemLoading("'ui/backSettingsNormal.png' and 'ui/backSettingsSelected.png'");
     }
     else
-    {//设置位置
-        float x = HERO_BACK_ITEM_POSITION_X;
-        float y = HERO_BACK_ITEM_POSITION_Y;
-        heroBackItem->setPosition(Vec2(x, y));
+    {
+        heroBackItem->setPosition(Vec2(HERO_BACK_ITEM_POSITION_X, HERO_BACK_ITEM_POSITION_Y));
     }
     //创建返回菜单
     auto backMenu = Menu::create(heroBackItem, NULL);
     backMenu->setPosition(Vec2::ZERO);
     this->addChild(backMenu, 2);
-    /*=====================创建返回按钮结束======================*/
+    /*=====================创建返回按钮结束==================*/
 
     /*=====================创建标题开始======================*/
 
@@ -194,6 +201,8 @@ bool HeroScene::init()
  
     
 }
+
+
 /****************************
 * Name ：heroBackCallback
 * Summary ：返回主菜单
@@ -201,12 +210,15 @@ bool HeroScene::init()
 ****************************/
 void HeroScene::heroBackCallback(cocos2d::Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     AnimationCache::destroyInstance();
     SpriteFrameCache::getInstance()->removeUnusedSpriteFrames();
     TextureCache::getInstance()->removeUnusedTextures();
     auto mainMenuScene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//过场动画设计
 }
+
+
 /****************************
 * Name ：selectHero1Callback
 * Summary ：进入hero1界面回调函数
@@ -214,6 +226,7 @@ void HeroScene::heroBackCallback(cocos2d::Ref* pSender)
 ****************************/
 void HeroScene::selectHero1Callback(cocos2d::Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     if (_selectedHero == 1)                    //如果确认选择hero1
         _confirmButton->setEnabled(false);   //按钮设置为禁用
     else
@@ -237,7 +250,7 @@ void HeroScene::selectHero1Callback(cocos2d::Ref* pSender)
 
 void HeroScene::selectHero2Callback(cocos2d::Ref* pSender)
 {
-    
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     if (_selectedHero == 2)
         _confirmButton->setEnabled(false);
     else
@@ -260,6 +273,7 @@ void HeroScene::selectHero2Callback(cocos2d::Ref* pSender)
 //同上
 void HeroScene::selectHero3Callback(cocos2d::Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     if (_selectedHero == 3)
         _confirmButton->setEnabled(false);
     else
@@ -281,6 +295,7 @@ void HeroScene::selectHero3Callback(cocos2d::Ref* pSender)
 //同上
 void HeroScene::selectHero4Callback(cocos2d::Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     _chooseNumber = 4;
     if (_selectedHero == 4)
         _confirmButton->setEnabled(false);
@@ -299,6 +314,8 @@ void HeroScene::selectHero4Callback(cocos2d::Ref* pSender)
     }
 
 }
+
+
 /****************************
 * Name ：selectHeroConfirmCallback
 * Summary ：点击确认按钮的回调函数
@@ -306,6 +323,7 @@ void HeroScene::selectHero4Callback(cocos2d::Ref* pSender)
 ****************************/
 void HeroScene::selectHeroConfirmCallback(cocos2d::Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     switch (_chooseNumber) {
     case 1:
         UserDefault::getInstance()->setIntegerForKey("selectedHero", 1);
@@ -323,6 +341,8 @@ void HeroScene::selectHeroConfirmCallback(cocos2d::Ref* pSender)
     _selectedHero= UserDefault::getInstance()->getIntegerForKey("selectedHero");
     _confirmButton->setEnabled(false);
 }
+
+
 /****************************
 * Name ：animate1
 * Summary ：hero1动画实现
@@ -351,6 +371,8 @@ void HeroScene::animate1()
 
     hero1->runAction(action1);
 }
+
+
 /****************************
 * Name ：animate2
 * Summary ：hero2动画实现
@@ -378,6 +400,8 @@ void HeroScene::animate2()
 
     hero2->runAction(action1);
 }
+
+
 /****************************
 * Name ：animate3
 * Summary ：hero3动画实现
@@ -404,6 +428,8 @@ void HeroScene::animate3()
     auto* action = Animate::create(animation);
     hero3->runAction(action);
 }
+
+
 /****************************
 * Name ：animate4
 * Summary ：hero4动画实现
