@@ -337,9 +337,11 @@ void MapLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 		keyCode == EventKeyboard::KeyCode::KEY_S ||
 		keyCode == EventKeyboard::KeyCode::KEY_A ||
 		keyCode == EventKeyboard::KeyCode::KEY_D 
-		) {
+		)
+	{
 		keyMap[keyCode] = true;
-        if (_player->_panel.getPlayerState() != MOVING) {
+        if (_player->_panel.getPlayerState() != MOVING)
+		{
 
 			_player->_panel.setPlayerState(MOVING);
 
@@ -418,14 +420,12 @@ void MapLayer::update(float delta)
 	{
 		playerPos.x +=4;
 		_player->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
-		//_player->runAction(FlipX::create(false));
 		_player->runFlipxWithWeapon(false, _weapon);
 	}
 	else if (keyMap[EventKeyboard::KeyCode::KEY_A] || keyMap[EventKeyboard::KeyCode::KEY_LEFT_ARROW])
 	{
 		playerPos.x -=4;
 		_player->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
-		//_player->runAction(FlipX::create(true));
 		_player->runFlipxWithWeapon(true, _weapon);
 	}
 	else if (keyMap[EventKeyboard::KeyCode::KEY_W] || keyMap[EventKeyboard::KeyCode::KEY_UP_ARROW])
@@ -782,7 +782,7 @@ void MapLayer::update2(float delta)
 ****************************/
 void MapLayer::updateForPortal(float delta)
 {
-	log("turned in");
+	//log("turned in");
 	/*float x = _player->getPositionX();
 	log("player-position-x %lf", x);
 	float y = _player->getPositionY();
@@ -874,7 +874,7 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 	if (!_SafeArea->boundingBox().containsPoint(Vec2(_player->getPosition())))
 	{
 		//扣血
-		log("hurt!");
+		//log("hurt!");
 		_player->_panel.hit(MAP_FOG_DAMAGE_TO_PLAYER);
 		_player->refreshHealthBar(_healthBar);
 	}
@@ -882,16 +882,57 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 
 void MapLayer::updateAIMove(float delta)
 {
-	/*
-	* 这里应当判断ai的角色的当前状态 比如如果在攻击则不移动 现在暂时写成一直移动
-	*/
-	if (1) {
-		static int direct = 1;//需要保存原方向 所以static
+	static int direct = 1;//需要保存原方向 所以static
+	static bool backDirectChanged = false;
+	static int searchTimes = 0;
+
+	if (!_SafeArea->boundingBox().containsPoint(Vec2(_AIplayer1->getPosition())))//不在安全区
+	{
+		//log("not safe area");
+		++searchTimes;
+		if (searchTimes <= 100)//寻路少于一定数量则进行逃离方向选择逻辑
+		{
+			//log("searchTimes <= 200");
+			if (!backDirectChanged)//且没有掉头
+			{//那么掉头
+				//log("!backDirectChanged");
+				if (direct <= 1)//左右
+				{
+					direct = 1 - direct;
+				}
+				else//上下
+				{
+					direct = 5 - direct;
+				}
+				backDirectChanged = true;
+			}
+			//否则维持原方向
+		}
+		else//达到寻路上限还没逃离则开始随机选方向逃出
+		{
+			//log("searchTimes > 200");
+			backDirectChanged = false;//参数重置
+			int tempDirect = rand() % 60;
+			if (tempDirect <= 3)//除去原本的方向，每一帧有3/60的几率转向
+			{//这样是为了保证ai基本可以走一段路 而不是原地不停转向
+				direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
+			}
+		}
+	}
+	else//在安全区
+	{//正常选方向
+		searchTimes = 0;//参数重置
+		backDirectChanged = false;//参数重置
 		int tempDirect = rand() % 60;
 		if (tempDirect <= 3)//除去原本的方向，每一帧有3/60的几率转向
 		{//这样是为了保证ai基本可以走一段路 而不是原地不停转向
 			direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
 		}
+	}
+	/*
+	* 这里应当判断ai的角色的当前状态 比如如果在攻击则不移动 现在暂时写成一直移动
+	*/
+	if (1) {
 		/*=====================以下由键盘操作改写=====================*/
 		Vec2 playerPos = _AIplayer1->getPosition();  // 获取位置坐标
 		if (direct == 0)
