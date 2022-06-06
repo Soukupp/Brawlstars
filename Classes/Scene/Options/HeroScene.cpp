@@ -1,5 +1,9 @@
-//×÷Õß£ºÊøºÕ
-//Ê±¼ä£º2022-5-20
+//ä½œè€…ï¼šæŸèµ«
+//æ—¶é—´ï¼š2022-5-20
+
+//ä½œè€…ï¼šæŽå…ƒç‰¹
+//æ—¶é—´: 2022-6-6
+//ä¿®æ”¹ï¼šéŸ³ä¹ï¼ŒéŸ³æ•ˆï¼ŒèƒŒæ™¯update
 
 #include "HeroScene.h"
 #include "SimpleAudioEngine.h"
@@ -8,19 +12,20 @@
 USING_NS_CC;
 
 /****************************
-* Name £ºHeroScene::createScene
-* Summary £º´´½¨³¡¾°
-* return £º³¡¾°ÀàÖ¸Õë
+* Name ï¼šHeroScene::createScene
+* Summary ï¼šåˆ›å»ºåœºæ™¯
+* return ï¼šåœºæ™¯ç±»æŒ‡é’ˆ
 ****************************/
 Scene* HeroScene::createScene()
 {
     return HeroScene::create();
 }
 
+
 /****************************
-* Name £ºproblemLoading
-* Summary £º´íÎó´òÓ¡
-* return £º
+* Name ï¼šproblemLoading
+* Summary ï¼šé”™è¯¯æ‰“å°
+* return ï¼š
 ****************************/
 static void problemLoading(const char* filename)
 {
@@ -38,24 +43,28 @@ bool HeroScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /*=====================´´½¨±³¾°Í¼¿ªÊ¼======================*/
-    auto background = Sprite::create("background/settingsBackground.png");
-    if (background == nullptr)
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/to_a_new_scene.mp3");
+
+    /*=====================åˆ›å»ºèƒŒæ™¯å›¾å¼€å§‹======================*/
+    auto heroBackground = Sprite::create("background/heroBackground.jpg");
+    heroBackground->setOpacity(200);
+    if (heroBackground == nullptr)
     {
-        problemLoading("'background/settingsBackground.png'");
+        problemLoading("'background/heroBackground.jpg'");
     }
     else
     {
-        //½«±³¾°Í¼·ÅÔÚÖÐÑë
-        background->setPosition(Vec2(SETTINGS_BACKGROUND_POSITION_X,
+        heroBackground->setPosition(Vec2(SETTINGS_BACKGROUND_POSITION_X,
             SETTINGS_BACKGROUND_POSITION_Y));
 
-        this->addChild(background, 0);
+        this->addChild(heroBackground, 0);
     }
-    /*=====================´´½¨±³¾°Í¼½áÊø======================*/
-     /*=====================´´½¨·µ»Ø°´Å¥¿ªÊ¼======================*/
+    /*=====================åˆ›å»ºèƒŒæ™¯å›¾ç»“æŸ======================*/
 
-    //´´½¨·µ»Ø°´Å¥
+
+    /*=====================åˆ›å»ºè¿”å›žæŒ‰é’®å¼€å§‹====================*/
+
+    //åˆ›å»ºè¿”å›žæŒ‰é’®
     auto heroBackItem = MenuItemImage::create(
         "ui/backSettingsNormal.png",
         "ui/backSettingsSelected.png",
@@ -64,35 +73,33 @@ bool HeroScene::init()
     if (heroBackItem == nullptr ||
         heroBackItem->getContentSize().width <= 0 ||
         heroBackItem->getContentSize().height <= 0)
-    {//´íÎó´¦Àí
+    {
         problemLoading("'ui/backSettingsNormal.png' and 'ui/backSettingsSelected.png'");
     }
     else
-    {//ÉèÖÃÎ»ÖÃ
-        float x = HERO_BACK_ITEM_POSITION_X;
-        float y = HERO_BACK_ITEM_POSITION_Y;
-        heroBackItem->setPosition(Vec2(x, y));
+    {
+        heroBackItem->setPosition(Vec2(HERO_BACK_ITEM_POSITION_X, HERO_BACK_ITEM_POSITION_Y));
     }
-    //´´½¨·µ»Ø²Ëµ¥
+    //åˆ›å»ºè¿”å›žèœå•
     auto backMenu = Menu::create(heroBackItem, NULL);
     backMenu->setPosition(Vec2::ZERO);
     this->addChild(backMenu, 2);
-    /*=====================´´½¨·µ»Ø°´Å¥½áÊø======================*/
+    /*=====================åˆ›å»ºè¿”å›žæŒ‰é’®ç»“æŸ==================*/
 
-    /*=====================´´½¨±êÌâ¿ªÊ¼======================*/
+    /*=====================åˆ›å»ºæ ‡é¢˜å¼€å§‹======================*/
 
     auto heroNameLabel = Label::createWithTTF(
         "HEROS",
         "fonts/PixeloidSans.ttf",
         SETTINGS_NAME_LABEL_SIZE
-    );//´´½¨ÎÄ±¾
+    );//åˆ›å»ºæ–‡æœ¬
     if (heroNameLabel == nullptr)
     {
         problemLoading("'fonts/PixeloidSans.ttf'");
     }
     else
     {
-        const Color4B heroNameLabelColor(SETTINGS_TEXT_RGB_COLOR, 255);//´´½¨4BÑÕÉ«
+        const Color4B heroNameLabelColor(SETTINGS_TEXT_RGB_COLOR, 255);//åˆ›å»º4Bé¢œè‰²
         heroNameLabel->setTextColor(heroNameLabelColor);
         heroNameLabel->setPosition(
             Vec2(HERO_NAME_LABEL_POSITION_X,
@@ -100,9 +107,9 @@ bool HeroScene::init()
 
         this->addChild(heroNameLabel, 1);
     }
-    /*=====================´´½¨±êÌâ½áÊø======================*/
+    /*=====================åˆ›å»ºæ ‡é¢˜ç»“æŸ======================*/
 
-    /*=====================´´½¨Ó¢ÐÛÑ¡Ïî±êÇ©¿ªÊ¼======================*/
+    /*=====================åˆ›å»ºè‹±é›„é€‰é¡¹æ ‡ç­¾å¼€å§‹======================*/
     //HERO1
     auto* hero1LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
         "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero1Callback));
@@ -154,11 +161,11 @@ bool HeroScene::init()
 
     this->addChild(hero4Button);
 
-    //Î´È·ÈÏ×´Ì¬ÉèÖÃ
+    //æœªç¡®è®¤çŠ¶æ€è®¾ç½®
     auto* normal = Sprite::create("ui/rightSignNormal.png");
-    //µã»÷×´Ì¬ÉèÖÃ
+    //ç‚¹å‡»çŠ¶æ€è®¾ç½®
     auto* moving = Sprite::create("ui/rightSignMoving.png");
-    //½ûÓÃ×´Ì¬ÉèÖÃ
+    //ç¦ç”¨çŠ¶æ€è®¾ç½®
     auto* selected = Sprite::create("ui/rightSignSelected.png");
     _confirmButton = MenuItemSprite::create(normal, moving, selected);
     auto* menu = CCMenu::create(_confirmButton, NULL);
@@ -167,9 +174,9 @@ bool HeroScene::init()
     _confirmButton->setTarget(this, menu_selector(HeroScene::selectHeroConfirmCallback));
     _confirmButton->setScale(0.5);
 
-   /*=====================´´½¨Ó¢ÐÛÑ¡Ïî±êÇ©½áÊø======================*/
+   /*=====================åˆ›å»ºè‹±é›„é€‰é¡¹æ ‡ç­¾ç»“æŸ======================*/
 
-   //Èç¹ûÍæ¼ÒÒÑ¾­Ñ¡ÔñÁËÓ¢ÐÛ£¬ÄÇÃ´ÓÅÏÈÕ¹Ê¾¸ÃÓ¢ÐÛµÄ¶¯»­
+   //å¦‚æžœçŽ©å®¶å·²ç»é€‰æ‹©äº†è‹±é›„ï¼Œé‚£ä¹ˆä¼˜å…ˆå±•ç¤ºè¯¥è‹±é›„çš„åŠ¨ç”»
        _selectedHero = UserDefault::getInstance()->getIntegerForKey("selectedHero");
     if (_selectedHero) {
         switch (_selectedHero) {
@@ -194,29 +201,34 @@ bool HeroScene::init()
  
     
 }
+
+
 /****************************
-* Name £ºheroBackCallback
-* Summary £º·µ»ØÖ÷²Ëµ¥
-* return £º
+* Name ï¼šheroBackCallback
+* Summary ï¼šè¿”å›žä¸»èœå•
+* return ï¼š
 ****************************/
 void HeroScene::heroBackCallback(cocos2d::Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     AnimationCache::destroyInstance();
     SpriteFrameCache::getInstance()->removeUnusedSpriteFrames();
     TextureCache::getInstance()->removeUnusedTextures();
     auto mainMenuScene = MainMenuScene::createScene();
-    Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//¹ý³¡¶¯»­Éè¼Æ
+    Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//è¿‡åœºåŠ¨ç”»è®¾è®¡
 }
 
+
 /****************************
-* Name £ºselectHero1Callback
-* Summary £º½øÈëhero1½çÃæ»Øµ÷º¯Êý
-* return £º
+* Name ï¼šselectHero1Callback
+* Summary ï¼šè¿›å…¥hero1ç•Œé¢å›žè°ƒå‡½æ•°
+* return ï¼š
 ****************************/
 void HeroScene::selectHero1Callback(cocos2d::Ref* pSender)
 {
-    if (_selectedHero == 1)                    //Èç¹ûÈ·ÈÏÑ¡Ôñhero1
-        _confirmButton->setEnabled(false);   //°´Å¥ÉèÖÃÎª½ûÓÃ
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    if (_selectedHero == 1)                    //å¦‚æžœç¡®è®¤é€‰æ‹©hero1
+        _confirmButton->setEnabled(false);   //æŒ‰é’®è®¾ç½®ä¸ºç¦ç”¨
     else
         _confirmButton->setEnabled(true);
 
@@ -234,11 +246,11 @@ void HeroScene::selectHero1Callback(cocos2d::Ref* pSender)
     }
 
 }
-//Í¬ÉÏ
+//åŒä¸Š
 
 void HeroScene::selectHero2Callback(cocos2d::Ref* pSender)
 {
-    
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     if (_selectedHero == 2)
         _confirmButton->setEnabled(false);
     else
@@ -258,9 +270,10 @@ void HeroScene::selectHero2Callback(cocos2d::Ref* pSender)
 
     }
 }
-//Í¬ÉÏ
+//åŒä¸Š
 void HeroScene::selectHero3Callback(cocos2d::Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     if (_selectedHero == 3)
         _confirmButton->setEnabled(false);
     else
@@ -279,9 +292,11 @@ void HeroScene::selectHero3Callback(cocos2d::Ref* pSender)
     }
 
 }
-//Í¬ÉÏ
+//åŒä¸Š
 void HeroScene::selectHero4Callback(cocos2d::Ref* pSender)
 {
+
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     if (_selectedHero == 4)
         _confirmButton->setEnabled(false);
     else
@@ -299,13 +314,16 @@ void HeroScene::selectHero4Callback(cocos2d::Ref* pSender)
     }
 
 }
+
+
 /****************************
-* Name £ºselectHeroConfirmCallback
-* Summary £ºµã»÷È·ÈÏ°´Å¥µÄ»Øµ÷º¯Êý
-* return £º
+* Name ï¼šselectHeroConfirmCallback
+* Summary ï¼šç‚¹å‡»ç¡®è®¤æŒ‰é’®çš„å›žè°ƒå‡½æ•°
+* return ï¼š
 ****************************/
 void HeroScene::selectHeroConfirmCallback(cocos2d::Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     switch (_chooseNumber) {
     case 1:
         UserDefault::getInstance()->setIntegerForKey("selectedHero", 1);
@@ -323,10 +341,12 @@ void HeroScene::selectHeroConfirmCallback(cocos2d::Ref* pSender)
     _selectedHero= UserDefault::getInstance()->getIntegerForKey("selectedHero");
     _confirmButton->setEnabled(false);
 }
+
+
 /****************************
-* Name £ºanimate1
-* Summary £ºhero1¶¯»­ÊµÏÖ
-* return £º
+* Name ï¼šanimate1
+* Summary ï¼šhero1åŠ¨ç”»å®žçŽ°
+* return ï¼š
 ****************************/
 void HeroScene::animate1()
 {
@@ -351,10 +371,12 @@ void HeroScene::animate1()
 
     hero1->runAction(action1);
 }
+
+
 /****************************
-* Name £ºanimate2
-* Summary £ºhero2¶¯»­ÊµÏÖ
-* return £º
+* Name ï¼šanimate2
+* Summary ï¼šhero2åŠ¨ç”»å®žçŽ°
+* return ï¼š
 ****************************/
 void HeroScene::animate2()
 {
@@ -379,10 +401,12 @@ void HeroScene::animate2()
 
     hero2->runAction(action1);
 }
+
+
 /****************************
-* Name £ºanimate3
-* Summary £ºhero3¶¯»­ÊµÏÖ
-* return £º
+* Name ï¼šanimate3
+* Summary ï¼šhero3åŠ¨ç”»å®žçŽ°
+* return ï¼š
 ****************************/
 void HeroScene::animate3()
 {
@@ -405,10 +429,12 @@ void HeroScene::animate3()
     auto* action = Animate::create(animation);
     hero3->runAction(action);
 }
+
+
 /****************************
-* Name £ºanimate4
-* Summary £ºhero4¶¯»­ÊµÏÖ
-* return £º
+* Name ï¼šanimate4
+* Summary ï¼šhero4åŠ¨ç”»å®žçŽ°
+* return ï¼š
 ****************************/
 void HeroScene::animate4()
 {

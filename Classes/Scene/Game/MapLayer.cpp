@@ -22,7 +22,7 @@
 	对象所在层数：
 	_tileMap 0层
 	_tree, _collidable 在_tileMap 上 （一部分）
-	_portal 系列 1层
+	_portal, _portalDetermination 系列 1层
 	*hero, *weapon （包括AI） 2层
 	_SafeArea 100层
 
@@ -35,12 +35,7 @@
 
 
 #include "MapLayer.h"
-#include "GameOverScene.h"
-#include "Entity/Player/Hero/Hero1.h"
-#include "Entity/Player/Hero/Hero2.h"
-#include "Entity/Player/Hero/Hero3.h"
-#include "Entity/Player/Hero/Hero4.h"
-#include "Entity/Weapon/Weapon.h"
+
 
 //USING_NS_CC;
 using namespace CocosDenshion;
@@ -90,11 +85,21 @@ bool MapLayer::init()
 
 
 	 
-  /*===================Tilemap相关设置开始==================*/
+    /*===================Tilemap相关设置开始==================*/
 	log("Map begin"); 
-	_tileMap = TMXTiledMap::create("map/Mapupdated1.tmx");
-	//	_tileMap = TMXTiledMap::create("map/Mapupdated3.tmx");  // 也可以用了，Mapupdated2是Mapupdated3的材料，不可删去
-	
+
+	int selectedMap = UserDefault::getInstance()->getIntegerForKey("selectedMap");
+
+	switch (selectedMap)     //由于测试的需要，不同英雄的createHero的参数统一为一套
+	{
+		case 0:
+			_tileMap = TMXTiledMap::create("map/Mapupdated1.tmx");
+			break;
+		case 1:
+			_tileMap = TMXTiledMap::create("map/Mapupdated3.tmx");  //Mapupdated2是Mapupdated3的材料，不可删去
+			break;
+	}
+
 	  
 	addChild(_tileMap, 0, 100);
 	log("Map finished");
@@ -746,6 +751,11 @@ void MapLayer::update2(float delta)
 }
 
 
+/****************************
+* Name ：MapLayer::updateForPortal
+* Summary ：探测英雄/AI有无走进传送阵
+* return ：
+****************************/
 void MapLayer::updateForPortal(float delta)
 {
 	log("turned in");
@@ -788,10 +798,14 @@ void MapLayer::updateForPortal(float delta)
 		_player->setPosition(_portal_Determination_4->getPosition());
 	}
 
-
 }
 
 
+/****************************
+* Name ：MapLayer::updateForFog
+* Summary ：安全区不断缩小
+* return ：
+****************************/
 void MapLayer::updateForFog(float delta)
 {
 	//_SafeArea;
@@ -801,6 +815,12 @@ void MapLayer::updateForFog(float delta)
 
 }
 
+
+/****************************
+* Name ：MapLayer::updateOutsideFog
+* Summary ：外部毒气实时生成
+* return ：
+****************************/
 void MapLayer::updateOutsideFog(float delta)
 {
 	for (int position_x = 0; position_x <= MAP_SAFEAREA_SIZE; position_x += MAP_FOG_DENSITY)
@@ -819,6 +839,12 @@ void MapLayer::updateOutsideFog(float delta)
 	}
 }
 
+
+/****************************
+* Name ：MapLayer::updatePlayerHurtByFog
+* Summary ：英雄/AI扣血
+* return ：
+****************************/
 void MapLayer::updatePlayerHurtByFog(float delta)
 {
 	if (!_SafeArea->boundingBox().containsPoint(Vec2(_player->getPosition())))

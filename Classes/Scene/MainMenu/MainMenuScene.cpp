@@ -126,7 +126,7 @@ bool MainMenuScene::init()
         CC_CALLBACK_1(MainMenuScene::menuStartCallback, this)
     );
     MenuItemFont* itemStore = MenuItemFont::create(
-        "STORE",
+        "MAP",
         CC_CALLBACK_1(MainMenuScene::menuStoreCallback, this)
     );
     MenuItemFont* itemHeros = MenuItemFont::create(
