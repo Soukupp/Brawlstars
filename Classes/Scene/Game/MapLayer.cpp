@@ -54,6 +54,8 @@ bool MapLayer::init()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 
+
+
   /*===================Tilemap相关设置开始==================*/
 	log("Map begin"); 
 	_tileMap = TMXTiledMap::create("map/Mapupdated1.tmx");
@@ -395,8 +397,8 @@ void MapLayer::setPlayerPosition(Vec2 position)
 
 	int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
 	//int tileGid_watermonster=_watermonster->getTileGIDAt(tileCoord);
-  
-	//log("get TileGIDAt");
+    /*
+	log("get TileGIDAt");*/
 
 	// 碰撞检测
 	if (tileGid > 0) {
@@ -569,6 +571,93 @@ void MapLayer::update2(float delta)
 		}
 	}
 }
+
+
+void MapLayer::updateForPortal(float delta)
+{
+	log("turned in");
+	/*float x = _player->getPositionX();
+	log("player-position-x %lf", x);
+	float y = _player->getPositionY();
+	log("player-position-y %lf", y);*/
+	if (_player->getPositionX() <= (_portal_1->getPositionX() + MAP_PORTAL_SIZE) &&
+		_player->getPositionX() >= (_portal_1->getPositionX() - MAP_PORTAL_SIZE) &&
+		_player->getPositionY() <= (_portal_1->getPositionY() + MAP_PORTAL_SIZE) &&
+		_player->getPositionY() >= (_portal_1->getPositionY() - MAP_PORTAL_SIZE))
+	{
+		log("_player Teleport One!");
+		_player->setPosition(_portal_Determination_1->getPosition());
+	}
+
+	if (_player->getPositionX() <= (_portal_2->getPositionX() + MAP_PORTAL_SIZE) &&
+		_player->getPositionX() >= (_portal_2->getPositionX() - MAP_PORTAL_SIZE) &&
+		_player->getPositionY() <= (_portal_2->getPositionY() + MAP_PORTAL_SIZE) &&
+		_player->getPositionY() >= (_portal_2->getPositionY() - MAP_PORTAL_SIZE))
+	{
+		log("_player Teleport Two!");
+		_player->setPosition(_portal_Determination_2->getPosition());
+	}
+	if (_player->getPositionX() <= (_portal_3->getPositionX() + MAP_PORTAL_SIZE) &&
+		_player->getPositionX() >= (_portal_3->getPositionX() - MAP_PORTAL_SIZE) &&
+		_player->getPositionY() <= (_portal_3->getPositionY() + MAP_PORTAL_SIZE) &&
+		_player->getPositionY() >= (_portal_3->getPositionY() - MAP_PORTAL_SIZE))
+	{
+		log("_player Teleport Three!");
+		_player->setPosition(_portal_Determination_3->getPosition());
+	}
+
+	if (_player->getPositionX() <= (_portal_4->getPositionX() + MAP_PORTAL_SIZE) &&
+		_player->getPositionX() >= (_portal_4->getPositionX() - MAP_PORTAL_SIZE) &&
+		_player->getPositionY() <= (_portal_4->getPositionY() + MAP_PORTAL_SIZE) &&
+		_player->getPositionY() >= (_portal_4->getPositionY() - MAP_PORTAL_SIZE))
+	{
+		log("_player Teleport Four!");
+		_player->setPosition(_portal_Determination_4->getPosition());
+	}
+
+
+}
+
+
+void MapLayer::updateForFog(float delta)
+{
+	//_SafeArea;
+
+	/*ScaleBy* SafeAreaScaleBy = ScaleBy::create(2.0f, 0.8f);*/
+	_SafeArea->runAction(ScaleBy::create(2.0f, 0.8f));
+
+}
+
+void MapLayer::updateOutsideFog(float delta)
+{
+	for (int position_x = 0; position_x <= MAP_SAFEAREA_SIZE; position_x += MAP_FOG_DENSITY)
+	{
+		for (int position_y = 0; position_y <= MAP_SAFEAREA_SIZE; position_y += MAP_FOG_DENSITY)
+		{
+			if ((!_SafeArea->boundingBox().containsPoint(Vec2(position_x, position_y))) && (FogIsPlaced[position_x][position_y] == false))
+			{
+				auto FogFullfill = Sprite::create("ui/purple_fog3.png");
+				FogFullfill->setAnchorPoint(Vec2(0.5, 0.5));
+				FogFullfill->setPosition(position_x, position_y);
+				this->addChild(FogFullfill, 100);
+				FogIsPlaced[position_x][position_y] = true;
+			}
+		}
+	}
+}
+
+void MapLayer::updatePlayerHurtByFog(float delta)
+{
+	if (!_SafeArea->boundingBox().containsPoint(Vec2(_player->getPosition())))
+	{
+		//扣血
+		log("hurt!");
+		_player->_panel.hit(MAP_FOG_DAMAGE_TO_PLAYER);
+		_player->refreshHealthBar(_healthBar);
+	}
+}
+
+
 
 void MapLayer::updateAIMove(float delta)
 {

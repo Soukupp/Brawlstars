@@ -56,6 +56,7 @@ public:
     //void updateForFogTwice(float delta);
     void updatePlayerHurtByFog(float delta);
     void updateOutsideFog(float delta);
+
     void updateAIMove(float delta);
     void updateAIAttack(float delta);
 
