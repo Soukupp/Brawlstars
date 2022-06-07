@@ -8,11 +8,13 @@
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
 #include "GameScene.h"
+#include "GameOverScene.h"
 #include "Entity/Player/Hero/Hero1.h"
 #include "Entity/Player/Hero/Hero2.h"
 #include "Entity/Player/Hero/Hero3.h"
 #include "Entity/Player/Hero/Hero4.h"
 #include "Entity/Weapon/Weapon.h"
+#include "Entity/Monster/Monster.h"
 #include <vector>
 #include <string>
 
@@ -21,6 +23,7 @@
 #define MAP_SAFEAREA_APPEAR_TIMES 15
 #define MAP_SAFEAREA_DELAY_LAST 10.0f
 #define MAP_SAFEAREA_INTERVAL_LAST 10.0f
+
 #define MAP_FOG_DENSITY 16
 #define MAP_FOG_DAMAGE_TO_PLAYER 4
 #define MAP_PORTAL_SIZE 6
@@ -69,6 +72,9 @@ class MapLayer : public cocos2d::Layer
     Slider* _AIhealthBar1;
     Slider* _AImagicBar1;
     cocos2d::Label* _AIlevelText1;
+
+    Monster* _monster;
+    Slider* _monsterHealthBar;
 
     bool FogIsPlaced[1920][1920];
 
@@ -119,6 +125,9 @@ public:
     template<typename Hero>
     void createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slider** magicBar, Label** levelText,
         Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon);
+
+    void createMonster(Monster** monster, Slider** healthBar,
+        Vec2& position, const std::string& filenameMonster);
 
     Animation* getAnimationByName(std::string fileName, float interval, int fileNum, int if_repeat = -1);
     // implement the "static create()" method manually

@@ -1,3 +1,8 @@
+//作者：李元特
+//日期：2022-6-6
+//实现：loading界面完工
+
+
 #include "LoadingScene.h"
 #include "SimpleAudioEngine.h"
 
@@ -64,18 +69,21 @@ bool LoadingScene::init()
 	/*=======================创建Logo结束=========================*/
 
 	/*=======================创建提示语开始========================*/
-	auto tip1 = LabelTTF::create("Moderate Games, Happy Life", "fonts/Lilita one.ttf", 28);
+	auto tip1 = LabelTTF::create("Moderate Games, Happy Life", "fonts/Lilita one.ttf", 36);
+	tip1->enableShadow(LOADING_TIP1_SHADOW);
 	tip1->setColor(Color3B::WHITE);
 	tip1->setPosition(Vec2(LOADING_TIP1_POSITION));
 	this->addChild(tip1);
 
 	auto tip2 = LabelTTF::create("WELCOME TO THE WILDERNESS JOURNEY!", "fonts/Lilita one.ttf", 28);
+	tip2->enableShadow(LOADING_TIP1_SHADOW);
 	tip2->setColor(Color3B::WHITE);
 	tip2->setPosition(Vec2(LOADING_TIP2_POSITION));
 	this->addChild(tip2);
 	log("WELCOME TO THE WILDERNESS JOURNEY!");
 
 	auto tip3 = LabelTTF::create("Shoot 'em up, blow 'em up, punch 'em out and win the BRAWL!", "fonts/Lilita one.ttf", 28);
+	tip3->enableShadow(LOADING_TIP1_SHADOW);
 	tip3->setColor(Color3B::WHITE);
 	tip3->setPosition(Vec2(LOADING_TIP3_POSITION));
 	this->addChild(tip3);
@@ -95,11 +103,21 @@ bool LoadingScene::init()
 	SimpleAudioEngine::getInstance()->preloadEffect("sound/empty.wav");
 	// 障碍物碰撞
 	SimpleAudioEngine::getInstance()->preloadEffect("music/start_game_music.mp3");
-
-	SimpleAudioEngine::getInstance()->preloadEffect("music/if_hero_kill_monster.mp3");
 	// 玩家战胜一只怪兽
-	SimpleAudioEngine::getInstance()->preloadEffect("music/if_click_buttom_on_menu.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/if_hero_kill_monster.mp3");
 	// 点击设置按钮音效
+	SimpleAudioEngine::getInstance()->preloadEffect("music/if_click_buttom_on_menu.mp3");
+	// 进入设置界面的音效
+	SimpleAudioEngine::getInstance()->preloadEffect("music/to_a_new_scene.mp3");
+	
+	
+	
+	// 以下是printed eggshell 音效
+	SimpleAudioEngine::getInstance()->preloadEffect("music/printed_eggshell_1.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/printed_eggshell_2.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/printed_eggshell_3.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/printed_eggshell_4.mp3");
+
 
 	// 以下都和技能有关
 	SimpleAudioEngine::getInstance()->preloadEffect("music/gun_skill_3times.mp3");

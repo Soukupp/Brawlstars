@@ -23,6 +23,8 @@ Scene* GameSettingsScene::createScene()
 {
     return GameSettingsScene::create();
 }
+
+
 /****************************
 * Name ：problemLoading
 * Summary ：错误打印
@@ -33,6 +35,8 @@ static void problemLoading(const char* filename)
     printf("Error while loading: %s\n", filename);
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in SettingsScene.cpp\n");
 }
+
+
 /****************************
 * Name ：GameSettingsScene::init
 * Summary ：主菜单初始化
@@ -49,6 +53,8 @@ bool GameSettingsScene::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("music/retro_fight_ingame_01.mp3"); //预加载音乐
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/to_a_new_scene.mp3");
+
     /*=====================创建返回按钮开始======================*/
 
     //创建返回按钮
@@ -189,9 +195,6 @@ bool GameSettingsScene::init()
 
     /*===================创建菜单结束========================*/
 
-
-
-
     /*====================创建背景图开始======================*/
     auto background = Sprite::create("background/GameSettingsBackground.png");
     if (background == nullptr)
@@ -210,6 +213,7 @@ bool GameSettingsScene::init()
     return true;
 }
 
+
 /****************************
 * Name ：GameSettingsScene::settingsBackCallback
 * Summary ：设置返回按钮回调
@@ -221,6 +225,7 @@ void GameSettingsScene::settingsBackToGameCallback(Ref* pSender)
     auto GS = GameScene::createScene();
     Director::getInstance()->popScene();//过场动画设计
 }
+
 
 /****************************
 * Name ：GameSettingsScene::sliderEvent
@@ -244,6 +249,8 @@ void GameSettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
 
     }
 }
+
+
 /****************************
 * Name ：GameSettingsScene::settingsPlayCallBack
 * Summary  回调函数
@@ -266,12 +273,13 @@ void GameSettingsScene::settingsPlayCallBack(Ref* pSender)
         _displayedMusicStates->setString(StringUtils::format("MUSIC ON"));
     }
 }
+
+
 /****************************
 * Name ：GameSettingsScene::settingsFPSCallBack
 * Summary  回调函数
 * return ：
 * ***************************/
-
 void GameSettingsScene::settingsFPSCallBack(Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");

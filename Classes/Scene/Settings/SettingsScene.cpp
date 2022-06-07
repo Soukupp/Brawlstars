@@ -1,9 +1,16 @@
 //作者 : 王鹏
 //日期 : 2022-5-17
 //实现 ：框架搭建
+
 //作者 ：束赫
 //日期 : 2022-5-19
 //实现 ：具体功能实现
+
+//作者 ：李元特
+//日期 : 2022-6-6
+//实现 ：音乐音效update
+
+
 #include "SettingsScene.h"
 #include "SimpleAudioEngine.h"
 
@@ -21,6 +28,8 @@ Scene* SettingsScene::createScene()
 {
     return SettingsScene::create();
 }
+
+
 /****************************
 * Name ：problemLoading
 * Summary ：错误打印
@@ -31,6 +40,8 @@ static void problemLoading(const char* filename)
     printf("Error while loading: %s\n", filename);
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in SettingsScene.cpp\n");
 }
+
+
 /****************************
 * Name ：SettingsScene::init
 * Summary ：主菜单初始化
@@ -45,6 +56,8 @@ bool SettingsScene::init()
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/to_a_new_scene.mp3");
 
     /*=====================创建返回按钮开始======================*/
 
@@ -205,6 +218,7 @@ bool SettingsScene::init()
     return true;
 }
 
+
 /****************************
 * Name ：SettingsScene::settingsBackCallback
 * Summary ：设置返回按钮回调
@@ -216,6 +230,7 @@ void SettingsScene::settingsBackCallback(Ref* pSender)
     auto mainMenuScene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//过场动画设计
 }
+
 
 /****************************
 * Name ：SettingsScene::sliderEvent
@@ -237,12 +252,13 @@ void SettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
 
     }
 }
+
+
 /****************************
 * Name ：SettingsScene::settingsPlayCallBack
 * Summary  回调函数
 * return ：
 * ***************************/
-
 void SettingsScene::settingsPlayCallBack(Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
@@ -260,12 +276,13 @@ void SettingsScene::settingsPlayCallBack(Ref* pSender)
         _displayedMusicStates->setString(StringUtils::format("MUSIC ON"));
     }
 }
+
+
 /****************************
 * Name ：SettingsScene::settingsFPSCallBack
 * Summary  回调函数
 * return ：
 * ***************************/
-
 void SettingsScene::settingsFPSCallBack(Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");

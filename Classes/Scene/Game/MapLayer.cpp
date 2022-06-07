@@ -17,12 +17,16 @@
 //日期 : 2022-6-4
 //实现 : Fog
 
+//修改 : 王鹏
+//日期 : 2022-6-5
+//实现 : ai
+
 
 /*
 	对象所在层数：
 	_tileMap 0层
 	_tree, _collidable 在_tileMap 上 （一部分）
-	_portal 系列 1层
+	_portal, _portalDetermination 系列 1层
 	*hero, *weapon （包括AI） 2层
 	_SafeArea 100层
 
@@ -35,12 +39,7 @@
 
 
 #include "MapLayer.h"
-#include "GameOverScene.h"
-#include "Entity/Player/Hero/Hero1.h"
-#include "Entity/Player/Hero/Hero2.h"
-#include "Entity/Player/Hero/Hero3.h"
-#include "Entity/Player/Hero/Hero4.h"
-#include "Entity/Weapon/Weapon.h"
+
 
 //USING_NS_CC;
 using namespace CocosDenshion;
@@ -90,11 +89,21 @@ bool MapLayer::init()
 
 
 	 
-  /*===================Tilemap相关设置开始==================*/
+    /*===================Tilemap相关设置开始==================*/
 	log("Map begin"); 
-	_tileMap = TMXTiledMap::create("map/Mapupdated1.tmx");
-	//	_tileMap = TMXTiledMap::create("map/Mapupdated3.tmx");  // 也可以用了，Mapupdated2是Mapupdated3的材料，不可删去
-	
+
+	int selectedMap = UserDefault::getInstance()->getIntegerForKey("selectedMap");
+
+	switch (selectedMap)     //由于测试的需要，不同英雄的createHero的参数统一为一套
+	{
+		case 0:
+			_tileMap = TMXTiledMap::create("map/Mapupdated1.tmx");
+			break;
+		case 1:
+			_tileMap = TMXTiledMap::create("map/Mapupdated3.tmx");  //Mapupdated2是Mapupdated3的材料，不可删去
+			break;
+	}
+
 	  
 	addChild(_tileMap, 0, 100);
 	log("Map finished");
@@ -175,6 +184,9 @@ bool MapLayer::init()
 
 	this->schedule(schedule_selector(MapLayer::updateAIMove), 0.05f);
 	this->schedule(schedule_selector(MapLayer::updateAIAttack), 1.0f);
+
+	createMonster(&_monster,&_monsterHealthBar,
+		Vec2(_playerX, _playerY), "Character/Hero3/hero.png");
 
 	/*=====================测试对象创建结束=====================*/
 
@@ -333,9 +345,11 @@ void MapLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 		keyCode == EventKeyboard::KeyCode::KEY_S ||
 		keyCode == EventKeyboard::KeyCode::KEY_A ||
 		keyCode == EventKeyboard::KeyCode::KEY_D 
-		) {
+		)
+	{
 		keyMap[keyCode] = true;
-        if (_player->_panel.getPlayerState() != MOVING) {
+        if (_player->_panel.getPlayerState() != MOVING)
+		{
 
 			_player->_panel.setPlayerState(MOVING);
 
@@ -414,14 +428,12 @@ void MapLayer::update(float delta)
 	{
 		playerPos.x +=4;
 		_player->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
-		//_player->runAction(FlipX::create(false));
 		_player->runFlipxWithWeapon(false, _weapon);
 	}
 	else if (keyMap[EventKeyboard::KeyCode::KEY_A] || keyMap[EventKeyboard::KeyCode::KEY_LEFT_ARROW])
 	{
 		playerPos.x -=4;
 		_player->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
-		//_player->runAction(FlipX::create(true));
 		_player->runFlipxWithWeapon(true, _weapon);
 	}
 	else if (keyMap[EventKeyboard::KeyCode::KEY_W] || keyMap[EventKeyboard::KeyCode::KEY_UP_ARROW])
@@ -735,6 +747,23 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 	(**hero).setPositionWithAll(position, *weapon, *healthBar, *magicBar, *levelText);
 }
 
+void MapLayer::createMonster(Monster** monster, Slider** healthBar,
+	Vec2& position, const std::string& filenameMonster)
+{
+	*monster = Monster::create(filenameMonster);
+	(**monster).initMonster(1000,0,100,0,0);//无用数据直接空置
+	addChild(*monster, 3, 200);
+
+	*healthBar = Slider::create();
+	(**healthBar).setPercent((**monster).getHealthPercent());
+	(**healthBar).loadBarTexture("/ui/playerHealthbarFrame.png");
+	(**healthBar).loadProgressBarTexture("/ui/playerHealthbarBlock.png");
+	(**healthBar).setScale(0.5);
+	(**healthBar).setAnchorPoint(Vec2(0.5f, 0.0f));
+	addChild(*healthBar);
+
+	(**monster).setPositionWithAll(position, *healthBar);
+}
 
 /****************************
 * Name ：MapLayer::update2
@@ -767,6 +796,11 @@ void MapLayer::update2(float delta)
 }
 
 
+/****************************
+* Name ：MapLayer::updateForPortal
+* Summary ：探测英雄/AI有无走进传送阵
+* return ：
+****************************/
 void MapLayer::updateForPortal(float delta)
 {
 	//log("turned in");
@@ -809,10 +843,14 @@ void MapLayer::updateForPortal(float delta)
 		_player->setPosition(_portal_Determination_4->getPosition());
 	}
 
-
 }
 
 
+/****************************
+* Name ：MapLayer::updateForFog
+* Summary ：安全区不断缩小
+* return ：
+****************************/
 void MapLayer::updateForFog(float delta)
 {
 	//_SafeArea;
@@ -822,6 +860,12 @@ void MapLayer::updateForFog(float delta)
 
 }
 
+
+/****************************
+* Name ：MapLayer::updateOutsideFog
+* Summary ：外部毒气实时生成
+* return ：
+****************************/
 void MapLayer::updateOutsideFog(float delta)
 {
 	for (int position_x = 0; position_x <= MAP_SAFEAREA_SIZE; position_x += MAP_FOG_DENSITY)
@@ -840,6 +884,12 @@ void MapLayer::updateOutsideFog(float delta)
 	}
 }
 
+
+/****************************
+* Name ：MapLayer::updatePlayerHurtByFog
+* Summary ：英雄/AI扣血
+* return ：
+****************************/
 void MapLayer::updatePlayerHurtByFog(float delta)
 {
 	if (!_SafeArea->boundingBox().containsPoint(Vec2(_player->getPosition())))
@@ -853,49 +903,90 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 
 void MapLayer::updateAIMove(float delta)
 {
-	if (_AIplayer1->_panel.getIfPlayAttackAnimation() == false) {
-		if (_AIplayer1->_panel.getPlayerState() != MOVING)
+
+	static int direct = 1;//需要保存原方向 所以static
+	static bool backDirectChanged = false;
+	static int searchTimes = 0;
+
+	if (!_SafeArea->boundingBox().containsPoint(Vec2(_AIplayer1->getPosition())))//不在安全区
+	{
+		//log("not safe area");
+		++searchTimes;
+		if (searchTimes <= 100)//寻路少于一定数量则进行逃离方向选择逻辑
 		{
-			_AIplayer1->stopAllActions();
-			_AIplayer1->runAction(_AIplayer1->getWalkAction());
+			//log("searchTimes <= 200");
+			if (!backDirectChanged)//且没有掉头
+			{//那么掉头
+				//log("!backDirectChanged");
+				if (direct <= 1)//左右
+				{
+					direct = 1 - direct;
+				}
+				else//上下
+				{
+					direct = 5 - direct;
+				}
+				backDirectChanged = true;
+			}
+			//否则维持原方向
 		}
-		/*
-		* 这里应当判断ai的角色的当前状态 比如如果在攻击则不移动 现在暂时写成一直移动
-		*/
-		if (1) {
-			static int direct = 1;//需要保存原方向 所以static
+		else//达到寻路上限还没逃离则开始随机选方向逃出
+		{
+			//log("searchTimes > 200");
+			backDirectChanged = false;//参数重置
 			int tempDirect = rand() % 60;
 			if (tempDirect <= 3)//除去原本的方向，每一帧有3/60的几率转向
 			{//这样是为了保证ai基本可以走一段路 而不是原地不停转向
 				direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
 			}
-			/*=====================以下由键盘操作改写=====================*/
-			Vec2 playerPos = _AIplayer1->getPosition();  // 获取位置坐标
-			if (direct == 0)
-			{
-				playerPos.x += 4;
-				_AIplayer1->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
-				//_player->runAction(FlipX::create(false));
-				_AIplayer1->runFlipxWithWeapon(false, _AIweapon1);
-			}
-			else if (direct == 1)
-			{
-				playerPos.x -= 4;
-				_AIplayer1->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
-				//_player->runAction(FlipX::create(true));
-				_AIplayer1->runFlipxWithWeapon(true, _AIweapon1);
-			}
-			else if (direct == 2)
-			{
-				playerPos.y += 4;
-				_AIplayer1->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
-			}
-			else if (direct == 3)
-			{
-				playerPos.y -= 4;
-				_AIplayer1->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
-			}
-			/*=====================以上由键盘操作改写=====================*/
+		}
+	}
+	else//在安全区
+	{//正常选方向
+		searchTimes = 0;//参数重置
+		backDirectChanged = false;//参数重置
+		int tempDirect = rand() % 60;
+		if (tempDirect <= 3)//除去原本的方向，每一帧有3/60的几率转向
+		{//这样是为了保证ai基本可以走一段路 而不是原地不停转向
+			direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
+		}
+	}
+	/*
+	* 这里应当判断ai的角色的当前状态 比如如果在攻击则不移动 现在暂时写成一直移动
+	*/
+	if (_AIplayer1->_panel.getIfPlayAttackAnimation() == false) {
+		/*=====================以下由键盘操作改写=====================*/
+    if (_AIplayer1->_panel.getPlayerState() != MOVING)
+		{
+			_AIplayer1->stopAllActions();
+			_AIplayer1->runAction(_AIplayer1->getWalkAction());
+		}
+		Vec2 playerPos = _AIplayer1->getPosition();  // 获取位置坐标
+		if (direct == 0)
+		{
+			playerPos.x += 2;
+			_AIplayer1->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
+			//_player->runAction(FlipX::create(false));
+			_AIplayer1->runFlipxWithWeapon(false, _AIweapon1);
+		}
+		else if (direct == 1)
+		{
+			playerPos.x -= 2;
+			_AIplayer1->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
+			//_player->runAction(FlipX::create(true));
+			_AIplayer1->runFlipxWithWeapon(true, _AIweapon1);
+		}
+		else if (direct == 2)
+		{
+			playerPos.y += 2;
+			_AIplayer1->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
+		}
+		else if (direct == 3)
+		{
+			playerPos.y -= 2;
+			_AIplayer1->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
+		}
+		/*=====================以上由键盘操作改写=====================*/
 
 			/*=====================以下由位置移动改写=====================*/
 			// 读取坐标
