@@ -174,7 +174,7 @@ bool MapLayer::init()
 	srand((unsigned)time(0));
 
 	this->schedule(schedule_selector(MapLayer::updateAIMove), 0.05f);
-	this->schedule(schedule_selector(MapLayer::updateAIAttack), 2.0f);
+	this->schedule(schedule_selector(MapLayer::updateAIAttack), 1.0f);
 
 	/*=====================测试对象创建结束=====================*/
 
@@ -187,7 +187,15 @@ bool MapLayer::init()
 	_player->initWalkAction();
 	_player->initNormalAction();
 	_player->initAttackAction();
-	_player->setScale(1.3);
+	_player->initSkillAction();
+	_player->setScale(1.3f);
+
+	_AIplayer1->initWalkAction();
+	_AIplayer1->initNormalAction();
+	_AIplayer1->initAttackAction();
+	_AIplayer1->_panel.setPlayerState(ATTACK);
+	_AIplayer1->setScale(1.3f);
+	_AIplayer1->_panel.setIfPlayAttackAnimation(false);
 	log("%d ID", _player->getID());
 	setViewpointCenter(_player->getPosition());
 
@@ -446,9 +454,16 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 		if (_player->_panel.getPlayerState() != ATTACK) {
 			_player->_panel.setPlayerState(ATTACK);
 			_player->stopAllActions();
-			//_player->runAction(_player->getAttackAction());
-			//pz 为了测试暂时写死成player1
-			_player->launchAnAttack(_weapon, "attack", _magicBar,_player1,_healthBar1);
+			if (!_player->magicIsFull()) 
+			{
+				_player->runAction(_player->getAttackAction());
+				//_player->launchAnAttack(_weapon, "attack", _magicBar, _AIplayer1, _AIhealthBar1);
+			}
+			else
+			{
+				_player->runAction(_player->getSkillAction());
+				//_player->launchAnAttack(_AIweapon1, "skill", _AImagicBar1, _AIplayer1, _AIhealthBar1);
+			}
 
 			_player->_panel.setIfPlayAttackAnimation(false);                                          //保证不会实现连续攻击
 																									  //检测攻击时是否碰到_player1
@@ -732,10 +747,16 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 	   会造成attack动画被屏蔽为了。解决这个问题，只能延时调用update2*/
 void MapLayer::update2(float delta)
 {
-
 	if (_player->_panel.getIfPlayNormalAnimationInUpdate2())
 	{
-		//_player->playerCollisionTest1(_player4, _weapon);
+		if (!_player->magicIsFull())
+		{
+			_player->launchAnAttack(_weapon, "attack", _magicBar, _AIplayer1, _AIhealthBar1);
+		}
+		else
+		{
+			_player->launchAnAttack(_AIweapon1, "skill", _AImagicBar1, _AIplayer1, _AIhealthBar1);
+		}
 		_player->_panel.setPlayerState(NORMAL);
 		_player->_panel.setIfPlayAttackAnimation(true);
 		if (_player->_panel.getPlayerState() == NORMAL) {
@@ -748,7 +769,7 @@ void MapLayer::update2(float delta)
 
 void MapLayer::updateForPortal(float delta)
 {
-	log("turned in");
+	//log("turned in");
 	/*float x = _player->getPositionX();
 	log("player-position-x %lf", x);
 	float y = _player->getPositionY();
@@ -824,7 +845,7 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 	if (!_SafeArea->boundingBox().containsPoint(Vec2(_player->getPosition())))
 	{
 		//扣血
-		log("hurt!");
+		//log("hurt!");
 		_player->_panel.hit(MAP_FOG_DAMAGE_TO_PLAYER);
 		_player->refreshHealthBar(_healthBar);
 	}
@@ -832,66 +853,73 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 
 void MapLayer::updateAIMove(float delta)
 {
-	/*
-	* 这里应当判断ai的角色的当前状态 比如如果在攻击则不移动 现在暂时写成一直移动
-	*/
-	if (1) {
-		static int direct = 1;//需要保存原方向 所以static
-		int tempDirect = rand() % 60;
-		if (tempDirect <= 3)//除去原本的方向，每一帧有3/60的几率转向
-		{//这样是为了保证ai基本可以走一段路 而不是原地不停转向
-			direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
-		}
-		/*=====================以下由键盘操作改写=====================*/
-		Vec2 playerPos = _AIplayer1->getPosition();  // 获取位置坐标
-		if (direct == 0)
+	if (_AIplayer1->_panel.getIfPlayAttackAnimation() == false) {
+		if (_AIplayer1->_panel.getPlayerState() != MOVING)
 		{
-			playerPos.x += 4;
-			_AIplayer1->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
-			//_player->runAction(FlipX::create(false));
-			_AIplayer1->runFlipxWithWeapon(false, _AIweapon1);
+			_AIplayer1->stopAllActions();
+			_AIplayer1->runAction(_AIplayer1->getWalkAction());
 		}
-		else if (direct == 1)
-		{
-			playerPos.x -= 4;
-			_AIplayer1->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
-			//_player->runAction(FlipX::create(true));
-			_AIplayer1->runFlipxWithWeapon(true, _AIweapon1);
-		}
-		else if (direct == 2)
-		{
-			playerPos.y += 4;
-			_AIplayer1->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
-		}
-		else if (direct == 3)
-		{
-			playerPos.y -= 4;
-			_AIplayer1->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
-		}
-		/*=====================以上由键盘操作改写=====================*/
-
-		/*=====================以下由位置移动改写=====================*/
-		// 读取坐标
-		Vec2 tileCoord = this->tileCoordFromPosition(playerPos);  //从像素点坐标转化为瓦片坐标
-
-		int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
-
-		// 碰撞检测
-		if (tileGid > 0) {
-			Value prop = _tileMap->getPropertiesForGID(tileGid);
-			ValueMap propValueMap = prop.asValueMap();
-
-			std::string collision = propValueMap["Collidable"].asString();
-			// 元素+true
-			if (collision == "true") { //碰撞检测成功
-				direct = rand() % 4;//当ai撞墙 每一帧有3/4概率转向 一秒有几十帧 则基本可以做到撞墙即转向
-				return;
+		/*
+		* 这里应当判断ai的角色的当前状态 比如如果在攻击则不移动 现在暂时写成一直移动
+		*/
+		if (1) {
+			static int direct = 1;//需要保存原方向 所以static
+			int tempDirect = rand() % 60;
+			if (tempDirect <= 3)//除去原本的方向，每一帧有3/60的几率转向
+			{//这样是为了保证ai基本可以走一段路 而不是原地不停转向
+				direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
 			}
-		}
-		_AIplayer1->setPositionWithAll(playerPos, _AIweapon1, _AIhealthBar1, _AImagicBar1, _AIlevelText1);
-		/*=====================以上由位置移动改写=====================*/
+			/*=====================以下由键盘操作改写=====================*/
+			Vec2 playerPos = _AIplayer1->getPosition();  // 获取位置坐标
+			if (direct == 0)
+			{
+				playerPos.x += 4;
+				_AIplayer1->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
+				//_player->runAction(FlipX::create(false));
+				_AIplayer1->runFlipxWithWeapon(false, _AIweapon1);
+			}
+			else if (direct == 1)
+			{
+				playerPos.x -= 4;
+				_AIplayer1->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
+				//_player->runAction(FlipX::create(true));
+				_AIplayer1->runFlipxWithWeapon(true, _AIweapon1);
+			}
+			else if (direct == 2)
+			{
+				playerPos.y += 4;
+				_AIplayer1->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
+			}
+			else if (direct == 3)
+			{
+				playerPos.y -= 4;
+				_AIplayer1->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
+			}
+			/*=====================以上由键盘操作改写=====================*/
 
-		//this->setTreeOpacity(playerPos);//
+			/*=====================以下由位置移动改写=====================*/
+			// 读取坐标
+			Vec2 tileCoord = this->tileCoordFromPosition(playerPos);  //从像素点坐标转化为瓦片坐标
+
+			int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
+
+			// 碰撞检测
+			if (tileGid > 0) {
+				Value prop = _tileMap->getPropertiesForGID(tileGid);
+				ValueMap propValueMap = prop.asValueMap();
+
+				std::string collision = propValueMap["Collidable"].asString();
+				// 元素+true
+				if (collision == "true") { //碰撞检测成功
+					direct = rand() % 4;//当ai撞墙 每一帧有3/4概率转向 一秒有几十帧 则基本可以做到撞墙即转向
+					return;
+				}
+			}
+			_AIplayer1->setPositionWithAll(playerPos, _AIweapon1, _AIhealthBar1, _AImagicBar1, _AIlevelText1);
+			/*=====================以上由位置移动改写=====================*/
+
+			//this->setTreeOpacity(playerPos);//
+		}
 	}
 }
 
@@ -901,11 +929,44 @@ void MapLayer::updateAIAttack(float delta)
 
 	//在上面进行碰撞检测
 
-	if (1)//修改这里 改成碰撞检测成功 现在暂时是一直发动攻击
+	if (_AIplayer1->playerCollisionTest1(_player,_AIweapon1))//修改这里 改成碰撞检测成功 现在暂时是一直发动攻击
 	{
 		//这里暂时写成始终攻击玩家
 		//后续改成所碰撞到的角色
-		_AIplayer1->launchAnAttack(_AIweapon1, "attack", _AImagicBar1, _player, _healthBar);
+		
+		if (_AIplayer1->_panel.getPlayerState() != ATTACK&&!_AIplayer1->_panel.getIfPlayAttackAnimation())
+		{
+			_AIplayer1->stopAllActions();
+			_AIplayer1->runAction(_AIplayer1->getAttackAction());
+			_AIplayer1->_panel.setPlayerState(ATTACK);
+			_AIplayer1->_panel.setIfPlayAttackAnimation(true);
+		}
+
+		if(_AIplayer1->getID()==1)
+			this->scheduleOnce(schedule_selector(MapLayer::updateSetIfPlayAttackAnimation), 0.5f);
+		else if (_AIplayer1->getID() == 2)
+			this->scheduleOnce(schedule_selector(MapLayer::updateSetIfPlayAttackAnimation), 0.75f);
+		else if (_AIplayer1->getID() == 3)
+			this->scheduleOnce(schedule_selector(MapLayer::updateSetIfPlayAttackAnimation), 0.67f);
+		else if (_AIplayer1->getID() == 4)
+			this->scheduleOnce(schedule_selector(MapLayer::updateSetIfPlayAttackAnimation), 0.8f);
 	}
 	//碰撞检测失败则不做操作
+}
+
+void MapLayer::updateSetIfPlayAttackAnimation(float delta)
+{
+	if (_AIplayer1->_panel.getIfPlayAttackAnimation()) {
+		if (!_AIplayer1->magicIsFull())
+		{
+			_AIplayer1->launchAnAttack(_weapon, "attack", _magicBar, _player, _healthBar);
+		}
+		else
+		{
+			_AIplayer1->launchAnAttack(_AIweapon1, "skill", _AImagicBar1, _player, _healthBar);
+		}
+
+	}
+	_AIplayer1->_panel.setIfPlayAttackAnimation(false);		
+
 }

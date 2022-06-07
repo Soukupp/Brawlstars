@@ -67,21 +67,44 @@ Panel* Player::getPanel()
 ****************************/
 void Player::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar)
 {
-	//根据不同角色做了不同设计
+	////根据不同角色做了不同设计
+	//if (attackType == "attack")
+	//{
+	//	//if (weapon->launchAnAttack(_panel.doAttack(), enemy))
+	//	//{
+	//		restoreMagic();                           //游戏机制：发动进攻就补充蓝量
+	//	//}
+	//}
+	//else if (attackType == "skill")
+	//{
+	//	//if (useMagic()) 
+	//	//{
+	//		//weapon->launchAnAttack(_panel.doSkillAttack(), enemy);
+	//	//}
+	//}
+
 	if (attackType == "attack")
 	{
-		//if (weapon->launchAnAttack(_panel.doAttack(), enemy))
-		//{
-			restoreMagic();                           //游戏机制：发动进攻就补充蓝量
-		//}
+		if (this->playerCollisionTest1(enemy, weapon)) {
+			if (weapon->launchAnAttack(_panel.doAttack(), enemy))
+			{
+				//成功造成伤害才回能
+				restoreMagic();
+				enemy->refreshHealthBar(enemyHealthBar);
+			}
+		}
 	}
 	else if (attackType == "skill")
 	{
-		//if (useMagic()) 
-		//{
-			//weapon->launchAnAttack(_panel.doSkillAttack(), enemy);
-		//}
+		if (useMagic())
+		{
+			if (this->playerCollisionTest1(enemy, weapon)) {
+				weapon->launchAnAttack(_panel.doSkillAttack(), enemy);
+				enemy->refreshHealthBar(enemyHealthBar);
+			}
+		}
 	}
+	this->refreshMagicBar(magicBar);
 }
 /****************************
 * Name ：Player::hitPlayer

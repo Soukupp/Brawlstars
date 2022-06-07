@@ -64,7 +64,7 @@ class MapLayer : public cocos2d::Layer
     Slider* _magicBar;
     cocos2d::Label* _levelText;
 
-    Hero1* _AIplayer1;
+    Hero2* _AIplayer1;
     Weapon* _AIweapon1;
     Slider* _AIhealthBar1;
     Slider* _AImagicBar1;
@@ -123,6 +123,8 @@ public:
     Animation* getAnimationByName(std::string fileName, float interval, int fileNum, int if_repeat = -1);
     // implement the "static create()" method manually
     CREATE_FUNC(MapLayer);
+
+    void updateSetIfPlayAttackAnimation(float delta);
 };
 
 #endif // __Map_Layer_H__

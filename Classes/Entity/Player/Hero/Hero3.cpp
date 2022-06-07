@@ -68,75 +68,6 @@ void Hero3::initPlayer()
 }
 
 /*===============================================================================*/
-/*============================以下是发动攻击与动画===============================*/
-/*===============================================================================*/
-
-/****************************
-* Name ：launchAnAttack
-* Summary ：发动攻击 输入"attack" "skill" 调用
-* return ：
-****************************/
-void Hero3::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar)
-{
-	if (attackType == "attack")
-	{
-		if (weapon->launchAnAttack(_panel.doAttack(), enemy))
-		{
-			//成功造成伤害才回能
-			restoreMagic();
-			enemy->refreshHealthBar(enemyHealthBar);
-		}
-
-		auto _animationAttack = CCAnimation::create();
-		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-		for (int loop = 1; loop <= HERO3_YOU_ATTACK_FRAME; ++loop)
-		{
-			char szName[100] = { 0 };
-			sprintf(szName, "Character/Hero3/attack/attack%d.png", loop);
-			_animationAttack->addSpriteFrameWithFile(szName);
-		}
-		_animationAttack->setDelayPerUnit(HERO3_YOU_ATTACK_TIME / HERO3_YOU_ATTACK_FRAME);
-		_animationAttack->setRestoreOriginalFrame(true);
-		auto _animateAttack = CCAnimate::create(_animationAttack);
-		//this->runAction(Hide::create());
-		this->setAnchorPoint(Vec2(0.5f - _direct * 0.1f, 0.5f));
-		this->runAction(_animateAttack);
-		this->setAnchorPoint(Vec2(0.5f, 0.5f));
-		//this->runAction(Show::create());
-	}
-	else if (attackType == "skill")
-	{
-		if (useMagic())
-		{
-			weapon->launchAnAttack(_panel.doSkillAttack(), enemy);
-			enemy->refreshHealthBar(enemyHealthBar);
-
-			auto _animationAttack = CCAnimation::create();
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-			for (int loop = 1; loop <= HERO3_YOU_SKILL_FRAME; ++loop)
-			{
-				char szName[100] = { 0 };
-				sprintf(szName, "Character/Hero3/skill/skill%02d.png", loop);
-				_animationAttack->addSpriteFrameWithFile(szName);
-				if (loop % 7 == 0)
-				{
-					CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-				}
-			}
-			_animationAttack->setDelayPerUnit(HERO3_YOU_SKILL_TIME / HERO3_YOU_SKILL_FRAME);
-			_animationAttack->setRestoreOriginalFrame(true);
-			auto _animateAttack = CCAnimate::create(_animationAttack);
-			//this->runAction(Hide::create());
-			this->setAnchorPoint(Vec2(0.5f - _direct * 0.1f, 0.5f));
-			this->runAction(_animateAttack);
-			this->setAnchorPoint(Vec2(0.5f, 0.5f));
-			//this->runAction(Show::create());
-		}
-	}
-	this->refreshMagicBar(magicBar);
-}
-
-/*===============================================================================*/
 /*=======================以下是UI、武器等的位置保持跟随==========================*/
 /*===============================================================================*/
 
@@ -252,7 +183,7 @@ bool Hero3::initWalkAction()
 	frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Run.plist", "Character/Hero3/hero3_Run.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
-	for (int i = 1; i < 6; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("Run-%d.png", i)->getCString());
 		playerFrameArray.pushBack(frame);
@@ -266,6 +197,8 @@ bool Hero3::initWalkAction()
 		return true;
 	else
 		return false;
+
+
 }
 
 bool Hero3::initNormalAction()
@@ -312,6 +245,27 @@ bool Hero3::initAttackAction()
 		return false;
 }
 
+bool Hero3::initSkillAction()
+{
+	auto* frameCache = CCSpriteFrameCache::getInstance();
+	frameCache->addSpriteFramesWithFile("Character/Hero3/hero3-Skill.plist", "Character/Hero3/hero3-Skill.png");
+
+	Vector<CCSpriteFrame*> playerFrameArray;
+	for (int i = 1; i < 9; i++)
+	{
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("skill1- (%d).png", i)->getCString());
+		playerFrameArray.pushBack(frame);
+	}
+
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+	auto* animate = Animate::create(animation);
+	this->setSkillAction(animate);
+
+	if (_normalAction != nullptr)
+		return true;
+	else
+		return false;
+}
 
 bool Hero3::playerCollisionTest1(Player* target, Weapon* weapon)
 {

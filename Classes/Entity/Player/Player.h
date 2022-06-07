@@ -109,7 +109,7 @@ public:
     CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _walkAction, WalkAction);
     CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _normalAction, NormalAction);
     CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _attackAction, AttackAction);
-
+    CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _skillAction, SkillAction);
     const int _width = 26;
     const int _height = 44;
 
