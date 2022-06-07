@@ -71,8 +71,6 @@ public:
 	void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
 	void initPlayer();
 
-	void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar);
-
 	void keepHealthBar(Slider* healthBar);
 	void keepMagicBar(Slider* magicBar);
 	void keepWeapon(Weapon* weapon);
@@ -87,6 +85,7 @@ public:
 	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _walkAction, WalkAction);
 	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _normalAction, NormalAction);
 	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _attackAction, AttackAction);
+	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _skillAction, SkillAction);
 
 	bool initWalkAction();
 	bool initNormalAction();
@@ -96,6 +95,7 @@ public:
 	const int _width = 26;
 	const int _height = 44;
 
+	
 	int getID();
 
 private:

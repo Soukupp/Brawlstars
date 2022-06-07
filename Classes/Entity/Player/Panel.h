@@ -91,6 +91,9 @@ public:
 
     void addHitnum();
     int getHitnum();
+
+
+
 };
 
 #endif
