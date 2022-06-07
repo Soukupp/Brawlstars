@@ -1,6 +1,6 @@
 #pragma once
-//×÷Õß : ÀîÔªÌØ
-//ÈÕÆÚ : 2022-5-20
+//ä½œè€… : æå…ƒç‰¹
+//æ—¥æœŸ : 2022-5-20
 
 #ifndef __MAP_LAYER_H__
 #define __MAP_LAYER_H__
@@ -9,11 +9,14 @@
 #include "SimpleAudioEngine.h"
 #include "GameScene.h"
 #include "GameOverScene.h"
+/**
 #include "Entity/Player/Hero/Hero1.h"
 #include "Entity/Player/Hero/Hero2.h"
 #include "Entity/Player/Hero/Hero3.h"
 #include "Entity/Player/Hero/Hero4.h"
 #include "Entity/Weapon/Weapon.h"
+/**/
+#include "Entity/Character.h"
 #include "Entity/Monster/Monster.h"
 #include <vector>
 #include <string>
@@ -28,6 +31,19 @@
 #define MAP_FOG_DAMAGE_TO_PLAYER 4
 #define MAP_PORTAL_SIZE 6
 
+#define  CHARACTER(a) (allCharacter[a])
+
+#define  PLAYER (allCharacter[0]._player)
+#define  WEAPON (allCharacter[0]._weapon)
+#define  HEALTHBAR (allCharacter[0]._healthBar)
+#define  MAGICBAR (allCharacter[0]._magicBar)
+#define  LEVELTEXT (allCharacter[0]._levelText)
+
+#define  AI_PLAYER(a) (allCharacter[a]._player)
+#define  AI_WEAPON(a) (allCharacter[a]._weapon)
+#define  AI_HEALTHBAR(a) (allCharacter[a]._healthBar)
+#define  AI_MAGICBAR(a) (allCharacter[a]._magicBar)
+#define  AI_LEVELTEXT(a) (allCharacter[a]._levelText)
 
 class MapLayer : public cocos2d::Layer
 {
@@ -36,42 +52,36 @@ class MapLayer : public cocos2d::Layer
     cocos2d::TMXLayer* _watermonster;
     cocos2d::TMXLayer* _tree;
     Sprite* _treecell;
+
+    std::vector<Character> allCharacter;
+    Character tempCharacter;
+
     /**/
     Hero1* _player1;
-    Weapon* _weapon1;
-    Slider* _healthBar1;
-    Slider* _magicBar1;
-    cocos2d::Label* _levelText1;
-    /**/
     Hero2* _player2;
-    Weapon* _weapon2;
-    Slider* _healthBar2;
-    Slider* _magicBar2;
-    cocos2d::Label* _levelText2;
-
     Hero3* _player3;
-    Weapon* _weapon3;
-    Slider* _healthBar3;
-    Slider* _magicBar3;
-    cocos2d::Label* _levelText3;
-
     Hero4* _player4;
-    Weapon* _weapon4;
-    Slider* _healthBar4;
-    Slider* _magicBar4;
-    cocos2d::Label* _levelText4;
 
-    Player* _player;
     Weapon* _weapon;
     Slider* _healthBar;
     Slider* _magicBar;
     cocos2d::Label* _levelText;
+ 
 
-    Hero2* _AIplayer1;
+    /**/
+    /**
+    Player* _tplayer;
+    Weapon* _tweapon;
+    Slider* _thealthBar;
+    Slider* _tmagicBar;
+    cocos2d::Label* _tlevelText;
+    /**
+    Hero1* _AIplayer1;
     Weapon* _AIweapon1;
     Slider* _AIhealthBar1;
     Slider* _AImagicBar1;
     cocos2d::Label* _AIlevelText1;
+    /**/
 
     Monster* _monster;
     Slider* _monsterHealthBar;
@@ -90,7 +100,7 @@ class MapLayer : public cocos2d::Layer
 
 
 
-    std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap; // ÅĞ¶ÏÊó±êÓĞÎŞÊÍ·Å
+    std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap; // åˆ¤æ–­é¼ æ ‡æœ‰æ— é‡Šæ”¾
 
 public:
 
@@ -103,8 +113,8 @@ public:
     virtual void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
     virtual void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 
-    void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // ±ØĞëÒª¼Ó×÷ÓÃÓò£¡£¡£¡
-    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // ±ØĞëÒª¼Ó×÷ÓÃÓò£¡£¡£¡
+    void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // å¿…é¡»è¦åŠ ä½œç”¨åŸŸï¼ï¼ï¼
+    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // å¿…é¡»è¦åŠ ä½œç”¨åŸŸï¼ï¼ï¼
 
     void update(float delta);
     void update2(float delta);
@@ -115,6 +125,7 @@ public:
     void updateOutsideFog(float delta);
 
     void updateAIMove(float delta);
+    void updateAIMoveOne(Character& character);
     void updateAIAttack(float delta);
 
     void setPlayerPosition(cocos2d::Vec2 position);
@@ -125,6 +136,11 @@ public:
     template<typename Hero>
     void createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slider** magicBar, Label** levelText,
         Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon);
+
+    /**
+    void createCharacter(Character& character,
+        Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon);
+    /**/
 
     void createMonster(Monster** monster, Slider** healthBar,
         Vec2& position, const std::string& filenameMonster);
