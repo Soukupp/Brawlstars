@@ -51,6 +51,7 @@ list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
 
      Classes/Entity/Entity.cpp
+     Classes/Entity/Character.cpp
      Classes/Entity/Player/Player.cpp
      Classes/Entity/Player/Panel.cpp
      Classes/Entity/Player/Hero/Hero1.cpp
@@ -81,6 +82,7 @@ list(APPEND GAME_HEADER
      Classes/AppDelegate.h
 
      Classes/Entity/Entity.h
+     Classes/Entity/Character.h
      Classes/Entity/Player/Player.h
      Classes/Entity/Player/Panel.h
      Classes/Entity/Player/Hero/Hero1.h
