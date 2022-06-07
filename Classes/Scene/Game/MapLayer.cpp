@@ -197,7 +197,7 @@ bool MapLayer::init()
 	allCharacter.push_back(tempCharacter);
 	/**/
 	this->schedule(schedule_selector(MapLayer::updateAIMove), 0.05f);
-	this->schedule(schedule_selector(MapLayer::updateAIAttack), 2.0f);
+	this->schedule(schedule_selector(MapLayer::updateAIAttack), 1.0f);
 
 	createMonster(&_monster,&_monsterHealthBar,
 		Vec2(_playerX, _playerY), "Character/Hero3/hero.png");
@@ -989,7 +989,7 @@ void MapLayer::updateAIMoveOne(Character& character)
 	/*
 	* 这里应当判断ai的角色的当前状态 比如如果在攻击则不移动 现在暂时写成一直移动
 	*/
-	if (1) {
+	if (_AIplayer1->_panel.getIfPlayAttackAnimation() == false) {
 		/*=====================以下由键盘操作改写=====================*/
 		Vec2 playerPos = character._player->getPosition();  // 获取位置坐标
 		if (character.direct == 0)
@@ -1018,16 +1018,16 @@ void MapLayer::updateAIMoveOne(Character& character)
 		}
 		/*=====================以上由键盘操作改写=====================*/
 
-		/*=====================以下由位置移动改写=====================*/
-		// 读取坐标
-		Vec2 tileCoord = this->tileCoordFromPosition(playerPos);  //从像素点坐标转化为瓦片坐标
+			/*=====================以下由位置移动改写=====================*/
+			// 读取坐标
+			Vec2 tileCoord = this->tileCoordFromPosition(playerPos);  //从像素点坐标转化为瓦片坐标
 
-		int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
+			int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
 
-		// 碰撞检测
-		if (tileGid > 0) {
-			Value prop = _tileMap->getPropertiesForGID(tileGid);
-			ValueMap propValueMap = prop.asValueMap();
+			// 碰撞检测
+			if (tileGid > 0) {
+				Value prop = _tileMap->getPropertiesForGID(tileGid);
+				ValueMap propValueMap = prop.asValueMap();
 
 			std::string collision = propValueMap["Collidable"].asString();
 			// 元素+true
@@ -1039,7 +1039,8 @@ void MapLayer::updateAIMoveOne(Character& character)
 		character._player->setPositionWithAll(playerPos, character._weapon, character._healthBar, character._magicBar, character._levelText);
 		/*=====================以上由位置移动改写=====================*/
 
-		//this->setTreeOpacity(playerPos);//
+			//this->setTreeOpacity(playerPos);//
+		}
 	}
 }
 
@@ -1049,7 +1050,7 @@ void MapLayer::updateAIAttack(float delta)
 
 	//在上面进行碰撞检测
 
-	if (1)//修改这里 改成碰撞检测成功 现在暂时是一直发动攻击
+	if (_AIplayer1->playerCollisionTest1(_player,_AIweapon1))//修改这里 改成碰撞检测成功 现在暂时是一直发动攻击
 	{
 		//这里暂时写成始终攻击玩家
 		//后续改成所碰撞到的角色

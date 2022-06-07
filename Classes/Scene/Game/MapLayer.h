@@ -1,6 +1,6 @@
 #pragma once
-//×÷Õß : ÀîÔªÌØ
-//ÈÕÆÚ : 2022-5-20
+//ä½œè€… : æå…ƒç‰¹
+//æ—¥æœŸ : 2022-5-20
 
 #ifndef __MAP_LAYER_H__
 #define __MAP_LAYER_H__
@@ -100,7 +100,7 @@ class MapLayer : public cocos2d::Layer
 
 
 
-    std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap; // ÅĞ¶ÏÊó±êÓĞÎŞÊÍ·Å
+    std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap; // åˆ¤æ–­é¼ æ ‡æœ‰æ— é‡Šæ”¾
 
 public:
 
@@ -113,8 +113,8 @@ public:
     virtual void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
     virtual void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 
-    void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // ±ØĞëÒª¼Ó×÷ÓÃÓò£¡£¡£¡
-    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // ±ØĞëÒª¼Ó×÷ÓÃÓò£¡£¡£¡
+    void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // å¿…é¡»è¦åŠ ä½œç”¨åŸŸï¼ï¼ï¼
+    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // å¿…é¡»è¦åŠ ä½œç”¨åŸŸï¼ï¼ï¼
 
     void update(float delta);
     void update2(float delta);
@@ -148,6 +148,8 @@ public:
     Animation* getAnimationByName(std::string fileName, float interval, int fileNum, int if_repeat = -1);
     // implement the "static create()" method manually
     CREATE_FUNC(MapLayer);
+
+    void updateSetIfPlayAttackAnimation(float delta);
 };
 
 #endif // __Map_Layer_H__
