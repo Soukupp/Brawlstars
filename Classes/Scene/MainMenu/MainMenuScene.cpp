@@ -159,9 +159,9 @@ bool MainMenuScene::init()
         "START",
         CC_CALLBACK_1(MainMenuScene::menuStartCallback, this)
     );
-    MenuItemFont* itemStore = MenuItemFont::create(
+    MenuItemFont* itemMap = MenuItemFont::create(
         "MAP",
-        CC_CALLBACK_1(MainMenuScene::menuStoreCallback, this)
+        CC_CALLBACK_1(MainMenuScene::menuMapCallback, this)
     );
     MenuItemFont* itemHeros = MenuItemFont::create(
         "HEROS",
@@ -173,7 +173,7 @@ bool MainMenuScene::init()
     );
 
     //创建菜单 把菜单项放进去
-    Menu* mainMenu = Menu::create(itemStart, itemStore, itemHeros, itemSettings, NULL);
+    Menu* mainMenu = Menu::create(itemStart, itemMap, itemHeros, itemSettings, NULL);
     mainMenu->setPosition(MAINMENU_MAINMENU_POSITION_X,
         MAINMENU_MAINMENU_POSITION_Y);
     mainMenu->alignItemsVertically();
@@ -233,6 +233,7 @@ void MainMenuScene::menuCloseCallback(Ref* pSender)
 ****************************/
 void MainMenuScene::menuInfoCallback(Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -262,11 +263,11 @@ void MainMenuScene::menuStartCallback(cocos2d::Ref* pSender)
 
 
 /****************************
-* Name ：MainMenuScene::menuStoreCallback
+* Name ：MainMenuScene::menuMapCallback
 * Summary ：主菜单商店按钮回调
 * return ：
 ****************************/
-void MainMenuScene::menuStoreCallback(cocos2d::Ref* pSender)
+void MainMenuScene::menuMapCallback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     auto storeScene = StoreScene::createScene();

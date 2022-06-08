@@ -29,7 +29,7 @@
 #define MAP_SAFEAREA_INTERVAL_LAST 10.0f
 
 #define MAP_FOG_DENSITY 16
-#define MAP_FOG_DAMAGE_TO_PLAYER 4
+#define MAP_FOG_DAMAGE_TO_PLAYER 2
 #define MAP_PORTAL_SIZE 6
 
 #define  CHARACTER(a) (allCharacter[a])
