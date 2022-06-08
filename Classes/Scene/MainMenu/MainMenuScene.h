@@ -56,7 +56,6 @@ public:
     void menuHerosCallback(cocos2d::Ref* pSender);
     void menuSettingsCallback(cocos2d::Ref* pSender);
 
-
     //´´½¨
     CREATE_FUNC(MainMenuScene);
 };
