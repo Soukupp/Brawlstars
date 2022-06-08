@@ -896,26 +896,29 @@ void MapLayer::updateForPortal(float delta)
 
 	for (int i = 1; i < allCharacter.size(); ++i)
 	{
-		if (CHARACTER(i)._player->getPositionX() <= (_portal_1->getPositionX() + MAP_PORTAL_SIZE) &&
-			CHARACTER(i)._player->getPositionX() >= (_portal_1->getPositionX() - MAP_PORTAL_SIZE) &&
-			CHARACTER(i)._player->getPositionY() <= (_portal_1->getPositionY() + MAP_PORTAL_SIZE) &&
-			CHARACTER(i)._player->getPositionY() >= (_portal_1->getPositionY() - MAP_PORTAL_SIZE))
-			CHARACTER(i)._player->setPosition(_portal_Determination_1->getPosition());
-		if (CHARACTER(i)._player->getPositionX() <= (_portal_2->getPositionX() + MAP_PORTAL_SIZE) &&
-			CHARACTER(i)._player->getPositionX() >= (_portal_2->getPositionX() - MAP_PORTAL_SIZE) &&
-			CHARACTER(i)._player->getPositionY() <= (_portal_2->getPositionY() + MAP_PORTAL_SIZE) &&
-			CHARACTER(i)._player->getPositionY() >= (_portal_2->getPositionY() - MAP_PORTAL_SIZE))
-			CHARACTER(i)._player->setPosition(_portal_Determination_2->getPosition());
-		if (CHARACTER(i)._player->getPositionX() <= (_portal_3->getPositionX() + MAP_PORTAL_SIZE) &&
-			CHARACTER(i)._player->getPositionX() >= (_portal_3->getPositionX() - MAP_PORTAL_SIZE) &&
-			CHARACTER(i)._player->getPositionY() <= (_portal_3->getPositionY() + MAP_PORTAL_SIZE) &&
-			CHARACTER(i)._player->getPositionY() >= (_portal_3->getPositionY() - MAP_PORTAL_SIZE))
-			CHARACTER(i)._player->setPosition(_portal_Determination_3->getPosition());
-		if (CHARACTER(i)._player->getPositionX() <= (_portal_4->getPositionX() + MAP_PORTAL_SIZE) &&
-			CHARACTER(i)._player->getPositionX() >= (_portal_4->getPositionX() - MAP_PORTAL_SIZE) &&
-			CHARACTER(i)._player->getPositionY() <= (_portal_4->getPositionY() + MAP_PORTAL_SIZE) &&
-			CHARACTER(i)._player->getPositionY() >= (_portal_4->getPositionY() - MAP_PORTAL_SIZE))
-			CHARACTER(i)._player->setPosition(_portal_Determination_4->getPosition());
+		if (CHARACTER(i)._player->_panel.getIsSurvive()) 
+		{
+			if (CHARACTER(i)._player->getPositionX() <= (_portal_1->getPositionX() + MAP_PORTAL_SIZE) &&
+				CHARACTER(i)._player->getPositionX() >= (_portal_1->getPositionX() - MAP_PORTAL_SIZE) &&
+				CHARACTER(i)._player->getPositionY() <= (_portal_1->getPositionY() + MAP_PORTAL_SIZE) &&
+				CHARACTER(i)._player->getPositionY() >= (_portal_1->getPositionY() - MAP_PORTAL_SIZE))
+				CHARACTER(i)._player->setPosition(_portal_Determination_1->getPosition());
+			if (CHARACTER(i)._player->getPositionX() <= (_portal_2->getPositionX() + MAP_PORTAL_SIZE) &&
+				CHARACTER(i)._player->getPositionX() >= (_portal_2->getPositionX() - MAP_PORTAL_SIZE) &&
+				CHARACTER(i)._player->getPositionY() <= (_portal_2->getPositionY() + MAP_PORTAL_SIZE) &&
+				CHARACTER(i)._player->getPositionY() >= (_portal_2->getPositionY() - MAP_PORTAL_SIZE))
+				CHARACTER(i)._player->setPosition(_portal_Determination_2->getPosition());
+			if (CHARACTER(i)._player->getPositionX() <= (_portal_3->getPositionX() + MAP_PORTAL_SIZE) &&
+				CHARACTER(i)._player->getPositionX() >= (_portal_3->getPositionX() - MAP_PORTAL_SIZE) &&
+				CHARACTER(i)._player->getPositionY() <= (_portal_3->getPositionY() + MAP_PORTAL_SIZE) &&
+				CHARACTER(i)._player->getPositionY() >= (_portal_3->getPositionY() - MAP_PORTAL_SIZE))
+				CHARACTER(i)._player->setPosition(_portal_Determination_3->getPosition());
+			if (CHARACTER(i)._player->getPositionX() <= (_portal_4->getPositionX() + MAP_PORTAL_SIZE) &&
+				CHARACTER(i)._player->getPositionX() >= (_portal_4->getPositionX() - MAP_PORTAL_SIZE) &&
+				CHARACTER(i)._player->getPositionY() <= (_portal_4->getPositionY() + MAP_PORTAL_SIZE) &&
+				CHARACTER(i)._player->getPositionY() >= (_portal_4->getPositionY() - MAP_PORTAL_SIZE))
+				CHARACTER(i)._player->setPosition(_portal_Determination_4->getPosition());
+		}
 	}
 
 }
@@ -1006,6 +1009,8 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 		}
 	}
 }
+
+
 /****************************
 * Name ：MapLayer::updateAIMove
 * Summary ：全体ai移动
@@ -1013,11 +1018,14 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 ****************************/
 void MapLayer::updateAIMove(float delta)
 {
-	for (int i = 1; i < allCharacter.size(); ++i) {
-		updateAIMoveOne(CHARACTER(i));
-
+	for (int i = 1; i < allCharacter.size(); ++i)
+	{
+		if (CHARACTER(i)._player->_panel.getIsSurvive())
+			updateAIMoveOne(CHARACTER(i));
 	}
 }
+
+
 /****************************
 * Name ：MapLayer::updateAIMoveOne
 * Summary ：一个ai移动
@@ -1027,37 +1035,51 @@ void MapLayer::updateAIMoveOne(Character& character)
 {
 	int i = character._player->_panel.getIfPlayAttackAnimation();
 
-	if (character._player->_panel.getIfPlayAttackAnimation() == false) {
-		if (character._player->_panel.getPlayerState() != MOVING)
+	if (CHARACTER(i)._player->_panel.getIsSurvive())
+	{
+		if (character._player->_panel.getIfPlayAttackAnimation() == false) 
 		{
-			character._player->stopAllActions();
-			character._player->runAction(character._player->getWalkAction());
-		}
-		if (!_SafeArea->boundingBox().containsPoint(Vec2(character._player->getPosition())))//不在安全区
-		{
-			//log("not safe area");
-			++character.searchTimes;
-			if (character.searchTimes <= 100)//寻路少于一定数量则进行逃离方向选择逻辑
+			if (character._player->_panel.getPlayerState() != MOVING)
 			{
-				//log("searchTimes <= 200");
-				if (!character.backDirectChanged)//且没有掉头
-				{//那么掉头
-					//log("!backDirectChanged");
-					if (character.direct <= 1)//左右
-					{
-						character.direct = 1 - character.direct;
-					}
-					else//上下
-					{
-						character.direct = 5 - character.direct;
-					}
-					character.backDirectChanged = true;
-				}
-				//否则维持原方向
+				character._player->stopAllActions();
+				character._player->runAction(character._player->getWalkAction());
 			}
-			else//达到寻路上限还没逃离则开始随机选方向逃出
+			if (!_SafeArea->boundingBox().containsPoint(Vec2(character._player->getPosition())))//不在安全区
 			{
-				//log("searchTimes > 200");
+				//log("not safe area");
+				++character.searchTimes;
+				if (character.searchTimes <= 100)//寻路少于一定数量则进行逃离方向选择逻辑
+				{
+					//log("searchTimes <= 200");
+					if (!character.backDirectChanged)//且没有掉头
+					{//那么掉头
+						//log("!backDirectChanged");
+						if (character.direct <= 1)//左右
+						{
+							character.direct = 1 - character.direct;
+						}
+						else//上下
+						{
+							character.direct = 5 - character.direct;
+						}
+						character.backDirectChanged = true;
+					}
+					//否则维持原方向
+				}
+				else//达到寻路上限还没逃离则开始随机选方向逃出
+				{
+					//log("searchTimes > 200");
+					character.backDirectChanged = false;//参数重置
+					int tempDirect = rand() % 60;
+					if (tempDirect <= 3)//除去原本的方向，每一帧有3/60的几率转向
+					{//这样是为了保证ai基本可以走一段路 而不是原地不停转向
+						character.direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
+					}
+				}
+			}
+			else//在安全区
+			{//正常选方向
+				character.searchTimes = 0;//参数重置
 				character.backDirectChanged = false;//参数重置
 				int tempDirect = rand() % 60;
 				if (tempDirect <= 3)//除去原本的方向，每一帧有3/60的几率转向
@@ -1065,74 +1087,64 @@ void MapLayer::updateAIMoveOne(Character& character)
 					character.direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
 				}
 			}
-		}
-		else//在安全区
-		{//正常选方向
-			character.searchTimes = 0;//参数重置
-			character.backDirectChanged = false;//参数重置
-			int tempDirect = rand() % 60;
-			if (tempDirect <= 3)//除去原本的方向，每一帧有3/60的几率转向
-			{//这样是为了保证ai基本可以走一段路 而不是原地不停转向
-				character.direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
-			}
-		}
 
-		/*
-		* 这里应当判断ai的角色的当前状态 比如如果在攻击则不移动 现在暂时写成一直移动
-		*/
-		if (/*character._player->_panel.getIfPlayAttackAnimation() == false*/1) {
-			/*=====================以下由键盘操作改写=====================*/
-			Vec2 playerPos = character._player->getPosition();  // 获取位置坐标
-			if (character.direct == 0)
-			{
-				playerPos.x += 2;
-				character._player->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
-				//PLAYER->runAction(FlipX::create(false));
-				character._player->runFlipxWithWeapon(false, character._weapon);
-			}
-			else if (character.direct == 1)
-			{
-				playerPos.x -= 2;
-				character._player->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
-				//PLAYER->runAction(FlipX::create(true));
-				character._player->runFlipxWithWeapon(true, character._weapon);
-			}
-			else if (character.direct == 2)
-			{
-				playerPos.y += 2;
-				character._player->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
-			}
-			else if (character.direct == 3)
-			{
-				playerPos.y -= 2;
-				character._player->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
-			}
-			/*=====================以上由键盘操作改写=====================*/
-
-				/*=====================以下由位置移动改写=====================*/
-				// 读取坐标
-			Vec2 tileCoord = this->tileCoordFromPosition(playerPos);  //从像素点坐标转化为瓦片坐标
-
-			int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
-
-			// 碰撞检测
-			if (tileGid > 0) {
-				Value prop = _tileMap->getPropertiesForGID(tileGid);
-				ValueMap propValueMap = prop.asValueMap();
-
-				std::string collision = propValueMap["Collidable"].asString();
-				// 元素+true
-				if (collision == "true") { //碰撞检测成功
-					character.direct = rand() % 4;//当ai撞墙 每一帧有3/4概率转向 一秒有几十帧 则基本可以做到撞墙即转向
-					return;
+			/*
+			* 这里应当判断ai的角色的当前状态 比如如果在攻击则不移动 现在暂时写成一直移动
+			*/
+			if (/*character._player->_panel.getIfPlayAttackAnimation() == false*/1) {
+				/*=====================以下由键盘操作改写=====================*/
+				Vec2 playerPos = character._player->getPosition();  // 获取位置坐标
+				if (character.direct == 0)
+				{
+					playerPos.x += 2;
+					character._player->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
+					//PLAYER->runAction(FlipX::create(false));
+					character._player->runFlipxWithWeapon(false, character._weapon);
 				}
+				else if (character.direct == 1)
+				{
+					playerPos.x -= 2;
+					character._player->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
+					//PLAYER->runAction(FlipX::create(true));
+					character._player->runFlipxWithWeapon(true, character._weapon);
+				}
+				else if (character.direct == 2)
+				{
+					playerPos.y += 2;
+					character._player->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
+				}
+				else if (character.direct == 3)
+				{
+					playerPos.y -= 2;
+					character._player->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
+				}
+				/*=====================以上由键盘操作改写=====================*/
+
+					/*=====================以下由位置移动改写=====================*/
+					// 读取坐标
+				Vec2 tileCoord = this->tileCoordFromPosition(playerPos);  //从像素点坐标转化为瓦片坐标
+
+				int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
+
+				// 碰撞检测
+				if (tileGid > 0) {
+					Value prop = _tileMap->getPropertiesForGID(tileGid);
+					ValueMap propValueMap = prop.asValueMap();
+
+					std::string collision = propValueMap["Collidable"].asString();
+					// 元素+true
+					if (collision == "true") { //碰撞检测成功
+						character.direct = rand() % 4;//当ai撞墙 每一帧有3/4概率转向 一秒有几十帧 则基本可以做到撞墙即转向
+						return;
+					}
+				}
+
+				character._player->setPositionWithAll(playerPos, character._weapon, character._healthBar, character._magicBar, character._levelText);
+				/*=====================以上由位置移动改写=====================*/
+
+					//this->setTreeOpacity(playerPos);//
+
 			}
-
-			character._player->setPositionWithAll(playerPos, character._weapon, character._healthBar, character._magicBar, character._levelText);
-			/*=====================以上由位置移动改写=====================*/
-
-				//this->setTreeOpacity(playerPos);//
-
 		}
 	}
 }
@@ -1224,14 +1236,19 @@ void MapLayer::updateSetIfPlayAttackAnimation(float delta)
 	
 	for (int i = 1; i < allCharacter.size() ; ++i) 
 	{
-		if (CHARACTER(i).ifOpenUpdate)
+		if (CHARACTER(i)._player->_panel.getIsSurvive())
 		{
-			CHARACTER(i).ifOpenUpdate = false;
-			CHARACTER(i)._player->_panel.setIfPlayAttackAnimation(false);
+			if (CHARACTER(i).ifOpenUpdate)
+			{
+				CHARACTER(i).ifOpenUpdate = false;
+				CHARACTER(i)._player->_panel.setIfPlayAttackAnimation(false);
+			}
 		}
 	}
 
 }
+
+
 /****************************
 * Name ：MapLayer::getPlayerRank
 * Summary ：获取玩家排名
@@ -1241,6 +1258,8 @@ int MapLayer::getPlayerRank()
 {
 	return _numOfPlayer;
 }
+
+
 /****************************
 * Name ：MapLayer::getHitNum
 * Summary ：获取玩家击杀数
@@ -1250,6 +1269,8 @@ int MapLayer::getHitNum()
 {
 	return PLAYER->_panel.getHitnum();
 }
+
+
 /****************************
 * Name ：MapLayer::savePlayerKill
 * Summary ：记录玩家击杀
@@ -1261,6 +1282,8 @@ void MapLayer::savePlayerKill()
 	PLAYER->_panel.addHitnum();
 	saveData();
 }
+
+
 /****************************
 * Name ：MapLayer::saveAIKill
 * Summary ：记录ai击杀
@@ -1271,6 +1294,8 @@ void MapLayer::saveAIKill()
 	--_numOfPlayer;
 	saveData();
 }
+
+
 /****************************
 * Name ：MapLayer::saveData
 * Summary ：保存数据
@@ -1281,6 +1306,8 @@ void MapLayer::saveData()
 	UserDefault::getInstance()->setIntegerForKey("PlayerRank", this->getPlayerRank());
 	UserDefault::getInstance()->setIntegerForKey("HitNum", this->getHitNum());
 }
+
+
 /****************************
 * Name ：MapLayer::gameOver
 * Summary ：游戏结束
