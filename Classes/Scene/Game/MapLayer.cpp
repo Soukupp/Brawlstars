@@ -1107,7 +1107,7 @@ void MapLayer::updateAIAttack(float delta)
 	for (int i = 1; i < allCharacter.size(); ++i) {
 		for (int j = 0; j < allCharacter.size(); ++j)
 		{
-			if (i!=j&&CHARACTER(i)._player->playerCollisionTest1(CHARACTER(j)._player, CHARACTER(i)._weapon))//修改这里 改成碰撞检测成功 现在暂时是一直发动攻击
+			if (i!=j&&CHARACTER(i)._player->playerCollisionTest2(CHARACTER(j)._player, CHARACTER(i)._weapon))//修改这里 改成碰撞检测成功 现在暂时是一直发动攻击
 			{
 				//这里暂时写成始终攻击玩家
 				//后续改成所碰撞到的角色
@@ -1115,7 +1115,6 @@ void MapLayer::updateAIAttack(float delta)
 				if (CHARACTER(i)._player->_panel.getPlayerState() != ATTACK && !CHARACTER(i)._player->_panel.getIfPlayAttackAnimation())
 				{
 					CHARACTER(i)._player->stopAllActions();
-					CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
 					if (!CHARACTER(i)._player->magicIsFull()) {
 						CHARACTER(i)._player->runAction(CHARACTER(i)._player->getAttackAction());
 						CHARACTER(i)._player->launchAnAttack(CHARACTER(i)._weapon, "attack", CHARACTER(i)._magicBar, CHARACTER(j)._player, CHARACTER(j)._healthBar);
