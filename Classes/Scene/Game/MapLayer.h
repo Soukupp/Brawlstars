@@ -90,7 +90,7 @@ class MapLayer : public cocos2d::Layer
 
     Vec2 deathPosition;
 
-
+    int _numOfPlayer;
 
     std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap; // 判断鼠标有无释放
 
@@ -133,10 +133,10 @@ public:
     void createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slider** magicBar, Label** levelText,
         Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon);
 
-    /**
-    void createCharacter(Character& character,
-        Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon);
-    /**/
+    void savePlayerKill();
+    void saveAIKill();
+    void saveData();
+    void gameOver();
 
     void createMonster(Monster** monster, Slider** healthBar,
         Vec2& position, const std::string& filenameMonster);

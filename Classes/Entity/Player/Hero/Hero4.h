@@ -22,7 +22,11 @@ using namespace cocos2d;
 #define HERO4_YOU_WEAPON_POSITION_Y (this->getContentSize().height * 2 / 3)
 //血条、蓝条相对人物的纵向位置
 #define HERO4_YOU_BAR_POSITION (this->getContentSize().height / 2)
-
+//动画时长、帧数
+#define HERO4_YOU_ATTACK_TIME 0.5f
+#define HERO4_YOU_ATTACK_FRAME 10
+#define HERO4_YOU_SKILL_TIME 1.0f
+#define HERO4_YOU_SKILL_FRAME 10
 /*==============================以上是你需要修改的宏定义=================================*/
 
 /*==============================!!!!!以下宏请勿修改!!!!!=================================*/
@@ -47,11 +51,6 @@ using namespace cocos2d;
 #define HERO4_INIT_DEFENCE 150
 #define HERO4_INIT_SKILLRATE 2.5f
 #define HERO4_INIT_ATTACKRATE 1.0f
-//动画时长、帧数
-#define HERO4_YOU_ATTACK_TIME 0.5f
-#define HERO4_YOU_ATTACK_FRAME 10
-#define HERO4_YOU_SKILL_TIME 1.0f
-#define HERO4_YOU_SKILL_FRAME 10
 
 /*==============================!!!!!以上宏请勿修改!!!!!=================================*/
 class Hero1;

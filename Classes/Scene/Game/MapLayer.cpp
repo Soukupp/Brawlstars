@@ -222,11 +222,11 @@ bool MapLayer::init()
 	/*=====================测试对象创建结束=====================*/
 
 	/*=======================创建怪兽开始=======================*/
-	createMonster(&_monster, &_healthBar, Vec2(_playerX, _playerY), "Character/Hero1/hero.png");
+	createMonster(&_monster, &_healthBar, Vec2(_playerX, _playerY), "Monster/groundmonster.png");
 	tempMonster = { _monster,_healthBar };
 	allMonster.push_back(tempMonster);
 
-	createMonster(&_monster, &_healthBar, Vec2(_playerX, _playerY), "Character/Hero3/hero.png");
+	createMonster(&_monster, &_healthBar, Vec2(_playerX, _playerY), "Monster/desertmonster.png");
 	tempMonster = { _monster,_healthBar };
 	allMonster.push_back(tempMonster);
 	/*=======================创建怪兽结束=======================*/
@@ -353,10 +353,11 @@ bool MapLayer::init()
 	this->schedule(schedule_selector(MapLayer::updateForPortal));
 	/*=====================控制毒圈结束===========================*/
 
-	/*==================初始化结算数据开始========================*/
+	/*====================初始化数据开始==========================*/
+	_numOfPlayer = allCharacter.size();
 	UserDefault::getInstance()->setIntegerForKey("PlayerRank", this->getPlayerRank());
 	UserDefault::getInstance()->setIntegerForKey("HitNum", this->getHitNum());
-	/*==================初始化结算数据结束========================*/
+	/*====================初始化数据结束==========================*/
 
 	return true;
 }
@@ -718,14 +719,6 @@ void MapLayer::setViewpointCenter(Vec2 position)
 	this->setPosition(offset);
 
 }
-int MapLayer::getPlayerRank()
-{
-	return allCharacter.size();
-}
-int MapLayer::getHitNum()
-{
-	return PLAYER->_panel.getHitnum();
-}
 /****************************
 * Name ：MapLayer::createHero
 * Summary ：创建角色
@@ -768,12 +761,16 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 
 	(**hero).setPositionWithAll(position, *weapon, *healthBar, *magicBar, *levelText);
 }
-
+/****************************
+* Name ：MapLayer::createMonster
+* Summary ：初始化怪兽
+* return ：
+****************************/
 void MapLayer::createMonster(Monster** monster, Slider** healthBar,
 	Vec2& position, const std::string& filenameMonster)
 {
 	*monster = Monster::create(filenameMonster);
-	(**monster).initMonster(1000,0,100,0,0);//无用数据直接空置
+	(**monster).initMonster(2000,0,100,0,0);//无用数据直接空置
 	addChild(*monster, 3, 200);
 
 	*healthBar = Slider::create();
@@ -821,6 +818,13 @@ void MapLayer::update2(float delta)
 					{
 						log("skill!");
 						PLAYER->launchAnAttack(WEAPON, "skill", MAGICBAR, CHARACTER(i)._player, CHARACTER(i)._healthBar);
+					}
+					if (!CHARACTER(i)._player->_panel.getIsSurvive())  // AI死亡
+					{
+						CHARACTER(i)._player->setVisible(false);
+						CHARACTER(i)._player->setPosition(deathPosition);
+						log("player kill ai");
+						savePlayerKill();
 					}
 
 				}
@@ -973,11 +977,16 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 		{
 			PLAYER->setVisible(false);
 			PLAYER->setPosition(deathPosition);
+
+			log("player died fog");
+			saveData();
+			gameOver();
 		}
 	}
 	for (int i = 1; i < allCharacter.size(); ++i)
 	{
-		if (!_SafeArea->boundingBox().containsPoint(Vec2(CHARACTER(i)._player->getPosition())))
+		if (CHARACTER(i)._player->_panel.getIsSurvive() 
+			&& !_SafeArea->boundingBox().containsPoint(Vec2(CHARACTER(i)._player->getPosition())))
 		{
 			CHARACTER(i)._player->_panel.hit(MAP_FOG_DAMAGE_TO_PLAYER);
 			CHARACTER(i)._player->refreshHealthBar(AI_HEALTHBAR(i));
@@ -985,11 +994,23 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 			{
 				CHARACTER(i)._player->setVisible(false);
 				CHARACTER(i)._player->setPosition(deathPosition);
+
+				saveAIKill();
+				log("ai died fog");
+				if (_numOfPlayer == 1)
+				{
+					log("win bec ai died fog");
+					gameOver();
+				}
 			}
 		}
 	}
 }
-
+/****************************
+* Name ：MapLayer::updateAIMove
+* Summary ：全体ai移动
+* return ：
+****************************/
 void MapLayer::updateAIMove(float delta)
 {
 	for (int i = 1; i < allCharacter.size(); ++i) {
@@ -997,7 +1018,11 @@ void MapLayer::updateAIMove(float delta)
 
 	}
 }
-
+/****************************
+* Name ：MapLayer::updateAIMoveOne
+* Summary ：一个ai移动
+* return ：
+****************************/
 void MapLayer::updateAIMoveOne(Character& character)
 {
 	int i = character._player->_panel.getIfPlayAttackAnimation();
@@ -1111,13 +1136,18 @@ void MapLayer::updateAIMoveOne(Character& character)
 		}
 	}
 }
-
+/****************************
+* Name ：MapLayer::updateAIAttack
+* Summary ：ai攻击
+* return ：
+****************************/
 void MapLayer::updateAIAttack(float delta)
 {
 	for (int i = 1; i < allCharacter.size(); ++i) {
 		for (int j = 0; j < allCharacter.size(); ++j)
 		{
-			if (i != j && CHARACTER(i)._player->playerCollisionTest2(CHARACTER(j)._player, CHARACTER(i)._weapon))//修改这里 改成碰撞检测成功 现在暂时是一直发动攻击
+			if (i != j && CHARACTER(i)._player->playerCollisionTest2(CHARACTER(j)._player, CHARACTER(i)._weapon)
+				&& CHARACTER(j)._player->_panel.getIsSurvive())//修改这里 改成碰撞检测成功 现在暂时是一直发动攻击
 			{
 				//这里暂时写成始终攻击玩家
 				//后续改成所碰撞到的角色
@@ -1132,11 +1162,17 @@ void MapLayer::updateAIAttack(float delta)
 						{
 							CHARACTER(j)._player->setVisible(false);
 							CHARACTER(j)._player->setPosition(deathPosition);
+
+							saveAIKill();
+							log("ai kill ai");
 						}
 						else if (!CHARACTER(j)._player->_panel.getIsSurvive())   // 玩家 死亡
 						{
 							CHARACTER(j)._player->setVisible(false);
 							CHARACTER(j)._player->setPosition(deathPosition);
+							log("ai kill player");
+							saveData();
+							gameOver();
 						}
 					}
 					else {
@@ -1146,11 +1182,17 @@ void MapLayer::updateAIAttack(float delta)
 						{
 							CHARACTER(j)._player->setVisible(false);
 							CHARACTER(j)._player->setPosition(deathPosition);
+
+							saveAIKill();
+							log("ai kill ai");
 						}
 						else if (!CHARACTER(j)._player->_panel.getIsSurvive())   // 玩家 死亡
 						{
 							CHARACTER(j)._player->setVisible(false);
 							CHARACTER(j)._player->setPosition(deathPosition);
+							log("ai kill player");
+							saveData();
+							gameOver();
 						}
 					}
 					CHARACTER(i)._player->_panel.setPlayerState(ATTACK);
@@ -1172,7 +1214,11 @@ void MapLayer::updateAIAttack(float delta)
 		}
 	}
 }
-
+/****************************
+* Name ：
+* Summary ：
+* return ：
+****************************/
 void MapLayer::updateSetIfPlayAttackAnimation(float delta)
 {
 	
@@ -1186,5 +1232,63 @@ void MapLayer::updateSetIfPlayAttackAnimation(float delta)
 	}
 
 }
-
-//
+/****************************
+* Name ：MapLayer::getPlayerRank
+* Summary ：获取玩家排名
+* return ：玩家排名
+****************************/
+int MapLayer::getPlayerRank()
+{
+	return _numOfPlayer;
+}
+/****************************
+* Name ：MapLayer::getHitNum
+* Summary ：获取玩家击杀数
+* return ：玩家击杀数
+****************************/
+int MapLayer::getHitNum()
+{
+	return PLAYER->_panel.getHitnum();
+}
+/****************************
+* Name ：MapLayer::savePlayerKill
+* Summary ：记录玩家击杀
+* return ：
+****************************/
+void MapLayer::savePlayerKill()
+{
+	--_numOfPlayer;
+	PLAYER->_panel.addHitnum();
+	saveData();
+}
+/****************************
+* Name ：MapLayer::saveAIKill
+* Summary ：记录ai击杀
+* return ：
+****************************/
+void MapLayer::saveAIKill()
+{
+	--_numOfPlayer;
+	saveData();
+}
+/****************************
+* Name ：MapLayer::saveData
+* Summary ：保存数据
+* return ：
+****************************/
+void MapLayer::saveData()
+{
+	UserDefault::getInstance()->setIntegerForKey("PlayerRank", this->getPlayerRank());
+	UserDefault::getInstance()->setIntegerForKey("HitNum", this->getHitNum());
+}
+/****************************
+* Name ：MapLayer::gameOver
+* Summary ：游戏结束
+* return ：
+****************************/
+void MapLayer::gameOver()
+{
+	//CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+	auto GOS = GameOverScene::createScene();
+	Director::getInstance()->replaceScene(GOS);
+}
