@@ -319,12 +319,14 @@ bool Hero4::playerCollisionTest1(Player* target, Weapon* weapon)
 
 		if ((this->getPosition().x - targetX) < judgearea && (this->getPosition().x - targetX) >= 0) {           //·¶Î§ÅÐ¶¨
 			if (fabs(this->getPosition().y-30 - targetY) < targetHeight / 4 + 10) {
-
+				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
 				return true;
 			}
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
 			return false;
 		}
 		else {
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
 			return false;
 		}
 	}
