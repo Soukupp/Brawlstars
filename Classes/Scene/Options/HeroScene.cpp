@@ -114,7 +114,7 @@ bool HeroScene::init()
     auto* hero1LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
         "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero1Callback));
 
-    auto* hero1LabelText = LabelTTF::create("HERO1", "Maiandra GD", 35);
+    auto* hero1LabelText = LabelTTF::create("Winston", "Maiandra GD", 35);
     auto* hero1Label = MenuItemLabel::create(hero1LabelText,
         this, menu_selector(HeroScene::selectHero1Callback));
 
@@ -127,7 +127,7 @@ bool HeroScene::init()
     auto* hero2LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
         "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero2Callback));
 
-    auto* hero2LabelText = LabelTTF::create("HERO2", "Maiandra GD", 35);
+    auto* hero2LabelText = LabelTTF::create("Wrderly", "Maiandra GD", 35);
     auto* hero2Label = MenuItemLabel::create(hero2LabelText,
         this, menu_selector(HeroScene::selectHero2Callback));
 
@@ -140,7 +140,7 @@ bool HeroScene::init()
     auto* hero3LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
         "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero3Callback));
 
-    auto* hero3LabelText = LabelTTF::create("HERO3", "Maiandra GD", 35);
+    auto* hero3LabelText = LabelTTF::create("Pearl", "Maiandra GD", 35);
     auto* hero3Label = MenuItemLabel::create(hero3LabelText,
         this, menu_selector(HeroScene::selectHero3Callback));
     auto* hero3Button = Menu::create(hero3LabelImage, hero3Label, NULL);
@@ -152,7 +152,7 @@ bool HeroScene::init()
     auto* hero4LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
         "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero4Callback));
 
-    auto* hero4LabelText = LabelTTF::create("HERO4", "Maiandra GD", 35);
+    auto* hero4LabelText = LabelTTF::create("Soren", "Maiandra GD", 35);
     auto* hero4Label = MenuItemLabel::create(hero4LabelText,
         this, menu_selector(HeroScene::selectHero4Callback));
 
@@ -175,6 +175,14 @@ bool HeroScene::init()
     _confirmButton->setScale(0.5);
 
    /*=====================创建英雄选项标签结束======================*/
+
+    auto heroInformation = MenuItemImage::create("ui/button_info.png", "ui/button_info.png",
+        CC_CALLBACK_1(HeroScene::SelectHeroInformationCallback, this));
+    heroInformation->setPosition(Vec2(HERO_INFO_ITEM_POSITION_X, HERO_INFO_ITEM_POSITION_Y)); 
+    auto HeroInfoMenu = Menu::create(heroInformation, NULL);
+    HeroInfoMenu->setPosition(Vec2::ZERO);
+    this->addChild(HeroInfoMenu, 2);  // 增加英雄/怪兽数据Info
+
 
    //如果玩家已经选择了英雄，那么优先展示该英雄的动画
        _selectedHero = UserDefault::getInstance()->getIntegerForKey("selectedHero");
@@ -204,7 +212,7 @@ bool HeroScene::init()
 
 
 /****************************
-* Name ：heroBackCallback
+* Name ：HeroScene::heroBackCallback
 * Summary ：返回主菜单
 * return ：
 ****************************/
@@ -220,7 +228,7 @@ void HeroScene::heroBackCallback(cocos2d::Ref* pSender)
 
 
 /****************************
-* Name ：selectHero1Callback
+* Name ：HeroScene::selectHero1Callback
 * Summary ：进入hero1界面回调函数
 * return ：
 ****************************/
@@ -317,7 +325,7 @@ void HeroScene::selectHero4Callback(cocos2d::Ref* pSender)
 
 
 /****************************
-* Name ：selectHeroConfirmCallback
+* Name ：HeroScene::selectHeroConfirmCallback
 * Summary ：点击确认按钮的回调函数
 * return ：
 ****************************/
@@ -342,14 +350,33 @@ void HeroScene::selectHeroConfirmCallback(cocos2d::Ref* pSender)
     _confirmButton->setEnabled(false);
 }
 
+/****************************
+* Name ：HeroScene::SelectHeroInformationCallback
+* Summary ：点击确认按钮的回调函数
+* return ：
+****************************/
+void HeroScene::SelectHeroInformationCallback(cocos2d::Ref* pSender)
+{
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    auto HeroInformation = InformationPopLayer::create
+    ("background/HeroINfoBackground.png", Size(700, 490), 150);
+    HeroInformation->setPosition(0, -50);
+    HeroInformation->createButton("ui/button_close.png", "ui/button_close.png");
+    this->addChild(HeroInformation, 4);
+}
+
 
 /****************************
-* Name ：animate1
+* Name ：HeroScene::animate1
 * Summary ：hero1动画实现
 * return ：
 ****************************/
 void HeroScene::animate1()
 {
+    
     hero1 = Sprite::create("Character/Hero1/hero.png");
     hero1->setPosition(700, 350);
     addChild(hero1);
@@ -374,7 +401,7 @@ void HeroScene::animate1()
 
 
 /****************************
-* Name ：animate2
+* Name ：HeroScene::animate2
 * Summary ：hero2动画实现
 * return ：
 ****************************/
@@ -404,7 +431,7 @@ void HeroScene::animate2()
 
 
 /****************************
-* Name ：animate3
+* Name ：HeroScene::animate3
 * Summary ：hero3动画实现
 * return ：
 ****************************/
@@ -432,7 +459,7 @@ void HeroScene::animate3()
 
 
 /****************************
-* Name ：animate4
+* Name ：HeroScene::animate4
 * Summary ：hero4动画实现
 * return ：
 ****************************/

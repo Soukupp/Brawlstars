@@ -218,7 +218,7 @@ void InformationPopLayer::backgroundFinish() {
 	Size winSize = Director::getInstance()->getWinSize();
 	Point pCenter = Point(winSize.width / 2, winSize.height / 2);
 
-	getMenuButton()->setPosition(winSize.width / 3, winSize.height / 2);
+	getMenuButton()->setPosition(winSize.width / 3 + 10, winSize.height / 2 + 25);
 	this->addChild(getMenuButton());
 
 	float btnWidth = _dialogContentSize.width / (getMenuButton()->getChildrenCount() + 1);
