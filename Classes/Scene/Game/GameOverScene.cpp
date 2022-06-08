@@ -13,10 +13,10 @@ USING_NS_CC;
 ****************************/
 Scene* GameOverScene::createScene()
 {
-    auto GameOverScene = Scene::create();
-    auto GameOverLayer = GameOverScene::create();
-    GameOverScene->addChild(GameOverLayer);
-    return GameOverScene;
+    auto gameOverScene = Scene::create();
+    auto gameOverLayer = GameOverScene::create();
+    gameOverScene->addChild(gameOverLayer);
+    return gameOverScene;
 }
 
 /****************************
@@ -89,6 +89,44 @@ bool GameOverScene::init()
         this->addChild(label, 1);
     }
 
+    const Color4B labelTextColor(255, 255, 255, 255);//创建4B颜色
+    const Color4B labelOutlineColor(0, 0, 0, 255);//创建4B颜色
+
+    auto rankString = "YOUR POSITION : NO." + std::to_string(UserDefault::getInstance()->getIntegerForKey("PlayerRank"));
+    auto rankLabel = Label::createWithTTF(rankString, "fonts/Marker Felt.ttf", 72);
+    if (rankLabel == nullptr)
+    {
+        log("rankLabel false");
+    }
+    else
+    {
+        log("rankLabel true");
+        
+        rankLabel->setTextColor(labelTextColor);
+        rankLabel->enableOutline(labelOutlineColor,2);
+        rankLabel->setPosition(Vec2(origin.x + visibleSize.width / 2,
+            origin.y + visibleSize.height / 3 * 2));
+        this->addChild(rankLabel, 1);
+    }
+
+
+    auto hitString = "YOU KILLED : " + std::to_string(UserDefault::getInstance()->getIntegerForKey("HitNum")) + " ENEMY";
+    auto hitLabel = Label::createWithTTF(hitString, "fonts/Marker Felt.ttf", 60);
+    if (hitLabel == nullptr)
+    {
+        log("hitLabel false");
+    }
+    else
+    {
+        log("hitLabel true");
+ 
+        hitLabel->setTextColor(labelTextColor);
+        hitLabel->enableOutline(labelOutlineColor, 2);
+        hitLabel->setPosition(Vec2(origin.x + visibleSize.width / 2,
+            origin.y + visibleSize.height / 2));
+        this->addChild(hitLabel, 1);
+    }
+    
     return true;
 }
 

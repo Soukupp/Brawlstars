@@ -298,9 +298,9 @@ bool Hero2::playerCollisionTest1(Player* target, Weapon* weapon)
 
 	float judgearea = 83;
 
-	log("**this->getPosition().x        %f", this->getPosition().x);
-	log("**this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
-	log("**targetWidth / 2                      %f", targetWidth / 2);
+	//log("**this->getPosition().x        %f", this->getPosition().x);
+	//log("**this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
+	//log("**targetWidth / 2                      %f", targetWidth / 2);
 
 
 
@@ -317,8 +317,8 @@ bool Hero2::playerCollisionTest1(Player* target, Weapon* weapon)
 	}
 	if (_direct == -1) {
 
-		log("this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
-		log("targetWidth / 2                      %f", targetWidth / 2);
+		//log("this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
+		//log("targetWidth / 2                      %f", targetWidth / 2);
 
 		if ((this->getPosition().x - targetX) < judgearea && (this->getPosition().x - targetX) >= 0) {           //范围判定
 			if (fabs(this->getPosition().y - targetY) < targetHeight / 4 + 10) {
