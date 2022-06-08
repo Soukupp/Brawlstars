@@ -9,6 +9,7 @@
 #include "SimpleAudioEngine.h"
 #include "GameScene.h"
 #include "GameOverScene.h"
+#include "string"
 /**
 #include "Entity/Player/Hero/Hero1.h"
 #include "Entity/Player/Hero/Hero2.h"
@@ -44,6 +45,8 @@
 #define  AI_HEALTHBAR(a) (allCharacter[a]._healthBar)
 #define  AI_MAGICBAR(a) (allCharacter[a]._magicBar)
 #define  AI_LEVELTEXT(a) (allCharacter[a]._levelText)
+
+#define MAP_AI_NUMBER 9
 
 class MapLayer : public cocos2d::Layer
 {
