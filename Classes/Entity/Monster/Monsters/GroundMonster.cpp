@@ -4,6 +4,9 @@
 //修改 : 李元特
 //日期 : 2022-5-25
 
+//修改 : 王鹏
+//日期 : 2022-6-8
+
 #include "GroundMonster.h"
 
 USING_NS_CC;
@@ -39,7 +42,15 @@ void GroundMonster::initMonster(int maxHealthPoint, int attack, int defence, flo
 	this->setAnchorPoint(Vec2(0.5f, 0.5f));
 }
 
-
+/****************************
+* Name ：init
+* Summary ：怪兽初始化
+* return ：
+****************************/
+void GroundMonster::initMonster()
+{
+	_panel.init(3000, 0, 200, 0.0f, 0.0f, 0);
+}
 void GroundMonster::keepHealthBar(Slider* healthBar)
 {
 	healthBar->setPosition(GROUNDMONSTER_HEALTHBAR_POSITION);

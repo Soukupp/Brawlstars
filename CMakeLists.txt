@@ -61,7 +61,10 @@ list(APPEND GAME_SOURCE
 
      Classes/Entity/TheMonster.cpp
      Classes/Entity/Monster/Monster.cpp
-     Classes/Entity/Monster/GroundMonster.cpp
+     Classes/Entity/Monster/Monsters/GroundMonster.cpp
+     Classes/Entity/Monster/Monsters/DesertMonster.cpp
+     Classes/Entity/Monster/Monsters/WaterMonster.cpp
+
      Classes/Entity/Weapon/Weapon.cpp
 
      Classes/Scene/Game/GameScene.cpp
@@ -93,7 +96,10 @@ list(APPEND GAME_HEADER
 
      Classes/Entity/TheMonster.h
      Classes/Entity/Monster/Monster.h
-     Classes/Entity/Monster/GroundMonster.h
+     Classes/Entity/Monster/Monsters/GroundMonster.h
+     Classes/Entity/Monster/Monsters/DesertMonster.h
+     Classes/Entity/Monster/Monsters/WaterMonster.h
+
      Classes/Entity/Weapon/Weapon.h
 
      Classes/Scene/Game/GameScene.h

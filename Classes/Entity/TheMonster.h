@@ -5,6 +5,9 @@
 #define __THEMONSTER_H__
 
 #include "Entity/Monster/Monster.h"
+#include "Entity/Monster/Monsters/DesertMonster.h"
+#include "Entity/Monster/Monsters/GroundMonster.h"
+#include "Entity/Monster/Monsters/WaterMonster.h"
 #include "Entity/Weapon/Weapon.h"
 //#include "Entity/Monster/Monster.h"
 

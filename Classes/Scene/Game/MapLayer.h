@@ -18,7 +18,6 @@
 #include "Entity/Weapon/Weapon.h"
 /**/
 #include "Entity/Character.h"
-#include "Entity/Monster/Monster.h"
 #include "Entity/TheMonster.h"
 #include <vector>
 #include <string>
@@ -69,7 +68,9 @@ class MapLayer : public cocos2d::Layer
     Hero3* _player3;
     Hero4* _player4;
 
-    Monster* _monster;
+    DesertMonster* _monsterD;
+    GroundMonster* _monsterG;
+    WaterMonster* _monsterW;
 
     Weapon* _weapon;
     Slider* _healthBar;
@@ -138,7 +139,11 @@ public:
     void saveData();
     void gameOver();
 
-    void createMonster(Monster** monster, Slider** healthBar,
+    void setCharacterVisible(bool visible, Character& character);
+    void setCharacterPosition(Vec2 position, Character& character);
+
+    template<typename Monsters>
+    void createMonster(Monsters** monster, Slider** healthBar,
         Vec2& position, const std::string& filenameMonster);
 
     Animation* getAnimationByName(std::string fileName, float interval, int fileNum, int if_repeat = -1);
