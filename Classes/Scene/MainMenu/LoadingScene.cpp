@@ -69,7 +69,7 @@ bool LoadingScene::init()
 	/*=======================创建Logo结束=========================*/
 
 	/*=======================创建提示语开始========================*/
-	auto tip1 = LabelTTF::create("Moderate Games, Happy Life", "fonts/Lilita one.ttf", 36);
+	auto tip1 = LabelTTF::create("Moderate Games, Happy Life!", "fonts/Lilita one.ttf", 36);
 	tip1->enableShadow(LOADING_TIP1_SHADOW);
 	tip1->setColor(Color3B::WHITE);
 	tip1->setPosition(Vec2(LOADING_TIP1_POSITION));
