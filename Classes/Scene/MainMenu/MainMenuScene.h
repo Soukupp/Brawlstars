@@ -52,7 +52,7 @@ public:
 
     //菜单项回调函数
     void menuStartCallback(cocos2d::Ref* pSender);
-    void menuStoreCallback(cocos2d::Ref* pSender);
+    void menuMapCallback(cocos2d::Ref* pSender);
     void menuHerosCallback(cocos2d::Ref* pSender);
     void menuSettingsCallback(cocos2d::Ref* pSender);
 

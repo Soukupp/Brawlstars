@@ -211,17 +211,8 @@ bool MapLayer::init()
 		CHARACTER(i)._player->initNormalAction();
 		CHARACTER(i)._player->setScale(1.3f);
 	}
-	/**
-	createHero(&_player3, &_weapon, &_healthBar, &_magicBar, &_levelText,
-		Vec2(_ai7X, _ai7Y), "Character/Hero3/hero.png", "Character/Hero3/empty.png");
-	tempCharacter = { _player3,_weapon,_healthBar,_magicBar,_levelText };
-	allCharacter.push_back(tempCharacter);
 
-	createHero(&_player4, &_weapon, &_healthBar, &_magicBar, &_levelText,
-		Vec2(_ai7X, _ai7Y), "Character/Hero4/hero.png", "Character/Hero4/empty.png");
-	tempCharacter = { _player4,_weapon,_healthBar,_magicBar,_levelText };
-	allCharacter.push_back(tempCharacter);
-	/**/
+
 	this->schedule(schedule_selector(MapLayer::updateAIMove), 0.05f);
 	this->schedule(schedule_selector(MapLayer::updateAIAttack), 1.0f);
 
@@ -314,6 +305,8 @@ bool MapLayer::init()
 	_portal_Determination_4->setPosition(portal_Determination_4_Position["x"].asInt(), 
 		portal_Determination_4_Position["y"].asInt());
 	this->addChild(_portal_Determination_4, 1);
+
+	/*===================传送阵终点创建结束===================*/
 
 	setTouchEnabled(true);  // 开启触摸，必须继承于layer
 	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
@@ -620,20 +613,7 @@ void MapLayer::setPlayerPosition(Vec2 position)
 			return;
 		}
 	}
-	//if (tileGid_watermonster > 0) {
-	//	Value prop = _tileMap->getPropertiesForGID(tileGid_watermonster);
-	//	log("success2");
-	//	ValueMap propValueMap = prop.asValueMap();  // 报错
-	//	log("success3");
-	//	std::string collision = propValueMap["crash"].asString();
-	//	// 元素+true
-	//	if (collision == "true") { //碰撞检测成功
-	//		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sound/empty.wav");
-	//		return;
-	//	}
-	//}
-	//移动精灵
-	//
+
 	PLAYER->setPositionWithAll(position, WEAPON, HEALTHBAR, MAGICBAR, LEVELTEXT);
 
 	//滚动地图
@@ -981,8 +961,11 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 	}
 	for (int i = 1; i < allCharacter.size(); ++i)
 	{
-		CHARACTER(i)._player->_panel.hit(MAP_FOG_DAMAGE_TO_PLAYER);
-		CHARACTER(i)._player->refreshHealthBar(HEALTHBAR);
+		if (!_SafeArea->boundingBox().containsPoint(Vec2(CHARACTER(i)._player->getPosition())))
+		{
+			CHARACTER(i)._player->_panel.hit(MAP_FOG_DAMAGE_TO_PLAYER);
+			CHARACTER(i)._player->refreshHealthBar(AI_HEALTHBAR(i));
+		}
 	}
 }
 
@@ -1113,7 +1096,7 @@ void MapLayer::updateAIAttack(float delta)
 	for (int i = 1; i < allCharacter.size(); ++i) {
 		for (int j = 0; j < allCharacter.size(); ++j)
 		{
-			if (i!=j&&CHARACTER(i)._player->playerCollisionTest2(CHARACTER(j)._player, CHARACTER(i)._weapon))//修改这里 改成碰撞检测成功 现在暂时是一直发动攻击
+			if (i != j && CHARACTER(i)._player->playerCollisionTest2(CHARACTER(j)._player, CHARACTER(i)._weapon))//修改这里 改成碰撞检测成功 现在暂时是一直发动攻击
 			{
 				//这里暂时写成始终攻击玩家
 				//后续改成所碰撞到的角色
