@@ -15,18 +15,6 @@
 
 using namespace cocos2d::ui;
 
-/**
-#define MONSTER_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT 0.0f
-#define MONSTER_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT 1.0f
-#define MONSTER_WEAPON_ANCHOR_POSITION_Y 1.0f
-
-#define MONSTER_HEALTHBAR_POSITION Vec2(this->getPosition().x, this->getPosition().y + this->getContentSize().height / 2 + healthBar->getContentSize().height / 2)
-#define MONSTER_MAGICBAR_POSITION Vec2(this->getPosition().x, this->getPosition().y + this->getContentSize().height / 2)
-
-#define MONSTER_BLOOD_PERCENT 100 * float(_panel.getHealthPoint()) / float(_panel.getMaxHealthPoint())
-#define MONSTER_MAGIC_PERCENT 100 * float(_panel.getMagicPoint()) / float(_panel.getMaxMagicPoint())
-/**/
-
 /*==============================以下是你需要修改的宏定义=================================*/
 
 //血条相对怪兽的纵向位置
@@ -53,6 +41,7 @@ public:
     static Monster* create(const std::string& filename);
     virtual void initMonster(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
     virtual void initMonster(Panel& panel);
+    virtual void initMonster();
     Panel* getPanel();
 
     virtual void launchAnAttack(Player* enemy, Slider* enemyHealthBar);

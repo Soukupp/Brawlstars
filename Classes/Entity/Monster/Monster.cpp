@@ -35,6 +35,15 @@ void Monster::initMonster(Panel& panel)
 {
 	_panel.init(panel.getMaxHealthPoint(), panel.getAttack(), panel.getDefence(), panel.getSkillRate(), panel.getAttackRate());
 }
+/****************************
+* Name £∫Monster::init
+* Summary £∫π÷ ﬁ≥ı ºªØ
+* return £∫
+****************************/
+void Monster::initMonster()
+{
+
+}
 
 /****************************
 * Name £∫Monster::create
