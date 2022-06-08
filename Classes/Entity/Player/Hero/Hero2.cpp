@@ -307,17 +307,11 @@ bool Hero2::playerCollisionTest1(Player* target, Weapon* weapon)
 	if (_direct == 1) {
 		if ((targetX - this->getPosition().x) < judgearea && (this->getPosition().x - targetX) <= 0) {           //范围判定
 			if (fabs(this->getPosition().y - targetY) < targetHeight / 4 + 10) {
-				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
-				log("true++++++++++++++++++++++++++++++++++++++++++");
 				return true;
 			}
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-			log("true----------------------------------------");
 			return false;
 		}
 		else {
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-			log("true----------------------------------------");
 			return false;
 		}
 	}
@@ -329,16 +323,56 @@ bool Hero2::playerCollisionTest1(Player* target, Weapon* weapon)
 		if ((this->getPosition().x - targetX) < judgearea && (this->getPosition().x - targetX) >= 0) {           //范围判定
 			if (fabs(this->getPosition().y - targetY) < targetHeight / 4 + 10) {
 				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
-				log("true++++++++++++++++++++++++++++++++++++++++++");
 				return true;
 			}
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-			log("true----------------------------------------");
 			return false;
 		}
 		else {
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-			log("true----------------------------------------");
+			return false;
+		}
+	}
+}
+
+bool Hero2::playerCollisionTest2(Player* target, Weapon* weapon)
+{
+	float targetX = target->getPosition().x;                           //目标位置X
+	float targetY = target->getPosition().y;                           //目标位置Y
+	float targetWidth = target->_width;         //目标的宽度
+	float targetHeight = target->_height;        //目标的高度
+	float weaponWidth = weapon->getContentSize().width;                //攻击范围的宽度
+
+	float judgearea = 83;
+
+	//log("**this->getPosition().x        %f", this->getPosition().x);
+	//log("**this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
+	//log("**targetWidth / 2                      %f", targetWidth / 2);
+
+
+
+	if (_direct == 1) {
+		if ((targetX - this->getPosition().x) < judgearea && (this->getPosition().x - targetX) <= 0) {           //范围判定
+			if (fabs(this->getPosition().y - targetY) < targetHeight / 2) {
+				return true;
+			}
+			return false;
+		}
+		else {
+			return false;
+		}
+	}
+	if (_direct == -1) {
+
+	/*	log("this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
+		log("targetWidth / 2                      %f", targetWidth / 2);*/
+
+		if ((this->getPosition().x - targetX) < judgearea && (this->getPosition().x - targetX) >= 0) {           //范围判定
+			if (fabs(this->getPosition().y - 16 - targetY) < targetHeight / 2) {
+
+				return true;
+			}
+			return false;
+		}
+		else {
 			return false;
 		}
 	}

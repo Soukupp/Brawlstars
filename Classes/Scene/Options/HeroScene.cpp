@@ -440,15 +440,15 @@ void HeroScene::animate4()
 {
     log("true");
     hero4 = Sprite::create("Character/Hero4/hero.png");
-    hero4->setPosition(700, 350);
+    hero4->setPosition(680, 425);
     addChild(hero4);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
     m_frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Normal.plist", "Character/Hero4/hero4_Normal.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4.mp3");
     Vector<CCSpriteFrame*> hero4FrameArray;
-    for (int i = 1; i < 6; i++)
+    for (int i = 0; i < 8; i++)
     {
-        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("idle sheet-Sheet_0%d.png", i)->getCString());
+        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("Idle4 (%d).png", i)->getCString());
         hero4FrameArray.pushBack(frame);
         log("true");
     }

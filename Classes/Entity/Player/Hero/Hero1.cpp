@@ -302,6 +302,8 @@ bool Hero1::initSkillAction()
 
 bool Hero1::playerCollisionTest1(Player* target, Weapon* weapon)
 {
+	if (target == nullptr)
+		return false;
 	float targetX = target->getPosition().x;                           //目标位置X
 	float targetY = target->getPosition().y;                           //目标位置Y
 	float targetWidth = target->_width;         //目标的宽度
@@ -356,6 +358,51 @@ bool Hero1::playerCollisionTest1(Player* target, Weapon* weapon)
 		}
 	}
 }
+bool Hero1::playerCollisionTest2(Player* target, Weapon* weapon)
+{
+	float targetX = target->getPosition().x;                           //目标位置X
+	float targetY = target->getPosition().y;                           //目标位置Y
+	float targetWidth = target->_width;         //目标的宽度
+	float targetHeight = target->_height;        //目标的高度
+	float weaponWidth = weapon->getContentSize().width;                //攻击范围的宽度
+
+	float judgearea = 45;
+
+	//log("**this->getPosition().x        %f", this->getPosition().x);
+	//log("**this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
+	//log("**targetWidth / 2                      %f", targetWidth / 2);
+
+
+
+	if (_direct == 1) {
+		if ((targetX - this->getPosition().x) < judgearea && (this->getPosition().x - targetX) <= 0) {           //范围判定
+			if (fabs(this->getPosition().y - targetY) < targetHeight / 2) {
+				return true;
+			}
+			return false;
+		}
+		else {
+			return false;
+		}
+	}
+	if (_direct == -1) {
+
+		/*log("this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
+		log("targetWidth / 2                      %f", targetWidth / 2);*/
+
+		if ((this->getPosition().x - targetX) < judgearea && (this->getPosition().x - targetX) >= 0) {           //范围判定
+			if (fabs(this->getPosition().y - 16 - targetY) < targetHeight / 2) {
+
+				return true;
+			}
+			return false;
+		}
+		else {
+			return false;
+		}
+	}
+}
+
 
 int Hero1::getID()
 {

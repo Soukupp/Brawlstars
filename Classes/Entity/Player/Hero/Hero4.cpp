@@ -76,76 +76,19 @@ void Hero4::initPlayer()
 * Summary ：发动攻击 输入"attack" "skill" 调用
 * return ：
 ****************************/
-void Hero4::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar)
-{
-	if (attackType == "attack")
-	{
-		if (weapon->launchAnAttack(_panel.doAttack(), enemy))
-		{
-			restoreMagic();
-			enemy->refreshHealthBar(enemyHealthBar);
-		}
-
-		auto _animationAttack = CCAnimation::create();
-		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
-		for (int loop = 1; loop <= HERO4_YOU_ATTACK_FRAME; ++loop)
-		{
-			char szName[100] = { 0 };
-			sprintf(szName, "Character/Hero4/attack/attack%02d.png", loop);
-			_animationAttack->addSpriteFrameWithFile(szName);
-		}
-		_animationAttack->setDelayPerUnit(HERO4_YOU_ATTACK_TIME / HERO4_YOU_ATTACK_FRAME);
-		_animationAttack->setRestoreOriginalFrame(true);
-		auto _animateAttack = CCAnimate::create(_animationAttack);
-		//this->runAction(Hide::create());
-		this->setAnchorPoint(Vec2(0.5f - _direct * 0.1f, 0.5f));
-		this->runAction(_animateAttack);
-		this->setAnchorPoint(Vec2(0.5f, 0.5f));
-		//this->runAction(Show::create());
-	}
-	else if (attackType == "skill")
-	{
-		if (useMagic())
-		{
-			weapon->launchAnAttack(_panel.doSkillAttack(), enemy);
-			enemy->refreshHealthBar(enemyHealthBar);
-
-			auto _animationAttack = CCAnimation::create();
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
-			for (int loop = 1; loop <= HERO4_YOU_SKILL_FRAME; ++loop)
-			{
-				char szName[100] = { 0 };
-				sprintf(szName, "Character/Hero4/skill/skill%02d.png", loop);
-				_animationAttack->addSpriteFrameWithFile(szName);
-				if (loop % 3 == 0)
-					CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
-			}
-			_animationAttack->setDelayPerUnit(HERO4_YOU_SKILL_TIME / HERO4_YOU_SKILL_FRAME);
-			_animationAttack->setRestoreOriginalFrame(true);
-			auto _animateAttack = CCAnimate::create(_animationAttack);
-			//this->runAction(Hide::create());
-			this->setAnchorPoint(Vec2(0.5f - _direct * 0.1f, 0.5f));
-			this->runAction(_animateAttack);
-			this->setAnchorPoint(Vec2(0.5f, 0.5f));
-			//this->runAction(Show::create());
-		}
-	}
-	this->refreshMagicBar(magicBar);
-}
 
 /*===============================================================================*/
 /*=======================以下是UI、武器等的位置保持跟随==========================*/
 /*===============================================================================*/
 
-/****************************
-* Name ：keepHealthBar
-* Summary ：保持血条位置
-* return ：
-****************************/
-void Hero4::keepHealthBar(Slider* healthBar)
+void Hero4::keepHealthBar(Slider * healthBar)
 {
-	healthBar->setPosition(HERO4_HEALTHBAR_POSITION);
+	/*healthBar->setPosition(HERO3_HEALTHBAR_POSITION);*/
 	//_healthBar->setPosition(position);
+	float x = this->getPosition().x;
+	float y = this->getPosition().y + 30;
+
+	healthBar->setPosition(Vec2::Vec2(x, y));
 }
 /****************************
 * Name ：keepMagicBar
@@ -154,7 +97,11 @@ void Hero4::keepHealthBar(Slider* healthBar)
 ****************************/
 void Hero4::keepMagicBar(Slider* magicBar)
 {
-	magicBar->setPosition(HERO4_MAGICBAR_POSITION);
+	//magicBar->setPosition(HERO3_MAGICBAR_POSITION);
+	float x = this->getPosition().x;
+	float y = this->getPosition().y + 25;
+
+	magicBar->setPosition(Vec2::Vec2(x, y));
 }
 /****************************
 * Name ：keepWeapon
@@ -163,7 +110,7 @@ void Hero4::keepMagicBar(Slider* magicBar)
 ****************************/
 void Hero4::keepWeapon(Weapon* weapon)
 {
-	weapon->setPosition(HERO4_WEAPON_POSITION_X, HERO4_WEAPON_POSITION_Y);
+	weapon->setPosition(HERO3_WEAPON_POSITION_X, HERO3_WEAPON_POSITION_Y);
 }
 /****************************
 * Name ：keepLevelText
@@ -172,7 +119,11 @@ void Hero4::keepWeapon(Weapon* weapon)
 ****************************/
 void Hero4::keepLevelText(cocos2d::Label* levelText, Slider* bar)
 {
-	levelText->setPosition(HERO4_LEVELTEXT_POSITION);
+	//levelText->setPosition(HERO3_LEVELTEXT_POSITION);
+	float x = this->getPosition().x;
+	float y = this->getPosition().y + 35;
+
+	levelText->setPosition(Vec2::Vec2(x, y));
 }
 /****************************
 * Name ：runFlipxWithWeapon
@@ -230,8 +181,191 @@ void Hero4::upgrade(cocos2d::Label* levelText, Slider* bar)
 		this->keepLevelText(levelText, bar);
 	}
 }
+bool Hero4::initWalkAction()
+{
+	auto* frameCache = CCSpriteFrameCache::getInstance();
+	frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Run.plist", "Character/Hero4/hero4_Run.png");
+
+	Vector<CCSpriteFrame*> playerFrameArray;
+	for (int i = 0; i <8; i++)
+	{
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("Run-%d.png", i)->getCString());
+		playerFrameArray.pushBack(frame);
+	}
+
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+
+	this->setWalkAction(RepeatForever::create(Animate::create(animation)));
+
+	if (_walkAction != nullptr)
+		return true;
+	else
+		return false;
+
+
+}
+
+bool Hero4::initAttackAction()
+{
+	auto* frameCache = CCSpriteFrameCache::getInstance();
+	frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Attack.plist", "Character/Hero4/hero4_Attack.png");
+
+	Vector<CCSpriteFrame*> playerFrameArray;
+	for (int i = 0; i <4; i++)
+	{
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("Attack1-%d.png", i)->getCString());
+		playerFrameArray.pushBack(frame);
+	}
+
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+	animation->setLoops(1);
+	auto* animate = Animate::create(animation);
+	this->setAttackAction(animate);
+
+	if (_walkAction != nullptr)
+		return true;
+	else
+		return false;
+
+}
+
+
+bool Hero4::initNormalAction()
+{
+	auto* frameCache = CCSpriteFrameCache::getInstance();
+	frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Normal.plist", "Character/Hero4/hero4_Normal.png");
+
+	Vector<CCSpriteFrame*> playerFrameArray;
+	for (int i =0; i < 8; i++)
+	{
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("Idle4 (%d).png", i)->getCString());
+		playerFrameArray.pushBack(frame);
+	}
+
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+
+	this->setNormalAction(RepeatForever::create(Animate::create(animation)));
+
+	if (_walkAction != nullptr)
+		return true;
+	else
+		return false;
+}
+
+
+bool Hero4::initSkillAction()
+{
+	auto* frameCache = CCSpriteFrameCache::getInstance();
+	frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Skill.plist", "Character/Hero4/hero4_Skill.png");
+
+	Vector<CCSpriteFrame*> playerFrameArray;
+	for (int i = 0; i <4; i++)
+	{
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("Attack3-%d.png", i)->getCString());
+		playerFrameArray.pushBack(frame);
+	}
+
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+	animation->setLoops(1);
+	auto* animate = Animate::create(animation);
+	this->setSkillAction(animate);
+
+	if (_walkAction != nullptr)
+		return true;
+	else
+		return false;
+}
+
 
 int Hero4::getID()
 {
 	return ID;
+}
+
+bool Hero4::playerCollisionTest1(Player* target, Weapon* weapon)
+{
+	float targetX = target->getPosition().x;                           //目标位置X
+	float targetY = target->getPosition().y;                           //目标位置Y
+	float targetWidth = target->_width;         //目标的宽度
+	float targetHeight = target->_height;        //目标的高度
+	float weaponWidth = 50.0f;                //攻击范围的宽度
+
+	float judgearea = 80;
+
+	//log("**this->getPosition().x        %f", this->getPosition().x);
+	//log("**this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
+	//log("**targetWidth / 2                      %f", targetWidth / 2);
+
+
+
+	if (_direct == 1) {
+		if ((targetX - this->getPosition().x) < judgearea && (this->getPosition().x - targetX) <= 0) {           //范围判定
+			if (fabs(this->getPosition().y-30 - targetY) < targetHeight / 4 + 10) {
+				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
+				return true;
+			}
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
+			return false;
+		}
+		else {
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
+			return false;
+		}
+	}
+	if (_direct == -1) {
+
+		//log("this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
+		//log("targetWidth / 2                      %f", targetWidth / 2);
+
+		if ((this->getPosition().x - targetX) < judgearea && (this->getPosition().x - targetX) >= 0) {           //范围判定
+			if (fabs(this->getPosition().y-30 - targetY) < targetHeight / 4 + 10) {
+
+				return true;
+			}
+			return false;
+		}
+		else {
+			return false;
+		}
+	}
+}
+bool Hero4::playerCollisionTest2(Player* target, Weapon* weapon)
+{
+	float targetX = target->getPosition().x;                           //目标位置X
+	float targetY = target->getPosition().y;                           //目标位置Y
+	float targetWidth = target->_width;         //目标的宽度
+	float targetHeight = target->_height;        //目标的高度
+	float weaponWidth = weapon->getContentSize().width;                //攻击范围的宽度
+
+	float judgearea = 80;
+
+	log("**this->getPosition().x        %f", this->getPosition().x);
+	log("**this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
+	log("**targetWidth / 2                      %f", targetWidth / 2);
+
+
+
+	if (_direct == 1) {
+		if ((targetX - this->getPosition().x) < judgearea && (this->getPosition().x - targetX) <= 0) {           //范围判定
+			if (fabs(this->getPosition().y - targetY) < targetHeight / 2) {
+				return true;
+			}
+			return false;
+		}
+		else {
+			return false;
+		}
+	}
+	if (_direct ==-1){
+		if ((this->getPosition().x - targetX) < judgearea && (this->getPosition().x - targetX) >= 0) {           //范围判定
+			if (fabs(this->getPosition().y - 16 - targetY) < targetHeight / 2) {
+
+				return true;
+			}
+			return false;
+		}
+		else {
+			return false;
+		}
+	}
 }

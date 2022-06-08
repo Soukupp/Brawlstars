@@ -97,6 +97,7 @@ public:
     void refreshPlayer();
 
     virtual bool playerCollisionTest1(Player* target, Weapon* weapon);
+    virtual bool playerCollisionTest2(Player* target, Weapon* weapon);
 
     virtual void upgrade(cocos2d::Label* levelText, Slider* bar);
 

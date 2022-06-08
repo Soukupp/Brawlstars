@@ -82,29 +82,30 @@ void Player::launchAnAttack(Weapon* weapon, const std::string& attackType, Slide
 	//		//weapon->launchAnAttack(_panel.doSkillAttack(), enemy);
 	//	//}
 	//}
-
-	if (attackType == "attack")
-	{
-		if (this->playerCollisionTest1(enemy, weapon)) {
-			if (weapon->launchAnAttack(_panel.doAttack(), enemy))
-			{
-				//成功造成伤害才回能
-				restoreMagic();
-				enemy->refreshHealthBar(enemyHealthBar);
-			}
-		}
-	}
-	else if (attackType == "skill")
-	{
-		if (useMagic())
+	if (enemy != nullptr) {
+		if (attackType == "attack")
 		{
-			if (this->playerCollisionTest1(enemy, weapon)) {
-				weapon->launchAnAttack(_panel.doSkillAttack(), enemy);
-				enemy->refreshHealthBar(enemyHealthBar);
+			if (this->playerCollisionTest2(enemy, weapon)) {
+				if (weapon->launchAnAttack(_panel.doAttack(), enemy))
+				{
+					//成功造成伤害才回能
+					restoreMagic();
+					enemy->refreshHealthBar(enemyHealthBar);
+				}
 			}
 		}
+		else if (attackType == "skill")
+		{
+			if (useMagic())
+			{
+				if (this->playerCollisionTest2(enemy, weapon)) {
+					weapon->launchAnAttack(_panel.doSkillAttack(), enemy);
+					enemy->refreshHealthBar(enemyHealthBar);
+				}
+			}
+		}
+		this->refreshMagicBar(magicBar);
 	}
-	this->refreshMagicBar(magicBar);
 }
 /****************************
 * Name ：Player::hitPlayer
@@ -125,6 +126,9 @@ void Player::restoreMagic()
 {
 	//三次回满
 	_panel.restoreMagic(34);
+	if (this->magicIsFull())
+		return;
+
 }
 /****************************
 * Name ：Player::magicIsFull()const
@@ -316,4 +320,8 @@ bool Player::initSkillAction()
 int Player::getID()
 {
 	return ID;
+}
+bool Player::playerCollisionTest2(Player* target, Weapon* weapon)
+{
+	return true;
 }

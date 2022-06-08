@@ -24,6 +24,10 @@ struct Character
     int direct = 0;//需要保存原方向 所以static
     bool backDirectChanged = 0;
     int searchTimes = 0;
+
+    bool ifOpenUpdate = false;
+    bool isCollidedByPlayer= false;
+
 };
 
 #endif

@@ -97,6 +97,7 @@ public:
 	void upgrade(cocos2d::Label* levelText, Slider* bar);
 
 	bool playerCollisionTest1(Player* target, Weapon* weapon);
+	bool playerCollisionTest2(Player* target, Weapon* weapon);
 
 	const int _width = 26;
 	const int _height = 44;

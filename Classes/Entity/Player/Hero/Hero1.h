@@ -92,6 +92,7 @@ public:
 	bool initAttackAction();
 	bool initSkillAction();
 	bool playerCollisionTest1(Player* target, Weapon* weapon);
+	bool playerCollisionTest2(Player* target, Weapon* weapon);
 	const int _width = 26;
 	const int _height = 44;
 

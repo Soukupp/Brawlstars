@@ -127,6 +127,7 @@ public:
     void updateAIMove(float delta);
     void updateAIMoveOne(Character& character);
     void updateAIAttack(float delta);
+    void updateSetIfPlayAttackAnimation(float delta);
 
     void setPlayerPosition(cocos2d::Vec2 position);
     void setTreeOpacity(cocos2d::Vec2 position);
@@ -149,7 +150,6 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(MapLayer);
 
-    void updateSetIfPlayAttackAnimation(float delta);
 };
 
 #endif // __Map_Layer_H__
