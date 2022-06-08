@@ -25,8 +25,12 @@
 #define HERO_CONFIRM_BUTTON_POSITION_X  origin.x + visibleSize.width / 4*3
 #define HERO_CONFIRM_BUTTON_POSITION_Y  origin.y + visibleSize.height / 5
 
+#define HERO_INFO_ITEM_POSITION_X origin.x + visibleSize.width - heroInformation->getContentSize().width
+#define HERO_INFO_ITEM_POSITION_Y visibleSize.height - 1.2 * heroInformation->getContentSize().height / 2
+
 #include "cocos2d.h"
 #include "Scene/MainMenu/MainMenuScene.h"
+#include "Scene/Information/InformationPopLayer.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
@@ -44,6 +48,7 @@ public:
     void selectHero2Callback(cocos2d::Ref* pSender);
     void selectHero3Callback(cocos2d::Ref* pSender);
     void selectHero4Callback(cocos2d::Ref* pSender);
+    void SelectHeroInformationCallback(cocos2d::Ref* pSender);
 
     //确认按钮回调函数
     void selectHeroConfirmCallback(cocos2d::Ref* pSender);

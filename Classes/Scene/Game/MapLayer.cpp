@@ -883,34 +883,37 @@ void MapLayer::updateForPortal(float delta)
 
 	for (int i = 1; i < allCharacter.size(); ++i)
 	{
-		if (AI_PLAYER(i)->getPositionX() <= (_portal_1->getPositionX() + MAP_PORTAL_SIZE) &&
-			AI_PLAYER(i)->getPositionX() >= (_portal_1->getPositionX() - MAP_PORTAL_SIZE) &&
-			AI_PLAYER(i)->getPositionY() <= (_portal_1->getPositionY() + MAP_PORTAL_SIZE) &&
-			AI_PLAYER(i)->getPositionY() >= (_portal_1->getPositionY() - MAP_PORTAL_SIZE))
+		if (AI_PLAYER(i)->_panel.getIsSurvive()) 
 		{
-			AI_PLAYER(i)->setPosition(_portal_Determination_1->getPosition());
-		}
-		if (AI_PLAYER(i)->getPositionX() <= (_portal_2->getPositionX() + MAP_PORTAL_SIZE) &&
-			AI_PLAYER(i)->getPositionX() >= (_portal_2->getPositionX() - MAP_PORTAL_SIZE) &&
-			AI_PLAYER(i)->getPositionY() <= (_portal_2->getPositionY() + MAP_PORTAL_SIZE) &&
-			AI_PLAYER(i)->getPositionY() >= (_portal_2->getPositionY() - MAP_PORTAL_SIZE))
-		{
-			AI_PLAYER(i)->setPosition(_portal_Determination_2->getPosition());
-		}
-		if (AI_PLAYER(i)->getPositionX() <= (_portal_3->getPositionX() + MAP_PORTAL_SIZE) &&
-			AI_PLAYER(i)->getPositionX() >= (_portal_3->getPositionX() - MAP_PORTAL_SIZE) &&
-			AI_PLAYER(i)->getPositionY() <= (_portal_3->getPositionY() + MAP_PORTAL_SIZE) &&
-			AI_PLAYER(i)->getPositionY() >= (_portal_3->getPositionY() - MAP_PORTAL_SIZE))
-		{
-			AI_PLAYER(i)->setPosition(_portal_Determination_3->getPosition());
-		}
-		if (AI_PLAYER(i)->getPositionX() <= (_portal_4->getPositionX() + MAP_PORTAL_SIZE) &&
-			AI_PLAYER(i)->getPositionX() >= (_portal_4->getPositionX() - MAP_PORTAL_SIZE) &&
-			AI_PLAYER(i)->getPositionY() <= (_portal_4->getPositionY() + MAP_PORTAL_SIZE) &&
-			AI_PLAYER(i)->getPositionY() >= (_portal_4->getPositionY() - MAP_PORTAL_SIZE))
-		{
-			AI_PLAYER(i)->setPosition(_portal_Determination_4->getPosition());
-		}
+			if (AI_PLAYER(i)->getPositionX() <= (_portal_1->getPositionX() + MAP_PORTAL_SIZE) &&
+		  	AI_PLAYER(i)->getPositionX() >= (_portal_1->getPositionX() - MAP_PORTAL_SIZE) &&
+			  AI_PLAYER(i)->getPositionY() <= (_portal_1->getPositionY() + MAP_PORTAL_SIZE) &&
+		  	AI_PLAYER(i)->getPositionY() >= (_portal_1->getPositionY() - MAP_PORTAL_SIZE))
+		  {
+			  AI_PLAYER(i)->setPosition(_portal_Determination_1->getPosition());
+		  }
+		  if (AI_PLAYER(i)->getPositionX() <= (_portal_2->getPositionX() + MAP_PORTAL_SIZE) &&
+		  	AI_PLAYER(i)->getPositionX() >= (_portal_2->getPositionX() - MAP_PORTAL_SIZE) &&
+		  	AI_PLAYER(i)->getPositionY() <= (_portal_2->getPositionY() + MAP_PORTAL_SIZE) &&
+		  	AI_PLAYER(i)->getPositionY() >= (_portal_2->getPositionY() - MAP_PORTAL_SIZE))
+		  {
+		  	AI_PLAYER(i)->setPosition(_portal_Determination_2->getPosition());
+		  }
+	  	if (AI_PLAYER(i)->getPositionX() <= (_portal_3->getPositionX() + MAP_PORTAL_SIZE) &&
+		  	AI_PLAYER(i)->getPositionX() >= (_portal_3->getPositionX() - MAP_PORTAL_SIZE) &&
+		  	AI_PLAYER(i)->getPositionY() <= (_portal_3->getPositionY() + MAP_PORTAL_SIZE) &&
+		  	AI_PLAYER(i)->getPositionY() >= (_portal_3->getPositionY() - MAP_PORTAL_SIZE))
+		  {
+		  	AI_PLAYER(i)->setPosition(_portal_Determination_3->getPosition());
+		  }
+		  if (AI_PLAYER(i)->getPositionX() <= (_portal_4->getPositionX() + MAP_PORTAL_SIZE) &&
+		  	AI_PLAYER(i)->getPositionX() >= (_portal_4->getPositionX() - MAP_PORTAL_SIZE) &&
+		  	AI_PLAYER(i)->getPositionY() <= (_portal_4->getPositionY() + MAP_PORTAL_SIZE) &&
+		  	AI_PLAYER(i)->getPositionY() >= (_portal_4->getPositionY() - MAP_PORTAL_SIZE))
+		  {
+		  	AI_PLAYER(i)->setPosition(_portal_Determination_4->getPosition());
+      }
+    }
 	}
 }
 
@@ -1002,6 +1005,8 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 		}
 	}
 }
+
+
 /****************************
 * Name ：MapLayer::updateAIMove
 * Summary ：全体ai移动
@@ -1009,13 +1014,16 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 ****************************/
 void MapLayer::updateAIMove(float delta)
 {
-	for (int i = 1; i < allCharacter.size(); ++i) {
+	for (int i = 1; i < allCharacter.size(); ++i)
+  {
 		if (AI_PLAYER(i)->_panel.getIsSurvive())
 		{
 			updateAIMoveOne(CHARACTER(i));
 		}
 	}
 }
+
+
 /****************************
 * Name ：MapLayer::updateAIMoveOne
 * Summary ：一个ai移动
@@ -1025,7 +1033,8 @@ void MapLayer::updateAIMoveOne(Character& character)
 {
 	int i = character._player->_panel.getIfPlayAttackAnimation();
 
-	if (character._player->_panel.getIfPlayAttackAnimation() == false) {
+	if (character._player->_panel.getIfPlayAttackAnimation() == false)
+	{
 		if (character._player->_panel.getPlayerState() != MOVING)
 		{
 			character._player->stopAllActions();
@@ -1107,20 +1116,22 @@ void MapLayer::updateAIMoveOne(Character& character)
 			}
 			/*=====================以上由键盘操作改写=====================*/
 
-				/*=====================以下由位置移动改写=====================*/
-				// 读取坐标
+			/*=====================以下由位置移动改写=====================*/
+			// 读取坐标
 			Vec2 tileCoord = this->tileCoordFromPosition(playerPos);  //从像素点坐标转化为瓦片坐标
 
 			int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
 
 			// 碰撞检测
-			if (tileGid > 0) {
+			if (tileGid > 0)
+			{
 				Value prop = _tileMap->getPropertiesForGID(tileGid);
 				ValueMap propValueMap = prop.asValueMap();
 
 				std::string collision = propValueMap["Collidable"].asString();
 				// 元素+true
-				if (collision == "true") { //碰撞检测成功
+				if (collision == "true")
+				{ //碰撞检测成功
 					character.direct = rand() % 4;//当ai撞墙 每一帧有3/4概率转向 一秒有几十帧 则基本可以做到撞墙即转向
 					return;
 				}
@@ -1207,17 +1218,20 @@ void MapLayer::updateAIAttack(float delta)
 ****************************/
 void MapLayer::updateSetIfPlayAttackAnimation(float delta)
 {
-	
-	for (int i = 1; i < allCharacter.size() ; ++i) 
+	for (int i = 1; i < allCharacter.size(); ++i)
 	{
-		if (CHARACTER(i).ifOpenUpdate)
+		if (CHARACTER(i)._player->_panel.getIsSurvive())
 		{
-			CHARACTER(i).ifOpenUpdate = false;
-			AI_PLAYER(i)->_panel.setIfPlayAttackAnimation(false);
+			if (CHARACTER(i).ifOpenUpdate)
+			{
+				CHARACTER(i).ifOpenUpdate = false;
+				CHARACTER(i)._player->_panel.setIfPlayAttackAnimation(false);
+			}
 		}
 	}
-
 }
+
+
 /****************************
 * Name ：MapLayer::getPlayerRank
 * Summary ：获取玩家排名
@@ -1227,6 +1241,8 @@ int MapLayer::getPlayerRank()
 {
 	return _numOfPlayer;
 }
+
+
 /****************************
 * Name ：MapLayer::getHitNum
 * Summary ：获取玩家击杀数
@@ -1236,6 +1252,8 @@ int MapLayer::getHitNum()
 {
 	return PLAYER->_panel.getHitnum();
 }
+
+
 /****************************
 * Name ：MapLayer::savePlayerKill
 * Summary ：记录玩家击杀
@@ -1247,6 +1265,8 @@ void MapLayer::savePlayerKill()
 	PLAYER->_panel.addHitnum();
 	saveData();
 }
+
+
 /****************************
 * Name ：MapLayer::saveAIKill
 * Summary ：记录ai击杀
@@ -1257,6 +1277,8 @@ void MapLayer::saveAIKill()
 	--_numOfPlayer;
 	saveData();
 }
+
+
 /****************************
 * Name ：MapLayer::saveData
 * Summary ：保存数据
@@ -1267,6 +1289,8 @@ void MapLayer::saveData()
 	UserDefault::getInstance()->setIntegerForKey("PlayerRank", this->getPlayerRank());
 	UserDefault::getInstance()->setIntegerForKey("HitNum", this->getHitNum());
 }
+
+
 /****************************
 * Name ：MapLayer::gameOver
 * Summary ：游戏结束
