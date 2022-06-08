@@ -86,9 +86,9 @@ bool MapLayer::init()
 
 	srand((unsigned)time(0));
 
-	 
-    /*===================Tilemap相关设置开始==================*/
-	log("Map begin"); 
+
+	/*===================Tilemap相关设置开始==================*/
+	log("Map begin");
 
 	int selectedMap = UserDefault::getInstance()->getIntegerForKey("selectedMap");
 
@@ -108,7 +108,7 @@ bool MapLayer::init()
 	TMXObjectGroup* group = _tileMap->getObjectGroup("objects");
 	log("Get Player finished");
 	ValueMap spawnPoint = group->getObject("player");
-  
+
 	/*=====================创建角色开始========================*/
 
 
@@ -118,31 +118,31 @@ bool MapLayer::init()
 	int selectedHero = UserDefault::getInstance()->getIntegerForKey("selectedHero");   //selectedHero表示玩家选择的英雄
 
 	switch (selectedHero)     //由于测试的需要，不同英雄的createHero的参数统一为一套
-	{       
-	case 1:
-		createHero(&_player1, &_weapon, &_healthBar, &_magicBar, &_levelText,
-			Vec2(_playerX, _playerY), "Character/Hero1/hero.png", "Character/Hero1/emptyWeapon.png");
-		tempCharacter = { _player1,_weapon,_healthBar,_magicBar,_levelText };
-		allCharacter.push_back(tempCharacter);
-		break;
-	case 2:
-		createHero(&_player2, &_weapon, &_healthBar, &_magicBar, &_levelText,
-			Vec2(_playerX, _playerY), "Character/Hero2/hero.png", "Character/Hero2/emptyWeapon.png");
-		tempCharacter = { _player2,_weapon,_healthBar,_magicBar,_levelText };
-		allCharacter.push_back(tempCharacter);
-		break;
-	case 3:
-		createHero(&_player3, &_weapon, &_healthBar, &_magicBar, &_levelText,
-			Vec2(_playerX, _playerY), "Character/Hero3/hero.png", "Character/Hero3/emptyWeapon.png");
-		tempCharacter = { _player3,_weapon,_healthBar,_magicBar,_levelText };
-		allCharacter.push_back(tempCharacter);
-		break;
-	case 4:
-		createHero(&_player4, &_weapon, &_healthBar, &_magicBar, &_levelText,
-			Vec2(_playerX, _playerY), "Character/Hero4/hero.png", "Character/Hero4/emptyWeapon.png");
-		tempCharacter = { _player4,_weapon,_healthBar,_magicBar,_levelText };
-		allCharacter.push_back(tempCharacter);
-		break;
+	{
+		case 1:
+			createHero(&_player1, &_weapon, &_healthBar, &_magicBar, &_levelText,
+				Vec2(_playerX, _playerY), "Character/Hero1/hero.png", "Character/Hero1/emptyWeapon.png");
+			tempCharacter = { _player1,_weapon,_healthBar,_magicBar,_levelText };
+			allCharacter.push_back(tempCharacter);
+			break;
+		case 2:
+			createHero(&_player2, &_weapon, &_healthBar, &_magicBar, &_levelText,
+				Vec2(_playerX, _playerY), "Character/Hero2/hero.png", "Character/Hero2/emptyWeapon.png");
+			tempCharacter = { _player2,_weapon,_healthBar,_magicBar,_levelText };
+			allCharacter.push_back(tempCharacter);
+			break;
+		case 3:
+			createHero(&_player3, &_weapon, &_healthBar, &_magicBar, &_levelText,
+				Vec2(_playerX, _playerY), "Character/Hero3/hero.png", "Character/Hero3/emptyWeapon.png");
+			tempCharacter = { _player3,_weapon,_healthBar,_magicBar,_levelText };
+			allCharacter.push_back(tempCharacter);
+			break;
+		case 4:
+			createHero(&_player4, &_weapon, &_healthBar, &_magicBar, &_levelText,
+				Vec2(_playerX, _playerY), "Character/Hero4/hero.png", "Character/Hero4/emptyWeapon.png");
+			tempCharacter = { _player4,_weapon,_healthBar,_magicBar,_levelText };
+			allCharacter.push_back(tempCharacter);
+			break;
 	}
 
 	/*=====================创建角色结束========================*/
@@ -215,7 +215,7 @@ bool MapLayer::init()
 
 	this->schedule(schedule_selector(MapLayer::updateAIMove), 0.05f);
 	this->schedule(schedule_selector(MapLayer::updateAIAttack), 1.0f);
-	createMonster(&_monster,&_monsterHealthBar,
+	createMonster(&_monster, &_monsterHealthBar,
 		Vec2(_playerX, _playerY), "Character/Hero3/hero.png");
 
 	/*=====================测试对象创建结束=====================*/
@@ -237,7 +237,7 @@ bool MapLayer::init()
 	_collidable->setVisible(false);                  // 对应collidable图层是否可见
 	_tree = _tileMap->getLayer("tree");
 	//addChild(_tree, 3);
-  
+
 
 
 	/*===================传送阵起点创建开始===================*/
@@ -279,31 +279,34 @@ bool MapLayer::init()
 	ValueMap portal_Determination_4_Position = portalDeterminationGroup->getObject("portalDetermination4");
 
 	_portal_Determination_1 = Sprite::create("ui/scrapDetermination.png");
-	_portal_Determination_1->setPosition(portal_Determination_1_Position["x"].asInt(), 
+	_portal_Determination_1->setPosition(portal_Determination_1_Position["x"].asInt(),
 		portal_Determination_1_Position["y"].asInt());
 	this->addChild(_portal_Determination_1, 1);
 
 	_portal_Determination_2 = Sprite::create("ui/scrapDetermination.png");
-	_portal_Determination_2->setPosition(portal_Determination_2_Position["x"].asInt(), 
+	_portal_Determination_2->setPosition(portal_Determination_2_Position["x"].asInt(),
 		portal_Determination_2_Position["y"].asInt());
 	this->addChild(_portal_Determination_2, 1);
 
 	_portal_Determination_3 = Sprite::create("ui/scrapDetermination.png");
-	_portal_Determination_3->setPosition(portal_Determination_3_Position["x"].asInt(), 
+	_portal_Determination_3->setPosition(portal_Determination_3_Position["x"].asInt(),
 		portal_Determination_3_Position["y"].asInt());
 	this->addChild(_portal_Determination_3, 1);
 
 	_portal_Determination_4 = Sprite::create("ui/scrapDetermination.png");
-	_portal_Determination_4->setPosition(portal_Determination_4_Position["x"].asInt(), 
+	_portal_Determination_4->setPosition(portal_Determination_4_Position["x"].asInt(),
 		portal_Determination_4_Position["y"].asInt());
 	this->addChild(_portal_Determination_4, 1);
 
 	/*===================传送阵终点创建结束===================*/
 
 
+	//死亡点
+	TMXObjectGroup* deathPositionGroup = _tileMap->getObjectGroup("DiePoint");
+	ValueMap deathMapPosition = deathPositionGroup->getObject("diePoint");
+	deathPosition = Vec2(deathMapPosition["x"].asInt(), deathMapPosition["y"].asInt());
 
-
-
+	//log("dddddddddddddddddd %d %d", deathMapPosition["x"].asInt(), deathMapPosition["y"].asInt());
 
 
 	setTouchEnabled(true);  // 开启触摸，必须继承于layer
@@ -871,7 +874,7 @@ void MapLayer::updateForPortal(float delta)
 		PLAYER->setPosition(_portal_Determination_4->getPosition());
 	}
 
-	for (int i = 1; i < allCharacter.size(); ++i) 
+	for (int i = 1; i < allCharacter.size(); ++i)
 	{
 		if (CHARACTER(i)._player->getPositionX() <= (_portal_1->getPositionX() + MAP_PORTAL_SIZE) &&
 			CHARACTER(i)._player->getPositionX() >= (_portal_1->getPositionX() - MAP_PORTAL_SIZE) &&
@@ -950,6 +953,11 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 		//log("hurt!");
 		PLAYER->_panel.hit(MAP_FOG_DAMAGE_TO_PLAYER);
 		PLAYER->refreshHealthBar(HEALTHBAR);
+		if (!PLAYER->_panel.getIsSurvive())  // player死亡==》GameOverScene
+		{
+			PLAYER->setVisible(false);
+			PLAYER->setPosition(deathPosition);
+		}
 	}
 	for (int i = 1; i < allCharacter.size(); ++i)
 	{
@@ -957,6 +965,11 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 		{
 			CHARACTER(i)._player->_panel.hit(MAP_FOG_DAMAGE_TO_PLAYER);
 			CHARACTER(i)._player->refreshHealthBar(AI_HEALTHBAR(i));
+			if (!CHARACTER(i)._player->_panel.getIsSurvive())  // AI死亡
+			{
+				CHARACTER(i)._player->setVisible(false);
+				CHARACTER(i)._player->setPosition(deathPosition);
+			}
 		}
 	}
 }
@@ -1094,15 +1107,35 @@ void MapLayer::updateAIAttack(float delta)
 				//后续改成所碰撞到的角色
 
 				if (CHARACTER(i)._player->_panel.getPlayerState() != ATTACK && !CHARACTER(i)._player->_panel.getIfPlayAttackAnimation())
-				{
+				{         // i对j造成伤害
 					CHARACTER(i)._player->stopAllActions();
 					if (!CHARACTER(i)._player->magicIsFull()) {
 						CHARACTER(i)._player->runAction(CHARACTER(i)._player->getAttackAction());
 						CHARACTER(i)._player->launchAnAttack(CHARACTER(i)._weapon, "attack", CHARACTER(i)._magicBar, CHARACTER(j)._player, CHARACTER(j)._healthBar);
+						if (!CHARACTER(j)._player->_panel.getIsSurvive() && j != 0)   // AI 死亡
+						{
+							CHARACTER(j)._player->setVisible(false);
+							CHARACTER(j)._player->setPosition(deathPosition);
+						}
+						else if (!CHARACTER(j)._player->_panel.getIsSurvive())   // 玩家 死亡
+						{
+							CHARACTER(j)._player->setVisible(false);
+							CHARACTER(j)._player->setPosition(deathPosition);
+						}
 					}
 					else {
 						CHARACTER(i)._player->runAction(CHARACTER(i)._player->getSkillAction());
 						CHARACTER(i)._player->launchAnAttack(CHARACTER(i)._weapon, "skill", CHARACTER(i)._magicBar, CHARACTER(j)._player, CHARACTER(j)._healthBar);
+						if (!CHARACTER(j)._player->_panel.getIsSurvive() && j != 0)   // AI 死亡
+						{
+							CHARACTER(j)._player->setVisible(false);
+							CHARACTER(j)._player->setPosition(deathPosition);
+						}
+						else if (!CHARACTER(j)._player->_panel.getIsSurvive())   // 玩家 死亡
+						{
+							CHARACTER(j)._player->setVisible(false);
+							CHARACTER(j)._player->setPosition(deathPosition);
+						}
 					}
 					CHARACTER(i)._player->_panel.setPlayerState(ATTACK);
 					CHARACTER(i)._player->_panel.setIfPlayAttackAnimation(true);
@@ -1127,11 +1160,11 @@ void MapLayer::updateAIAttack(float delta)
 void MapLayer::updateSetIfPlayAttackAnimation(float delta)
 {
 	
-	for (int i = 1; i < allCharacter.size() ; ++i) {
-
+	for (int i = 1; i < allCharacter.size() ; ++i) 
+	{
 		if (CHARACTER(i).ifOpenUpdate)
 		{
-			CHARACTER(i).ifOpenUpdate == false;
+			CHARACTER(i).ifOpenUpdate = false;
 			CHARACTER(i)._player->_panel.setIfPlayAttackAnimation(false);
 		}
 	}

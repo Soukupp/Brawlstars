@@ -101,6 +101,8 @@ class MapLayer : public cocos2d::Layer
     Sprite* _portal_Determination_3;
     Sprite* _portal_Determination_4;
 
+    Vec2 deathPosition;
+
 
 
     std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap; // 判断鼠标有无释放
