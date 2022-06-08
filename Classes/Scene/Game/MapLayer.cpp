@@ -50,10 +50,10 @@ using namespace CocosDenshion;
 ****************************/
 Scene* MapLayer::createScene()
 {
-	auto MapLayer = Scene::create();
+	auto mapLayer = Scene::create();
 	auto layer = MapLayer::create();
-	MapLayer->addChild(layer);
-	return MapLayer;
+	mapLayer->addChild(layer);
+	return mapLayer;
 }
 
 
@@ -218,7 +218,18 @@ bool MapLayer::init()
 	/*createMonster(&_monster, &_monsterHealthBar,
 		Vec2(_playerX, _playerY), "Character/Hero3/hero.png");*/  // 系统显示有冲突，所以我注释掉了
 
+
 	/*=====================测试对象创建结束=====================*/
+
+	/*=======================创建怪兽开始=======================*/
+	createMonster(&_monster, &_healthBar, Vec2(_playerX, _playerY), "Character/Hero1/hero.png");
+	tempMonster = { _monster,_healthBar };
+	allMonster.push_back(tempMonster);
+
+	createMonster(&_monster, &_healthBar, Vec2(_playerX, _playerY), "Character/Hero3/hero.png");
+	tempMonster = { _monster,_healthBar };
+	allMonster.push_back(tempMonster);
+	/*=======================创建怪兽结束=======================*/
 
 	auto SkillButton = SkillButton::create("ui/buttonForSkill.png", "ui/buttonShadow.png", 30);
 
@@ -311,16 +322,10 @@ bool MapLayer::init()
 	setTouchEnabled(true);  // 开启触摸，必须继承于layer
 	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
 
-
-
-
-
-
     /*===================Tilemap相关设置结束===================*/
 
 
 	/*====================控制键盘开始==========================*/
-
 
 	PLAYER->runAction(PLAYER->getNormalAction());
 
@@ -348,6 +353,10 @@ bool MapLayer::init()
 	this->schedule(schedule_selector(MapLayer::updateForPortal));
 	/*=====================控制毒圈结束===========================*/
 
+	/*==================初始化结算数据开始========================*/
+	UserDefault::getInstance()->setIntegerForKey("PlayerRank", this->getPlayerRank());
+	UserDefault::getInstance()->setIntegerForKey("HitNum", this->getHitNum());
+	/*==================初始化结算数据结束========================*/
 
 	return true;
 }
@@ -482,7 +491,7 @@ void MapLayer::update(float delta)
 ****************************/
 bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 {
-	log("onTouchBegan"); //日志
+	//log("onTouchBegan"); //日志
 
 	//下面是针对近距离攻击英雄的示范，远距离英雄未实现
 	if (PLAYER->_panel.getIfPlayAttackAnimation()&&PLAYER->_panel.getPlayerState()!=MOVING) {        //保证不会实现连续攻击，不会实现一边位移一边攻击
@@ -550,7 +559,7 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 ****************************/
 void MapLayer::onTouchMoved(Touch* touch, Event* event)
 {
-	log("onTouchMoved"); //日志
+	//log("onTouchMoved"); //日志
 }
  
 
@@ -561,7 +570,7 @@ void MapLayer::onTouchMoved(Touch* touch, Event* event)
 ****************************/
 void MapLayer::onTouchEnded(Touch* touch, Event* event)
 {
-	log("onTouchEnded");  //日志 
+	//log("onTouchEnded");  //日志 
 
 
 
@@ -583,7 +592,7 @@ void MapLayer::onTouchEnded(Touch* touch, Event* event)
 		playerWeaponAngle = -0.5 * M_PI;
 	else
 		playerWeaponAngle = atan((touchLocation.y - playerPos.y) / (touchLocation.x - playerPos.x));
-	log("playerWeaponAngle is %lf", playerWeaponAngle);
+	//log("playerWeaponAngle is %lf", playerWeaponAngle);
 	/*=============================角度获取结束================================*/
 }
 
@@ -611,7 +620,7 @@ void MapLayer::setPlayerPosition(Vec2 position)
 		std::string collision = propValueMap["Collidable"].asString();
 		// 元素+true
 		if (collision == "true") { //碰撞检测成功
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/empty.wav");
+			//CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/empty.wav");
 			return;
 		}
 	}
@@ -709,6 +718,14 @@ void MapLayer::setViewpointCenter(Vec2 position)
 	this->setPosition(offset);
 
 }
+int MapLayer::getPlayerRank()
+{
+	return allCharacter.size();
+}
+int MapLayer::getHitNum()
+{
+	return PLAYER->_panel.getHitnum();
+}
 /****************************
 * Name ：MapLayer::createHero
 * Summary ：创建角色
@@ -786,7 +803,7 @@ void MapLayer::update2(float delta)
 	for (int i = 1; i < allCharacter.size(); i++) {
 		if (CHARACTER(i).isCollidedByPlayer) { j++; }
 	}
-	log("j = %d",j);
+	//log("j = %d",j);
 	int times = 0;
 	if (PLAYER->_panel.getIfPlayNormalAnimationInUpdate2()) {
 		for (int i = 1; i < allCharacter.size(); i++) {
@@ -811,7 +828,7 @@ void MapLayer::update2(float delta)
 			}
 		}
 		int i = ifattack;
-		log("ifattack:  %d", i);
+		//log("ifattack:  %d", i);
 
 		PLAYER->_panel.setPlayerState(NORMAL);
 		PLAYER->_panel.setIfPlayAttackAnimation(true);
@@ -843,7 +860,7 @@ void MapLayer::updateForPortal(float delta)
 		PLAYER->getPositionY() <= (_portal_1->getPositionY() + MAP_PORTAL_SIZE) &&
 		PLAYER->getPositionY() >= (_portal_1->getPositionY() - MAP_PORTAL_SIZE))
 	{
-		log("PLAYER Teleport One!");
+		//log("PLAYER Teleport One!");
 		PLAYER->setPosition(_portal_Determination_1->getPosition());
 	}
 
@@ -852,7 +869,7 @@ void MapLayer::updateForPortal(float delta)
 		PLAYER->getPositionY() <= (_portal_2->getPositionY() + MAP_PORTAL_SIZE) &&
 		PLAYER->getPositionY() >= (_portal_2->getPositionY() - MAP_PORTAL_SIZE))
 	{
-		log("PLAYER Teleport Two!");
+		//log("PLAYER Teleport Two!");
 		PLAYER->setPosition(_portal_Determination_2->getPosition());
 	}
 	if (PLAYER->getPositionX() <= (_portal_3->getPositionX() + MAP_PORTAL_SIZE) &&
@@ -860,7 +877,7 @@ void MapLayer::updateForPortal(float delta)
 		PLAYER->getPositionY() <= (_portal_3->getPositionY() + MAP_PORTAL_SIZE) &&
 		PLAYER->getPositionY() >= (_portal_3->getPositionY() - MAP_PORTAL_SIZE))
 	{
-		log("PLAYER Teleport Three!");
+		//log("PLAYER Teleport Three!");
 		PLAYER->setPosition(_portal_Determination_3->getPosition());
 	}
 
@@ -869,7 +886,7 @@ void MapLayer::updateForPortal(float delta)
 		PLAYER->getPositionY() <= (_portal_4->getPositionY() + MAP_PORTAL_SIZE) &&
 		PLAYER->getPositionY() >= (_portal_4->getPositionY() - MAP_PORTAL_SIZE))
 	{
-		log("PLAYER Teleport Four!");
+		//log("PLAYER Teleport Four!");
 		PLAYER->setPosition(_portal_Determination_4->getPosition());
 	}
 
