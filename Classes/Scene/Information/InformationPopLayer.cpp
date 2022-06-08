@@ -3,176 +3,187 @@
 
 #include "InformationPopLayer.h"
 
+
+/****************************
+* Name ：InformationPopLayer::InformationPopLayer
+* Summary ：构造函数初始化
+* return ：
+****************************/
 InformationPopLayer::InformationPopLayer()
 	:
-	m__pMenu(NULL)
-	, m_contentPadding(0)
-	, m_contentPaddingTop(0)
-	, m_callbackListener(NULL)
-	, m_callback(NULL)
-	, m__sfBackGround(NULL)
-	, m__s9BackGround(NULL)
-	, m__ltContentText(NULL)
-	, m__ltTitle(NULL)
+	_pMenu(NULL)
+	, _contentPadding(0)
+	, _contentPaddingTop(0)
+	, _callbackListener(NULL)
+	, _callback(NULL)
+	, _sfBackGround(NULL)
+	, _ltContentText(NULL)
+	, _ltTitle(NULL)
 {
 
 }
 
-InformationPopLayer::~InformationPopLayer() 
+
+/****************************
+* Name ：InformationPopLayer::~InformationPopLayer
+* Summary ：析构函数安全释放
+* return ：
+****************************/
+InformationPopLayer::~InformationPopLayer()
 {
-	CC_SAFE_RELEASE(m__pMenu);
-	CC_SAFE_RELEASE(m__sfBackGround);
-	CC_SAFE_RELEASE(m__s9BackGround);
-	CC_SAFE_RELEASE(m__ltContentText);
-	CC_SAFE_RELEASE(m__ltTitle);
+	CC_SAFE_RELEASE(_pMenu);
+	CC_SAFE_RELEASE(_sfBackGround);
+	CC_SAFE_RELEASE(_ltContentText);
+	CC_SAFE_RELEASE(_ltTitle);
 }
 
-bool InformationPopLayer::init() 
+
+/****************************
+* Name ：InformationPopLayer::init
+* Summary ：初始化
+* return ：是否初始化成功
+****************************/
+bool InformationPopLayer::init()
 {
 	if (!LayerColor::init()) {
 		return false;
 	}
 
 	Menu* menu = Menu::create();
-
 	menu->setPosition(CCPointZero);
-
 	setMenuButton(menu);
 
 	auto listener = EventListenerTouchOneByOne::create();
-
 	listener->setSwallowTouches(true);
 
 	listener->onTouchBegan = CC_CALLBACK_2(InformationPopLayer::onTouchBegan, this);
 
-	listener->onTouchMoved = CC_CALLBACK_2(InformationPopLayer::onTouchMoved, this);
-
-	listener->onTouchEnded = CC_CALLBACK_2(InformationPopLayer::onTouchEnded, this);
-
 	auto dispatcher = Director::getInstance()->getEventDispatcher();
-
 	dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
-	setColor(Color3B::GRAY);   //设置弹出层的颜色
-
-	setOpacity(128);  //设置弹出层的透明度
 
 	return true;
 
 }
 
-bool InformationPopLayer::onTouchBegan(Touch* touch, Event* event) 
+
+/****************************
+* Name ：InformationPopLayer::onTouchBegan
+* Summary ：判断有无touch
+* return ：有无触碰
+****************************/
+bool InformationPopLayer::onTouchBegan(Touch* touch, Event* event)
 {
 	return true;
 }
 
-void InformationPopLayer::onTouchMoved(Touch* touch, Event* event) 
-{
 
-}
-
-void InformationPopLayer::onTouchEnded(Touch* touch, Event* event) 
-{
-
-}
-
-InformationPopLayer* InformationPopLayer::create(const char* backgoundImage, Size dialogSize) 
+/****************************
+* Name ：InformationPopLayer::create
+* Summary ：创造弹窗对象
+* return ：InformationPopLayer*
+****************************/
+InformationPopLayer* InformationPopLayer::create(const char* backgoundImage, Size dialogSize, int opacity)
 {
 	InformationPopLayer* layer = InformationPopLayer::create();  //创建弹出对话框，指定背景图和其大小
-
-	//layer->setSpriteBackGround(Sprite::create(backgoundImage));
-
-	layer->setSprite9BackGround(Scale9Sprite::create(backgoundImage));
-
-	layer->m_dialogContentSize = dialogSize;
+	auto InformationBackground = Sprite::create(backgoundImage);
+	InformationBackground->setOpacity(opacity);
+	layer->setSpriteBackGround(InformationBackground);
+	layer->_dialogContentSize = dialogSize;
 
 	return layer;
-
 }
 
-void InformationPopLayer::setTitle(const char* title, int fontsize /*=20*/) 
+
+/****************************
+* Name ：InformationPopLayer::setTitle
+* Summary ：设置弹窗标题
+* return ：无
+****************************/
+void InformationPopLayer::setTitle(const char* title, const char* fontstyle, int font)
 {
-	LabelTTF* label = LabelTTF::create(title, "", fontsize);
-
-	label->setColor(Color3B::RED);
-
-	setLabelTitle(label);
-
+	LabelTTF* TitleLabel = LabelTTF::create(title, fontstyle, font);
+	TitleLabel->setColor(Color3B::WHITE); // 默认白色
+	this->setLabelTitle(TitleLabel);
 }
 
-void InformationPopLayer::setContentText(const char* text, int fontsize, int padding, int paddingTop) 
+
+/****************************
+* Name ：InformationPopLayer::setContentText
+* Summary ：设置弹窗内容
+* return ：无
+****************************/
+void InformationPopLayer::setContentText(const char* text, const char* fontstyle, int font, int padding, int paddingTop)
 {
-	LabelTTF* ltf = LabelTTF::create(text, "", fontsize);
+	LabelTTF* ContentTextLabel = LabelTTF::create(text, fontstyle, font);
+	ContentTextLabel->setColor(Color3B::BLUE);  // 默认蓝色
+	this->setLabelContentText(ContentTextLabel);
 
-	ltf->setColor(Color3B::BLUE);
-
-	setLabelContentText(ltf);
-
-	m_contentPadding = padding;
-
-	m_contentPaddingTop = paddingTop;
-
+	_contentPadding = padding;
+	_contentPaddingTop = paddingTop;
+	// 储存一下文本条件，后续会用到
 }
 
-void InformationPopLayer::setCallBackFunc(Ref* target, SEL_CallFuncN callfun) 
+
+/****************************
+* Name ：InformationPopLayer::setCallBackFunc
+* Summary ：储存回调状态
+* return ：无
+****************************/
+void InformationPopLayer::setCallBackFunc(Ref* target, SEL_CallFuncN callfun)
 {
-	m_callbackListener = target;
-
-	m_callback = callfun;
+	_callbackListener = target;
+	_callback = callfun;
 
 }
 
-bool InformationPopLayer::addButton(const char* normalImage, const char* selectedImage, const char* title, int tag) 
+
+/****************************
+* Name ：InformationPopLayer::createButton
+* Summary ：增加按钮
+* return ：无
+****************************/
+bool InformationPopLayer::createButton(const char* Image, const char* ImageSelected)
 {
 
 	Size winSize = Director::getInstance()->getWinSize();
+	Vec2 center_point = Vec2(winSize.width / 2, winSize.height / 2);
 
-	Point center_point = Point(winSize.width / 2, winSize.height / 2);
-
-	auto menuImage = MenuItemImage::create(
-
-		normalImage,
-
-		selectedImage,
-
+	auto menuImage = MenuItemImage::create(Image, ImageSelected,
 		CC_CALLBACK_1(InformationPopLayer::buttonCallBack, this));
-
-	menuImage->setTag(tag);
-
 	menuImage->setPosition(center_point);
 
 	Size menuSize = menuImage->getContentSize();
 
-	Label* labelttf = Label::createWithTTF(title, "fonts/arial.ttf", 15);
-
-	labelttf->setColor(Color3B(Color3B::BLACK));
-
-	labelttf->setPosition(Point(menuSize.width / 2, menuSize.height / 2));
-
-	menuImage->addChild(labelttf);
-
 	getMenuButton()->addChild(menuImage);
 
 	return true;
-
 }
 
+
+/****************************
+* Name ：InformationPopLayer::buttonCallBack
+* Summary ：按钮回调
+* return ：无
+****************************/
 void InformationPopLayer::buttonCallBack(Ref* pSender) {
 
 	Node* node = dynamic_cast<Node*>(pSender);
 
-	//log("[========PopAlertDialog:buttonCallBack=======]touch tag:%d",node->getTag());
-
-	if (m_callback && m_callbackListener) {
-
-		(m_callbackListener->*m_callback)(node);
-
+	if (_callback && _callbackListener)
+	{
+		(_callbackListener->*_callback)(node);
 	}
 
 	this->removeFromParentAndCleanup(true);
-
 }
 
+
+/****************************
+* Name ：InformationPopLayer::onEnter
+* Summary ：创建弹窗动画
+* return ：无
+****************************/
 void InformationPopLayer::onEnter() {
 
 	log("InformationPopLayer onEnter");
@@ -180,136 +191,75 @@ void InformationPopLayer::onEnter() {
 	LayerColor::onEnter();
 
 	Size winSize = Director::getInstance()->getWinSize();
-
 	Point center = Point(winSize.width / 2, winSize.height / 2);
 
-	//Sprite* background=getSpriteBackGround();
+	Sprite* ButtonBackground = getSpriteBackGround();
 
-	Scale9Sprite* background = getSprite9BackGround();
+	ButtonBackground->setContentSize(_dialogContentSize);//指定对话框大小
+	ButtonBackground->setPosition(Point(winSize.width / 2, winSize.height / 2));
+	this->addChild(ButtonBackground, 0);
 
-	background->setContentSize(m_dialogContentSize);//指定对话框大小
-
-	background->setPosition(Point(winSize.width / 2, winSize.height / 2));
-
-	this->addChild(background, 0, 0);
-
-	Action* popupActions = Sequence::create(ScaleTo::create(0.0, 0.0),
-
-		ScaleTo::create(0.06, 1.05),
-
-		ScaleTo::create(0.08, 0.95),
-
-		ScaleTo::create(0.08, 1.0),
-
+	Action* popupActions = Sequence::create(
+		ScaleTo::create(0.1f, 1.1f), ScaleTo::create(0.1f, 0.8f),
+		ScaleTo::create(0.1f, 1.2f), ScaleTo::create(0.1f, 1.1f),
 		CallFunc::create(CC_CALLBACK_0(InformationPopLayer::backgroundFinish, this))
-
-		, NULL);
-
-	background->runAction(popupActions);
+		, NULL);   // 弹窗效果
+	ButtonBackground->runAction(popupActions);
 
 }
 
+/****************************
+* Name ：InformationPopLayer::backgroundFinish
+* Summary ：创建背景
+* return ：无
+****************************/
 void InformationPopLayer::backgroundFinish() {
 
 	Size winSize = Director::getInstance()->getWinSize();
-
 	Point pCenter = Point(winSize.width / 2, winSize.height / 2);
 
+	getMenuButton()->setPosition(winSize.width / 3, winSize.height / 2);
 	this->addChild(getMenuButton());
 
-	float btnWidth = m_dialogContentSize.width / (getMenuButton()->getChildrenCount() + 1);
-
+	float btnWidth = _dialogContentSize.width / (getMenuButton()->getChildrenCount() + 1);
 	Vector<Node*> vector = getMenuButton()->getChildren();
-
 	Ref* pObj = NULL;
-
 	int i = 0;
 
-	for (Node* pObj : vector) {
-
+	for (Node* pObj : vector)
+	{
 		Node* node = dynamic_cast<Node*>(pObj);
-
-		node->setPosition(Point(winSize.width / 2 - m_dialogContentSize.width / 2 + btnWidth * (i + 1), winSize.height / 2 - m_dialogContentSize.height / 3));
-
+		node->setPosition(Point(winSize.width / 2 - _dialogContentSize.width / 2
+			+ btnWidth * (i + 1), winSize.height / 2 - _dialogContentSize.height / 3));
 		i++;
-
 	}
 
-	if (getLabelTitle()) {
-
-		getLabelTitle()->setPosition(ccpAdd(pCenter, ccp(0, m_dialogContentSize.height / 2 - 35.0f)));
-
+	if (getLabelTitle())
+	{
+		// Title位置
+		getLabelTitle()->setPosition(ccpAdd(pCenter, ccp(0, _dialogContentSize.height / 2 - 35.0f)));
 		this->addChild(getLabelTitle());
-
 	}
 
-	if (getLabelContentText()) {
-
-		CCLabelTTF* ltf = getLabelContentText();
-
-		ltf->setPosition(ccp(winSize.width / 2, winSize.height / 2));
-
-		ltf->setDimensions(CCSizeMake(m_dialogContentSize.width - m_contentPadding * 2, m_dialogContentSize.height - m_contentPaddingTop));
-
-		ltf->setHorizontalAlignment(kCCTextAlignmentLeft);
-
-		this->addChild(ltf);
-
+	if (getLabelContentText())
+	{
+		CCLabelTTF* ContentTextLabel = getLabelContentText();  // ContentText位置
+		ContentTextLabel->setPosition(ccp(winSize.width / 2, winSize.height / 2));
+		ContentTextLabel->setDimensions(CCSizeMake(_dialogContentSize.width - _contentPadding * 2, _dialogContentSize.height - _contentPaddingTop));
+		ContentTextLabel->setHorizontalAlignment(kCCTextAlignmentLeft);
+		this->addChild(ContentTextLabel);
 	}
 
 }
 
+
+/****************************
+* Name ：InformationPopLayer::onExit
+* Summary ：退出
+* return ：无
+****************************/
 void InformationPopLayer::onExit() {
 
-	log("PInformationPopLayer onExit");
-
+	log("InformationPopLayer onExit");
 	LayerColor::onExit();
-
 }
-
-////调用：
-//
-//MenuItemSprite* item1 = MenuItemSprite::create(btn_normal_sprite, btn_select_sprite, nullptr, CC_CALLBACK_1(InformationPopLayer::select_learn, this));
-//
-//
-////select_learn方法：
-//
-//void InformationPopLayer::select_learn(Object* pSender) {
-//
-//	log("you had select this button");
-//
-//	InformationPopLayer* popup = InformationPopLayer::create("background01.png", Size(800, 250));
-//
-//	popup->setTitle("Message");
-//
-//	popup->setContentText("This is a test message!", 20, 50, 150);
-//
-//	popup->setCallBackFunc(this, callfuncN_selector(InformationPopLayer::popButtonCallback));
-//
-//	popup->addButton("btnreturn.png", "btnreturn.png", "OK", 0);
-//
-//	popup->addButton("btnreturn.png", "btnreturn.png", "Cancel", 1);
-//
-//	this->addChild(popup);
-//
-//}
-//
-//void  InformationPopLayer::popButtonCallback(Node* pNode) {
-//
-//	log("[==========]button call back.tag %d", pNode->getTag());
-//
-//	if (pNode->getTag() == 0) {
-//
-//		Director::getInstance()->end();
-//
-//	}
-//
-//	if (pNode->getTag() == 1) {
-//
-//		//pNode->getParent()->removeFromParent();
-//
-//		pNode->removeFromParent();
-//
-//	}
-//
-//}

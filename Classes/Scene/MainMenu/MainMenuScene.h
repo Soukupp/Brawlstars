@@ -24,11 +24,18 @@
 
 #define MAINMENU_GAMENAME_LABEL_SIZE 96
 
+#define MAINMENU_INFORMATION_POSITION_X visibleSize.width / 2 + origin.x
+#define MAINMENU_INFORMATION_POSITION_Y visibleSize.height / 2 + origin.y
+
+#define MAINMENU_INFORMATION_CONTENT_TEXT_PADDING 32
+#define MAINMENU_INFORMATION_CONTENT_TEXT_PADDINGTOP 75
+
 #include "cocos2d.h"
 #include "Scene/Game/GameScene.h"
 #include "Scene/Options/StoreScene.h"
 #include "Scene/Options/HeroScene.h"
 #include "Scene/Settings/SettingsScene.h"
+#include "Scene/Information/InformationPopLayer.h"
 
 class MainMenuScene : public cocos2d::Scene
 {
@@ -42,12 +49,12 @@ public:
     //关闭主界面
     void menuCloseCallback(cocos2d::Ref* pSender);
     void menuInfoCallback(cocos2d::Ref* pSender);
+
     //菜单项回调函数
     void menuStartCallback(cocos2d::Ref* pSender);
     void menuStoreCallback(cocos2d::Ref* pSender);
     void menuHerosCallback(cocos2d::Ref* pSender);
     void menuSettingsCallback(cocos2d::Ref* pSender);
-
 
     //创建
     CREATE_FUNC(MainMenuScene);
