@@ -215,8 +215,8 @@ bool MapLayer::init()
 
 	this->schedule(schedule_selector(MapLayer::updateAIMove), 0.05f);
 	this->schedule(schedule_selector(MapLayer::updateAIAttack), 1.0f);
-	createMonster(&_monster, &_monsterHealthBar,
-		Vec2(_playerX, _playerY), "Character/Hero3/hero.png");
+	/*createMonster(&_monster, &_monsterHealthBar,
+		Vec2(_playerX, _playerY), "Character/Hero3/hero.png");*/  // 系统显示有冲突，所以我注释掉了
 
 	/*=====================测试对象创建结束=====================*/
 
@@ -300,14 +300,13 @@ bool MapLayer::init()
 
 	/*===================传送阵终点创建结束===================*/
 
-
-	//死亡点
+	/*=====================死亡点创建开始=====================*/
 	TMXObjectGroup* deathPositionGroup = _tileMap->getObjectGroup("DiePoint");
 	ValueMap deathMapPosition = deathPositionGroup->getObject("diePoint");
 	deathPosition = Vec2(deathMapPosition["x"].asInt(), deathMapPosition["y"].asInt());
 
 	//log("dddddddddddddddddd %d %d", deathMapPosition["x"].asInt(), deathMapPosition["y"].asInt());
-
+	/*=====================死亡点创建开始=====================*/
 
 	setTouchEnabled(true);  // 开启触摸，必须继承于layer
 	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
