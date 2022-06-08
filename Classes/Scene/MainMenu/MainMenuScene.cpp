@@ -23,6 +23,7 @@ static bool firstPlay = true;
     游戏名字 1层
     关闭按钮、提示按钮 2层
     主菜单 3层
+    粒子模型 5层
 
     *hero, *weapon （包括AI） 2层
     _SafeArea 100层
@@ -248,7 +249,7 @@ void MainMenuScene::menuInfoCallback(Ref* pSender)
 
 
 /****************************
-* Name ：menuStartCallback
+* Name ：MainMenuScene::menuStartCallback
 * Summary ：主菜单开始按钮回调
 * return ：
 ****************************/
@@ -261,7 +262,7 @@ void MainMenuScene::menuStartCallback(cocos2d::Ref* pSender)
 
 
 /****************************
-* Name ：menuStoreCallback
+* Name ：MainMenuScene::menuStoreCallback
 * Summary ：主菜单商店按钮回调
 * return ：
 ****************************/
@@ -274,7 +275,7 @@ void MainMenuScene::menuStoreCallback(cocos2d::Ref* pSender)
 
 
 /****************************
-* Name ：menuHerosCallback
+* Name ：MainMenuScene::menuHerosCallback
 * Summary ：主菜单人物按钮回调
 * return ：
 ****************************/
@@ -287,7 +288,7 @@ void MainMenuScene::menuHerosCallback(cocos2d::Ref* pSender)
 
 
 /****************************
-* Name ：menuSettingsCallback
+* Name ：MainMenuScene::menuSettingsCallback
 * Summary ：主菜单设置按钮回调
 * return ：
 ****************************/
@@ -299,6 +300,11 @@ void MainMenuScene::menuSettingsCallback(cocos2d::Ref* pSender)
 }
 
 
+/****************************
+* Name ：MainMenuScene::onEnterTransitionDidFinish()
+* Summary ：粒子模型
+* return ：
+****************************/
 void MainMenuScene::onEnterTransitionDidFinish()
 {
     Scene::onEnterTransitionDidFinish();

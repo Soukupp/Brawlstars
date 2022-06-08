@@ -15,7 +15,7 @@
 
 //修改 : 李元特
 //日期 : 2022-6-4
-//实现 : Fog
+//实现 : 烟雾（安全区）、传送阵
 
 //修改 : 王鹏
 //日期 : 2022-6-5
@@ -29,8 +29,6 @@
 	_portal, _portalDetermination 系列 1层
 	*hero, *weapon （包括AI） 2层
 	_SafeArea 100层
-
-
 
 
 */
@@ -94,7 +92,7 @@ bool MapLayer::init()
 
 	int selectedMap = UserDefault::getInstance()->getIntegerForKey("selectedMap");
 
-	switch (selectedMap)     //由于测试的需要，不同英雄的createHero的参数统一为一套
+	switch (selectedMap)
 	{
 		case 0:
 			_tileMap = TMXTiledMap::create("map/Mapupdated1.tmx");
@@ -104,13 +102,12 @@ bool MapLayer::init()
 			break;
 	}
 
-	  
 	addChild(_tileMap, 0, 100);
 	log("Map finished");
 
 	TMXObjectGroup* group = _tileMap->getObjectGroup("objects");
 	log("Get Player finished");
-	ValueMap spawnPoint = group->getObject("player");  // 新地图应该是player
+	ValueMap spawnPoint = group->getObject("player");
   
 	/*=====================创建角色开始========================*/
 
@@ -150,40 +147,59 @@ bool MapLayer::init()
 
 	/*=====================创建角色结束========================*/
 
-
+	/*====================创建安全区开始=======================*/
 	log("Safe Area added");
 	_SafeArea = Sprite::create("ui/SafeAreaLarge.png");
 	_SafeArea->setAnchorPoint(Vec2(0.5, 0.5));
 	_SafeArea->setPosition(MAP_SAFEAREA_POSITION);
 	//_SafeArea->setVisible(false);
 	this->addChild(_SafeArea, 100);
+	/*====================创建安全区结束=======================*/
 
 	/*=====================测试对象创建开始=====================*/
 
-	int _ai7X = _tileMap->getObjectGroup("AI")->getObject("ai7").at("x").asInt();
-	int _ai7Y = _tileMap->getObjectGroup("AI")->getObject("ai7").at("y").asInt();
-	//createHero(&_player4, &_weapon4, &_healthBar4, &_magicBar4, &_levelText4,
-	//	Vec2(_ai7X, _ai7Y), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
+	int _aiX[MAP_AI_NUMBER + 1];
+	int _aiY[MAP_AI_NUMBER + 1];
 
-	createHero(&_player1, &_weapon, &_healthBar, &_magicBar, &_levelText,
-		Vec2(_ai7X, _ai7Y), "Character/Hero1/hero.png", "Character/Hero1/empty.png");
-	tempCharacter = { _player1,_weapon,_healthBar,_magicBar,_levelText };
-	allCharacter.push_back(tempCharacter);
+	memset(_aiX, 0, sizeof(_aiX));
+	memset(_aiY, 0, sizeof(_aiY));
 
-	createHero(&_player2, &_weapon, &_healthBar, &_magicBar, &_levelText,
-		Vec2(_ai7X, _ai7Y), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
-	tempCharacter = { _player2,_weapon,_healthBar,_magicBar,_levelText };
-	allCharacter.push_back(tempCharacter);
+	for (int i = 1; i <= MAP_AI_NUMBER; ++i)
+	{
+		std::string aiNumber = "ai" + std::to_string(i);
+		_aiX[i] = _tileMap->getObjectGroup("AI")->getObject(aiNumber).at("x").asInt();
+		_aiY[i] = _tileMap->getObjectGroup("AI")->getObject(aiNumber).at("y").asInt();
+	}
 
-	createHero(&_player1, &_weapon, &_healthBar, &_magicBar, &_levelText,
-		Vec2(_ai7X, _ai7Y), "Character/Hero1/hero.png", "Character/Hero1/empty.png");
-	tempCharacter = { _player1,_weapon,_healthBar,_magicBar,_levelText };
-	allCharacter.push_back(tempCharacter);
+	for (int i = 1; i <= MAP_AI_NUMBER; ++i)
+	{
+		if (i % 4 == 1) {
+			createHero(&_player1, &_weapon, &_healthBar, &_magicBar, &_levelText,
+				Vec2(_aiX[i], _aiY[i]), "Character/Hero1/hero.png", "Character/Hero1/empty.png");
+			tempCharacter = { _player1,_weapon,_healthBar,_magicBar,_levelText };
+			allCharacter.push_back(tempCharacter);
+		}
+		if (i % 4 == 2) {
+			createHero(&_player2, &_weapon, &_healthBar, &_magicBar, &_levelText,
+				Vec2(_aiX[i], _aiY[i]), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
+			tempCharacter = { _player1,_weapon,_healthBar,_magicBar,_levelText };
+			allCharacter.push_back(tempCharacter);
+		}
+		if (i % 4 == 3) {
+			createHero(&_player3, &_weapon, &_healthBar, &_magicBar, &_levelText,
+				Vec2(_aiX[i], _aiY[i]), "Character/Hero3/hero.png", "Character/Hero3/empty.png");
+			tempCharacter = { _player3,_weapon,_healthBar,_magicBar,_levelText };
+			allCharacter.push_back(tempCharacter);
+		}
+		if (i % 4 == 0) {
+			createHero(&_player4, &_weapon, &_healthBar, &_magicBar, &_levelText,
+				Vec2(_aiX[i], _aiY[i]), "Character/Hero4/hero.png", "Character/Hero4/empty.png");
+			tempCharacter = { _player4,_weapon,_healthBar,_magicBar,_levelText };
+			allCharacter.push_back(tempCharacter);
+		}
 
-	createHero(&_player2, &_weapon, &_healthBar, &_magicBar, &_levelText,
-		Vec2(_ai7X, _ai7Y), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
-	tempCharacter = { _player2,_weapon,_healthBar,_magicBar,_levelText };
-	allCharacter.push_back(tempCharacter);
+	}
+
 
 	for (int i = 1; i < allCharacter.size(); ++i)
 	{
@@ -576,33 +592,6 @@ void MapLayer::onTouchEnded(Touch* touch, Event* event)
 		playerWeaponAngle = atan((touchLocation.y - playerPos.y) / (touchLocation.x - playerPos.x));
 	log("playerWeaponAngle is %lf", playerWeaponAngle);
 	/*=============================角度获取结束================================*/
-
-
-
-
-	/*=======================通过鼠标控制人物走动开始===========================*
-	if (abs(diff.x) > abs(diff.y)) {
-		if (diff.x > 0) {
-			playerPos.x += _tileMap->getTileSize().width;
-			//_player->runAction(FlipX::create(false));
-			_player->runFlipxWithWeapon(false, _weapon);
-		}
-		else {
-			playerPos.x -= _tileMap->getTileSize().width;
-			//_player->runAction(FlipX::create(true));
-			_player->runFlipxWithWeapon(true, _weapon);
-		}
-	}
-	else {
-		if (diff.y > 0) {
-			playerPos.y += _tileMap->getTileSize().height;
-		}
-		else {
-			playerPos.y -= _tileMap->getTileSize().height;
-		}
-	}
-	this->setPlayerPosition(playerPos);   // 判断可不可以走动
-	/*=======================通过鼠标控制人物走动结束===========================*/
 }
 
 
@@ -783,46 +772,6 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 	(**hero).setPositionWithAll(position, *weapon, *healthBar, *magicBar, *levelText);
 }
 
-/**
-template<typename Hero>
-void createCharacter(Character** character,
-	Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon)
-{
-	*hero = Hero::create(filenameHero);
-	(**hero).initPlayer();
-	addChild(*hero, 3, 200);
-
-	*weapon = Weapon::create(filenameWeapon);
-	(**weapon).setAnchorPoint(
-		Vec2((**hero)._weaponAnchorPositionX,
-			(**hero)._weaponAnchorPositionY));
-	addChild(*weapon, 2, 200);
-
-	*healthBar = Slider::create();
-	(**healthBar).setPercent((**hero).getHealthPercent());
-	(**healthBar).loadBarTexture("/ui/playerHealthbarFrame.png");
-	(**healthBar).loadProgressBarTexture("/ui/playerHealthbarBlock.png");
-	(**healthBar).setScale(0.5);
-	(**healthBar).setAnchorPoint(Vec2(0.5f, 0.0f));
-	addChild(*healthBar);
-
-	*magicBar = Slider::create();
-	(**magicBar).setPercent((**hero).getMagicPercent());
-	(**magicBar).loadBarTexture("/ui/playerMagicbarFrame.png");
-	(**magicBar).loadProgressBarTexture("/ui/playerMagicbarBlock.png");
-	(**magicBar).setScale(0.5);
-	(**magicBar).setAnchorPoint(Vec2(0.5f, 0.0f));
-	addChild(*magicBar);
-	*levelText = Label::createWithTTF("Lv.0", "fonts/Marker Felt.ttf", 24);
-	(**levelText).setString((std::string("Lv.") + std::to_string((**hero)._level)));
-	(**levelText).setScale(0.5);
-	(**levelText).setAnchorPoint(Vec2(0.5f, 0.0f));
-	addChild(*levelText);
-
-	(**hero).setPositionWithAll(position, *weapon, *healthBar, *magicBar, *levelText);
-}
-/**/
-
 void MapLayer::createMonster(Monster** monster, Slider** healthBar,
 	Vec2& position, const std::string& filenameMonster)
 {
@@ -908,11 +857,7 @@ void MapLayer::update2(float delta)
 ****************************/
 void MapLayer::updateForPortal(float delta)
 {
-	//log("turned in");
-	/*float x = PLAYER->getPositionX();
-	log("player-position-x %lf", x);
-	float y = PLAYER->getPositionY();
-	log("player-position-y %lf", y);*/
+
 	if (PLAYER->getPositionX()<= (_portal_1->getPositionX() + MAP_PORTAL_SIZE)&&
 		PLAYER->getPositionX() >= (_portal_1->getPositionX() - MAP_PORTAL_SIZE)&&
 		PLAYER->getPositionY() <= (_portal_1->getPositionY() + MAP_PORTAL_SIZE) &&
@@ -946,6 +891,30 @@ void MapLayer::updateForPortal(float delta)
 	{
 		log("PLAYER Teleport Four!");
 		PLAYER->setPosition(_portal_Determination_4->getPosition());
+	}
+
+	for (int i = 1; i < allCharacter.size(); ++i) 
+	{
+		if (CHARACTER(i)._player->getPositionX() <= (_portal_1->getPositionX() + MAP_PORTAL_SIZE) &&
+			CHARACTER(i)._player->getPositionX() >= (_portal_1->getPositionX() - MAP_PORTAL_SIZE) &&
+			CHARACTER(i)._player->getPositionY() <= (_portal_1->getPositionY() + MAP_PORTAL_SIZE) &&
+			CHARACTER(i)._player->getPositionY() >= (_portal_1->getPositionY() - MAP_PORTAL_SIZE))
+			CHARACTER(i)._player->setPosition(_portal_Determination_1->getPosition());
+		if (CHARACTER(i)._player->getPositionX() <= (_portal_2->getPositionX() + MAP_PORTAL_SIZE) &&
+			CHARACTER(i)._player->getPositionX() >= (_portal_2->getPositionX() - MAP_PORTAL_SIZE) &&
+			CHARACTER(i)._player->getPositionY() <= (_portal_2->getPositionY() + MAP_PORTAL_SIZE) &&
+			CHARACTER(i)._player->getPositionY() >= (_portal_2->getPositionY() - MAP_PORTAL_SIZE))
+			CHARACTER(i)._player->setPosition(_portal_Determination_2->getPosition());
+		if (CHARACTER(i)._player->getPositionX() <= (_portal_3->getPositionX() + MAP_PORTAL_SIZE) &&
+			CHARACTER(i)._player->getPositionX() >= (_portal_3->getPositionX() - MAP_PORTAL_SIZE) &&
+			CHARACTER(i)._player->getPositionY() <= (_portal_3->getPositionY() + MAP_PORTAL_SIZE) &&
+			CHARACTER(i)._player->getPositionY() >= (_portal_3->getPositionY() - MAP_PORTAL_SIZE))
+			CHARACTER(i)._player->setPosition(_portal_Determination_3->getPosition());
+		if (CHARACTER(i)._player->getPositionX() <= (_portal_4->getPositionX() + MAP_PORTAL_SIZE) &&
+			CHARACTER(i)._player->getPositionX() >= (_portal_4->getPositionX() - MAP_PORTAL_SIZE) &&
+			CHARACTER(i)._player->getPositionY() <= (_portal_4->getPositionY() + MAP_PORTAL_SIZE) &&
+			CHARACTER(i)._player->getPositionY() >= (_portal_4->getPositionY() - MAP_PORTAL_SIZE))
+			CHARACTER(i)._player->setPosition(_portal_Determination_4->getPosition());
 	}
 
 }
@@ -1003,6 +972,11 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 		//log("hurt!");
 		PLAYER->_panel.hit(MAP_FOG_DAMAGE_TO_PLAYER);
 		PLAYER->refreshHealthBar(HEALTHBAR);
+	}
+	for (int i = 1; i < allCharacter.size(); ++i)
+	{
+		CHARACTER(i)._player->_panel.hit(MAP_FOG_DAMAGE_TO_PLAYER);
+		CHARACTER(i)._player->refreshHealthBar(HEALTHBAR);
 	}
 }
 
@@ -1163,7 +1137,6 @@ void MapLayer::updateAIAttack(float delta)
 					else if (CHARACTER(i)._player->getID() == 4)
 						this->scheduleOnce(schedule_selector(MapLayer::updateSetIfPlayAttackAnimation), 0.33f);
 				}
-
 
 			}
 			//碰撞检测失败则不做操作
