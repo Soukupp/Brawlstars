@@ -21,7 +21,6 @@
 //日期 : 2022-6-5
 //实现 : ai
 
-
 /*
 	对象所在层数：
 	_tileMap 0层
@@ -33,15 +32,10 @@
 
 */
 
-
-
-
 #include "MapLayer.h"
-
 
 //USING_NS_CC;
 using namespace CocosDenshion;
-
 
 /****************************
 * Name ：MapLayer::createScene
@@ -56,7 +50,6 @@ Scene* MapLayer::createScene()
 	return mapLayer;
 }
 
-
 /****************************
 * Name ：problemLoading
 * Summary ：错误打印
@@ -67,7 +60,6 @@ static void problemLoading(const char* filename)
 	printf("Error while loading: %s\n", filename);
 	printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in MapLayer.cpp\n");
 }
-
 
 /****************************
 * Name ：MapLayer::init
@@ -174,31 +166,31 @@ bool MapLayer::init()
 	for (int i = 1; i <= MAP_AI_NUMBER; ++i)
 	{
 		int tempHeroType = rand() % 4;
+		//log("tempHeroType %d", tempHeroType);
 		if (tempHeroType == 1) {
 			createHero(&_player1, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_aiX[i], _aiY[i]), "Character/Hero1/hero.png", "Character/Hero1/empty.png");
+				Vec2(_aiX[i], _aiY[i]), "Character/Hero1/hero.png", "Character/Hero1/emptyWeapon.png");
 			tempCharacter = { _player1,_weapon,_healthBar,_magicBar,_levelText };
 			allCharacter.push_back(tempCharacter);
 		}
 		if (tempHeroType == 2) {
 			createHero(&_player2, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_aiX[i], _aiY[i]), "Character/Hero2/hero.png", "Character/Hero2/empty.png");
-			tempCharacter = { _player1,_weapon,_healthBar,_magicBar,_levelText };
+				Vec2(_aiX[i], _aiY[i]), "Character/Hero2/hero.png", "Character/Hero2/emptyWeapon.png");
+			tempCharacter = { _player2,_weapon,_healthBar,_magicBar,_levelText };
 			allCharacter.push_back(tempCharacter);
 		}
 		if (tempHeroType == 3) {
 			createHero(&_player3, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_aiX[i], _aiY[i]), "Character/Hero3/hero.png", "Character/Hero3/empty.png");
+				Vec2(_aiX[i], _aiY[i]), "Character/Hero3/hero.png", "Character/Hero3/emptyWeapon.png");
 			tempCharacter = { _player3,_weapon,_healthBar,_magicBar,_levelText };
 			allCharacter.push_back(tempCharacter);
 		}
 		if (tempHeroType == 0) {
 			createHero(&_player4, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_aiX[i], _aiY[i]), "Character/Hero4/hero.png", "Character/Hero4/empty.png");
+				Vec2(_aiX[i], _aiY[i]), "Character/Hero4/hero.png", "Character/Hero4/emptyWeapon.png");
 			tempCharacter = { _player4,_weapon,_healthBar,_magicBar,_levelText };
 			allCharacter.push_back(tempCharacter);
 		}
-
 	}
 
 
@@ -221,18 +213,61 @@ bool MapLayer::init()
 
 	/*======================AI创建结束=========================*/
 
-	/*=======================创建怪兽开始=======================*/
-	createMonster(&_monsterG, &_healthBar, Vec2(_playerX, _playerY), "Monster/groundmonster.png");
-	tempMonster = { _monsterG,_healthBar };
-	allMonster.push_back(tempMonster);
+	/*=======================创建怪兽开始=======================*
 
-	createMonster(&_monsterD, &_healthBar, Vec2(_playerX, _playerY), "Monster/desertmonster.png");
-	tempMonster = { _monsterD,_healthBar };
-	allMonster.push_back(tempMonster);
+	int _gmX[4];
+	int _gmY[4];
 
-	createMonster(&_monsterW, &_healthBar, Vec2(_playerX, _playerY), "Monster/watermonster.png");
-	tempMonster = { _monsterW,_healthBar };
-	allMonster.push_back(tempMonster);
+	int _wmX[4];
+	int _wmY[4];
+
+	int _dmX[4];
+	int _dmY[4];
+
+	memset(_gmX, 0, sizeof(_gmX));
+	memset(_gmY, 0, sizeof(_gmY));
+	memset(_wmX, 0, sizeof(_wmX));
+	memset(_wmY, 0, sizeof(_wmY));
+	memset(_dmX, 0, sizeof(_dmX));
+	memset(_dmY, 0, sizeof(_dmY));
+
+	for (int i = 0; i < 4; ++i)
+	{
+		std::string moNumber = "gm" + std::to_string(i);
+		_gmX[i] = _tileMap->getObjectGroup("groundmonster")->getObject(moNumber).at("x").asInt();
+		_gmY[i] = _tileMap->getObjectGroup("groundmonster")->getObject(moNumber).at("y").asInt();
+	}
+	for (int i = 0; i < 4; ++i)
+	{
+		std::string moNumber = "wm" + std::to_string(i);
+		_wmX[i] = _tileMap->getObjectGroup("watermonster")->getObject(moNumber).at("x").asInt();
+		_wmY[i] = _tileMap->getObjectGroup("watermonster")->getObject(moNumber).at("y").asInt();
+	}
+	for (int i = 0; i < 4; ++i)
+	{
+		std::string moNumber = "dm" + std::to_string(i);
+		_dmX[i] = _tileMap->getObjectGroup("desertmonster")->getObject(moNumber).at("x").asInt();
+		_dmY[i] = _tileMap->getObjectGroup("desertmonster")->getObject(moNumber).at("y").asInt();
+	}
+
+	for (int i = 0; i < 4; ++i)
+	{
+		createMonster(&_monsterG, &_healthBar, Vec2(_gmX[i], _gmY[i]), "Monster/groundmonster.png");
+		tempMonster = { _monsterG,_healthBar };
+		allMonster.push_back(tempMonster);
+	}
+	for (int i = 0; i < 4; ++i)
+	{
+		createMonster(&_monsterW, &_healthBar, Vec2(_wmX[i], _wmY[i]), "Monster/watermonster.png");
+		tempMonster = { _monsterW,_healthBar };
+		allMonster.push_back(tempMonster);
+	}
+	for (int i = 0; i < 4; ++i)
+	{
+		createMonster(&_monsterD, &_healthBar, Vec2(_dmX[i], _dmY[i]), "Monster/desertmonster.png");
+		tempMonster = { _monsterD,_healthBar };
+		allMonster.push_back(tempMonster);
+	}
 	/*=======================创建怪兽结束=======================*/
 
 	auto SkillButton = SkillButton::create("ui/buttonForSkill.png", "ui/buttonShadow.png", 30);
@@ -266,10 +301,6 @@ bool MapLayer::init()
 	_portal_1 = Sprite::create("ui/scrap.png");
 	_portal_1->setPosition(portal_1_Position["x"].asInt(), portal_1_Position["y"].asInt());
 	this->addChild(_portal_1, 1);
-	/*double x=_portal_1->getPositionX();
-	log("p-1-position-x %lf", x);
-	double y = _portal_1->getPositionY();
-	log("p-1-position-y %lf", y);*/
 
 	_portal_2 = Sprite::create("ui/scrap.png");
 	_portal_2->setPosition(portal_2_Position["x"].asInt(), portal_2_Position["y"].asInt());
@@ -490,9 +521,11 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 	//log("onTouchBegan"); //日志
 
 	//下面是针对近距离攻击英雄的示范，远距离英雄未实现
-	if (PLAYER->_panel.getIfPlayAttackAnimation()&&PLAYER->_panel.getPlayerState()!=MOVING) {        //保证不会实现连续攻击，不会实现一边位移一边攻击
-		
-		if (PLAYER->_panel.getPlayerState() != ATTACK) {
+	if (PLAYER->_panel.getIfPlayAttackAnimation() && PLAYER->_panel.getPlayerState() != MOVING)
+	{        //保证不会实现连续攻击，不会实现一边位移一边攻击
+
+		if (PLAYER->_panel.getPlayerState() != ATTACK)
+		{
 			PLAYER->_panel.setPlayerState(ATTACK);
 			PLAYER->stopAllActions();
 			//PLAYER->runAction(PLAYER->getAttackAction());
@@ -510,7 +543,7 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 			}
 			PLAYER->_panel.setIfPlayAttackAnimation(false);                                          //保证不会实现连续攻击
 																									  //检测攻击时是否碰到PLAYER1
-		    //此处仅为测试，_player1是哪个对象需要后期遍历算法得到（目前_player1为ai7）
+			//此处仅为测试，_player1是哪个对象需要后期遍历算法得到（目前_player1为ai7）
 
 			PLAYER->_panel.setIfPlayNormalAnimationInUpdate2(true);                                  //使得可以调用update2
 			bool ifAttackEnemy = false;
@@ -524,18 +557,19 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 				}
 			}
 			if (PLAYER->magicIsFull())
-			if (PLAYER->magicIsFull() && !ifAttackEnemy)
 			{
-				PLAYER->useMagic();
-				PLAYER->launchAnAttack(WEAPON, "skill", MAGICBAR, nullptr, nullptr);
-				
+				if (PLAYER->magicIsFull() && !ifAttackEnemy)
+				{
+					PLAYER->useMagic();
+					PLAYER->launchAnAttack(WEAPON, "skill", MAGICBAR, nullptr, nullptr);
+				}
 			}
 
-			if(PLAYER->getID()==1)
+			if (PLAYER->getID() == 1)
 				this->scheduleOnce(schedule_selector(MapLayer::update2), 0.5f);  //1.0f是动画时间，1.0f后进入update2执行一次normal动画
-			else if(PLAYER->getID() == 2)
+			else if (PLAYER->getID() == 2)
 				this->scheduleOnce(schedule_selector(MapLayer::update2), 0.8f);
-			else if(PLAYER->getID() == 3)
+			else if (PLAYER->getID() == 3)
 				this->scheduleOnce(schedule_selector(MapLayer::update2), 0.67f);
 			else if (PLAYER->getID() == 4)
 				this->scheduleOnce(schedule_selector(MapLayer::update2), 0.33f);
@@ -714,7 +748,7 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 {
 	*hero = Hero::create(filenameHero);
 	(**hero).initPlayer();
-	addChild(*hero, 3, 200);
+	addChild(*hero, 2, 200);
 
 	*weapon = Weapon::create(filenameWeapon);
 	(**weapon).setAnchorPoint(
@@ -783,14 +817,21 @@ void MapLayer::update2(float delta)
 {
 	bool ifattack = false;
 	int j = 0;
-	for (int i = 1; i < allCharacter.size(); i++) {
-		if (CHARACTER(i).isCollidedByPlayer) { j++; }
+	for (int i = 1; i < allCharacter.size(); i++) 
+	{
+		if (CHARACTER(i).isCollidedByPlayer) 
+		{ 
+			j++; 
+		}
 	}
 	//log("j = %d",j);
 	int times = 0;
-	if (PLAYER->_panel.getIfPlayNormalAnimationInUpdate2()) {
-		for (int i = 1; i < allCharacter.size(); i++) {
-			if (CHARACTER(i).isCollidedByPlayer) {
+	if (PLAYER->_panel.getIfPlayNormalAnimationInUpdate2()) 
+	{
+		for (int i = 1; i < allCharacter.size(); i++) 
+		{
+			if (CHARACTER(i).isCollidedByPlayer) 
+			{
 				ifattack = true;
 				times++;
 				if (PLAYER->_panel.getIfPlayNormalAnimationInUpdate2())
@@ -807,11 +848,10 @@ void MapLayer::update2(float delta)
 					}
 					if (!AI_PLAYER(i)->_panel.getIsSurvive())  // AI死亡
 					{
+						PLAYER->upgrade(LEVELTEXT, HEALTHBAR);
 						setCharacterVisible(false, CHARACTER(i));
 						setCharacterPosition(deathPosition, CHARACTER(i));
-						//CHARACTER(i)._player->setVisible(false);
-						//CHARACTER(i)._player->setPosition(deathPosition);
-						log("player kill ai");
+						log("player kill ai %d",i);
 						savePlayerKill();
 					}
 
@@ -824,7 +864,8 @@ void MapLayer::update2(float delta)
 
 		PLAYER->_panel.setPlayerState(NORMAL);
 		PLAYER->_panel.setIfPlayAttackAnimation(true);
-		if (PLAYER->_panel.getPlayerState() == NORMAL) {
+		if (PLAYER->_panel.getPlayerState() == NORMAL)
+		{
 			PLAYER->stopAllActions();
 			PLAYER->runAction(PLAYER->getNormalAction());
 		}
@@ -836,6 +877,8 @@ void MapLayer::update2(float delta)
 			CHARACTER(i).isCollidedByPlayer = false;
 		}
 	}
+
+
 }
 
 
@@ -962,7 +1005,8 @@ void MapLayer::updateOutsideFog(float delta)
 ****************************/
 void MapLayer::updatePlayerHurtByFog(float delta)
 {
-	if (!_SafeArea->boundingBox().containsPoint(Vec2(PLAYER->getPosition())))
+	if (PLAYER->_panel.getIsSurvive()
+		&& !_SafeArea->boundingBox().containsPoint(Vec2(PLAYER->getPosition())))
 	{
 		//扣血
 		//log("hurt!");
@@ -995,7 +1039,7 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 				//CHARACTER(i)._player->setPosition(deathPosition);
 
 				saveAIKill();//毒圈毒死ai被视为ai击杀
-				log("ai died fog");
+				log("ai %d died fog",i);
 				if (_numOfPlayer == 1)
 				{
 					log("win bec ai died fog");
@@ -1014,12 +1058,24 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 ****************************/
 void MapLayer::updateAIMove(float delta)
 {
+	int tempNum = 1;
 	for (int i = 1; i < allCharacter.size(); ++i)
-  {
+	{
 		if (AI_PLAYER(i)->_panel.getIsSurvive())
 		{
 			updateAIMoveOne(CHARACTER(i));
+			++tempNum;
 		}
+		else
+		{
+			setCharacterVisible(false, CHARACTER(i));
+			setCharacterPosition(deathPosition, CHARACTER(i));
+		}
+	}
+	_numOfPlayer = tempNum;
+	if (_numOfPlayer == 1)
+	{
+		gameOver();
 	}
 }
 
@@ -1153,10 +1209,8 @@ void MapLayer::updateAIAttack(float delta)
 		for (int passive = 0; passive < allCharacter.size(); ++passive)
 		{
 			if (active != passive && CHARACTER(passive)._player->_panel.getIsSurvive() 
-				&& AI_PLAYER(active)->playerCollisionTest2(CHARACTER(passive)._player, AI_WEAPON(active)))//修改这里 改成碰撞检测成功 现在暂时是一直发动攻击
+				&& AI_PLAYER(active)->playerCollisionTest2(CHARACTER(passive)._player, AI_WEAPON(active)))
 			{
-				//这里暂时写成始终攻击玩家
-				//后续改成所碰撞到的角色
 
 				if (AI_PLAYER(active)->_panel.getPlayerState() != ATTACK && !AI_PLAYER(active)->_panel.getIfPlayAttackAnimation())
 				{         // active对passive造成伤害
@@ -1173,14 +1227,16 @@ void MapLayer::updateAIAttack(float delta)
 
 					if (!CHARACTER(passive)._player->_panel.getIsSurvive() && passive != 0)   // AI 死亡
 					{
+						AI_PLAYER(active)->upgrade(AI_LEVELTEXT(active),AI_HEALTHBAR(active));
 						setCharacterVisible(false, CHARACTER(passive));
 						setCharacterPosition(deathPosition, CHARACTER(passive));
 						saveAIKill();
-						log("ai kill ai");
+						log("ai %d kill ai %d",active,passive);
 					}
 					else if (!CHARACTER(passive)._player->_panel.getIsSurvive())   // 玩家 死亡
 					{
-						log("ai kill player");
+						AI_PLAYER(active)->upgrade(AI_LEVELTEXT(active), AI_HEALTHBAR(active));
+						log("ai %d kill player",active);
 						saveData();
 						gameOver();
 					}
@@ -1301,7 +1357,29 @@ void MapLayer::gameOver()
 	auto GOS = GameOverScene::createScene();
 	Director::getInstance()->replaceScene(GOS);
 }
-
+/****************************
+* Name ：MapLayer::getAttackBuff
+* Summary ：获取攻击增益
+* return ：
+****************************/
+void MapLayer::getAttackBuff(Character& character)
+{
+	character._player->_panel.setAttack(20 + character._player->_panel.getAttack());
+}
+/****************************
+* Name ：MapLayer::getDefenceBuff
+* Summary ：获取防御增益
+* return ：
+****************************/
+void MapLayer::getDefenceBuff(Character& character)
+{
+	character._player->_panel.setDefence(20 + character._player->_panel.getDefence());
+}
+/****************************
+* Name ：MapLayer::setCharacterVisible
+* Summary ：角色不可见
+* return ：
+****************************/
 void MapLayer::setCharacterVisible(bool visible, Character& character)
 {
 	character._player->setVisible(visible);
@@ -1309,6 +1387,11 @@ void MapLayer::setCharacterVisible(bool visible, Character& character)
 	character._magicBar->setVisible(visible);
 	character._levelText->setVisible(visible);
 }
+/****************************
+* Name ：MapLayer::setCharacterPosition
+* Summary ：角色移动
+* return ：
+****************************/
 void MapLayer::setCharacterPosition(Vec2 position, Character& character)
 {
 	character._player->setPositionWithAll(position,

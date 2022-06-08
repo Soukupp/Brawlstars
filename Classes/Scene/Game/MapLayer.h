@@ -10,6 +10,7 @@
 #include "GameScene.h"
 #include "GameOverScene.h"
 #include "string"
+#include <ctime>
 /**
 #include "Entity/Player/Hero/Hero1.h"
 #include "Entity/Player/Hero/Hero2.h"
@@ -138,6 +139,9 @@ public:
     void saveAIKill();
     void saveData();
     void gameOver();
+
+    void getAttackBuff(Character& character);
+    void getDefenceBuff(Character& character);
 
     void setCharacterVisible(bool visible, Character& character);
     void setCharacterPosition(Vec2 position, Character& character);
