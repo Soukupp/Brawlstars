@@ -59,6 +59,7 @@ list(APPEND GAME_SOURCE
      Classes/Entity/Player/Hero/Hero3.cpp
      Classes/Entity/Player/Hero/Hero4.cpp
 
+     Classes/Entity/TheMonster.cpp
      Classes/Entity/Monster/Monster.cpp
      Classes/Entity/Monster/GroundMonster.cpp
      Classes/Entity/Weapon/Weapon.cpp
@@ -90,6 +91,7 @@ list(APPEND GAME_HEADER
      Classes/Entity/Player/Hero/Hero3.h
      Classes/Entity/Player/Hero/Hero4.h
 
+     Classes/Entity/TheMonster.h
      Classes/Entity/Monster/Monster.h
      Classes/Entity/Monster/GroundMonster.h
      Classes/Entity/Weapon/Weapon.h

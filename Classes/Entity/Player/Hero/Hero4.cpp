@@ -341,9 +341,9 @@ bool Hero4::playerCollisionTest2(Player* target, Weapon* weapon)
 
 	float judgearea = 80;
 
-	log("**this->getPosition().x        %f", this->getPosition().x);
-	log("**this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
-	log("**targetWidth / 2                      %f", targetWidth / 2);
+	//log("**this->getPosition().x        %f", this->getPosition().x);
+	//log("**this->getPosition().x-targetX        %f", this->getPosition().x - targetX);
+	//log("**targetWidth / 2                      %f", targetWidth / 2);
 
 
 

@@ -19,6 +19,7 @@
 /**/
 #include "Entity/Character.h"
 #include "Entity/Monster/Monster.h"
+#include "Entity/TheMonster.h"
 #include <vector>
 #include <string>
 
@@ -59,35 +60,21 @@ class MapLayer : public cocos2d::Layer
     std::vector<Character> allCharacter;
     Character tempCharacter;
 
+    std::vector<TheMonster> allMonster;
+    TheMonster tempMonster;
+
     /**/
     Hero1* _player1;
     Hero2* _player2;
     Hero3* _player3;
     Hero4* _player4;
 
+    Monster* _monster;
+
     Weapon* _weapon;
     Slider* _healthBar;
     Slider* _magicBar;
     cocos2d::Label* _levelText;
- 
-
-    /**/
-    /**
-    Player* _tplayer;
-    Weapon* _tweapon;
-    Slider* _thealthBar;
-    Slider* _tmagicBar;
-    cocos2d::Label* _tlevelText;
-    /**
-    Hero1* _AIplayer1;
-    Weapon* _AIweapon1;
-    Slider* _AIhealthBar1;
-    Slider* _AImagicBar1;
-    cocos2d::Label* _AIlevelText1;
-    /**/
-
-    Monster* _monster;
-    Slider* _monsterHealthBar;
 
     bool FogIsPlaced[1920][1920];
 
@@ -136,6 +123,9 @@ public:
     void setTreeOpacity(cocos2d::Vec2 position);
     cocos2d::Vec2 tileCoordFromPosition(cocos2d::Vec2 position);
     void setViewpointCenter(cocos2d::Vec2 position);
+
+    int getPlayerRank();
+    int getHitNum();
 
     template<typename Hero>
     void createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slider** magicBar, Label** levelText,
