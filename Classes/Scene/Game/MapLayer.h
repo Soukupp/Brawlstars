@@ -33,6 +33,10 @@
 #define MAP_FOG_DAMAGE_TO_PLAYER 2
 #define MAP_PORTAL_SIZE 6
 
+#define MAP_GM_NUMBER 16
+#define MAP_WM_NUMBER 8
+#define MAP_DM_NUMBER 14
+
 #define  CHARACTER(a) (allCharacter[a])
 
 #define  PLAYER (allCharacter[0]._player)
@@ -93,6 +97,8 @@ class MapLayer : public cocos2d::Layer
     Vec2 deathPosition;
 
     int _numOfPlayer;
+
+    char playerOpacity = 0;
 
     std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap; // 判断鼠标有无释放
 
