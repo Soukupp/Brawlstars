@@ -26,12 +26,13 @@
 #define MAP_SAFEAREA_SIZE 1920
 #define MAP_SAFEAREA_POSITION MAP_SAFEAREA_SIZE / 2,  MAP_SAFEAREA_SIZE / 2
 #define MAP_SAFEAREA_APPEAR_TIMES 15
-#define MAP_SAFEAREA_DELAY_LAST 10.0f
-#define MAP_SAFEAREA_INTERVAL_LAST 10.0f
+#define MAP_SAFEAREA_DELAY_LAST 30.0f
+#define MAP_SAFEAREA_INTERVAL_LAST 15.0f
 
 #define MAP_FOG_DENSITY 16
 #define MAP_FOG_DAMAGE_TO_PLAYER 2
 #define MAP_PORTAL_SIZE 6
+#define MAP_PLAYER_TO_AI_VISIBLE_SIZE 16
 
 #define MAP_GM_NUMBER 16
 #define MAP_WM_NUMBER 8
@@ -50,6 +51,10 @@
 #define  AI_HEALTHBAR(a) (allCharacter[a]._healthBar)
 #define  AI_MAGICBAR(a) (allCharacter[a]._magicBar)
 #define  AI_LEVELTEXT(a) (allCharacter[a]._levelText)
+
+#define MAP_PLAYER_NOT_IN_TREE 0
+#define MAP_PLAYER_IN_TREE_AND_NOT_AROUND_AI 1
+#define MAP_PLAYER_IN_TREE_AND_AROUND_AI 2
 
 #define MAP_AI_NUMBER 9
 
@@ -96,9 +101,14 @@ class MapLayer : public cocos2d::Layer
 
     Vec2 deathPosition;
 
+    int fog_turn = 0;
+
     int _numOfPlayer;
 
-    char playerOpacity = 0;
+    int playerOpacity = MAP_PLAYER_NOT_IN_TREE;  // 表示人可见，且不在树丛里
+                                        //   1   // 表示人在树丛里，树丛半透明，且AI不在人的周围
+                                        //   2   // 表示人在树丛里，树丛半透明，且AI在人的周围
+
 
     std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap; // 判断鼠标有无释放
 
