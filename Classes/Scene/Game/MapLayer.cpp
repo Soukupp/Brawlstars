@@ -1171,8 +1171,6 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 		{
 			setCharacterVisible(false, CHARACTER(0));
 			setCharacterPosition(deathPosition, CHARACTER(0));
-			//PLAYER->setVisible(false);
-			//PLAYER->setPosition(deathPosition);
 
 			log("player died fog");
 			saveData();
@@ -1190,8 +1188,6 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 			{
 				setCharacterVisible(false, CHARACTER(i));
 				setCharacterPosition(deathPosition, CHARACTER(i));
-				//CHARACTER(i)._player->setVisible(false);
-				//CHARACTER(i)._player->setPosition(deathPosition);
 
 				saveAIKill();//毒圈毒死ai被视为ai击杀
 				log("ai %d died fog",i);
@@ -1224,8 +1220,8 @@ void MapLayer::updateAIMove(float delta)
 		}
 		else
 		{
-			setCharacterVisible(false, CHARACTER(i));
-			setCharacterPosition(deathPosition, CHARACTER(i));
+			//setCharacterVisible(false, CHARACTER(i));
+			//setCharacterPosition(deathPosition, CHARACTER(i));
 		}
 	}
 	_numOfPlayer = tempNum;
