@@ -8,7 +8,7 @@
 #define MAINMENU_CLOSE_ITEM_POSITION_Y origin.y + mainMenuCloseItem->getContentSize().height / 2
 
 #define MAINMENU_INFO_ITEM_POSITION_X origin.x + visibleSize.width - mainMenuInfoItem->getContentSize().width
-#define MAINMENU_INFO_ITEM_POSITION_Y visibleSize.height - 1.2 * mainMenuInfoItem->getContentSize().height / 2
+#define MAINMENU_INFO_ITEM_POSITION_Y origin.y + visibleSize.height - mainMenuInfoItem->getContentSize().height
 
 #define MAINMENU_GAMENAME_LABEL_POSITION_X origin.x + visibleSize.width / 2
 #define MAINMENU_GAMENAME_LABEL_POSITION_Y origin.y + visibleSize.height - gameNameLabel->getContentSize().height
@@ -20,7 +20,7 @@
 #define MAINMENU_MAINMENU_POSITION_Y origin.y + mainMenu->getContentSize().height / 2
 
 #define MAINMENU_PLAYERMASSAGE_POSITION_X origin.x + playerMassageItem->getContentSize().width
-#define MAINMENU_PLAYERMASSAGE_POSITION_Y origin.y + visibleSize.height - playerMassageItem->getContentSize().height
+#define MAINMENU_PLAYERMASSAGE_POSITION_Y origin.y + visibleSize.height - playerMassageItem->getContentSize().width
 
 #define MAINMENU_TEXT_RGB_COLOR 105, 105, 105
 #define MAINMENU_TITLE_RGB_COLOR 238, 201, 0

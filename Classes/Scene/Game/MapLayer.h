@@ -52,6 +52,10 @@
 #define  AI_MAGICBAR(a) (allCharacter[a]._magicBar)
 #define  AI_LEVELTEXT(a) (allCharacter[a]._levelText)
 
+#define THEMONSTER(a) (allMonster[a])
+#define MONSTER(a) (allMonster[a]._monster)
+#define MONSTER_HEALTHBAR(a) (allMonster[a]._healthBar)
+
 #define MAP_PLAYER_NOT_IN_TREE 0
 #define MAP_PLAYER_IN_TREE_AND_NOT_AROUND_AI 1
 #define MAP_PLAYER_IN_TREE_AND_AROUND_AI 2
@@ -161,6 +165,7 @@ public:
     void saveData();
     void gameOver();
 
+    void getBuff(Character& character, int numOfMonster);
     void getAttackBuff(Character& character);
     void getDefenceBuff(Character& character);
 
