@@ -164,7 +164,11 @@ void Panel::setMagicPoint(int magicPoint)
 ****************************/
 void Panel::setAttack(int attack)
 {
-	_attack = attack % (PANEL_MAX_ATTACK + 1);
+	_attack = attack;
+	if (_attack > PANEL_MAX_ATTACK)
+	{
+		_attack = PANEL_MAX_ATTACK;
+	}
 }
 /****************************
 * Name ：Panel::setDefence
@@ -173,7 +177,11 @@ void Panel::setAttack(int attack)
 ****************************/
 void Panel::setDefence(int defence)
 {
-	_defence = defence % (PANEL_MAX_DEFENCE + 1);
+	_defence = defence;
+	if (_defence > PANEL_MAX_DEFENCE)
+	{
+		_defence = PANEL_MAX_DEFENCE;
+	}
 }
 /****************************
 * Name ：Panel::setAttackRate
@@ -263,7 +271,10 @@ int Panel::hit(int attack)
 int Panel::treat(int healthPoint)
 {
 	_healthPoint += healthPoint;
-	_healthPoint %= (_maxHealthPoint + 1);//避免溢出
+	if (_healthPoint > _maxHealthPoint)
+	{
+		_healthPoint = _maxHealthPoint;//避免溢出
+	}
 	return healthPoint;//返回治疗量
 }
 /****************************

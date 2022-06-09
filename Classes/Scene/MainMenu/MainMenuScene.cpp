@@ -232,7 +232,7 @@ bool MainMenuScene::init()
     auto playerMassageMenu = Menu::create(playerMassageItem, NULL);
     playerMassageMenu->setPosition(Vec2::ZERO);
     this->addChild(playerMassageMenu, 2);
-    /*=====================创建玩家信息按钮开始===================*/
+    /*=====================创建玩家信息按钮结束===================*/
 
     return true;
 }
@@ -322,7 +322,11 @@ void MainMenuScene::menuSettingsCallback(cocos2d::Ref* pSender)
     auto settingsScene = SettingsScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, settingsScene));//mainmenu未被释放 使用popScene返回
 }
-
+/****************************
+* Name ：MainMenuScene::playerMassageCallback
+* Summary ：玩家信息按钮回调
+* return ：
+****************************/
 void MainMenuScene::playerMassageCallback(cocos2d::Ref* pSender)
 {
     log("_winTimes %d", getUserInt("_winTimes"));
@@ -375,11 +379,20 @@ void MainMenuScene::onEnterTransitionDidFinish()
     system->setPosition(Vec2(visibleSize.width / 2, visibleSize.height));
     this->addChild(system, 5);
 }
-
+/****************************
+* Name ：MainMenuScene::getUserInt
+* Summary ：获取int用户数据
+* return ：
+****************************/
 int MainMenuScene::getUserInt(const char* name)
 {
     return UserDefault::getInstance()->getIntegerForKey(name);
 }
+/****************************
+* Name ：MainMenuScene::setUserInt
+* Summary ：设置int用户数据
+* return ：
+****************************/
 void MainMenuScene::setUserInt(const char* name, int num)
 {
     UserDefault::getInstance()->setIntegerForKey(name, num);
