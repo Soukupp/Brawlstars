@@ -401,6 +401,13 @@ bool MapLayer::init()
 	UserDefault::getInstance()->setIntegerForKey("HitNum", this->getHitNum());
 	/*====================初始化数据结束==========================*/
 
+	////  子弹
+	//m_bullet = Bullet::create();
+	//m_bullet->setPosition(winSize.width * .5, winSize.height * .8);
+	//addChild(m_bullet, 5);
+
+
+
 	return true;
 }
 
@@ -526,7 +533,6 @@ void MapLayer::update(float delta)
 bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 {
 	//log("onTouchBegan"); //日志
-
 	//下面是针对近距离攻击英雄的示范，远距离英雄未实现
 	if (PLAYER->_panel.getIfPlayAttackAnimation() && PLAYER->_panel.getPlayerState() != MOVING)
 	{        //保证不会实现连续攻击，不会实现一边位移一边攻击
