@@ -156,6 +156,10 @@ bool MapLayer::init()
 	memset(_aiX, 0, sizeof(_aiX));
 	memset(_aiY, 0, sizeof(_aiY));
 
+	int AINumber = UserDefault::getInstance()->getIntegerForKey("selectedAINUmber");
+	// 选择游戏人数
+	// 后续容器大小更改未处理
+
 	for (int i = 1; i <= MAP_AI_NUMBER; ++i)
 	{
 		std::string aiNumber = "ai" + std::to_string(i);

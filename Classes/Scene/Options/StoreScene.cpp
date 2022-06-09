@@ -107,6 +107,45 @@ bool StoreScene::init()
     }
     /*=====================创建背景图结束======================*/
 
+    /*创建游戏人数开始*/
+    auto aiNumber5 = MenuItemImage::create("ui/gameNumber_5.png", "ui/gameNumber_5.png",
+        CC_CALLBACK_1(StoreScene::Select_AI_5_Callback, this));
+    aiNumber5->setPosition(Vec2(STORE_AI_NUMBER_5_POSITION));
+
+    auto aiNumber6 = MenuItemImage::create("ui/gameNumber_6.png", "ui/gameNumber_6.png",
+        CC_CALLBACK_1(StoreScene::Select_AI_6_Callback, this));
+    aiNumber6->setPosition(Vec2(STORE_AI_NUMBER_6_POSITION));
+
+    auto aiNumber7 = MenuItemImage::create("ui/gameNumber_7.png", "ui/gameNumber_7.png",
+        CC_CALLBACK_1(StoreScene::Select_AI_7_Callback, this));
+    aiNumber7->setPosition(Vec2(STORE_AI_NUMBER_7_POSITION));
+
+    auto aiNumber8 = MenuItemImage::create("ui/gameNumber_8.png", "ui/gameNumber_8.png",
+        CC_CALLBACK_1(StoreScene::Select_AI_8_Callback, this));
+    aiNumber8->setPosition(Vec2(STORE_AI_NUMBER_8_POSITION));
+
+    auto aiNumber9 = MenuItemImage::create("ui/gameNumber_9.png", "ui/gameNumber_9.png",
+        CC_CALLBACK_1(StoreScene::Select_AI_9_Callback, this));
+    aiNumber9->setPosition(Vec2(STORE_AI_NUMBER_9_POSITION));
+
+    MenuItemFont::setFontName("fonts/Lilita one.ttf");
+    MenuItemFont::setFontSize(25);
+    MenuItemFont* aiNUmberTip = MenuItemFont::create(
+        "Choose the number of NPC (DEFAULT NUMBER is 9)",
+        CC_CALLBACK_1(StoreScene::AINumberTipCallback, this)
+    );
+    aiNUmberTip->setPosition(STORE_AI_TIP);
+    //MenuItemFont::setFontSize(20);
+    //aiNUmberTip->setFontSize(20);
+
+    auto aiNumberSelectMenu = Menu::create(aiNumber5, aiNumber6, aiNumber7, aiNumber8, aiNumber9, aiNUmberTip, NULL);
+    aiNumberSelectMenu->setPosition(Vec2::ZERO);
+    this->addChild(aiNumberSelectMenu, 2);  // 增加AI个数选择
+
+    _selectedAINumber = UserDefault::getInstance()->getIntegerForKey("selectedAINumber");
+
+
+
     /*=====================创建滚动层容器开始======================*/
 
     //创建可滑动区域
@@ -188,7 +227,7 @@ bool StoreScene::init()
 
 
 /****************************
-* Name ：storeSelectMap1Callback
+* Name ：StoreScene::storeSelectMap1Callback
 * Summary  回调函数，，选择地图，返回主菜单
 * return ：
 * ***************************/
@@ -203,8 +242,77 @@ void StoreScene::storeSelectMap1Callback(cocos2d::Ref* pSender)
 }
 
 
+
+
+
+
 /****************************
-* Name ：storeSelectMap3Callback
+* Name ：StoreScene::Select_AI_5_Callback
+* Summary  回调函数，，选择地图，返回主菜单
+* return ：
+* ***************************/
+void StoreScene::Select_AI_5_Callback(cocos2d::Ref* pSender)
+{
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 5);
+}
+
+
+/****************************
+* Name ：StoreScene::Select_AI_6_Callback
+* Summary  回调函数，，选择地图，返回主菜单
+* return ：
+* ***************************/
+void StoreScene::Select_AI_6_Callback(cocos2d::Ref* pSender)
+{
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 6);
+}
+
+
+/****************************
+* Name ：StoreScene::Select_AI_7_Callback
+* Summary  回调函数，，选择地图，返回主菜单
+* return ：
+* ***************************/
+void StoreScene::Select_AI_7_Callback(cocos2d::Ref* pSender)
+{
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 7);
+}
+
+
+/****************************
+* Name ：StoreScene::Select_AI_8_Callback
+* Summary  回调函数，，选择地图，返回主菜单
+* return ：
+* ***************************/
+void StoreScene::Select_AI_8_Callback(cocos2d::Ref* pSender)
+{
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 8);
+}
+
+
+/****************************
+* Name ：StoreScene::Select_AI_9_Callback
+* Summary  回调函数，，选择地图，返回主菜单
+* return ：
+* ***************************/
+void StoreScene::Select_AI_9_Callback(cocos2d::Ref* pSender)
+{
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 9);
+}
+
+
+void StoreScene::AINumberTipCallback(cocos2d::Ref* pSender)
+{
+
+}
+
+/****************************
+* Name ：StoreScene::storeSelectMap3Callback
 * Summary  回调函数，选择地图，返回主菜单
 * return ：
 * ***************************/
@@ -220,7 +328,7 @@ void StoreScene::storeSelectMap3Callback(cocos2d::Ref* pSender)
 
 
 /****************************
-* Name ：storeEggshell1Callback
+* Name ：StoreScene::storeEggshell1Callback
 * Summary  回调函数，返回主菜单
 * return ：
 * ***************************/
@@ -231,7 +339,7 @@ void StoreScene::storeEggshell1Callback(cocos2d::Ref* pSender)
 
 
 /****************************
-* Name ：storeEggshell2Callback
+* Name ：StoreScene::storeEggshell2Callback
 * Summary  回调函数，返回主菜单
 * return ：
 * ***************************/
@@ -242,7 +350,7 @@ void StoreScene::storeEggshell2Callback(cocos2d::Ref* pSender)
 
 
 /****************************
-* Name ：storeEggshell3Callback
+* Name ：StoreScene::storeEggshell3Callback
 * Summary  回调函数，返回主菜单
 * return ：
 * ***************************/
@@ -252,12 +360,8 @@ void StoreScene::storeEggshell3Callback(cocos2d::Ref* pSender)
 }
 
 
-
-
-
-
 /****************************
-* Name ：storeBackCallback
+* Name ：StoreScene::storeBackCallback
 * Summary  回调函数，返回主菜单
 * return ：
 * ***************************/
