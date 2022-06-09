@@ -329,6 +329,35 @@ void MainMenuScene::playerMassageCallback(cocos2d::Ref* pSender)
     log("_gameTimes %d", getUserInt("_gameTimes"));
     log("_killNums %d", getUserInt("_killNums"));
     log("_cupNums %d", getUserInt("_cupNums"));
+
+    std::string playerInfo =
+        "\n                                    GAME WINNING :      " + std::to_string(getUserInt("_winTimes"))
+        + "\n" +
+        "                                           GAME COUNT :      " + std::to_string(getUserInt("_gameTimes"))
+        + "\n" +
+        "                                         KILL NUMBERS :     " + std::to_string(getUserInt("_killNums"))
+        + "\n" +
+        "                                 CROWN NUMBERS :     " + std::to_string(getUserInt("_cupNums"))
+        + "\n\n" +
+        "               COME ON, MY BRAVE BRAWLSTAR!"
+        + "\n" +
+        "                GO AND FIGHT FOR YOUR HONOR!"
+        ;
+
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    auto MainMenuPlayerInformation = InformationPopLayer::create
+    ("background/HeroPlayerInformationBackground.jpg", Size(980, 490), 150);
+    MainMenuPlayerInformation->setPosition(0, -50);
+    MainMenuPlayerInformation->setTitle("PLATER INFORMATION", "fonts/Lilita one.ttf", 50);
+    MainMenuPlayerInformation->setContentText(playerInfo.c_str(),
+        "fonts/Lilita one.ttf", 40, MAINMENU_INFORMATION_CONTENT_TEXT_PADDING,
+        MAINMENU_INFORMATION_CONTENT_TEXT_PADDINGTOP);
+    MainMenuPlayerInformation->createButton("ui/button_close.png", "ui/button_close.png");
+    this->addChild(MainMenuPlayerInformation, 6);
+
 }
 
 
