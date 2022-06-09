@@ -31,6 +31,16 @@
 #define STORE_PRINTED_EGGSHELL_POSITION_2 375, 400
 #define STORE_PRINTED_EGGSHELL_POSITION_3 375, -60
 
+#define STORE_AI_NUMBER_HEIGHT 75
+#define STORE_AI_NUMBER_WIDTH 99
+
+#define STORE_AI_NUMBER_5_POSITION  200, STORE_AI_NUMBER_HEIGHT
+#define STORE_AI_NUMBER_6_POSITION  200 + STORE_AI_NUMBER_WIDTH, STORE_AI_NUMBER_HEIGHT
+#define STORE_AI_NUMBER_7_POSITION  200 + 2 * STORE_AI_NUMBER_WIDTH, STORE_AI_NUMBER_HEIGHT
+#define STORE_AI_NUMBER_8_POSITION  200 + 3 * STORE_AI_NUMBER_WIDTH, STORE_AI_NUMBER_HEIGHT
+#define STORE_AI_NUMBER_9_POSITION  200 + 4 * STORE_AI_NUMBER_WIDTH, STORE_AI_NUMBER_HEIGHT
+#define STORE_AI_TIP 460, 138
+
 
 #include "cocos2d.h"
 #include "Scene/MainMenu/MainMenuScene.h"
@@ -44,6 +54,14 @@ public:
     //关闭主界面回调函数
     void storeBackCallback(cocos2d::Ref* pSender);
 
+    void Select_AI_5_Callback(cocos2d::Ref* pSender);
+    void Select_AI_6_Callback(cocos2d::Ref* pSender);
+    void Select_AI_7_Callback(cocos2d::Ref* pSender);
+    void Select_AI_8_Callback(cocos2d::Ref* pSender);
+    void Select_AI_9_Callback(cocos2d::Ref* pSender);
+
+    void AINumberTipCallback(cocos2d::Ref* pSender);
+
     void storeSelectMap1Callback(cocos2d::Ref* pSender);
     void storeSelectMap3Callback(cocos2d::Ref* pSender);
 
@@ -52,6 +70,8 @@ public:
     void storeEggshell3Callback(cocos2d::Ref* pSender);
 
     int _selectedMap = 0;
+
+    int _selectedAINumber = 9;
 
     //创建
     CREATE_FUNC(StoreScene);
