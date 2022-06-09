@@ -66,14 +66,12 @@ bool GameSettingsScene::init()
     if (settingsBackItem == nullptr ||
         settingsBackItem->getContentSize().width <= 0 ||
         settingsBackItem->getContentSize().height <= 0)
-    {//错误处理
+    {
         problemLoading("'ui/backSettingsNormal.png' and 'ui/backSettingsSelected.png'");
     }
     else
-    {//设置位置
-        float x = GAMESETTINGS_BACK_ITEM_POSITION_X;
-        float y = GAMESETTINGS_BACK_ITEM_POSITION_Y;
-        settingsBackItem->setPosition(Vec2(x, y));
+    {
+        settingsBackItem->setPosition(Vec2(GAMESETTINGS_BACK_ITEM_POSITION_X, GAMESETTINGS_BACK_ITEM_POSITION_Y));
     }
     //创建返回菜单
     auto backMenu = Menu::create(settingsBackItem, NULL);
