@@ -134,6 +134,18 @@ bool GameScene::init()
 void GameScene::menuCallback(Ref* pSender)
 {
 	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+	/**/
+	if (getUserInt("_numOfPlayer") == 1)
+	{
+		setUserInt("_winTimes", 1 + getUserInt("_winTimes"));
+	}
+	setUserInt("_gameTimes", 1 + getUserInt("_gameTimes"));
+	setUserInt("_killNums", getUserInt("_hitNum") + getUserInt("_killNums"));
+	if (getUserInt("_numOfPlayer") <= 5)
+	{
+		setUserInt("_cupNums", 6 + getUserInt("_numOfPlayer") + getUserInt("_cupNums"));
+	}
+	/**/
 	auto GOS = GameOverScene::createScene();
 	Director::getInstance()->replaceScene(GOS);
 }
@@ -151,5 +163,12 @@ void GameScene::GameSettingsCallBack(cocos2d::Ref* pSender)
 	Director::getInstance()->pushScene(GSS);  // 此处用push的方式，保留游戏进度
 }
 
-
+int GameScene::getUserInt(const char* name)
+{
+	return UserDefault::getInstance()->getIntegerForKey(name);
+}
+void GameScene::setUserInt(const char* name, int num)
+{
+	UserDefault::getInstance()->setIntegerForKey(name, num);
+}
 

@@ -135,6 +135,10 @@ public:
     void createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slider** magicBar, Label** levelText,
         Vec2& position, const std::string& filenameHero, const std::string& filenameWeapon);
 
+    template<typename Monsters>
+    void createMonster(Monsters** monster, Slider** healthBar,
+        Vec2& position, const std::string& filenameMonster);
+
     void savePlayerKill();
     void saveAIKill();
     void saveData();
@@ -146,9 +150,8 @@ public:
     void setCharacterVisible(bool visible, Character& character);
     void setCharacterPosition(Vec2 position, Character& character);
 
-    template<typename Monsters>
-    void createMonster(Monsters** monster, Slider** healthBar,
-        Vec2& position, const std::string& filenameMonster);
+    int getUserInt(const char* name);
+    void setUserInt(const char* name, int num);
 
     Animation* getAnimationByName(std::string fileName, float interval, int fileNum, int if_repeat = -1);
     // implement the "static create()" method manually

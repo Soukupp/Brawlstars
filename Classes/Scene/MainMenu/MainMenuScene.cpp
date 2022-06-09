@@ -211,6 +211,29 @@ bool MainMenuScene::init()
     }*/
     /*=====================创建背景音乐结束=======================*/
 
+    /*=====================创建玩家信息按钮开始===================*/
+    auto playerMassageItem = MenuItemImage::create(
+        "ui/playerMassage.png",
+        "ui/playerMassage.png",
+        CC_CALLBACK_1(MainMenuScene::playerMassageCallback, this));
+
+    if (playerMassageItem == nullptr ||
+        playerMassageItem->getContentSize().width <= 0 ||
+        playerMassageItem->getContentSize().height <= 0)
+    {
+        problemLoading("'ui/playerMassage.png' and 'ui/playerMassage.png'");
+    }
+    else
+    {
+        playerMassageItem->setPosition(Vec2(MAINMENU_PLAYERMASSAGE_POSITION_X, MAINMENU_PLAYERMASSAGE_POSITION_Y));
+    }
+
+    //创建菜单
+    auto playerMassageMenu = Menu::create(playerMassageItem, NULL);
+    playerMassageMenu->setPosition(Vec2::ZERO);
+    this->addChild(playerMassageMenu, 2);
+    /*=====================创建玩家信息按钮开始===================*/
+
     return true;
 }
 
@@ -300,6 +323,14 @@ void MainMenuScene::menuSettingsCallback(cocos2d::Ref* pSender)
     Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, settingsScene));//mainmenu未被释放 使用popScene返回
 }
 
+void MainMenuScene::playerMassageCallback(cocos2d::Ref* pSender)
+{
+    log("_winTimes %d", getUserInt("_winTimes"));
+    log("_gameTimes %d", getUserInt("_gameTimes"));
+    log("_killNums %d", getUserInt("_killNums"));
+    log("_cupNums %d", getUserInt("_cupNums"));
+}
+
 
 /****************************
 * Name ：MainMenuScene::onEnterTransitionDidFinish()
@@ -314,4 +345,13 @@ void MainMenuScene::onEnterTransitionDidFinish()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     system->setPosition(Vec2(visibleSize.width / 2, visibleSize.height));
     this->addChild(system, 5);
+}
+
+int MainMenuScene::getUserInt(const char* name)
+{
+    return UserDefault::getInstance()->getIntegerForKey(name);
+}
+void MainMenuScene::setUserInt(const char* name, int num)
+{
+    UserDefault::getInstance()->setIntegerForKey(name, num);
 }

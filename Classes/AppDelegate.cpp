@@ -74,6 +74,25 @@ bool AppDelegate::applicationDidFinishLaunching() {
         director->setOpenGLView(glview);
     }
 
+    //FileUtils::getInstance()->setWritablePath("./Resources/data");
+
+    if (!UserDefault::getInstance()->getIntegerForKey("_winTimes")) 
+    {
+        UserDefault::getInstance()->setIntegerForKey("_winTimes", 0);
+    }
+    if (!UserDefault::getInstance()->getIntegerForKey("_gameTimes"))
+    {
+        UserDefault::getInstance()->setIntegerForKey("_gameTimes", 0);
+    }
+    if (!UserDefault::getInstance()->getIntegerForKey("_killNums"))
+    {
+        UserDefault::getInstance()->setIntegerForKey("_killNums", 0);
+    }
+    if (!UserDefault::getInstance()->getIntegerForKey("_cupNums"))
+    {
+        UserDefault::getInstance()->setIntegerForKey("_cupNums", 0);
+    }
+
     // turn on display FPS
     director->setDisplayStats(false);
 
