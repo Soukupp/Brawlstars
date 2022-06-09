@@ -256,7 +256,7 @@ bool MapLayer::init()
 		_dmX[i] = _tileMap->getObjectGroup("desertmonster")->getObject(moNumber).at("x").asInt();
 		_dmY[i] = _tileMap->getObjectGroup("desertmonster")->getObject(moNumber).at("y").asInt();
 	}
-
+	//注意！！以下三个 顺序不可调换
 	for (int i = 1; i < MAP_GM_NUMBER + 1; ++i)
 	{
 		createMonster(&_monsterG, &_healthBar, Vec2(_gmX[i], _gmY[i]), "Monster/groundmonster.png");
@@ -978,20 +978,21 @@ void MapLayer::update2(float delta)
 					if (!PLAYER->magicIsFull() || times > 1)
 					{
 						log("attack!");
-						PLAYER->launchAnAttack(WEAPON,"attack",MAGICBAR,allMonster[i]._monster,allMonster[i]._healthBar);
+						PLAYER->launchAnAttack(WEAPON,"attack",MAGICBAR, MONSTER(i), MONSTER_HEALTHBAR(i));
 					}
 					else
 					{
 						log("skill!");
-						PLAYER->launchAnAttack(WEAPON,"skill", MAGICBAR, allMonster[i]._monster, allMonster[i]._healthBar);
+						PLAYER->launchAnAttack(WEAPON,"skill", MAGICBAR, MONSTER(i), MONSTER_HEALTHBAR(i));
 					}
-					if (!allMonster[i]._monster->_panel.getIsSurvive())  // AI死亡
+					if (!MONSTER(i)->_panel.getIsSurvive())  // AI死亡
 					{
 						PLAYER->upgrade(LEVELTEXT, HEALTHBAR);
-						allMonster[i]._monster->setVisible(false);
-						allMonster[i]._healthBar->setVisible(false);
-						allMonster[i]._monster->setPosition(deathPosition);
-						allMonster[i]._healthBar->setPosition(deathPosition);
+						getBuff(CHARACTER(0), i);
+						MONSTER(i)->setVisible(false);
+						MONSTER_HEALTHBAR(i)->setVisible(false);
+						MONSTER(i)->setPosition(deathPosition);
+						MONSTER_HEALTHBAR(i)->setPosition(deathPosition);
 
 						if (PLAYER->getID() == 1)
 							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/gun2_kill.mp3");
@@ -1382,7 +1383,7 @@ void MapLayer::updateAIAttack(float delta)
 						AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "skill", AI_MAGICBAR(active), CHARACTER(passive)._player, CHARACTER(passive)._healthBar);
 					}
 
-					if (!CHARACTER(passive)._player->_panel.getIsSurvive() && passive != 0)   // AI 死亡
+					if (!AI_PLAYER(passive)->_panel.getIsSurvive() && passive != 0)   // AI 死亡
 					{
 						AI_PLAYER(active)->upgrade(AI_LEVELTEXT(active),AI_HEALTHBAR(active));
 						setCharacterVisible(false, CHARACTER(passive));
@@ -1390,7 +1391,7 @@ void MapLayer::updateAIAttack(float delta)
 						saveAIKill();
 						log("ai %d kill ai %d",active,passive);
 					}
-					else if (!CHARACTER(passive)._player->_panel.getIsSurvive())   // 玩家 死亡
+					else if (!PLAYER->_panel.getIsSurvive())   // 玩家 死亡
 					{
 						AI_PLAYER(active)->upgrade(AI_LEVELTEXT(active), AI_HEALTHBAR(active));
 						log("ai %d kill player",active);
@@ -1407,10 +1408,10 @@ void MapLayer::updateAIAttack(float delta)
 			//碰撞检测失败则不做操作
 		}
 		if (!AI_PLAYER(active)->_panel.getIfPlayAttackAnimation()) {
-			for (int passive = 0; passive<allMonster.size(); passive++)
+			for (int passive = 0; passive < allMonster.size(); passive++)
 			{
-				if ( allMonster[passive]._monster->_panel.getIsSurvive()
-					&& AI_PLAYER(active)->playerCollisionTest2(allMonster[passive]._monster, AI_WEAPON(active)))
+				if (MONSTER(passive)->_panel.getIsSurvive()
+					&& AI_PLAYER(active)->playerCollisionTest2(MONSTER(passive), AI_WEAPON(active)))
 				{
 					if (AI_PLAYER(active)->_panel.getPlayerState() != ATTACK && !AI_PLAYER(active)->_panel.getIfPlayAttackAnimation())
 					{         // active对passive造成伤害
@@ -1418,19 +1419,20 @@ void MapLayer::updateAIAttack(float delta)
 
 						if (!AI_PLAYER(active)->magicIsFull()) {
 							AI_PLAYER(active)->runAction(AI_PLAYER(active)->getAttackAction());
-							AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "attack", AI_MAGICBAR(active), allMonster[passive]._monster, allMonster[passive]._healthBar);
+							AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "attack", AI_MAGICBAR(active), MONSTER(passive), MONSTER_HEALTHBAR(passive));
 						}
 						else {
 							AI_PLAYER(active)->runAction(AI_PLAYER(active)->getSkillAction());
-							AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "skill", AI_MAGICBAR(active), allMonster[passive]._monster, allMonster[passive]._healthBar);
+							AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "skill", AI_MAGICBAR(active), MONSTER(passive), MONSTER_HEALTHBAR(passive));
 						}
-						if (!allMonster[passive]._monster->_panel.getIsSurvive())
+						if (!MONSTER(passive)->_panel.getIsSurvive())
 						{
 							AI_PLAYER(active)->upgrade(AI_LEVELTEXT(active), AI_HEALTHBAR(active));
-							allMonster[passive]._monster->setVisible(false);
-							allMonster[passive]._healthBar->setVisible(false);
-							allMonster[passive]._monster->setPosition(deathPosition);
-							allMonster[passive]._healthBar->setPosition(deathPosition);
+							getBuff(CHARACTER(active), passive);
+							MONSTER(passive)->setVisible(false);
+							MONSTER_HEALTHBAR(passive)->setVisible(false);
+							MONSTER(passive)->setPosition(deathPosition);
+							MONSTER_HEALTHBAR(passive)->setPosition(deathPosition);
 						}
 
 						AI_PLAYER(active)->_panel.setPlayerState(ATTACK);
@@ -1564,6 +1566,28 @@ void MapLayer::gameOver()
 	Director::getInstance()->replaceScene(GOS);
 }
 /****************************
+* Name ：MapLayer::getBuff
+* Summary ：获取增益
+* return ：
+****************************/
+void MapLayer::getBuff(Character& character, int numOfMonster)
+{
+	if (numOfMonster >= 0 && numOfMonster < MAP_GM_NUMBER)
+	{
+		log("kill groundmonster");
+	}
+	else if (numOfMonster >= MAP_GM_NUMBER && numOfMonster < MAP_GM_NUMBER + MAP_WM_NUMBER)
+	{
+		log("kill watermonster");
+		getAttackBuff(character);
+	}
+	else if (numOfMonster >= MAP_GM_NUMBER + MAP_WM_NUMBER && numOfMonster < MAP_GM_NUMBER + MAP_WM_NUMBER + MAP_DM_NUMBER)
+	{
+		log("kill desertmonster");
+		getDefenceBuff(character);
+	}
+}
+/****************************
 * Name ：MapLayer::getAttackBuff
 * Summary ：获取攻击增益
 * return ：
@@ -1572,8 +1596,6 @@ void MapLayer::getAttackBuff(Character& character)
 {
 	character._player->_panel.setAttack(20 + character._player->_panel.getAttack());
 }
-
-
 /****************************
 * Name ：MapLayer::getDefenceBuff
 * Summary ：获取防御增益
@@ -1583,8 +1605,6 @@ void MapLayer::getDefenceBuff(Character& character)
 {
 	character._player->_panel.setDefence(20 + character._player->_panel.getDefence());
 }
-
-
 /****************************
 * Name ：MapLayer::setCharacterVisible
 * Summary ：角色可见状态设置
