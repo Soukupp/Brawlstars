@@ -9,6 +9,9 @@
 #include "SimpleAudioEngine.h"
 #include "GameScene.h"
 #include "GameOverScene.h"
+#include "Entity/Character.h"
+#include "Entity/TheMonster.h"
+#include <vector>
 #include "string"
 #include <ctime>
 /**
@@ -18,10 +21,7 @@
 #include "Entity/Player/Hero/Hero4.h"
 #include "Entity/Weapon/Weapon.h"
 /**/
-#include "Entity/Character.h"
-#include "Entity/TheMonster.h"
-#include <vector>
-#include <string>
+
 
 #define MAP_SAFEAREA_SIZE 1920
 #define MAP_SAFEAREA_POSITION MAP_SAFEAREA_SIZE / 2,  MAP_SAFEAREA_SIZE / 2
@@ -32,7 +32,7 @@
 #define MAP_FOG_DENSITY 16
 #define MAP_FOG_DAMAGE_TO_PLAYER 2
 #define MAP_PORTAL_SIZE 6
-#define MAP_PLAYER_TO_AI_VISIBLE_SIZE 16
+#define MAP_PLAYER_TO_AI_VISIBLE_SIZE 30
 
 #define MAP_GM_NUMBER 16
 #define MAP_WM_NUMBER 8
@@ -111,6 +111,7 @@ class MapLayer : public cocos2d::Layer
 
 
     std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap; // 判断鼠标有无释放
+
 
 public:
 
