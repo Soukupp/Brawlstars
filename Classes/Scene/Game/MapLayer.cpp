@@ -27,6 +27,7 @@
 	_tree, _collidable 在_tileMap 上 （一部分）
 	_portal, _portalDetermination 系列 1层
 	*hero, *weapon （包括AI） 2层
+	* monster 3层
 	_SafeArea 100层
 
 
@@ -217,16 +218,16 @@ bool MapLayer::init()
 
 	/*======================AI创建结束=========================*/
 
-	/*=======================创建怪兽开始=======================*
+	/*=======================创建怪兽开始=======================*/
 
-	int _gmX[4];
-	int _gmY[4];
+	int _gmX[MAP_GM_NUMBER + 1];
+	int _gmY[MAP_GM_NUMBER + 1];
 
-	int _wmX[4];
-	int _wmY[4];
+	int _wmX[MAP_WM_NUMBER + 1];
+	int _wmY[MAP_WM_NUMBER + 1];
 
-	int _dmX[4];
-	int _dmY[4];
+	int _dmX[MAP_DM_NUMBER + 1];
+	int _dmY[MAP_DM_NUMBER + 1];
 
 	memset(_gmX, 0, sizeof(_gmX));
 	memset(_gmY, 0, sizeof(_gmY));
@@ -235,45 +236,47 @@ bool MapLayer::init()
 	memset(_dmX, 0, sizeof(_dmX));
 	memset(_dmY, 0, sizeof(_dmY));
 
-	for (int i = 0; i < 4; ++i)
+
+
+	for (int i = 1; i < MAP_GM_NUMBER + 1; ++i)
 	{
 		std::string moNumber = "gm" + std::to_string(i);
 		_gmX[i] = _tileMap->getObjectGroup("groundmonster")->getObject(moNumber).at("x").asInt();
 		_gmY[i] = _tileMap->getObjectGroup("groundmonster")->getObject(moNumber).at("y").asInt();
 	}
-	for (int i = 0; i < 4; ++i)
+	for (int i = 1; i < MAP_WM_NUMBER + 1; ++i)
 	{
 		std::string moNumber = "wm" + std::to_string(i);
 		_wmX[i] = _tileMap->getObjectGroup("watermonster")->getObject(moNumber).at("x").asInt();
 		_wmY[i] = _tileMap->getObjectGroup("watermonster")->getObject(moNumber).at("y").asInt();
 	}
-	for (int i = 0; i < 4; ++i)
+	for (int i = 1; i < MAP_DM_NUMBER + 1; ++i)
 	{
 		std::string moNumber = "dm" + std::to_string(i);
 		_dmX[i] = _tileMap->getObjectGroup("desertmonster")->getObject(moNumber).at("x").asInt();
 		_dmY[i] = _tileMap->getObjectGroup("desertmonster")->getObject(moNumber).at("y").asInt();
 	}
 
-	for (int i = 0; i < 4; ++i)
+	for (int i = 1; i < MAP_GM_NUMBER + 1; ++i)
 	{
 		createMonster(&_monsterG, &_healthBar, Vec2(_gmX[i], _gmY[i]), "Monster/groundmonster.png");
 		tempMonster = { _monsterG,_healthBar };
 		allMonster.push_back(tempMonster);
 	}
-	for (int i = 0; i < 4; ++i)
+	for (int i = 1; i < MAP_WM_NUMBER + 1; ++i)
 	{
 		createMonster(&_monsterW, &_healthBar, Vec2(_wmX[i], _wmY[i]), "Monster/watermonster.png");
 		tempMonster = { _monsterW,_healthBar };
 		allMonster.push_back(tempMonster);
 	}
-	for (int i = 0; i < 4; ++i)
+	for (int i = 1; i < MAP_DM_NUMBER + 1; ++i)
 	{
 		createMonster(&_monsterD, &_healthBar, Vec2(_dmX[i], _dmY[i]), "Monster/desertmonster.png");
 		tempMonster = { _monsterD,_healthBar };
 		allMonster.push_back(tempMonster);
 	}
 	/*=======================创建怪兽结束=======================*/
-
+	
 	auto SkillButton = SkillButton::create("ui/buttonForSkill.png", "ui/buttonShadow.png", 30);
 
 	SkillButton->setPosition(Vec2(GAME_SKILL_BUTTON_POSITION_X, GAME_SKILL_BUTTON_POSITION_X));
@@ -672,6 +675,7 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 		{
 			_treecell = _tree->getTileAt(treetileCoord); //通过tile坐标访问指定草丛单元格
 			_treecell->setOpacity(255);  //不透明
+			playerOpacity = 0;
 		}
 	}
 	Vec2 cellsize = _tileMap->getTileSize();
@@ -683,6 +687,19 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 		Vec2(pos.x,pos.y + cellsize.y),
 		Vec2(pos.x,pos.y - cellsize.y),
 	};
+
+	for (int i = 1; i < allCharacter.size(); ++i)
+	{
+		if (AI_PLAYER(i)->_panel.getIsSurvive())
+		{
+			Vec2 treetileCoord = this->tileCoordFromPosition(AI_PLAYER(i)->getPosition());
+			if (_tree->getTileAt(treetileCoord)) // AI的位置有树丛
+				//AI_PLAYER(i)->setVisible(false);
+				;
+			else
+				AI_PLAYER(i)->setVisible(true);
+		}
+	}
 	
 	for (int i = 0; i < playerVisionArea.size(); ++i)
 	{
@@ -691,6 +708,21 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 		{
 			_treecell = _tree->getTileAt(treetileCoord); //通过tile坐标访问指定草丛单元格
 			_treecell->setOpacity(100);  //透明
+			playerOpacity = 1;
+		}
+		for (int i = 1; i < allCharacter.size(); ++i)
+		{
+			if (AI_PLAYER(i)->_panel.getIsSurvive())
+			{
+				if (AI_PLAYER(i)->getPositionX() <= (treetileCoord.x + MAP_PORTAL_SIZE) &&
+					AI_PLAYER(i)->getPositionX() >= (treetileCoord.x - MAP_PORTAL_SIZE) &&
+					AI_PLAYER(i)->getPositionY() <= (treetileCoord.y + MAP_PORTAL_SIZE) &&
+					AI_PLAYER(i)->getPositionY() >= (treetileCoord.y - MAP_PORTAL_SIZE) &&
+					playerOpacity == 1)
+				{
+					AI_PLAYER(i)->setVisible(true);
+				}
+			}
 		}
 	}
 }
@@ -758,7 +790,7 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 	(**weapon).setAnchorPoint(
 		Vec2((**hero)._weaponAnchorPositionX,
 			(**hero)._weaponAnchorPositionY));
-	addChild(*weapon, 2, 200);
+	addChild(*weapon, 2, 100);
 
 	*healthBar = Slider::create();
 	(**healthBar).setPercent((**hero).getHealthPercent());
@@ -766,7 +798,7 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 	(**healthBar).loadProgressBarTexture("/ui/playerHealthbarBlock.png");
 	(**healthBar).setScale(0.5);
 	(**healthBar).setAnchorPoint(Vec2(0.5f, 0.0f));
-	addChild(*healthBar);
+	addChild(*healthBar, 2);
 
 	*magicBar = Slider::create();
 	(**magicBar).setPercent((**hero).getMagicPercent());
@@ -774,12 +806,12 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 	(**magicBar).loadProgressBarTexture("/ui/playerMagicbarBlock.png");
 	(**magicBar).setScale(0.5);
 	(**magicBar).setAnchorPoint(Vec2(0.5f, 0.0f));
-	addChild(*magicBar);
+	addChild(*magicBar, 2);
   	*levelText = Label::createWithTTF("Lv.0","fonts/Marker Felt.ttf", 24);
 	(**levelText).setString((std::string("Lv.") + std::to_string((**hero)._level)));
 	(**levelText).setScale(0.5);
 	(**levelText).setAnchorPoint(Vec2(0.5f, 0.0f));
-	addChild(*levelText);
+	addChild(*levelText, 2);
 
 	(**hero).setPositionWithAll(position, *weapon, *healthBar, *magicBar, *levelText);
 }
@@ -803,7 +835,7 @@ void MapLayer::createMonster(Monsters** monster, Slider** healthBar,
 	(**healthBar).loadProgressBarTexture("/ui/playerHealthbarBlock.png");
 	(**healthBar).setScale(0.5);
 	(**healthBar).setAnchorPoint(Vec2(0.5f, 0.0f));
-	addChild(*healthBar);
+	addChild(*healthBar, 3);
 
 	(**monster).setPositionWithAll(position, *healthBar);
 }
@@ -1272,8 +1304,8 @@ void MapLayer::updateAIAttack(float delta)
 	}
 }
 /****************************
-* Name ：
-* Summary ：
+* Name ：MapLayer::updateSetIfPlayAttackAnimation
+* Summary ：判断是否有攻击动画
 * return ：
 ****************************/
 void MapLayer::updateSetIfPlayAttackAnimation(float delta)
@@ -1370,6 +1402,8 @@ void MapLayer::getAttackBuff(Character& character)
 {
 	character._player->_panel.setAttack(20 + character._player->_panel.getAttack());
 }
+
+
 /****************************
 * Name ：MapLayer::getDefenceBuff
 * Summary ：获取防御增益
@@ -1379,6 +1413,8 @@ void MapLayer::getDefenceBuff(Character& character)
 {
 	character._player->_panel.setDefence(20 + character._player->_panel.getDefence());
 }
+
+
 /****************************
 * Name ：MapLayer::setCharacterVisible
 * Summary ：角色不可见
@@ -1391,6 +1427,8 @@ void MapLayer::setCharacterVisible(bool visible, Character& character)
 	character._magicBar->setVisible(visible);
 	character._levelText->setVisible(visible);
 }
+
+
 /****************************
 * Name ：MapLayer::setCharacterPosition
 * Summary ：角色移动
