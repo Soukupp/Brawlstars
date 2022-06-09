@@ -222,7 +222,7 @@ bool Hero2::initAttackAction()
 	auto* animate = Animate::create(animation);
 	this->setAttackAction(animate);
 
-	if (_normalAction != nullptr)
+	if (_attackAction != nullptr)
 		return true;
 	else
 		return false;
@@ -244,7 +244,7 @@ bool Hero2::initSkillAction()
 	auto* animate = Animate::create(animation);
 	this->setSkillAction(animate);
 
-	if (_normalAction != nullptr)
+	if (_skillAction != nullptr)
 		return true;
 	else
 		return false;

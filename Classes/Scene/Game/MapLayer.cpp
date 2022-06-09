@@ -570,6 +570,18 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 					PLAYER->launchAnAttack(WEAPON, "skill", MAGICBAR, nullptr, nullptr);
 				}
 			}
+			if (!ifAttackEnemy)
+			{
+				for (int i = 0; i < allMonster.size(); i++)
+				{
+					if (PLAYER->playerCollisionTest1(allMonster[i]._monster,WEAPON ))
+					{
+						allMonster[i].isCollidedByPlayer = true;
+						ifAttackEnemy = true;
+						break;
+					}
+				}
+			}
 
 			if (PLAYER->getID() == 1)
 				this->scheduleOnce(schedule_selector(MapLayer::update2), 0.5f);  //1.0f是动画时间，1.0f后进入update2执行一次normal动画
@@ -947,6 +959,50 @@ void MapLayer::update2(float delta)
 				}
 				CHARACTER(i).isCollidedByPlayer = false;
 			}
+
+		}
+		times = 0;
+		for (int i = 0; i < allMonster.size(); i++)
+		{
+			if (allMonster[i].isCollidedByPlayer)
+			{
+				ifattack = true;
+				times++;
+				if (PLAYER->_panel.getIfPlayNormalAnimationInUpdate2())
+				{
+					if (!PLAYER->magicIsFull() || times > 1)
+					{
+						log("attack!");
+						PLAYER->launchAnAttack(WEAPON,"attack",MAGICBAR,allMonster[i]._monster,allMonster[i]._healthBar);
+					}
+					else
+					{
+						log("skill!");
+						PLAYER->launchAnAttack(WEAPON,"skill", MAGICBAR, allMonster[i]._monster, allMonster[i]._healthBar);
+					}
+					if (!allMonster[i]._monster->_panel.getIsSurvive())  // AI死亡
+					{
+						PLAYER->upgrade(LEVELTEXT, HEALTHBAR);
+						allMonster[i]._monster->setVisible(false);
+						allMonster[i]._healthBar->setVisible(false);
+						allMonster[i]._monster->setPosition(deathPosition);
+						allMonster[i]._healthBar->setPosition(deathPosition);
+
+						if (PLAYER->getID() == 1)
+							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/gun2_kill.mp3");
+						else if (PLAYER->getID() == 2)
+							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/sword_kill.mp3");
+						else if (PLAYER->getID() == 3)
+							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_kill.mp3");
+						else if (PLAYER->getID() == 4)
+							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4_kill.mp3");
+
+					}
+
+				}
+				allMonster[i].isCollidedByPlayer = false;
+			}
+
 		}
 		int i = ifattack;
 		//log("ifattack:  %d", i);
@@ -1338,25 +1394,62 @@ void MapLayer::updateAIAttack(float delta)
 					AI_PLAYER(active)->_panel.setIfPlayAttackAnimation(true);
 					CHARACTER(active).ifOpenUpdate = true;
 
-					if (AI_PLAYER(active)->getID() == 1)
-					{
-						this->scheduleOnce(schedule_selector(MapLayer::updateSetIfPlayAttackAnimation), 0.5f);
-					}
-					else if (AI_PLAYER(active)->getID() == 2)
-					{
-						this->scheduleOnce(schedule_selector(MapLayer::updateSetIfPlayAttackAnimation), 0.75f);
-					}
-					else if (AI_PLAYER(active)->getID() == 3)
-					{
-						this->scheduleOnce(schedule_selector(MapLayer::updateSetIfPlayAttackAnimation), 0.67f);
-					}
-					else if (AI_PLAYER(active)->getID() == 4)
-					{
-						this->scheduleOnce(schedule_selector(MapLayer::updateSetIfPlayAttackAnimation), 0.33f);
-					}
 				}
 			}
 			//碰撞检测失败则不做操作
+		}
+		if (!AI_PLAYER(active)->_panel.getIfPlayAttackAnimation()) {
+			for (int passive = 0; passive<allMonster.size(); passive++)
+			{
+				if ( allMonster[passive]._monster->_panel.getIsSurvive()
+					&& AI_PLAYER(active)->playerCollisionTest2(allMonster[passive]._monster, AI_WEAPON(active)))
+				{
+					if (AI_PLAYER(active)->_panel.getPlayerState() != ATTACK && !AI_PLAYER(active)->_panel.getIfPlayAttackAnimation())
+					{         // active对passive造成伤害
+						AI_PLAYER(active)->stopAllActions();
+
+						if (!AI_PLAYER(active)->magicIsFull()) {
+							AI_PLAYER(active)->runAction(AI_PLAYER(active)->getAttackAction());
+							AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "attack", AI_MAGICBAR(active), allMonster[passive]._monster, allMonster[passive]._healthBar);
+						}
+						else {
+							AI_PLAYER(active)->runAction(AI_PLAYER(active)->getSkillAction());
+							AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "skill", AI_MAGICBAR(active), allMonster[passive]._monster, allMonster[passive]._healthBar);
+						}
+						if (!allMonster[passive]._monster->_panel.getIsSurvive())
+						{
+							AI_PLAYER(active)->upgrade(AI_LEVELTEXT(active), AI_HEALTHBAR(active));
+							allMonster[passive]._monster->setVisible(false);
+							allMonster[passive]._healthBar->setVisible(false);
+							allMonster[passive]._monster->setPosition(deathPosition);
+							allMonster[passive]._healthBar->setPosition(deathPosition);
+						}
+
+						AI_PLAYER(active)->_panel.setPlayerState(ATTACK);
+						AI_PLAYER(active)->_panel.setIfPlayAttackAnimation(true);
+						CHARACTER(active).ifOpenUpdate = true;
+
+					}
+				}
+				//碰撞检测失败则不做操作
+			}
+		}
+
+		if (AI_PLAYER(active)->getID() == 1)
+		{
+			this->scheduleOnce(schedule_selector(MapLayer::updateSetIfPlayAttackAnimation), 0.5f);
+		}
+		else if (AI_PLAYER(active)->getID() == 2)
+		{
+			this->scheduleOnce(schedule_selector(MapLayer::updateSetIfPlayAttackAnimation), 0.75f);
+		}
+		else if (AI_PLAYER(active)->getID() == 3)
+		{
+			this->scheduleOnce(schedule_selector(MapLayer::updateSetIfPlayAttackAnimation), 0.67f);
+		}
+		else if (AI_PLAYER(active)->getID() == 4)
+		{
+			this->scheduleOnce(schedule_selector(MapLayer::updateSetIfPlayAttackAnimation), 0.33f);
 		}
 	}
 }

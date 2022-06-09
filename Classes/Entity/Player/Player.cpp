@@ -4,6 +4,7 @@
 #include "Entity/Weapon/Weapon.h"
 #include <SimpleAudioEngine.h>
 
+
 USING_NS_CC;
 
 /*===============================================================================*/
@@ -67,21 +68,6 @@ Panel* Player::getPanel()
 ****************************/
 void Player::launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar)
 {
-	////根据不同角色做了不同设计
-	//if (attackType == "attack")
-	//{
-	//	//if (weapon->launchAnAttack(_panel.doAttack(), enemy))
-	//	//{
-	//		restoreMagic();                           //游戏机制：发动进攻就补充蓝量
-	//	//}
-	//}
-	//else if (attackType == "skill")
-	//{
-	//	//if (useMagic()) 
-	//	//{
-	//		//weapon->launchAnAttack(_panel.doSkillAttack(), enemy);
-	//	//}
-	//}
 	if (enemy != nullptr) {
 		if (attackType == "attack")
 		{
@@ -104,9 +90,15 @@ void Player::launchAnAttack(Weapon* weapon, const std::string& attackType, Slide
 				}
 			}
 		}
+		if (enemy->_panel.getHealthPoint() <= 0)
+		{
+			enemy->_panel.setIsSurvive(false);
+		}
 		this->refreshMagicBar(magicBar);
 	}
 }
+
+
 /****************************
 * Name ：Player::hitPlayer
 * Summary ：对角色进行攻击
@@ -239,11 +231,13 @@ void Player::keepLevelText(cocos2d::Label* levelText, Slider* bar)
 ****************************/
 void Player::setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* healthBar, Slider* magicBar, cocos2d::Label* levelText)
 {
+	
 	this->setPosition(position);
 	this->keepWeapon(weapon);
 	this->refreshHealthBar(healthBar);
 	this->refreshMagicBar(magicBar);
 	this->keepLevelText(levelText, magicBar);
+
 }
 
 /*===============================================================================*/
@@ -290,6 +284,10 @@ bool Player::playerCollisionTest1(Player* target,Weapon* weapon)
 {
 	return true;
 }
+bool Player::playerCollisionTest2(Player* target, Weapon* weapon)
+{
+	return true;
+}
 
 /****************************
 * Name ：Player::upgrade()
@@ -298,30 +296,29 @@ bool Player::playerCollisionTest1(Player* target,Weapon* weapon)
 ****************************/
 void Player::upgrade(cocos2d::Label* levelText, Slider* bar)
 {
-
 }
 
 bool Player::initWalkAction()
 {
 	return true;
 }
+
 bool Player::initNormalAction()
 {
 	return true;
 }
+
 bool Player::initAttackAction()
 {
 	return true;
 }
+
 bool Player::initSkillAction()
 {
 	return true;
 }
+
 int Player::getID()
 {
 	return ID;
-}
-bool Player::playerCollisionTest2(Player* target, Weapon* weapon)
-{
-	return true;
 }

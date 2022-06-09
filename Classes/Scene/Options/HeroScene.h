@@ -61,8 +61,8 @@ public:
 
 private:
     MenuItemSprite* _confirmButton;  //确认按键
-    int _chooseNumber = 0;           //表示当前选择页面位于几号hero
-    int _selectedHero = 0;
+    int _chooseNumber = 1;           //表示当前选择页面位于几号hero
+    int _selectedHero = 1;
     CREATE_FUNC(HeroScene);
 
     Sprite* hero1;

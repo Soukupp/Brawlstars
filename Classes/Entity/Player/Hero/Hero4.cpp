@@ -195,7 +195,7 @@ bool Hero4::initWalkAction()
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 0; i <8; i++)
 	{
-		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("Run-%d.png", i)->getCString());
+		auto frame = frameCache->getSpriteFrameByName(String::createWithFormat("Run4-%d.png", i)->getCString());
 		playerFrameArray.pushBack(frame);
 	}
 
@@ -228,7 +228,7 @@ bool Hero4::initAttackAction()
 	auto* animate = Animate::create(animation);
 	this->setAttackAction(animate);
 
-	if (_walkAction != nullptr)
+	if (_attackAction != nullptr)
 		return true;
 	else
 		return false;
@@ -252,7 +252,7 @@ bool Hero4::initNormalAction()
 
 	this->setNormalAction(RepeatForever::create(Animate::create(animation)));
 
-	if (_walkAction != nullptr)
+	if (_normalAction != nullptr)
 		return true;
 	else
 		return false;
@@ -276,7 +276,7 @@ bool Hero4::initSkillAction()
 	auto* animate = Animate::create(animation);
 	this->setSkillAction(animate);
 
-	if (_walkAction != nullptr)
+	if (_skillAction != nullptr)
 		return true;
 	else
 		return false;

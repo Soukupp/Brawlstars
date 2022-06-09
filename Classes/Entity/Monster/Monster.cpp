@@ -160,5 +160,6 @@ void Monster::refreshMonster()
 ****************************/
 bool Monster::playerCollisionTest1(Monster* target)
 {
+
 	return true;
 }

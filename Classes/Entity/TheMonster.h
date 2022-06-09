@@ -15,6 +15,7 @@ struct TheMonster
 {
     Monster* _monster;
     Slider* _healthBar;
+    bool isCollidedByPlayer = false;
 };
 
 #endif

@@ -8,6 +8,8 @@
 #include "Entity/Entity.h"
 #include "Panel.h"
 #include "Entity/Define/Definitions.h"
+
+
 //#include "HealthBar.h"
 
 using namespace cocos2d::ui;
@@ -76,6 +78,7 @@ public:
     Panel* getPanel();
 
     virtual void launchAnAttack(Weapon* weapon, const std::string& attackType, Slider* magicBar, Player* enemy, Slider* enemyHealthBar);
+    
     int hitPlayer(int attack);
     void restoreMagic();
     bool magicIsFull()const;
@@ -98,7 +101,6 @@ public:
 
     virtual bool playerCollisionTest1(Player* target, Weapon* weapon);
     virtual bool playerCollisionTest2(Player* target, Weapon* weapon);
-
     virtual void upgrade(cocos2d::Label* levelText, Slider* bar);
 
 

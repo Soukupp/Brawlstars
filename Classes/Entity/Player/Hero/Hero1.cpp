@@ -9,6 +9,8 @@
 #include "Hero2.h"
 #include "Hero3.h"
 #include "Hero4.h"
+#include "Entity/Monster/Monster.h"
+
 //#include "Entity/Weapon/Weapon.h"
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -277,7 +279,7 @@ bool Hero1::initAttackAction()
 	auto* animate = Animate::create(animation);
 	this->setAttackAction(animate);
 
-	if (_normalAction != nullptr)
+	if (_attackAction != nullptr)
 		return true;
 	else
 		return false;
@@ -300,7 +302,7 @@ bool Hero1::initSkillAction()
 	auto* animate = Animate::create(animation);
 	this->setSkillAction(animate);
 
-	if (_normalAction != nullptr)
+	if (_skillAction != nullptr)
 		return true;
 	else
 		return false;
@@ -400,6 +402,7 @@ bool Hero1::playerCollisionTest2(Player* target, Weapon* weapon)
 		}
 	}
 }
+
 
 
 int Hero1::getID()
