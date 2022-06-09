@@ -49,7 +49,7 @@ void GroundMonster::initMonster(int maxHealthPoint, int attack, int defence, flo
 ****************************/
 void GroundMonster::initMonster()
 {
-	_panel.init(3000, 0, 200, 0.0f, 0.0f, 0);
+	_panel.init(1000, 100, 200, 1.0f, 1.0f, 100);
 }
 void GroundMonster::keepHealthBar(Slider* healthBar)
 {

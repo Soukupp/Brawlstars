@@ -161,14 +161,14 @@ bool MapLayer::init()
 	// 选择游戏人数
 	// 后续容器大小更改未处理
 
-	for (int i = 1; i <= MAP_AI_NUMBER; ++i)
+	for (int i = 1; i <= AINumber; ++i)
 	{
 		std::string aiNumber = "ai" + std::to_string(i);
 		_aiX[i] = _tileMap->getObjectGroup("AI")->getObject(aiNumber).at("x").asInt();
 		_aiY[i] = _tileMap->getObjectGroup("AI")->getObject(aiNumber).at("y").asInt();
 	}
 
-	for (int i = 1; i <= MAP_AI_NUMBER; ++i)
+	for (int i = 1; i <= AINumber; ++i)
 	{
 		int tempHeroType = rand() % 4;
 		//log("tempHeroType %d", tempHeroType);
@@ -875,7 +875,6 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 * Summary ：初始化怪兽
 * return ：
 ****************************/
-
 template<typename Monsters>
 void MapLayer::createMonster(Monsters** monster, Slider** healthBar,
 	Vec2& position, const std::string& filenameMonster)
@@ -1213,6 +1212,7 @@ void MapLayer::updateAIMove(float delta)
 		if (AI_PLAYER(i)->_panel.getIsSurvive())
 		{
 			updateAIMoveOne(CHARACTER(i));
+			setCharacterVisible(true, CHARACTER(i));
 			++tempNum;
 		}
 		else
@@ -1581,7 +1581,7 @@ void MapLayer::getDefenceBuff(Character& character)
 
 /****************************
 * Name ：MapLayer::setCharacterVisible
-* Summary ：角色不可见
+* Summary ：角色可见状态设置
 * return ：
 ****************************/
 void MapLayer::setCharacterVisible(bool visible, Character& character)

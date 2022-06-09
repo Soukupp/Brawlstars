@@ -186,20 +186,22 @@ bool HeroScene::init()
 
    //如果玩家已经选择了英雄，那么优先展示该英雄的动画
        _selectedHero = UserDefault::getInstance()->getIntegerForKey("selectedHero");
-    if (_selectedHero) {
-        switch (_selectedHero) {
-        case 1:
-            animate1();
-            break;
-        case 2:
-            animate2();
-            break;
-        case 3:
-            animate3();
-            break;
-        case 4:
-            animate4();
-            break;
+    if (_selectedHero) 
+    {
+        switch (_selectedHero)
+        {
+            case 1:
+                animate1();
+                break;
+            case 2:
+                animate2();
+                break;
+            case 3:
+                animate3();
+                break;
+            case 4:
+                animate4();
+                break;
         }
         _confirmButton->setEnabled(false);
     }
@@ -240,7 +242,8 @@ void HeroScene::selectHero1Callback(cocos2d::Ref* pSender)
     else
         _confirmButton->setEnabled(true);
 
-    if (_chooseNumber != 1) {
+    if (_chooseNumber != 1)
+    {
 
         if (hero2 != nullptr)
             hero2->setVisible(false);
@@ -264,7 +267,8 @@ void HeroScene::selectHero2Callback(cocos2d::Ref* pSender)
     else
         _confirmButton->setEnabled(true);
 
-    if (_chooseNumber != 2) {
+    if (_chooseNumber != 2)
+    {
 
         if (hero1 != nullptr)
             hero1->setVisible(false);
@@ -286,7 +290,8 @@ void HeroScene::selectHero3Callback(cocos2d::Ref* pSender)
         _confirmButton->setEnabled(false);
     else
         _confirmButton->setEnabled(true);
-    if (_chooseNumber != 3) {
+    if (_chooseNumber != 3)
+    {
 
         if (hero1 != nullptr)
             hero1->setVisible(false);
@@ -309,7 +314,8 @@ void HeroScene::selectHero4Callback(cocos2d::Ref* pSender)
         _confirmButton->setEnabled(false);
     else
         _confirmButton->setEnabled(true);
-    if (_chooseNumber != 4) {
+    if (_chooseNumber != 4)
+    {
         if (hero1 != nullptr)
             hero1->setVisible(false);
         if (hero2 != nullptr)
@@ -332,19 +338,20 @@ void HeroScene::selectHero4Callback(cocos2d::Ref* pSender)
 void HeroScene::selectHeroConfirmCallback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    switch (_chooseNumber) {
-    case 1:
-        UserDefault::getInstance()->setIntegerForKey("selectedHero", 1);
-        break;
-    case 2:
-        UserDefault::getInstance()->setIntegerForKey("selectedHero", 2);
-        break;
-    case 3:
-        UserDefault::getInstance()->setIntegerForKey("selectedHero", 3);
-        break;
-    case 4:
-        UserDefault::getInstance()->setIntegerForKey("selectedHero", 4);
-        break;
+    switch (_chooseNumber) 
+    {
+        case 1:
+            UserDefault::getInstance()->setIntegerForKey("selectedHero", 1);
+            break;
+        case 2:
+            UserDefault::getInstance()->setIntegerForKey("selectedHero", 2);
+            break;
+        case 3:
+            UserDefault::getInstance()->setIntegerForKey("selectedHero", 3);
+            break;
+        case 4:
+            UserDefault::getInstance()->setIntegerForKey("selectedHero", 4);
+            break;
     }
     _selectedHero= UserDefault::getInstance()->getIntegerForKey("selectedHero");
     _confirmButton->setEnabled(false);

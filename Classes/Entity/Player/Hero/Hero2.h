@@ -48,7 +48,7 @@ using namespace cocos2d;
 #define HERO2_LEVELTEXT_POSITION Vec2(this->getPosition().x, this->getPosition().y + HERO2_YOU_BAR_POSITION + bar->getContentSize().height)
 //初始面板
 #define HERO2_INIT_MAXHEALTHPOINT 1050
-#define HERO2_INIT_ATTACK 130
+#define HERO2_INIT_ATTACK 140
 #define HERO2_INIT_DEFENCE 150
 #define HERO2_INIT_SKILLRATE 2.7f
 #define HERO2_INIT_ATTACKRATE 1.2f

@@ -49,7 +49,7 @@ void WaterMonster::initMonster(int maxHealthPoint, int attack, int defence, floa
 ****************************/
 void WaterMonster::initMonster()
 {
-	_panel.init(1000, 0, 100, 0.0f, 0.0f, 0);
+	_panel.init(600, 100, 100, 1.0f, 1.0f, 100);
 }
 void WaterMonster::keepHealthBar(Slider* healthBar)
 {

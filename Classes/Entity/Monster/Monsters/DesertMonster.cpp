@@ -49,7 +49,7 @@ void DesertMonster::initMonster(int maxHealthPoint, int attack, int defence, flo
 ****************************/
 void DesertMonster::initMonster()
 {
-	_panel.init(2000, 0, 100, 0.0f, 0.0f, 0);
+	_panel.init(1000, 100, 100, 1.0f, 1.0f, 100);
 }
 void DesertMonster::keepHealthBar(Slider* healthBar)
 {

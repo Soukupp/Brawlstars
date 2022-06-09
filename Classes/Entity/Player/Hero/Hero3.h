@@ -51,8 +51,8 @@ using namespace cocos2d;
 #define HERO3_INIT_MAXHEALTHPOINT 800
 #define HERO3_INIT_ATTACK 130
 #define HERO3_INIT_DEFENCE 90
-#define HERO3_INIT_SKILLRATE 3.5f
-#define HERO3_INIT_ATTACKRATE 0.6f
+#define HERO3_INIT_SKILLRATE 3.9f
+#define HERO3_INIT_ATTACKRATE 0.8f
 
 /*==============================!!!!!“‘…œ∫Í«ÎŒ–ﬁ∏ƒ!!!!!=================================*/
 class Hero1;

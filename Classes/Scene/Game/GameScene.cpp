@@ -115,6 +115,7 @@ bool GameScene::init()
 	this->addChild(MapLayer1, 0);
 
 	/*=====================创建背景音乐开始=======================*/
+	CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("music/retro_fight_ingame_01.mp3");
 	if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
 	{
 		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/retro_fight_ingame_01.mp3", true);
