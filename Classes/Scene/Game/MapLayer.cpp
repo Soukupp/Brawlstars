@@ -550,7 +550,6 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 			}
 			PLAYER->_panel.setIfPlayAttackAnimation(false);                                          //保证不会实现连续攻击
 																									  //检测攻击时是否碰到PLAYER1
-			//此处仅为测试，_player1是哪个对象需要后期遍历算法得到（目前_player1为ai7）
 
 			PLAYER->_panel.setIfPlayNormalAnimationInUpdate2(true);                                  //使得可以调用update2
 			bool ifAttackEnemy = false;
@@ -668,16 +667,30 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 {
 	static std::vector<Vec2> playerVisionArea = {};
 	
+	int count = 0;
+
 	for (int i = 0; i < playerVisionArea.size(); ++i)
 	{
 		Vec2 treetileCoord = this->tileCoordFromPosition(playerVisionArea[i]);
 		if (_tree->getTileAt(treetileCoord))
 		{
+			count++;
 			_treecell = _tree->getTileAt(treetileCoord); //通过tile坐标访问指定草丛单元格
 			_treecell->setOpacity(255);  //不透明
-			playerOpacity = 0;
 		}
 	}
+
+	if (count == 5)  //周围都不透明
+	{
+		playerOpacity = MAP_PLAYER_NOT_IN_TREE;
+		count = 0;
+	}
+	else
+	{
+		playerOpacity = MAP_PLAYER_IN_TREE_AND_NOT_AROUND_AI;
+		count = 0;
+	}
+
 	Vec2 cellsize = _tileMap->getTileSize();
 
 	playerVisionArea = {
@@ -693,11 +706,30 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 		if (AI_PLAYER(i)->_panel.getIsSurvive())
 		{
 			Vec2 treetileCoord = this->tileCoordFromPosition(AI_PLAYER(i)->getPosition());
-			if (_tree->getTileAt(treetileCoord)) // AI的位置有树丛
-				//AI_PLAYER(i)->setVisible(false);
-				;
+			if (_tree->getTileAt(treetileCoord))// AI的位置有树丛
+			{
+				if (playerOpacity == MAP_PLAYER_IN_TREE_AND_NOT_AROUND_AI)
+				{
+					AI_PLAYER(i)->setVisible(false);
+					allCharacter[i]._healthBar->setVisible(false);
+					allCharacter[i]._magicBar->setVisible(false);
+					allCharacter[i]._levelText->setVisible(false);
+				}
+				else if (playerOpacity == MAP_PLAYER_IN_TREE_AND_AROUND_AI)
+				{
+					AI_PLAYER(i)->setVisible(true);
+					allCharacter[i]._healthBar->setVisible(true);
+					allCharacter[i]._magicBar->setVisible(true);
+					allCharacter[i]._levelText->setVisible(true);
+				}
+			}
 			else
+			{
 				AI_PLAYER(i)->setVisible(true);
+				allCharacter[i]._healthBar->setVisible(true);
+				allCharacter[i]._magicBar->setVisible(true);
+				allCharacter[i]._levelText->setVisible(true);
+			}
 		}
 	}
 	
@@ -706,22 +738,33 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 		Vec2 treetileCoord = this->tileCoordFromPosition(playerVisionArea[i]);
 		if (_tree->getTileAt(treetileCoord))
 		{
+			count++;
 			_treecell = _tree->getTileAt(treetileCoord); //通过tile坐标访问指定草丛单元格
 			_treecell->setOpacity(100);  //透明
-			playerOpacity = 1;
 		}
-		for (int i = 1; i < allCharacter.size(); ++i)
+	}
+
+	if (count != 0)
+	{
+		playerOpacity = MAP_PLAYER_IN_TREE_AND_NOT_AROUND_AI;
+		count = 0;
+	}
+
+	for (int i = 1; i < allCharacter.size(); ++i)
+	{
+		if (AI_PLAYER(i)->_panel.getIsSurvive())
 		{
-			if (AI_PLAYER(i)->_panel.getIsSurvive())
+			if (AI_PLAYER(i)->getPositionX() <= (pos.x + MAP_PLAYER_TO_AI_VISIBLE_SIZE) &&
+				AI_PLAYER(i)->getPositionX() >= (pos.x - MAP_PLAYER_TO_AI_VISIBLE_SIZE) &&
+				AI_PLAYER(i)->getPositionY() <= (pos.y + MAP_PLAYER_TO_AI_VISIBLE_SIZE) &&
+				AI_PLAYER(i)->getPositionY() >= (pos.y - MAP_PLAYER_TO_AI_VISIBLE_SIZE))
+//				&&((playerOpacity == 1) || (playerOpacity = 2)))
 			{
-				if (AI_PLAYER(i)->getPositionX() <= (treetileCoord.x + MAP_PORTAL_SIZE) &&
-					AI_PLAYER(i)->getPositionX() >= (treetileCoord.x - MAP_PORTAL_SIZE) &&
-					AI_PLAYER(i)->getPositionY() <= (treetileCoord.y + MAP_PORTAL_SIZE) &&
-					AI_PLAYER(i)->getPositionY() >= (treetileCoord.y - MAP_PORTAL_SIZE) &&
-					playerOpacity == 1)
-				{
-					AI_PLAYER(i)->setVisible(true);
-				}
+				AI_PLAYER(i)->setVisible(true);
+				allCharacter[i]._healthBar->setVisible(true);
+				allCharacter[i]._magicBar->setVisible(true);
+				allCharacter[i]._levelText->setVisible(true);
+				playerOpacity = MAP_PLAYER_IN_TREE_AND_AROUND_AI;
 			}
 		}
 	}
@@ -889,6 +932,16 @@ void MapLayer::update2(float delta)
 						setCharacterPosition(deathPosition, CHARACTER(i));
 						log("player kill ai %d",i);
 						savePlayerKill();
+						//
+						if (PLAYER->getID() == 1)
+							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/gun2_kill.mp3");
+						else if (PLAYER->getID() == 2)
+							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/sword_kill.mp3");
+						else if (PLAYER->getID() == 3)
+							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_kill.mp3");
+						else if (PLAYER->getID() == 4)
+							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4_kill.mp3");
+
 					}
 
 				}
@@ -1005,7 +1058,11 @@ void MapLayer::updateForPortal(float delta)
 void MapLayer::updateForFog(float delta)
 {
 	//_SafeArea;
-
+	fog_turn++;
+	if (fog_turn == 1)
+		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/first_takedown.mp3");
+	else if (fog_turn == 2)
+		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/double_takedown.mp3");
 	/*ScaleBy* SafeAreaScaleBy = ScaleBy::create(2.0f, 0.8f);*/
 	_SafeArea->runAction(ScaleBy::create(2.0f, 0.8f));
 

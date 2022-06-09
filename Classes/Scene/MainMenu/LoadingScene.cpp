@@ -110,13 +110,15 @@ bool LoadingScene::init()
 	// 进入设置界面的音效
 	SimpleAudioEngine::getInstance()->preloadEffect("music/to_a_new_scene.mp3");
 	
-	
+	// 选择AInumber成功
+	SimpleAudioEngine::getInstance()->preloadEffect("music/select_ok.mp3");
 	
 	// 以下是printed eggshell 音效
 	SimpleAudioEngine::getInstance()->preloadEffect("music/printed_eggshell_1.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/printed_eggshell_2.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/printed_eggshell_3.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/printed_eggshell_4.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/store_ai_number.mp3");
 
 
 	// 以下都和技能有关
@@ -132,7 +134,6 @@ bool LoadingScene::init()
 	SimpleAudioEngine::getInstance()->preloadEffect("music/hero2.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/hero3.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/hero4.mp3");
-	SimpleAudioEngine::getInstance()->preloadEffect("music/hero5.mp3");
 
 
 	// 以下英雄杀死AI时候用到
@@ -140,7 +141,15 @@ bool LoadingScene::init()
 	SimpleAudioEngine::getInstance()->preloadEffect("music/gun2_kill.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/knife_kill.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/sword_kill.mp3");
-	SimpleAudioEngine::getInstance()->preloadEffect("music/hero5_kill.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/hero4_kill.mp3");
+
+	// 击杀怪兽升级
+	SimpleAudioEngine::getInstance()->preloadEffect("music/update.mp3");
+
+	// 缩圈第一、二次提示
+	SimpleAudioEngine::getInstance()->preloadEffect("music/first_takedown.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("music/double_takedown.mp3");
+
 
 	/*=======================预加载Audio结束=======================*/
 

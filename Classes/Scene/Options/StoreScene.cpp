@@ -242,73 +242,69 @@ void StoreScene::storeSelectMap1Callback(cocos2d::Ref* pSender)
 }
 
 
-
-
-
-
 /****************************
 * Name ：StoreScene::Select_AI_5_Callback
-* Summary  回调函数，，选择地图，返回主菜单
+* Summary ：AI人数为5
 * return ：
 * ***************************/
 void StoreScene::Select_AI_5_Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 5);
 }
 
 
 /****************************
 * Name ：StoreScene::Select_AI_6_Callback
-* Summary  回调函数，，选择地图，返回主菜单
+* Summary ：AI人数为6
 * return ：
 * ***************************/
 void StoreScene::Select_AI_6_Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 6);
 }
 
 
 /****************************
 * Name ：StoreScene::Select_AI_7_Callback
-* Summary  回调函数，，选择地图，返回主菜单
+* Summary ：AI人数为7
 * return ：
 * ***************************/
 void StoreScene::Select_AI_7_Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 7);
 }
 
 
 /****************************
 * Name ：StoreScene::Select_AI_8_Callback
-* Summary  回调函数，，选择地图，返回主菜单
+* Summary ：AI人数为8
 * return ：
 * ***************************/
 void StoreScene::Select_AI_8_Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 8);
 }
 
 
 /****************************
 * Name ：StoreScene::Select_AI_9_Callback
-* Summary  回调函数，，选择地图，返回主菜单
+* Summary ：AI人数为9
 * return ：
 * ***************************/
 void StoreScene::Select_AI_9_Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 9);
 }
 
 
 void StoreScene::AINumberTipCallback(cocos2d::Ref* pSender)
 {
-
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/store_ai_number.mp3");
 }
 
 /****************************
