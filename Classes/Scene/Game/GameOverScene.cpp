@@ -45,87 +45,89 @@ bool GameOverScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto GameOverBackground = Sprite::create("background/GameOverBackground.png");
-    GameOverBackground->setPosition(Vec2(origin.x + visibleSize.width / 2,
-        origin.y + visibleSize.height / 2));
+    auto GameOverBackground = Sprite::create("background/GameOverBackground.jpg");
+    GameOverBackground->setPosition(Vec2(GAMEOVER_BACKGROUND_POSITION));
     this->addChild(GameOverBackground, 0);
 
 
-    auto closeItem = MenuItemImage::create(
-        "ui/CloseNormal.png",
-        "ui/CloseSelected.png",
+    auto settingsBackItem = MenuItemImage::create(
+        "ui/backSettingsNormal.png",
+        "ui/backSettingsSelected.png",
         CC_CALLBACK_1(GameOverScene::menuCloseCallback, this));
 
-    if (closeItem == nullptr ||
-        closeItem->getContentSize().width <= 0 ||
-        closeItem->getContentSize().height <= 0)
+    if (settingsBackItem == nullptr ||
+        settingsBackItem->getContentSize().width <= 0 ||
+        settingsBackItem->getContentSize().height <= 0)
     {
-        problemLoading("'ui/CloseNormal.png' and 'ui/CloseSelected.png'");
+        problemLoading("'ui/backSettingsNormal.png' and 'ui/backSettingsSelected.png'");
     }
     else
     {
-        float x = origin.x + visibleSize.width - closeItem->getContentSize().width / 2;
-        float y = origin.y + closeItem->getContentSize().height / 2;
-        closeItem->setPosition(Vec2(x, y));
+        settingsBackItem->setPosition(Vec2(GAMEOVER_BACK_ITEM_POSITION_X, GAMEOVER_BACK_ITEM_POSITION_Y));
     }
+    //创建返回菜单
+    auto backMenu = Menu::create(settingsBackItem, NULL);
+    backMenu->setPosition(Vec2::ZERO);
+    this->addChild(backMenu, 6);
 
-    // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
-
-    auto label = Label::createWithTTF("Victory!", "fonts/Marker Felt.ttf", 60);
+    auto label = Label::createWithTTF("GAME OVER", "fonts/Marker Felt.ttf", 60);
     if (label == nullptr)
     {
         problemLoading("'fonts/Marker Felt.ttf'");
     }
     else
     {
-        // position the label on the center of the screen
-        label->setPosition(Vec2(origin.x + visibleSize.width / 2,
-            origin.y + visibleSize.height - label->getContentSize().height));
-
-        // add the label as a child to this layer
+        label->setPosition(Vec2(GAMEOVER_TITLE_LABLE_POSITION_X, GAMEOVER_TITLE_LABLE_POSITION_Y));
         this->addChild(label, 1);
     }
 
-    const Color4B labelTextColor(255, 255, 255, 255);//创建4B颜色
-    const Color4B labelOutlineColor(0, 0, 0, 255);//创建4B颜色
+    int selectedHero = UserDefault::getInstance()->getIntegerForKey("selectedHero");
 
-    auto rankString = "YOUR POSITION : NO." + std::to_string(UserDefault::getInstance()->getIntegerForKey("PlayerRank"));
-    auto rankLabel = Label::createWithTTF(rankString, "fonts/Marker Felt.ttf", 72);
-    if (rankLabel == nullptr)
+    std::string playerName;
+
+    switch (selectedHero)
     {
-        log("rankLabel false");
+        case 1:
+            hero1();
+            playerName = "Winston";
+            break;
+        case 2:
+            hero2();
+            playerName = "Wrderly";
+            break;
+        case 3:
+            hero3();
+            playerName = "Pearl";
+            break;
+        case 4:
+            hero4();
+            playerName = "Soren";
+            break;
     }
+
+    std::string tip;
+    if (UserDefault::getInstance()->getIntegerForKey("PlayerRank") <= 4)
+        tip = "   CONGRATULATION!";
     else
-    {
-        log("rankLabel true");
-        
-        rankLabel->setTextColor(labelTextColor);
-        rankLabel->enableOutline(labelOutlineColor,2);
-        rankLabel->setPosition(Vec2(origin.x + visibleSize.width / 2,
-            origin.y + visibleSize.height / 3 * 2));
-        this->addChild(rankLabel, 1);
-    }
+        tip = "    WHAT A PITY!";
+
+   
+
+    auto GameOverInformation = InformationPopLayer::create
+    ("background/HeroInformationBackground.png", Size(470, 350), 150);
+    GameOverInformation->setPosition(Vec2(170, 0)); // 变大往右
+    auto infoString = tip 
+        + "\n" +
+        "HERO:     " + playerName
+        + "\n" +
+        "YOUR RANK : NO." + std::to_string(UserDefault::getInstance()->getIntegerForKey("PlayerRank"))
+        + "\n" +
+        "KILL COUNT :        " + std::to_string(UserDefault::getInstance()->getIntegerForKey("HitNum"));
+    GameOverInformation->setContentText(infoString.c_str(), "fonts/Lilita one.ttf", 45, MAINMENU_INFORMATION_CONTENT_TEXT_PADDING,
+        MAINMENU_INFORMATION_CONTENT_TEXT_PADDINGTOP);
+    this->addChild(GameOverInformation, 4);
 
 
-    auto hitString = "YOU KILLED : " + std::to_string(UserDefault::getInstance()->getIntegerForKey("HitNum")) + " ENEMY";
-    auto hitLabel = Label::createWithTTF(hitString, "fonts/Marker Felt.ttf", 60);
-    if (hitLabel == nullptr)
-    {
-        log("hitLabel false");
-    }
-    else
-    {
-        log("hitLabel true");
- 
-        hitLabel->setTextColor(labelTextColor);
-        hitLabel->enableOutline(labelOutlineColor, 2);
-        hitLabel->setPosition(Vec2(origin.x + visibleSize.width / 2,
-            origin.y + visibleSize.height / 2));
-        this->addChild(hitLabel, 1);
-    }
     
     return true;
 }
@@ -139,4 +141,100 @@ void GameOverScene::menuCloseCallback(Ref* pSender)
 {
     auto MMS = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(MMS);
+}
+
+
+void GameOverScene::hero1()
+{
+    auto hero1 = Sprite::create("Character/Hero1/hero.png");
+    hero1->setPosition(GAMEOVER_HERO_ANIMATON_POSITION);
+    addChild(hero1);
+    auto* m_frameCache = CCSpriteFrameCache::getInstance();
+    m_frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Start.plist", "Character/Hero1/hero1_Start.png");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero1.mp3");
+    Vector<CCSpriteFrame*> hero1FrameArray;
+    for (int i = 4; i < 8; i++)
+    {
+        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("adventurer-idle (%d).png", i)->getCString());
+        hero1FrameArray.pushBack(frame);
+    }
+    auto* animation1 = Animation::createWithSpriteFrames(hero1FrameArray);
+    animation1->setDelayPerUnit(0.15f);
+    animation1->setRestoreOriginalFrame(true);
+    animation1->setLoops(-1);
+    hero1->setScale(5.0f);
+    auto* action1 = Animate::create(animation1);
+
+    hero1->runAction(action1);
+}
+
+
+void GameOverScene::hero2()
+{
+    auto hero2 = Sprite::create("Character/Hero2/hero.png");
+    hero2->setPosition(GAMEOVER_HERO_ANIMATON_POSITION);
+    addChild(hero2);
+    auto* m_frameCache = CCSpriteFrameCache::getInstance();
+    m_frameCache->addSpriteFramesWithFile("Character/Hero2/hero2_Normal.plist", "Character/Hero2/hero2_Normal.png");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero2.mp3");
+    Vector<CCSpriteFrame*> hero2FrameArray;
+    for (int i = 0; i < 8; i++)
+    {
+        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("Idle-%d.png", i)->getCString());
+        hero2FrameArray.pushBack(frame);
+    }
+    auto* animation1 = Animation::createWithSpriteFrames(hero2FrameArray);
+    animation1->setDelayPerUnit(0.1f);
+    animation1->setRestoreOriginalFrame(true);
+    animation1->setLoops(-1);
+    hero2->setScale(5.0f);
+    auto* action1 = Animate::create(animation1);
+
+    hero2->runAction(action1);
+}
+
+
+void GameOverScene::hero3()
+{
+    auto hero3 = Sprite::create("Character/Hero3/hero.png");
+    hero3->setPosition(GAMEOVER_HERO_ANIMATON_POSITION);
+    addChild(hero3);
+    auto* m_frameCache = CCSpriteFrameCache::getInstance();
+    m_frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Start.plist", "Character/Hero3/hero3_Start.png");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero3.mp3");
+    Vector<CCSpriteFrame*> hero3FrameArray;
+    for (int i = 0; i < 6; i++)
+    {
+        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("Idle3-%d.png", i)->getCString());
+        hero3FrameArray.pushBack(frame);
+    }
+    auto* animation = Animation::createWithSpriteFrames(hero3FrameArray);
+    animation->setDelayPerUnit(0.1f);
+    animation->setLoops(-1);
+    hero3->setScale(5.0f);
+    auto* action = Animate::create(animation);
+    hero3->runAction(action);
+}
+
+
+void GameOverScene::hero4()
+{
+    auto hero4 = Sprite::create("Character/Hero4/hero.png");
+    hero4->setPosition(GAMEOVER_HERO_ANIMATON_POSITION);
+    addChild(hero4);
+    auto* m_frameCache = CCSpriteFrameCache::getInstance();
+    m_frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Normal.plist", "Character/Hero4/hero4_Normal.png");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4.mp3");
+    Vector<CCSpriteFrame*> hero4FrameArray;
+    for (int i = 0; i < 8; i++)
+    {
+        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("Idle4 (%d).png", i)->getCString());
+        hero4FrameArray.pushBack(frame);
+    }
+    auto* animation = Animation::createWithSpriteFrames(hero4FrameArray);
+    animation->setDelayPerUnit(0.1f);
+    animation->setLoops(-1);
+    hero4->setScale(5.0f);
+    auto* action = Animate::create(animation);
+    hero4->runAction(action);
 }
