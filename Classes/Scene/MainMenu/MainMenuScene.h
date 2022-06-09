@@ -19,6 +19,9 @@
 #define MAINMENU_MAINMENU_POSITION_X visibleSize.width / 2 + origin.x
 #define MAINMENU_MAINMENU_POSITION_Y origin.y + mainMenu->getContentSize().height / 2
 
+#define MAINMENU_PLAYERMASSAGE_POSITION_X origin.x + playerMassageItem->getContentSize().width
+#define MAINMENU_PLAYERMASSAGE_POSITION_Y origin.y + visibleSize.height - playerMassageItem->getContentSize().height
+
 #define MAINMENU_TEXT_RGB_COLOR 105, 105, 105
 #define MAINMENU_TITLE_RGB_COLOR 238, 201, 0
 
@@ -55,6 +58,11 @@ public:
     void menuMapCallback(cocos2d::Ref* pSender);
     void menuHerosCallback(cocos2d::Ref* pSender);
     void menuSettingsCallback(cocos2d::Ref* pSender);
+
+    void playerMassageCallback(cocos2d::Ref* pSender);
+
+    int getUserInt(const char* name);
+    void setUserInt(const char* name, int num);
 
     //´´½¨
     CREATE_FUNC(MainMenuScene);

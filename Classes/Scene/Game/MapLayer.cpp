@@ -1222,6 +1222,8 @@ void MapLayer::updateAIMove(float delta)
 		}
 	}
 	_numOfPlayer = tempNum;
+	setUserInt("_numOfPlayer", _numOfPlayer);
+	setUserInt("_hitNum", PLAYER->_panel.getHitnum());
 	if (_numOfPlayer == 1)
 	{
 		gameOver();
@@ -1540,6 +1542,18 @@ void MapLayer::saveData()
 ****************************/
 void MapLayer::gameOver()
 {
+	/**/
+	if (_numOfPlayer == 1)
+	{
+		setUserInt("_winTimes", 1 + getUserInt("_winTimes"));
+	}
+	setUserInt("_gameTimes", 1 + getUserInt("_gameTimes"));
+	setUserInt("_killNums", PLAYER->_panel.getHitnum() + getUserInt("_killNums"));
+	if (_numOfPlayer <= 5)
+	{
+		setUserInt("_cupNums", 6 - _numOfPlayer + getUserInt("_cupNums"));
+	}
+	/**/
 	auto GOS = GameOverScene::createScene();
 	Director::getInstance()->replaceScene(GOS);
 }
@@ -1588,4 +1602,13 @@ void MapLayer::setCharacterPosition(Vec2 position, Character& character)
 {
 	character._player->setPositionWithAll(position,
 		character._weapon, character._healthBar, character._magicBar, character._levelText);
+}
+
+int MapLayer::getUserInt(const char* name)
+{
+	return UserDefault::getInstance()->getIntegerForKey(name);
+}
+void MapLayer::setUserInt(const char* name, int num)
+{
+	UserDefault::getInstance()->setIntegerForKey(name, num);
 }
