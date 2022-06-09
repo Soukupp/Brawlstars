@@ -312,21 +312,21 @@ bool Hero1::playerCollisionTest1(Player* target, Weapon* weapon)
 {
 	if (target == nullptr)
 		return false;
-	float targetX = target->getPosition().x;                           //目标位置X
-	float targetY = target->getPosition().y;                           //目标位置Y
-	float targetWidth = target->_width;         //目标的宽度
-	float targetHeight = target->_height;        //目标的高度
-	float weaponWidth = weapon->getContentSize().width;                //攻击范围的宽度
-	float weaponHeight = weapon->getContentSize().height;              //攻击范围的高度
+	_targetX = target->getPosition().x;                           //目标位置X
+	_targetY = target->getPosition().y;                           //目标位置Y
+	_targetWidth = target->_width;                                //目标的宽度
+	_targetHeight = target->_height;                              //目标的高度
+	_weaponWidth = weapon->getContentSize().width;                //攻击范围的宽度
+	_weaponHeight = weapon->getContentSize().height;              //攻击范围的高度
 
-	float thisX = this->getPosition().x;
-	float thisY = this->getPosition().y;
+	_thisX = this->getPosition().x;
+	_thisY = this->getPosition().y;
 
 	if (_direct == 1) 
 	{
-		if ((targetX - thisX) < (weaponWidth + targetWidth / 2) && (thisX - targetX) <= 0)
+		if ((_targetX - _thisX) < (_weaponWidth + _targetWidth / 2) && (_thisX - _targetX) <= 0)
 		{           //范围判定
-			if (fabs(thisY - targetY) < (weaponHeight / 2 + targetHeight / 2)) 
+			if (fabs(_thisY - _targetY) < (_weaponHeight / 2 + _targetHeight / 2)) 
 			{
 				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
 				return true;
@@ -342,9 +342,9 @@ bool Hero1::playerCollisionTest1(Player* target, Weapon* weapon)
 	}
 	if (_direct == -1) 
 	{
-		if ((thisX - targetX) < (weaponWidth + targetWidth / 2) && (thisX - targetX) >= 0) 
+		if ((_thisX - _targetX) < (_weaponWidth + _targetWidth / 2) && (_thisX - _targetX) >= 0) 
 		{           //范围判定
-			if (fabs(thisY - targetY) < (weaponHeight / 2 + targetHeight / 2))
+			if (fabs(_thisY - _targetY) < (_weaponHeight / 2 + _targetHeight / 2))
 			{
 				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
 				return true;
@@ -361,21 +361,21 @@ bool Hero1::playerCollisionTest1(Player* target, Weapon* weapon)
 }
 bool Hero1::playerCollisionTest2(Player* target, Weapon* weapon)
 {
-	float targetX = target->getPosition().x;                           //目标位置X
-	float targetY = target->getPosition().y;                           //目标位置Y
-	float targetWidth = target->_width;         //目标的宽度
-	float targetHeight = target->_height;        //目标的高度
-	float weaponWidth = weapon->getContentSize().width;                //攻击范围的宽度
-	float weaponHeight = weapon->getContentSize().height;              //攻击范围的高度
+	_targetX = target->getPosition().x;                           //目标位置X
+	_targetY = target->getPosition().y;                           //目标位置Y
+	_targetWidth = target->_width;         //目标的宽度
+	_targetHeight = target->_height;        //目标的高度
+	_weaponWidth = weapon->getContentSize().width;                //攻击范围的宽度
+	_weaponHeight = weapon->getContentSize().height;              //攻击范围的高度
 
-	float thisX = this->getPosition().x;
-	float thisY = this->getPosition().y;
+	_thisX = this->getPosition().x;
+	_thisY = this->getPosition().y;
 
 	if (_direct == 1) 
 	{
-		if ((targetX - thisX) < (weaponWidth + targetWidth / 2) && (thisX - targetX) <= 0)
+		if ((_targetX - _thisX) < (_weaponWidth + _targetWidth / 2) && (_thisX - _targetX) <= 0)
 		{           //范围判定
-			if (fabs(thisY - targetY) < (weaponHeight / 2 + targetHeight / 2))
+			if (fabs(_thisY - _targetY) < (_weaponHeight / 2 + _targetHeight / 2))
 			{
 				return true;
 			}
@@ -388,9 +388,9 @@ bool Hero1::playerCollisionTest2(Player* target, Weapon* weapon)
 	}
 	if (_direct == -1)
 	{
-		if ((thisX - targetX) < (weaponWidth + targetWidth / 2) && (thisX - targetX) >= 0)
+		if ((_thisX - _targetX) < (_weaponWidth + _targetWidth / 2) && (_thisX - _targetX) >= 0)
 		{           //范围判定
-			if (fabs(thisY - targetY) < (weaponHeight / 2 + targetHeight / 2))
+			if (fabs(_thisY - _targetY) < (_weaponHeight / 2 + _targetHeight / 2))
 			{
 				return true;
 			}
