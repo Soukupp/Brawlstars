@@ -188,7 +188,7 @@ void Panel::setDefence(int defence)
 * Summary £ºÉèÖÃÆÕ¹¥±¶ÂÊ
 * return £º
 ****************************/
-void Panel::setAttackRate(int attackRate)
+void Panel::setAttackRate(float attackRate)
 {
 	_attackRate = attackRate;
 }
@@ -197,7 +197,7 @@ void Panel::setAttackRate(int attackRate)
 * Summary £ºÉèÖÃÆÕ¹¥±¶ÂÊ
 * return £º
 ****************************/
-void Panel::setSkillRate(int skillRate)
+void Panel::setSkillRate(float skillRate)
 {
 	_skillRate = skillRate;
 }
