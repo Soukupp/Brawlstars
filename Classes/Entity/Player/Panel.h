@@ -69,8 +69,8 @@ public:
     void setMagicPoint(int magicPoint);
     void setAttack(int attack);
     void setDefence(int defence);
-    void setAttackRate(int attackRate);
-    void setSkillRate(int skillRate);
+    void setAttackRate(float attackRate);
+    void setSkillRate(float skillRate);
     
     void setIsSurvive(bool survive);
     void setCanBeSeen(bool canBeSeen);

@@ -945,6 +945,8 @@ void MapLayer::update2(float delta)
 					if (!AI_PLAYER(i)->_panel.getIsSurvive())  // AI死亡
 					{
 						PLAYER->upgrade(LEVELTEXT, HEALTHBAR);
+						log("attack %d", PLAYER->_panel.getAttack());
+						log("attackrate %d", PLAYER->_panel.getAttackRate());
 						setCharacterVisible(false, CHARACTER(i));
 						setCharacterPosition(deathPosition, CHARACTER(i));
 						log("player kill ai %d",i);
@@ -985,9 +987,12 @@ void MapLayer::update2(float delta)
 						log("skill!");
 						PLAYER->launchAnAttack(WEAPON,"skill", MAGICBAR, MONSTER(i), MONSTER_HEALTHBAR(i));
 					}
-					if (!MONSTER(i)->_panel.getIsSurvive())  // AI死亡
+					if (!MONSTER(i)->_panel.getIsSurvive())  // 怪兽死亡
 					{
 						PLAYER->upgrade(LEVELTEXT, HEALTHBAR);
+						log("attack %d", PLAYER->_panel.getAttack());
+						log("attackrate %f", PLAYER->_panel.getAttackRate());
+						log("skillrate %f", PLAYER->_panel.getSkillRate());
 						getBuff(CHARACTER(0), i);
 						MONSTER(i)->setVisible(false);
 						MONSTER_HEALTHBAR(i)->setVisible(false);
