@@ -280,8 +280,8 @@ void MainMenuScene::menuInfoCallback(Ref* pSender)
 void MainMenuScene::menuStartCallback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    auto gameScene = GameScene::createScene();   // 转入GameScene
-    Director::getInstance()->replaceScene(gameScene);//mainmenu已被释放
+    auto GLS1 = GameLoadingScene1::createScene();   // 转入GameLoadingScene1
+    Director::getInstance()->replaceScene(TransitionFade::create(1, GLS1));//mainmenu已被释放
 }
 
 
