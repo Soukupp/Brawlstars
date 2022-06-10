@@ -85,6 +85,54 @@ bool SettingsScene::init()
     this->addChild(backMenu, 2);
     /*=====================创建关闭按钮结束====================*/
 
+    /*=================创建清除用户数据按钮开始================*/
+
+    //创建返回按钮
+    auto clearUserDataItem = MenuItemImage::create(
+        "ui/clearUserDataNormal.png",
+        "ui/clearUserDataSelected.png",
+        CC_CALLBACK_1(SettingsScene::clearUserDataCallback, this));
+
+    if (clearUserDataItem == nullptr ||
+        clearUserDataItem->getContentSize().width <= 0 ||
+        clearUserDataItem->getContentSize().height <= 0)
+    {//错误处理
+        problemLoading("'ui/clearUserDataNormal.png' and 'ui/clearUserDataSelected.png'");
+    }
+    else
+    {//设置位置
+        float x = SETTINGS_CLEAR_USERDATA_ITEM_POSITION_X;
+        float y = SETTINGS_CLEAR_USERDATA_ITEM_POSITION_Y;
+        clearUserDataItem->setPosition(Vec2(x, y));
+    }
+    //创建返回菜单
+    auto clearUserDataMenu = Menu::create(clearUserDataItem, NULL);
+    clearUserDataMenu->setPosition(Vec2::ZERO);
+    this->addChild(clearUserDataMenu, 2);
+
+    //创建文本
+    auto clearUserDataLabel = Label::createWithTTF(
+        "ClearYour\nUserData",
+        "fonts/PixeloidSans.ttf",
+        16
+    );
+    if (clearUserDataLabel == nullptr)
+    {
+        problemLoading("'fonts/PixeloidSans.ttf'");
+    }
+    else
+    {
+        const Color4B gameNameLabelColor(220, 0, 0, 255);//创建4B颜色
+        clearUserDataLabel->setTextColor(gameNameLabelColor);
+        clearUserDataLabel->setPosition(
+            Vec2(SETTINGS_CLEARUSERDATA_LABEL_POSITION_X,
+                SETTINGS_CLEARUSERDATA_LABEL_POSITION_Y)
+        );
+
+        this->addChild(clearUserDataLabel, 2);
+    }
+    /*=================创建清除用户数据按钮结束==============*/
+
     /*=====================创建标题开始======================*/
 
     auto settingsNameLabel = Label::createWithTTF(
@@ -298,5 +346,29 @@ void SettingsScene::settingsFPSCallBack(Ref* pSender)
         director->setDisplayStats(true);
         UserDefault::getInstance()->setBoolForKey("ifShowFPS", true);
         _displayedFPSStates->setString(StringUtils::format("DISPLAY FPS"));
+    }
+}
+/****************************
+* Name ：SettingsScene::clearUserDataCallback
+* Summary  回调函数
+* return ：
+* ***************************/
+void SettingsScene::clearUserDataCallback(cocos2d::Ref* pSender)
+{
+    if (UserDefault::getInstance()->getIntegerForKey("_winTimes"))
+    {
+        UserDefault::getInstance()->setIntegerForKey("_winTimes", 0);
+    }
+    if (UserDefault::getInstance()->getIntegerForKey("_gameTimes"))
+    {
+        UserDefault::getInstance()->setIntegerForKey("_gameTimes", 0);
+    }
+    if (UserDefault::getInstance()->getIntegerForKey("_killNums"))
+    {
+        UserDefault::getInstance()->setIntegerForKey("_killNums", 0);
+    }
+    if (UserDefault::getInstance()->getIntegerForKey("_cupNums"))
+    {
+        UserDefault::getInstance()->setIntegerForKey("_cupNums", 0);
     }
 }

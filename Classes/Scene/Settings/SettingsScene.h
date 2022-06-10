@@ -12,6 +12,11 @@
 #define SETTINGS_BACK_ITEM_POSITION_X origin.x + settingsBackItem->getContentSize().width / 2
 #define SETTINGS_BACK_ITEM_POSITION_Y origin.y + settingsBackItem->getContentSize().height / 2
 
+#define SETTINGS_CLEAR_USERDATA_ITEM_POSITION_X origin.x + visibleSize.width - clearUserDataItem->getContentSize().width / 2
+#define SETTINGS_CLEAR_USERDATA_ITEM_POSITION_Y origin.y + clearUserDataItem->getContentSize().height / 2
+
+#define SETTINGS_CLEARUSERDATA_LABEL_POSITION_X origin.x + visibleSize.width - clearUserDataItem->getContentSize().width / 2 - clearUserDataLabel->getContentSize().width
+#define SETTINGS_CLEARUSERDATA_LABEL_POSITION_Y origin.y + clearUserDataItem->getContentSize().height / 2
 
 #define SETTINGS_NAME_LABEL_POSITION_X origin.x + visibleSize.width / 2
 #define SETTINGS_NAME_LABEL_POSITION_Y origin.y + visibleSize.height - settingsNameLabel->getContentSize().height
@@ -57,6 +62,8 @@ public:
     void settingsBackCallback(cocos2d::Ref* pSender);
     //按钮回调函数
     void settingsPlayCallBack(cocos2d::Ref* pSender);
+
+    void clearUserDataCallback(cocos2d::Ref* pSender);
 
     void sliderEvent(Ref* pSender, Slider::EventType type);   //滑动事件监听
 
