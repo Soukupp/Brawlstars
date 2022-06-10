@@ -41,6 +41,9 @@
 #define STORE_AI_NUMBER_9_POSITION  200 + 4 * STORE_AI_NUMBER_WIDTH, STORE_AI_NUMBER_HEIGHT
 #define STORE_AI_TIP 460, 138
 
+#define STORE_INVINCIBLE_POSITION 720, 650
+#define STORE_VINCIBLE_POSITION 260, 650
+
 
 #include "cocos2d.h"
 #include "Scene/MainMenu/MainMenuScene.h"
@@ -60,6 +63,9 @@ public:
     void Select_AI_8_Callback(cocos2d::Ref* pSender);
     void Select_AI_9_Callback(cocos2d::Ref* pSender);
 
+    void Select_Invincible_Mode_Callback(cocos2d::Ref* pSender);
+    void Select_Vincible_Mode_Callback(cocos2d::Ref* pSender);
+
     void AINumberTipCallback(cocos2d::Ref* pSender);
 
     void storeSelectMap1Callback(cocos2d::Ref* pSender);
@@ -70,6 +76,8 @@ public:
     void storeEggshell3Callback(cocos2d::Ref* pSender);
 
     int _selectedMap = 0;
+
+    int _selectedInvincible = 0;
 
     int _selectedAINumber = 9;
 

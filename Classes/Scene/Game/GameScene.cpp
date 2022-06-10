@@ -164,10 +164,23 @@ void GameScene::GameSettingsCallBack(cocos2d::Ref* pSender)
 	Director::getInstance()->pushScene(GSS);  // 此处用push的方式，保留游戏进度
 }
 
+
+/****************************
+* Name ：GameScene::getUserInt
+* Summary ：获取英雄名字
+* return ：英雄名字对应的ID
+****************************/
 int GameScene::getUserInt(const char* name)
 {
 	return UserDefault::getInstance()->getIntegerForKey(name);
 }
+
+
+/****************************
+* Name ：GameScene::setUserInt
+* Summary ：设置英雄名字对应的ID
+* return ：无
+****************************/
 void GameScene::setUserInt(const char* name, int num)
 {
 	UserDefault::getInstance()->setIntegerForKey(name, num);

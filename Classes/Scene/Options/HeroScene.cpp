@@ -99,7 +99,7 @@ bool HeroScene::init()
     }
     else
     {
-        const Color4B heroNameLabelColor(SETTINGS_TEXT_RGB_COLOR, 255);//创建4B颜色
+        const Color4B heroNameLabelColor(STORE_NAME_LABEL_COLOR, 255);//创建4B颜色
         heroNameLabel->setTextColor(heroNameLabelColor);
         heroNameLabel->setPosition(
             Vec2(HERO_NAME_LABEL_POSITION_X,
