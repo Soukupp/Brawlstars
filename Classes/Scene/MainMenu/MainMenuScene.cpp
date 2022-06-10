@@ -264,7 +264,7 @@ void MainMenuScene::menuInfoCallback(Ref* pSender)
     ("background/MainMenuINformationBackground.png", Size(700, 490), 150);
     MainMenuInformation->setPosition(0, -50);
     MainMenuInformation->setTitle("BRAWLSTARS INTRODUCTION", "fonts/Lilita one.ttf", 40);
-    MainMenuInformation->setContentText(" \n Welcome to  the BRAWLSTARS world, my handsome(pretty) brawlstar! \n Click \"MAP\" to select the map \n (Classic mode or Terrain warfare). \n Click \"HERO\" to select a hero (4 types). \n  After you choose, you can start your adventure! \n And if you feel that the sound is too loud or too low during your adventure journey, you can also personalize the settings on the menu page or in the game. \n Finally, I wish you a wonderful adventure!"
+    MainMenuInformation->setContentText(" \n Welcome to the BRAWLSTARS world, my handsome(pretty) brawlstar! \n Click \"MAP\" to select the map \n (Classic mode or Terrain warfare). \n Click \"HERO\" to select a hero (4 types). \n  After you choose, you can start your adventure! \n If you need to adjust the volume during your adventure journey, you can also personalize the settings on the menu page or in the game. \n Finally, enjoy your wonderful adventure!"
         , "fonts/Lilita one.ttf", 30, MAINMENU_INFORMATION_CONTENT_TEXT_PADDING,
         MAINMENU_INFORMATION_CONTENT_TEXT_PADDINGTOP);
     MainMenuInformation->createButton("ui/button_close.png", "ui/button_close.png");
