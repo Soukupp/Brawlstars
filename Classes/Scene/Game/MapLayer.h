@@ -25,11 +25,11 @@
 
 #define MAP_SAFEAREA_SIZE 1920
 #define MAP_SAFEAREA_POSITION MAP_SAFEAREA_SIZE / 2,  MAP_SAFEAREA_SIZE / 2
-#define MAP_SAFEAREA_APPEAR_TIMES 15
+#define MAP_SAFEAREA_APPEAR_TIMES 5
 #define MAP_SAFEAREA_DELAY_LAST 30.0f
 #define MAP_SAFEAREA_INTERVAL_LAST 15.0f
 
-#define MAP_FOG_DENSITY 16
+#define MAP_FOG_DENSITY 24
 #define MAP_FOG_DAMAGE_TO_PLAYER 2
 #define MAP_PORTAL_SIZE 6
 #define MAP_PLAYER_TO_AI_VISIBLE_SIZE 30
@@ -64,6 +64,8 @@
 
 class MapLayer : public cocos2d::Layer
 {
+private:
+
     cocos2d::TMXTiledMap* _tileMap;
     cocos2d::TMXLayer* _collidable;
     cocos2d::TMXLayer* _watermonster;
@@ -108,6 +110,8 @@ class MapLayer : public cocos2d::Layer
     int fog_turn = 0;
 
     int _numOfPlayer;
+
+    int _invincibleMode;
 
     int playerOpacity = MAP_PLAYER_NOT_IN_TREE;  // 表示人可见，且不在树丛里
                                         //   1   // 表示人在树丛里，树丛半透明，且AI不在人的周围
@@ -176,7 +180,7 @@ public:
     void setUserInt(const char* name, int num);
 
     Animation* getAnimationByName(std::string fileName, float interval, int fileNum, int if_repeat = -1);
-    // implement the "static create()" method manually
+
     CREATE_FUNC(MapLayer);
 
 };

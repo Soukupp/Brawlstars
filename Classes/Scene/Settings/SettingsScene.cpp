@@ -111,7 +111,7 @@ bool SettingsScene::init()
 
     /*===================创建滑动条开始======================*/
 
-    _displayedPercentage = Text::create("0", "fonts/PixeloidSans.ttf", 27);          //_displayedPercentage 用于显示滑块拖动后所占比例
+    _displayedPercentage = Text::create("0", "fonts/Lilita one.ttf", 32);          //_displayedPercentage 用于显示滑块拖动后所占比例
     _displayedPercentage->setPosition(Vec2(SETTINGS_SETTINGSMENU_POSITION_X, SETTINGS_SETTINGSMENU_POSITION_Y));
 
     auto musicSlider = Slider::create();
@@ -130,11 +130,11 @@ bool SettingsScene::init()
 
     /*===================创建滑动条结束====================*/
 
-    /*===================创建标签开始========================*/
+    /*===================创建标签开始=======================*/
 
-    Label* settingsMusicLabel = Label::create("MUSIC SETTING", "fonts/PixeloidSans.ttf", 27);
+    Label* settingsMusicLabel = Label::create("MUSIC SETTING", "fonts/PixeloidSans.ttf", 35);
     settingsMusicLabel->setPosition(SETTINGS_SETTINGSMUSICLABEL_POSITION_X, SETTINGS_SETTINGSMUSICLABEL_POSITION_Y);
-    const Color4B settingsMusicLabelColor(255, 140, 15, 255);//创建4B颜色
+    const Color4B settingsMusicLabelColor(0, 0, 0, 255);//创建4B颜色
     settingsMusicLabel->setTextColor(settingsMusicLabelColor);
     
     this->addChild(settingsMusicLabel, 3);
@@ -154,11 +154,17 @@ bool SettingsScene::init()
     {
         musicOnOrOff->setSelectedIndex(0);
         _displayedMusicStates->setString(StringUtils::format("MUSIC ON"));
+        _displayedMusicStates->setFontName("fonts/Lilita one.ttf");
+        _displayedMusicStates->setFontSize(35);
+        _displayedMusicStates->enableShadow();
     }
     else
     {
         musicOnOrOff->setSelectedIndex(1);
         _displayedMusicStates->setString(StringUtils::format("MUSIC OFF"));
+        _displayedMusicStates->setFontName("fonts/Lilita one.ttf");
+        _displayedMusicStates->setFontSize(35);
+        _displayedMusicStates->enableShadow();
     }
 
     _displayedMusicStates->setTextColor(settingsMusicLabelColor);
@@ -181,11 +187,17 @@ bool SettingsScene::init()
        
         FPSOnOrOff->setSelectedIndex(0);
         _displayedFPSStates->setString(StringUtils::format("DISPLAY FPS"));
+        _displayedFPSStates->setFontName("fonts/Lilita one.ttf");
+        _displayedFPSStates->setFontSize(35);
+        _displayedFPSStates->enableShadow();
     }
     else
     {
         FPSOnOrOff->setSelectedIndex(1);
         _displayedFPSStates->setString(StringUtils::format("CONCEAL FPS"));
+        _displayedFPSStates->setFontName("fonts/Lilita one.ttf");
+        _displayedFPSStates->setFontSize(35);
+        _displayedFPSStates->enableShadow();
     }
 
     _displayedFPSStates->setTextColor(settingsMusicLabelColor);
