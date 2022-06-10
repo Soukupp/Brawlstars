@@ -39,6 +39,8 @@
 #include "Scene/Options/HeroScene.h"
 #include "Scene/Settings/SettingsScene.h"
 #include "Scene/Information/InformationPopLayer.h"
+#include "Scene/GameLoading/GameLoadingScene1.h"
+#include "windows.h"
 
 class MainMenuScene : public cocos2d::Scene
 {

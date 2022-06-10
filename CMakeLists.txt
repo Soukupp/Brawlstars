@@ -81,6 +81,9 @@ list(APPEND GAME_SOURCE
      Classes/Scene/Options/HeroScene.cpp
      Classes/Scene/Options/StoreScene.cpp
      Classes/Scene/Information/InformationPopLayer.cpp
+
+     Classes/Scene/GameLoading/GameLoadingScene1.cpp
+     Classes/Scene/GameLoading/GameLoadingScene2.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -117,6 +120,9 @@ list(APPEND GAME_HEADER
      Classes/Scene/Options/StoreScene.h
      Classes/Entity/Define/Definitions.h
      Classes/Scene/Information/InformationPopLayer.h
+
+     Classes/Scene/GameLoading/GameLoadingScene1.h
+     Classes/Scene/GameLoading/GameLoadingScene2.h
      )
 
 if(ANDROID)
