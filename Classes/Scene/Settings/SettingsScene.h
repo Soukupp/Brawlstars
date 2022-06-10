@@ -39,7 +39,7 @@
 #define SETTINGS_SETTINGSFPSLABEL_POSITION_X visibleSize.width / 4 + origin.x
 #define SETTINGS_SETTINGSFPSLABEL_POSITION_Y visibleSize.height / 3 + origin.y+20
 
-#define SETTINGS_TEXT_RGB_COLOR 255, 165, 0
+#define SETTINGS_TEXT_RGB_COLOR 0, 0, 0
 
 
 #define SETTINGS_NAME_LABEL_SIZE 64

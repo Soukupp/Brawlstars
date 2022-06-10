@@ -135,15 +135,32 @@ bool StoreScene::init()
         CC_CALLBACK_1(StoreScene::AINumberTipCallback, this)
     );
     aiNUmberTip->setPosition(STORE_AI_TIP);
-    //MenuItemFont::setFontSize(20);
-    //aiNUmberTip->setFontSize(20);
+    
 
-    auto aiNumberSelectMenu = Menu::create(aiNumber5, aiNumber6, aiNumber7, aiNumber8, aiNumber9, aiNUmberTip, NULL);
+    MenuItemFont::setFontName("fonts/Lilita one.ttf");
+    MenuItemFont::setFontSize(25);
+    MenuItemFont* vincibleModeTip = MenuItemFont::create(
+        "NORMAL MODE",
+        CC_CALLBACK_1(StoreScene::Select_Vincible_Mode_Callback, this)
+    );
+    vincibleModeTip->setPosition(STORE_VINCIBLE_POSITION);
+
+    MenuItemFont::setFontName("fonts/Lilita one.ttf");
+    MenuItemFont::setFontSize(25);
+    MenuItemFont* invincibleModeTip = MenuItemFont::create(
+        "INVINCIBLE MODE",
+        CC_CALLBACK_1(StoreScene::Select_Invincible_Mode_Callback, this)
+    );
+    invincibleModeTip->setPosition(STORE_INVINCIBLE_POSITION);
+
+
+    auto aiNumberSelectMenu = Menu::create(aiNumber5, aiNumber6, aiNumber7,
+        aiNumber8, aiNumber9, aiNUmberTip, vincibleModeTip, invincibleModeTip, NULL);
     aiNumberSelectMenu->setPosition(Vec2::ZERO);
     this->addChild(aiNumberSelectMenu, 2);  // 增加AI个数选择
 
     _selectedAINumber = UserDefault::getInstance()->getIntegerForKey("selectedAINumber");
-
+    _selectedInvincible = UserDefault::getInstance()->getIntegerForKey("invincibleMode");
 
 
     /*=====================创建滚动层容器开始======================*/
@@ -302,10 +319,41 @@ void StoreScene::Select_AI_9_Callback(cocos2d::Ref* pSender)
 }
 
 
+/****************************
+* Name ：StoreScene::AINumberTipCallback
+* Summary ：小彩蛋
+* return ：
+* ***************************/
 void StoreScene::AINumberTipCallback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/store_ai_number.mp3");
 }
+
+
+/****************************
+* Name ：StoreScene::Select_Vincible_Mode_Callback
+* Summary ：选择正常模式
+* return ：
+* ***************************/
+void StoreScene::Select_Vincible_Mode_Callback(cocos2d::Ref* pSender)
+{
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
+    UserDefault::getInstance()->setIntegerForKey("invincibleMode", 0); // 常规模式
+}
+
+
+/****************************
+* Name ：StoreScene::Select_Invincible_Mode_Callback
+* Summary ：选择无敌模式
+* return ：
+* ***************************/
+void StoreScene::Select_Invincible_Mode_Callback(cocos2d::Ref* pSender)
+{
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
+    UserDefault::getInstance()->setIntegerForKey("invincibleMode", 1); // 无敌模式
+    log("%d", _selectedInvincible);
+}
+
 
 /****************************
 * Name ：StoreScene::storeSelectMap3Callback

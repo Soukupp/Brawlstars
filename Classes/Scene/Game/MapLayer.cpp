@@ -38,6 +38,7 @@
 //USING_NS_CC;
 using namespace CocosDenshion;
 
+
 /****************************
 * Name ：MapLayer::createScene
 * Summary ：创建MapLayer
@@ -51,6 +52,7 @@ Scene* MapLayer::createScene()
 	return mapLayer;
 }
 
+
 /****************************
 * Name ：problemLoading
 * Summary ：错误打印
@@ -61,6 +63,7 @@ static void problemLoading(const char* filename)
 	printf("Error while loading: %s\n", filename);
 	printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in MapLayer.cpp\n");
 }
+
 
 /****************************
 * Name ：MapLayer::init
@@ -159,7 +162,8 @@ bool MapLayer::init()
 
 	int AINumber = UserDefault::getInstance()->getIntegerForKey("selectedAINUmber");
 	// 选择游戏人数
-	// 后续容器大小更改未处理
+	_invincibleMode = UserDefault::getInstance()->getIntegerForKey("invincibleMode"); // 0表示normal，1表示无敌
+	log("invincibleMode %d", _invincibleMode);
 
 	for (int i = 1; i <= AINumber; ++i)
 	{
@@ -401,15 +405,12 @@ bool MapLayer::init()
 	UserDefault::getInstance()->setIntegerForKey("HitNum", this->getHitNum());
 	/*====================初始化数据结束==========================*/
 
-	////  子弹
-	//m_bullet = Bullet::create();
-	//m_bullet->setPosition(winSize.width * .5, winSize.height * .8);
-	//addChild(m_bullet, 5);
 
 
 
 	return true;
 }
+
 
 /****************************
 * Name ：MapLayer::onKeyPressed
@@ -446,6 +447,7 @@ void MapLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 		PLAYER->runAction(PLAYER->getWalkAction());
 	}
 }
+
 
 /****************************
 * Name ：MapLayer::onKeyReleased
@@ -489,6 +491,7 @@ void MapLayer::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 	}
 }
 
+
 /****************************
 * Name ：MapLayer::update
 * Summary ：更新函数，改变player实施动态
@@ -525,6 +528,7 @@ void MapLayer::update(float delta)
 	this->setTreeOpacity(playerPos);
 }
 
+
 /****************************
 * Name ：MapLayer::onTouchBegan
 * Summary ：触摸开始
@@ -533,7 +537,6 @@ void MapLayer::update(float delta)
 bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 {
 	//log("onTouchBegan"); //日志
-	//下面是针对近距离攻击英雄的示范，远距离英雄未实现
 	if (PLAYER->_panel.getIfPlayAttackAnimation() && PLAYER->_panel.getPlayerState() != MOVING)
 	{        //保证不会实现连续攻击，不会实现一边位移一边攻击
 
@@ -602,6 +605,7 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 	return true;
 }
 
+
 /****************************
 * Name ：MapLayer::onTouchMoved
 * Summary ：触摸移动
@@ -642,6 +646,7 @@ void MapLayer::onTouchEnded(Touch* touch, Event* event)
 	/*=============================角度获取结束================================*/
 }
 
+
 /****************************
 * Name ：MapLayer::setPlayerPosition
 * Summary ：是否走动
@@ -675,6 +680,7 @@ void MapLayer::setPlayerPosition(Vec2 position)
 	//滚动地图
 	this->setViewpointCenter(PLAYER->getPosition());
 }
+
 
 /****************************
 * Name ：MapLayer::setTreeOpacity
@@ -788,6 +794,7 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 	}
 }
 
+
 /****************************
 * Name ：MapLayer::tileCoordFromPosition
 * Summary ：从像素点坐标转化为瓦片坐标
@@ -799,6 +806,7 @@ Vec2 MapLayer::tileCoordFromPosition(Vec2 pos)
 	int y = ((_tileMap->getMapSize().height * _tileMap->getTileSize().height) - pos.y) / _tileMap->getTileSize().height;
 	return Vec2(x, y);
 }
+
 
 /****************************
 * Name ：MapLayer::setViewpointCenter
@@ -876,6 +884,8 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 
 	(**hero).setPositionWithAll(position, *weapon, *healthBar, *magicBar, *levelText);
 }
+
+
 /****************************
 * Name ：MapLayer::createMonster
 * Summary ：初始化怪兽
@@ -899,6 +909,7 @@ void MapLayer::createMonster(Monsters** monster, Slider** healthBar,
 
 	(**monster).setPositionWithAll(position, *healthBar);
 }
+
 
 /****************************
 * Name ：MapLayer::update2
@@ -998,16 +1009,7 @@ void MapLayer::update2(float delta)
 						MONSTER_HEALTHBAR(i)->setVisible(false);
 						MONSTER(i)->setPosition(deathPosition);
 						MONSTER_HEALTHBAR(i)->setPosition(deathPosition);
-
-						if (PLAYER->getID() == 1)
-							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/gun2_kill.mp3");
-						else if (PLAYER->getID() == 2)
-							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/sword_kill.mp3");
-						else if (PLAYER->getID() == 3)
-							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_kill.mp3");
-						else if (PLAYER->getID() == 4)
-							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4_kill.mp3");
-
+						CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/update.mp3");
 					}
 
 				}
@@ -1135,6 +1137,7 @@ void MapLayer::updateForFog(float delta)
 
 }
 
+
 /****************************
 * Name ：MapLayer::updateOutsideFog
 * Summary ：外部毒气实时生成
@@ -1158,6 +1161,7 @@ void MapLayer::updateOutsideFog(float delta)
 	}
 }
 
+
 /****************************
 * Name ：MapLayer::updatePlayerHurtByFog
 * Summary ：英雄/AI扣血
@@ -1168,18 +1172,21 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 	if (PLAYER->_panel.getIsSurvive()
 		&& !_SafeArea->boundingBox().containsPoint(Vec2(PLAYER->getPosition())))
 	{
-		//扣血
-		//log("hurt!");
-		PLAYER->_panel.hit(MAP_FOG_DAMAGE_TO_PLAYER);
-		PLAYER->refreshHealthBar(HEALTHBAR);
-		if (!PLAYER->_panel.getIsSurvive())  // player死亡==》GameOverScene
+		if (_invincibleMode == 0)
 		{
-			setCharacterVisible(false, CHARACTER(0));
-			setCharacterPosition(deathPosition, CHARACTER(0));
+			//扣血
+			//log("hurt!");
+			PLAYER->_panel.hit(MAP_FOG_DAMAGE_TO_PLAYER);
+			PLAYER->refreshHealthBar(HEALTHBAR);
+			if (!PLAYER->_panel.getIsSurvive())  // player死亡==》GameOverScene
+			{
+				setCharacterVisible(false, CHARACTER(0));
+				setCharacterPosition(deathPosition, CHARACTER(0));
 
-			log("player died fog");
-			saveData();
-			gameOver();
+				log("player died fog");
+				saveData();
+				gameOver();
+			}
 		}
 	}
 	for (int i = 1; i < allCharacter.size(); ++i)
@@ -1357,6 +1364,8 @@ void MapLayer::updateAIMoveOne(Character& character)
 		}
 	}
 }
+
+
 /****************************
 * Name ：MapLayer::updateAIAttack
 * Summary ：ai攻击
@@ -1367,7 +1376,7 @@ void MapLayer::updateAIAttack(float delta)
 	for (int active = 1; active < allCharacter.size(); ++active) {
 		for (int passive = 0; passive < allCharacter.size(); ++passive)
 		{
-			if (active != passive && CHARACTER(passive)._player->_panel.getIsSurvive() 
+			if (active != passive && CHARACTER(passive)._player->_panel.getIsSurvive()
 				&& AI_PLAYER(active)->playerCollisionTest2(CHARACTER(passive)._player, AI_WEAPON(active)))
 			{
 
@@ -1386,16 +1395,16 @@ void MapLayer::updateAIAttack(float delta)
 
 					if (!AI_PLAYER(passive)->_panel.getIsSurvive() && passive != 0)   // AI 死亡
 					{
-						AI_PLAYER(active)->upgrade(AI_LEVELTEXT(active),AI_HEALTHBAR(active));
+						AI_PLAYER(active)->upgrade(AI_LEVELTEXT(active), AI_HEALTHBAR(active));
 						setCharacterVisible(false, CHARACTER(passive));
 						setCharacterPosition(deathPosition, CHARACTER(passive));
 						saveAIKill();
-						log("ai %d kill ai %d",active,passive);
+						log("ai %d kill ai %d", active, passive);
 					}
 					else if (!PLAYER->_panel.getIsSurvive())   // 玩家 死亡
 					{
 						AI_PLAYER(active)->upgrade(AI_LEVELTEXT(active), AI_HEALTHBAR(active));
-						log("ai %d kill player",active);
+						log("ai %d kill player", active);
 						saveData();
 						gameOver();
 					}
@@ -1566,6 +1575,8 @@ void MapLayer::gameOver()
 	auto GOS = GameOverScene::createScene();
 	Director::getInstance()->replaceScene(GOS);
 }
+
+
 /****************************
 * Name ：MapLayer::getBuff
 * Summary ：获取增益
@@ -1588,6 +1599,8 @@ void MapLayer::getBuff(Character& character, int numOfMonster)
 		getDefenceBuff(character);
 	}
 }
+
+
 /****************************
 * Name ：MapLayer::getAttackBuff
 * Summary ：获取攻击增益
@@ -1597,6 +1610,8 @@ void MapLayer::getAttackBuff(Character& character)
 {
 	character._player->_panel.setAttack(20 + character._player->_panel.getAttack());
 }
+
+
 /****************************
 * Name ：MapLayer::getDefenceBuff
 * Summary ：获取防御增益
@@ -1606,6 +1621,8 @@ void MapLayer::getDefenceBuff(Character& character)
 {
 	character._player->_panel.setDefence(20 + character._player->_panel.getDefence());
 }
+
+
 /****************************
 * Name ：MapLayer::setCharacterVisible
 * Summary ：角色可见状态设置
@@ -1631,10 +1648,23 @@ void MapLayer::setCharacterPosition(Vec2 position, Character& character)
 		character._weapon, character._healthBar, character._magicBar, character._levelText);
 }
 
+
+/****************************
+* Name ：MapLayer::getUserInt
+* Summary ：获取英雄名字
+* return ：英雄名字对应的ID
+****************************/
 int MapLayer::getUserInt(const char* name)
 {
 	return UserDefault::getInstance()->getIntegerForKey(name);
 }
+
+
+/****************************
+* Name ：MapLayer::setUserInt
+* Summary ：设置英雄名字对应的ID
+* return ：无
+****************************/
 void MapLayer::setUserInt(const char* name, int num)
 {
 	UserDefault::getInstance()->setIntegerForKey(name, num);
