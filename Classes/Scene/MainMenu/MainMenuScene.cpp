@@ -198,12 +198,24 @@ bool MainMenuScene::init()
 
     if (firstPlay)
         CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/first_music.mp3", true);
+    CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(
+        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     firstPlay = false;
     if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
     {
         CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/first_music.mp3", true);
     }
+<<<<<<< Updated upstream
 
+=======
+    CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(
+        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    /*else
+    {
+        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/first_music.mp3", true);
+        CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
+    }*/
+>>>>>>> Stashed changes
     /*=====================创建背景音乐结束=======================*/
 
     /*=====================创建玩家信息按钮开始===================*/
@@ -252,6 +264,8 @@ void MainMenuScene::menuCloseCallback(Ref* pSender)
 void MainMenuScene::menuInfoCallback(Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -274,6 +288,8 @@ void MainMenuScene::menuInfoCallback(Ref* pSender)
 void MainMenuScene::menuStartCallback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     auto GLS1 = GameLoadingScene1::createScene();   // 转入GameLoadingScene1
     Director::getInstance()->replaceScene(TransitionFade::create(1, GLS1));//mainmenu已被释放
 }
@@ -286,6 +302,8 @@ void MainMenuScene::menuStartCallback(cocos2d::Ref* pSender)
 void MainMenuScene::menuMapCallback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     auto storeScene = StoreScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, storeScene));//mainmenu未被释放 使用popScene返回
 }
@@ -298,6 +316,8 @@ void MainMenuScene::menuMapCallback(cocos2d::Ref* pSender)
 void MainMenuScene::menuHerosCallback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     auto heroScene = HeroScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, heroScene));//mainmenu未被释放 使用popScene返回
 }
@@ -310,6 +330,8 @@ void MainMenuScene::menuHerosCallback(cocos2d::Ref* pSender)
 void MainMenuScene::menuSettingsCallback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     auto settingsScene = SettingsScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, settingsScene));//mainmenu未被释放 使用popScene返回
 }
@@ -341,6 +363,8 @@ void MainMenuScene::playerMassageCallback(cocos2d::Ref* pSender)
         ;
 
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
