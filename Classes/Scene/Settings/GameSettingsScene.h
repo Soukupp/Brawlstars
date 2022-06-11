@@ -17,7 +17,6 @@
 #define GAMESETTINGS_BACK_ITEM_POSITION_X origin.x + settingsBackItem->getContentSize().width / 2
 #define GAMESETTINGS_BACK_ITEM_POSITION_Y origin.y + settingsBackItem->getContentSize().height / 2
 
-
 #define GAMESETTINGS_NAME_LABEL_POSITION_X origin.x + visibleSize.width / 2
 #define GAMESETTINGS_NAME_LABEL_POSITION_Y origin.y + visibleSize.height - settingsNameLabel->getContentSize().height
 
@@ -57,13 +56,13 @@ class GameSettingsScene : public cocos2d::Scene
 {
 public:
     static cocos2d::Scene* createScene();
-    virtual bool init();
-    //返回游戏界面回调函数
-    void settingsBackToGameCallback(cocos2d::Ref* pSender);
-    //按钮回调函数
+
+    virtual bool init();  // 返回游戏界面回调函数
+    
+    void settingsBackToGameCallback(cocos2d::Ref* pSender);  // 按钮回调函数
     void settingsPlayCallBack(cocos2d::Ref* pSender);
 
-    void sliderEvent(Ref* pSender, Slider::EventType type);   //滑动事件监听
+    void sliderEvent(Ref* pSender, Slider::EventType type);   // 滑动事件监听
 
     void settingsFPSCallBack(cocos2d::Ref* pSender);
 

@@ -1,7 +1,7 @@
-#pragma once
 //作者 : 王鹏
 //日期 : 2022-5-17
 //实现 ：框架搭建
+ 
 //作者 ：束赫
 //日期 : 2022-5-19
 //实现 ：具体功能实现
@@ -41,7 +41,6 @@
 
 #define SETTINGS_TEXT_RGB_COLOR 0, 0, 0
 
-
 #define SETTINGS_NAME_LABEL_SIZE 64
 
 
@@ -57,10 +56,10 @@ class SettingsScene : public cocos2d::Scene
 {
 public:
     static cocos2d::Scene* createScene();
-    virtual bool init();
-    //返回主菜单回调函数
-    void settingsBackCallback(cocos2d::Ref* pSender);
-    //按钮回调函数
+
+    virtual bool init();    //返回主菜单回调函数
+
+    void settingsBackCallback(cocos2d::Ref* pSender);    //按钮回调函数
     void settingsPlayCallBack(cocos2d::Ref* pSender);
 
     void clearUserDataCallback(cocos2d::Ref* pSender);

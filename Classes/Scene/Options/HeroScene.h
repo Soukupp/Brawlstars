@@ -31,6 +31,7 @@
 #include "cocos2d.h"
 #include "Scene/MainMenu/MainMenuScene.h"
 #include "Scene/Information/InformationPopLayer.h"
+#include "Entity/Player/Player.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
@@ -40,8 +41,8 @@ class HeroScene : public cocos2d::Scene
 public:
     static cocos2d::Scene* createScene();
     virtual bool init();
-    //返回主菜单回调函数
-    void heroBackCallback(cocos2d::Ref* pSender);
+    
+    void heroBackCallback(cocos2d::Ref* pSender);//返回主菜单回调函数
 
     //进入英雄展示界面的回调函数
     void selectHero1Callback(cocos2d::Ref* pSender);
@@ -57,7 +58,6 @@ public:
     void animate2();
     void animate3();
     void animate4();
-
 
 private:
     MenuItemSprite* _confirmButton;  //确认按键

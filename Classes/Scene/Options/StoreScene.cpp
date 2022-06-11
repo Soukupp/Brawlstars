@@ -66,6 +66,7 @@ bool StoreScene::init()
     auto backMenu = Menu::create(storeBackItem, NULL);
     backMenu->setPosition(Vec2::ZERO);
     this->addChild(backMenu, 2);
+
     /*=====================创建关闭按钮结束====================*/
 
     /*=====================创建标题开始=======================*/
@@ -89,9 +90,11 @@ bool StoreScene::init()
         );
         this->addChild(storeNameLabel, 1);
     }
+
     /*=====================创建标题结束=======================*/
 
     /*=====================创建背景图开始======================*/
+
     auto background = Sprite::create("background/storeBackground.png");
     background->setOpacity(120);
     if (background == nullptr)
@@ -105,6 +108,7 @@ bool StoreScene::init()
 
         this->addChild(background, 0);
     }
+
     /*=====================创建背景图结束======================*/
 
     /*创建游戏人数开始*/
@@ -136,7 +140,6 @@ bool StoreScene::init()
     );
     aiNUmberTip->setPosition(STORE_AI_TIP);
     
-
     MenuItemFont::setFontName("fonts/Lilita one.ttf");
     MenuItemFont::setFontSize(25);
     MenuItemFont* vincibleModeTip = MenuItemFont::create(
@@ -162,7 +165,6 @@ bool StoreScene::init()
     _selectedAINumber = UserDefault::getInstance()->getIntegerForKey("selectedAINumber");
     _selectedInvincible = UserDefault::getInstance()->getIntegerForKey("invincibleMode");
 
-
     /*=====================创建滚动层容器开始======================*/
 
     //创建可滑动区域
@@ -182,6 +184,7 @@ bool StoreScene::init()
     //storeContainer->setScale(1.35);
     this->addChild(storeView, 1);
     this->addChild(storeContainer);
+
     /*=====================创建滚动层容器结束======================*/
 
     /*=====================地图添加开始======================*/
@@ -197,7 +200,6 @@ bool StoreScene::init()
     MapUpdatedOverviewName_1->enableShadow(STORE_MAP_UPDATED_OVERVIEW_NAME_SHADOW_1);
     storeView->addChild(MapUpdatedOverviewName_1);
 
-
     auto MapUpdatedOverview_3 = MenuItemImage::create("commodity/MapUpdatedOverview_3.png",
         "commodity/MapUpdatedOverview_3.png",
         CC_CALLBACK_1(StoreScene::storeSelectMap3Callback, this));
@@ -208,6 +210,7 @@ bool StoreScene::init()
     MapUpdatedOverviewName_3->setPosition(Vec2(STORE_MAP_UPDATED_OVERVIEW_NAME_POSITION_3));
     MapUpdatedOverviewName_3->enableShadow(STORE_MAP_UPDATED_OVERVIEW_NAME_SHADOW_3);
     storeView->addChild(MapUpdatedOverviewName_3);
+
     /*=====================地图添加开始======================*/
 
     /*=====================彩蛋添加开始======================*/
@@ -227,7 +230,6 @@ bool StoreScene::init()
         CC_CALLBACK_1(StoreScene::storeEggshell3Callback, this));
     PaintedEggshell_3->setPosition(Vec2(STORE_PRINTED_EGGSHELL_POSITION_3));
 
-
     auto storeViewMenu = Menu::create(MapUpdatedOverview_1, MapUpdatedOverview_3,
         PaintedEggshell_1, PaintedEggshell_2, PaintedEggshell_3, NULL);
     storeView->addChild(storeViewMenu);
@@ -241,7 +243,6 @@ bool StoreScene::init()
     /*=====================商品添加结束======================*/
 
 }
-
 
 /****************************
 * Name ：StoreScene::storeSelectMap1Callback
@@ -258,7 +259,6 @@ void StoreScene::storeSelectMap1Callback(cocos2d::Ref* pSender)
     Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//过场动画设计
 }
 
-
 /****************************
 * Name ：StoreScene::Select_AI_5_Callback
 * Summary ：AI人数为5
@@ -269,7 +269,6 @@ void StoreScene::Select_AI_5_Callback(cocos2d::Ref* pSender)
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 5);
 }
-
 
 /****************************
 * Name ：StoreScene::Select_AI_6_Callback
@@ -282,7 +281,6 @@ void StoreScene::Select_AI_6_Callback(cocos2d::Ref* pSender)
     UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 6);
 }
 
-
 /****************************
 * Name ：StoreScene::Select_AI_7_Callback
 * Summary ：AI人数为7
@@ -293,7 +291,6 @@ void StoreScene::Select_AI_7_Callback(cocos2d::Ref* pSender)
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 7);
 }
-
 
 /****************************
 * Name ：StoreScene::Select_AI_8_Callback
@@ -306,7 +303,6 @@ void StoreScene::Select_AI_8_Callback(cocos2d::Ref* pSender)
     UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 8);
 }
 
-
 /****************************
 * Name ：StoreScene::Select_AI_9_Callback
 * Summary ：AI人数为9
@@ -318,7 +314,6 @@ void StoreScene::Select_AI_9_Callback(cocos2d::Ref* pSender)
     UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 9);
 }
 
-
 /****************************
 * Name ：StoreScene::AINumberTipCallback
 * Summary ：小彩蛋
@@ -328,7 +323,6 @@ void StoreScene::AINumberTipCallback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/store_ai_number.mp3");
 }
-
 
 /****************************
 * Name ：StoreScene::Select_Vincible_Mode_Callback
@@ -344,7 +338,6 @@ void StoreScene::Select_Vincible_Mode_Callback(cocos2d::Ref* pSender)
     log("now mode %d", UserDefault::getInstance()->getIntegerForKey("invincibleMode"));
 }
 
-
 /****************************
 * Name ：StoreScene::Select_Invincible_Mode_Callback
 * Summary ：选择无敌模式
@@ -358,7 +351,6 @@ void StoreScene::Select_Invincible_Mode_Callback(cocos2d::Ref* pSender)
     log("mode 1 selected");
     log("now mode %d", UserDefault::getInstance()->getIntegerForKey("invincibleMode"));
 }
-
 
 /****************************
 * Name ：StoreScene::storeSelectMap3Callback
@@ -375,7 +367,6 @@ void StoreScene::storeSelectMap3Callback(cocos2d::Ref* pSender)
     Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//过场动画设计
 }
 
-
 /****************************
 * Name ：StoreScene::storeEggshell1Callback
 * Summary  回调函数，返回主菜单
@@ -386,7 +377,6 @@ void StoreScene::storeEggshell1Callback(cocos2d::Ref* pSender)
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/printed_eggshell_1.mp3");
 }
 
-
 /****************************
 * Name ：StoreScene::storeEggshell2Callback
 * Summary  回调函数，返回主菜单
@@ -396,7 +386,6 @@ void StoreScene::storeEggshell2Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/printed_eggshell_2.mp3");
 }
-
 
 /****************************
 * Name ：StoreScene::storeEggshell3Callback

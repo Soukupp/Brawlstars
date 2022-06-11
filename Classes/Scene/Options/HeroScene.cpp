@@ -7,7 +7,6 @@
 
 #include "HeroScene.h"
 #include "SimpleAudioEngine.h"
-#include "Entity/Player/Player.h"
 
 USING_NS_CC;
 
@@ -20,7 +19,6 @@ Scene* HeroScene::createScene()
 {
     return HeroScene::create();
 }
-
 
 /****************************
 * Name ：problemLoading
@@ -46,6 +44,7 @@ bool HeroScene::init()
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/to_a_new_scene.mp3");
 
     /*=====================创建背景图开始======================*/
+
     auto heroBackground = Sprite::create("background/heroBackground.jpg");
     heroBackground->setOpacity(200);
     if (heroBackground == nullptr)
@@ -59,8 +58,8 @@ bool HeroScene::init()
 
         this->addChild(heroBackground, 0);
     }
-    /*=====================创建背景图结束======================*/
 
+    /*=====================创建背景图结束======================*/
 
     /*=====================创建返回按钮开始====================*/
 
@@ -84,6 +83,7 @@ bool HeroScene::init()
     auto backMenu = Menu::create(heroBackItem, NULL);
     backMenu->setPosition(Vec2::ZERO);
     this->addChild(backMenu, 2);
+
     /*=====================创建返回按钮结束==================*/
 
     /*=====================创建标题开始======================*/
@@ -107,9 +107,11 @@ bool HeroScene::init()
 
         this->addChild(heroNameLabel, 1);
     }
+
     /*=====================创建标题结束======================*/
 
     /*=====================创建英雄选项标签开始======================*/
+
     //HERO1
     auto* hero1LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
         "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero1Callback));
@@ -206,12 +208,9 @@ bool HeroScene::init()
         _confirmButton->setEnabled(false);
     }
 
-
     return true;
- 
     
 }
-
 
 /****************************
 * Name ：HeroScene::heroBackCallback
@@ -227,7 +226,6 @@ void HeroScene::heroBackCallback(cocos2d::Ref* pSender)
     auto mainMenuScene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//过场动画设计
 }
-
 
 /****************************
 * Name ：HeroScene::selectHero1Callback
@@ -257,8 +255,12 @@ void HeroScene::selectHero1Callback(cocos2d::Ref* pSender)
     }
 
 }
-//同上
 
+/****************************
+* Name ：HeroScene::selectHero2Callback
+* Summary ：进入hero2界面回调函数
+* return ：
+****************************/
 void HeroScene::selectHero2Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
@@ -282,7 +284,12 @@ void HeroScene::selectHero2Callback(cocos2d::Ref* pSender)
 
     }
 }
-//同上
+
+/****************************
+* Name ：HeroScene::selectHero3Callback
+* Summary ：进入hero3界面回调函数
+* return ：
+****************************/
 void HeroScene::selectHero3Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
@@ -305,7 +312,12 @@ void HeroScene::selectHero3Callback(cocos2d::Ref* pSender)
     }
 
 }
-//同上
+
+/****************************
+* Name ：HeroScene::selectHero4Callback
+* Summary ：进入hero4界面回调函数
+* return ：
+****************************/
 void HeroScene::selectHero4Callback(cocos2d::Ref* pSender)
 {
 
@@ -328,7 +340,6 @@ void HeroScene::selectHero4Callback(cocos2d::Ref* pSender)
     }
 
 }
-
 
 /****************************
 * Name ：HeroScene::selectHeroConfirmCallback
@@ -375,7 +386,6 @@ void HeroScene::SelectHeroInformationCallback(cocos2d::Ref* pSender)
     this->addChild(HeroInformation, 4);
 }
 
-
 /****************************
 * Name ：HeroScene::animate1
 * Summary ：hero1动画实现
@@ -384,11 +394,11 @@ void HeroScene::SelectHeroInformationCallback(cocos2d::Ref* pSender)
 void HeroScene::animate1()
 {
     
-    hero1 = Sprite::create("Character/Hero1/hero.png");
+    hero1 = Sprite::create("character/Hero1/hero.png");
     hero1->setPosition(700, 350);
     addChild(hero1);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Start.plist", "Character/Hero1/hero1_Start.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero1/hero1_Start.plist", "character/Hero1/hero1_Start.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero1.mp3");
     Vector<CCSpriteFrame*> hero1FrameArray;
     for (int i = 4; i < 8; i++)
@@ -406,7 +416,6 @@ void HeroScene::animate1()
     hero1->runAction(action1);
 }
 
-
 /****************************
 * Name ：HeroScene::animate2
 * Summary ：hero2动画实现
@@ -414,11 +423,11 @@ void HeroScene::animate1()
 ****************************/
 void HeroScene::animate2()
 {
-    hero2 = Sprite::create("Character/Hero2/hero.png");
+    hero2 = Sprite::create("character/Hero2/hero.png");
     hero2->setPosition(700, 350);
     addChild(hero2);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero2/hero2_Normal.plist", "Character/Hero2/hero2_Normal.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero2/hero2_Normal.plist", "character/Hero2/hero2_Normal.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero2.mp3");
     Vector<CCSpriteFrame*> hero2FrameArray;
     for (int i = 0; i < 8; i++)
@@ -436,7 +445,6 @@ void HeroScene::animate2()
     hero2->runAction(action1);
 }
 
-
 /****************************
 * Name ：HeroScene::animate3
 * Summary ：hero3动画实现
@@ -448,7 +456,7 @@ void HeroScene::animate3()
     hero3->setPosition(720, 360);
     addChild(hero3);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Start2.plist", "Character/Hero3/hero3_Start2.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero3/hero3_Start2.plist", "character/Hero3/hero3_Start2.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero3.mp3");
     Vector<CCSpriteFrame*> hero3FrameArray;
     for (int i = 1; i < 7; i++)
@@ -464,7 +472,6 @@ void HeroScene::animate3()
     hero3->runAction(action);
 }
 
-
 /****************************
 * Name ：HeroScene::animate4
 * Summary ：hero4动画实现
@@ -477,7 +484,7 @@ void HeroScene::animate4()
     hero4->setPosition(700, 450);
     addChild(hero4);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Start.plist", "Character/Hero4/hero4_Start.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero4/hero4_Start.plist", "character/Hero4/hero4_Start.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4.mp3");
     Vector<CCSpriteFrame*> hero4FrameArray;
     for (int i = 1; i < 9; i++)

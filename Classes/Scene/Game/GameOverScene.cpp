@@ -45,7 +45,7 @@ bool GameOverScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto GameOverBackground = Sprite::create("background/GameOverBackground.jpg");
+    auto GameOverBackground = Sprite::create("background/GameOverBackground.png");
     GameOverBackground->setPosition(Vec2(GAMEOVER_BACKGROUND_POSITION));
     this->addChild(GameOverBackground, 0);
 
@@ -105,29 +105,33 @@ bool GameOverScene::init()
             break;
     }
 
+    auto crown = Sprite::create("ui/crown.png");
+    crown->setPosition(GAMEOVER_CROWN_POSITION);
+    addChild(crown, 5);
+
+
     std::string tip;
     if (UserDefault::getInstance()->getIntegerForKey("PlayerRank") <= 4)
-        tip = "   CONGRATULATION!";
+        tip = "       CONGRATULATION!";
     else
-        tip = "    WHAT A PITY!";
-
-   
+        tip = "        WHAT A PITY!";
 
     auto GameOverInformation = InformationPopLayer::create
-    ("background/HeroInformationBackground.png", Size(470, 350), 150);
-    GameOverInformation->setPosition(Vec2(170, 0)); // 变大往右
-    auto infoString = tip 
+    ("background/HeroInformationBackground.png", Size(570, 350), 150);
+    GameOverInformation->setPosition(Vec2(150, 0)); // 变大往右
+    auto infoString = tip
         + "\n" +
         "HERO:     " + playerName
         + "\n" +
         "YOUR RANK : NO." + std::to_string(UserDefault::getInstance()->getIntegerForKey("PlayerRank"))
         + "\n" +
-        "KILL COUNT :        " + std::to_string(UserDefault::getInstance()->getIntegerForKey("HitNum"));
+        "KILL COUNT :       " + std::to_string(UserDefault::getInstance()->getIntegerForKey("HitNum"))
+        + "\n" +
+        "CROWN NUMBER :    " + std::to_string(UserDefault::getInstance()->getIntegerForKey("_cupNums"))
+        +" x ";
     GameOverInformation->setContentText(infoString.c_str(), "fonts/Lilita one.ttf", 45, MAINMENU_INFORMATION_CONTENT_TEXT_PADDING,
         MAINMENU_INFORMATION_CONTENT_TEXT_PADDINGTOP);
     this->addChild(GameOverInformation, 4);
-
-
     
     return true;
 }
@@ -143,14 +147,18 @@ void GameOverScene::menuCloseCallback(Ref* pSender)
     Director::getInstance()->replaceScene(MMS);
 }
 
-
+/****************************
+* Name ：GameOverScene::hero1
+* Summary ：hero1动画
+* return ：无
+****************************/
 void GameOverScene::hero1()
 {
-    auto hero1 = Sprite::create("Character/Hero1/hero.png");
+    auto hero1 = Sprite::create("character/Hero1/hero.png");
     hero1->setPosition(GAMEOVER_HERO_ANIMATON_POSITION);
     addChild(hero1);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Start.plist", "Character/Hero1/hero1_Start.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero1/hero1_Start.plist", "character/Hero1/hero1_Start.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero1.mp3");
     Vector<CCSpriteFrame*> hero1FrameArray;
     for (int i = 4; i < 8; i++)
@@ -168,14 +176,18 @@ void GameOverScene::hero1()
     hero1->runAction(action1);
 }
 
-
+/****************************
+* Name ：GameOverScene::hero2
+* Summary ：hero2动画
+* return ：无
+****************************/
 void GameOverScene::hero2()
 {
-    auto hero2 = Sprite::create("Character/Hero2/hero.png");
+    auto hero2 = Sprite::create("character/Hero2/hero.png");
     hero2->setPosition(GAMEOVER_HERO_ANIMATON_POSITION);
     addChild(hero2);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero2/hero2_Normal.plist", "Character/Hero2/hero2_Normal.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero2/hero2_Normal.plist", "character/Hero2/hero2_Normal.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero2.mp3");
     Vector<CCSpriteFrame*> hero2FrameArray;
     for (int i = 0; i < 8; i++)
@@ -193,14 +205,18 @@ void GameOverScene::hero2()
     hero2->runAction(action1);
 }
 
-
+/****************************
+* Name ：GameOverScene::hero3
+* Summary ：hero3动画
+* return ：无
+****************************/
 void GameOverScene::hero3()
 {
     auto hero3 = Sprite::create("Character/Hero3/hero.png");
     hero3->setPosition(GAMEOVER_HERO_ANIMATON_POSITION);
     addChild(hero3);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Start.plist", "Character/Hero3/hero3_Start.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero3/hero3_Start.plist", "character/Hero3/hero3_Start.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero3.mp3");
     Vector<CCSpriteFrame*> hero3FrameArray;
     for (int i = 0; i < 6; i++)
@@ -216,14 +232,18 @@ void GameOverScene::hero3()
     hero3->runAction(action);
 }
 
-
+/****************************
+* Name ：GameOverScene::hero4
+* Summary ：hero4动画
+* return ：无
+****************************/
 void GameOverScene::hero4()
 {
-    auto hero4 = Sprite::create("Character/Hero4/hero.png");
+    auto hero4 = Sprite::create("character/Hero4/hero.png");
     hero4->setPosition(GAMEOVER_HERO_ANIMATON_POSITION);
     addChild(hero4);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Normal.plist", "Character/Hero4/hero4_Normal.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero4/hero4_Normal.plist", "character/Hero4/hero4_Normal.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4.mp3");
     Vector<CCSpriteFrame*> hero4FrameArray;
     for (int i = 0; i < 8; i++)
