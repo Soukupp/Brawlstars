@@ -186,7 +186,7 @@ void Hero3::upgrade(cocos2d::Label* levelText, Slider* bar)
 bool Hero3::initWalkAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Run.plist", "Character/Hero3/hero3_Run.png");
+	frameCache->addSpriteFramesWithFile("character/Hero3/hero3_Run.plist", "character/Hero3/hero3_Run.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 0; i < 6; i++)
@@ -210,7 +210,7 @@ bool Hero3::initWalkAction()
 bool Hero3::initNormalAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Start.plist", "Character/Hero3/hero3_Start.png");
+	frameCache->addSpriteFramesWithFile("character/Hero3/hero3_Start.plist", "character/Hero3/hero3_Start.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 0; i < 6; i++)
@@ -231,7 +231,7 @@ bool Hero3::initNormalAction()
 bool Hero3::initAttackAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Attack.plist", "Character/Hero3/hero3_Attack.png");
+	frameCache->addSpriteFramesWithFile("character/Hero3/hero3_Attack.plist", "character/Hero3/hero3_Attack.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 0; i < 8; i++)
@@ -254,7 +254,7 @@ bool Hero3::initAttackAction()
 bool Hero3::initSkillAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Skill.plist", "Character/Hero3/hero3_Skill.png");
+	frameCache->addSpriteFramesWithFile("character/Hero3/hero3_Skill.plist", "character/Hero3/hero3_Skill.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 1; i < 9; i++)

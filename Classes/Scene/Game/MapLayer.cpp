@@ -117,25 +117,25 @@ bool MapLayer::init()
 	{
 		case 1:
 			createHero(&_player1, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_playerX, _playerY), "Character/Hero1/hero.png", "Character/Hero1/emptyWeapon.png");
+				Vec2(_playerX, _playerY), "character/Hero1/hero.png", "character/Hero1/emptyWeapon.png");
 			tempCharacter = { _player1,_weapon,_healthBar,_magicBar,_levelText };
 			allCharacter.push_back(tempCharacter);
 			break;
 		case 2:
 			createHero(&_player2, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_playerX, _playerY), "Character/Hero2/hero.png", "Character/Hero2/emptyWeapon.png");
+				Vec2(_playerX, _playerY), "character/Hero2/hero.png", "character/Hero2/emptyWeapon.png");
 			tempCharacter = { _player2,_weapon,_healthBar,_magicBar,_levelText };
 			allCharacter.push_back(tempCharacter);
 			break;
 		case 3:
 			createHero(&_player3, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_playerX, _playerY), "Character/Hero3/hero.png", "Character/Hero3/emptyWeapon.png");
+				Vec2(_playerX, _playerY), "character/Hero3/hero.png", "character/Hero3/emptyWeapon.png");
 			tempCharacter = { _player3,_weapon,_healthBar,_magicBar,_levelText };
 			allCharacter.push_back(tempCharacter);
 			break;
 		case 4:
 			createHero(&_player4, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_playerX, _playerY), "Character/Hero4/hero.png", "Character/Hero4/emptyWeapon.png");
+				Vec2(_playerX, _playerY), "character/Hero4/hero.png", "character/Hero4/emptyWeapon.png");
 			tempCharacter = { _player4,_weapon,_healthBar,_magicBar,_levelText };
 			allCharacter.push_back(tempCharacter);
 			break;
@@ -178,25 +178,25 @@ bool MapLayer::init()
 		//log("tempHeroType %d", tempHeroType);
 		if (tempHeroType == 1) {
 			createHero(&_player1, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_aiX[i], _aiY[i]), "Character/Hero1/hero.png", "Character/Hero1/emptyWeapon.png");
+				Vec2(_aiX[i], _aiY[i]), "character/Hero1/hero.png", "character/Hero1/emptyWeapon.png");
 			tempCharacter = { _player1,_weapon,_healthBar,_magicBar,_levelText };
 			allCharacter.push_back(tempCharacter);
 		}
 		if (tempHeroType == 2) {
 			createHero(&_player2, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_aiX[i], _aiY[i]), "Character/Hero2/hero.png", "Character/Hero2/emptyWeapon.png");
+				Vec2(_aiX[i], _aiY[i]), "character/Hero2/hero.png", "character/Hero2/emptyWeapon.png");
 			tempCharacter = { _player2,_weapon,_healthBar,_magicBar,_levelText };
 			allCharacter.push_back(tempCharacter);
 		}
 		if (tempHeroType == 3) {
 			createHero(&_player3, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_aiX[i], _aiY[i]), "Character/Hero3/hero.png", "Character/Hero3/emptyWeapon.png");
+				Vec2(_aiX[i], _aiY[i]), "character/Hero3/hero.png", "character/Hero3/emptyWeapon.png");
 			tempCharacter = { _player3,_weapon,_healthBar,_magicBar,_levelText };
 			allCharacter.push_back(tempCharacter);
 		}
 		if (tempHeroType == 0) {
 			createHero(&_player4, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_aiX[i], _aiY[i]), "Character/Hero4/hero.png", "Character/Hero4/emptyWeapon.png");
+				Vec2(_aiX[i], _aiY[i]), "character/Hero4/hero.png", "character/Hero4/emptyWeapon.png");
 			tempCharacter = { _player4,_weapon,_healthBar,_magicBar,_levelText };
 			allCharacter.push_back(tempCharacter);
 		}
@@ -218,7 +218,7 @@ bool MapLayer::init()
 	this->schedule(schedule_selector(MapLayer::updateAIMove), 0.05f);
 	this->schedule(schedule_selector(MapLayer::updateAIAttack), 1.0f);
 	/*createMonster(&_monster, &_monsterHealthBar,
-		Vec2(_playerX, _playerY), "Character/Hero3/hero.png");*/  // 系统显示有冲突，所以我注释掉了
+		Vec2(_playerX, _playerY), "character/Hero3/hero.png");*/  // 系统显示有冲突，所以我注释掉了
 
 	/*======================AI创建结束=========================*/
 
@@ -261,19 +261,19 @@ bool MapLayer::init()
 	//  !!!!!注意！！以下三个 顺序 不可调换!!!!!
 	for (int i = 1; i < MAP_GM_NUMBER + 1; ++i)
 	{
-		createMonster(&_monsterG, &_healthBar, Vec2(_gmX[i], _gmY[i]), "Monster/groundmonster.png");
+		createMonster(&_monsterG, &_healthBar, Vec2(_gmX[i], _gmY[i]), "monster/groundmonster.png");
 		tempMonster = { _monsterG,_healthBar };
 		allMonster.push_back(tempMonster);
 	}
 	for (int i = 1; i < MAP_WM_NUMBER + 1; ++i)
 	{
-		createMonster(&_monsterW, &_healthBar, Vec2(_wmX[i], _wmY[i]), "Monster/watermonster.png");
+		createMonster(&_monsterW, &_healthBar, Vec2(_wmX[i], _wmY[i]), "monster/watermonster.png");
 		tempMonster = { _monsterW,_healthBar };
 		allMonster.push_back(tempMonster);
 	}
 	for (int i = 1; i < MAP_DM_NUMBER + 1; ++i)
 	{
-		createMonster(&_monsterD, &_healthBar, Vec2(_dmX[i], _dmY[i]), "Monster/desertmonster.png");
+		createMonster(&_monsterD, &_healthBar, Vec2(_dmX[i], _dmY[i]), "monster/desertmonster.png");
 		tempMonster = { _monsterD,_healthBar };
 		allMonster.push_back(tempMonster);
 	}

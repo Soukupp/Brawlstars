@@ -384,11 +384,11 @@ void HeroScene::SelectHeroInformationCallback(cocos2d::Ref* pSender)
 void HeroScene::animate1()
 {
     
-    hero1 = Sprite::create("Character/Hero1/hero.png");
+    hero1 = Sprite::create("character/Hero1/hero.png");
     hero1->setPosition(700, 350);
     addChild(hero1);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Start.plist", "Character/Hero1/hero1_Start.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero1/hero1_Start.plist", "character/Hero1/hero1_Start.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero1.mp3");
     Vector<CCSpriteFrame*> hero1FrameArray;
     for (int i = 4; i < 8; i++)
@@ -414,11 +414,11 @@ void HeroScene::animate1()
 ****************************/
 void HeroScene::animate2()
 {
-    hero2 = Sprite::create("Character/Hero2/hero.png");
+    hero2 = Sprite::create("character/Hero2/hero.png");
     hero2->setPosition(700, 350);
     addChild(hero2);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero2/hero2_Normal.plist", "Character/Hero2/hero2_Normal.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero2/hero2_Normal.plist", "character/Hero2/hero2_Normal.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero2.mp3");
     Vector<CCSpriteFrame*> hero2FrameArray;
     for (int i = 0; i < 8; i++)
@@ -444,11 +444,11 @@ void HeroScene::animate2()
 ****************************/
 void HeroScene::animate3()
 {
-    hero3 = Sprite::create("Character/Hero3/hero.png");
+    hero3 = Sprite::create("character/Hero3/hero.png");
     hero3->setPosition(720, 360);
     addChild(hero3);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Start2.plist", "Character/Hero3/hero3_Start2.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero3/hero3_Start2.plist", "character/Hero3/hero3_Start2.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero3.mp3");
     Vector<CCSpriteFrame*> hero3FrameArray;
     for (int i = 1; i < 7; i++)
@@ -473,11 +473,11 @@ void HeroScene::animate3()
 void HeroScene::animate4()
 {
     log("true");
-    hero4 = Sprite::create("Character/Hero4/hero.png");
+    hero4 = Sprite::create("character/Hero4/hero.png");
     hero4->setPosition(700, 450);
     addChild(hero4);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Start.plist", "Character/Hero4/hero4_Start.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero4/hero4_Start.plist", "character/Hero4/hero4_Start.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4.mp3");
     Vector<CCSpriteFrame*> hero4FrameArray;
     for (int i = 1; i < 9; i++)
