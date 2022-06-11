@@ -113,7 +113,6 @@ list(APPEND GAME_HEADER
 
      Classes/Scene/Options/HeroScene.h
      Classes/Scene/Options/StoreScene.h
-     Classes/Entity/Define/Definitions.h
      Classes/Scene/Information/InformationPopLayer.h
 
      Classes/Scene/GameLoading/GameLoadingScene1.h

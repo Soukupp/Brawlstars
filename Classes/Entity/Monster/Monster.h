@@ -10,10 +10,6 @@
 #include "cocos2d.h"
 #include "Entity/Player/Player.h"
 #include "Entity/Player/Panel.h"
-#include "Entity/Define/Definitions.h"
-
-
-//#include "HealthBar.h"
 
 using namespace cocos2d::ui;
 
@@ -61,7 +57,6 @@ public:
 
     const int _width = 26;
     const int _height = 44;
-
 };
 
 #endif

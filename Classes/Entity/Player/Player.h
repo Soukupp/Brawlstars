@@ -7,24 +7,8 @@
 #include "cocos2d.h"
 #include "Entity/Entity.h"
 #include "Panel.h"
-#include "Entity/Define/Definitions.h"
-
-
-//#include "HealthBar.h"
 
 using namespace cocos2d::ui;
-
-/**
-#define PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT 0.0f
-#define PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT 1.0f
-#define PLAYER_WEAPON_ANCHOR_POSITION_Y 1.0f
-
-#define PLAYER_HEALTHBAR_POSITION Vec2(this->getPosition().x, this->getPosition().y + this->getContentSize().height / 2 + healthBar->getContentSize().height / 2)
-#define PLAYER_MAGICBAR_POSITION Vec2(this->getPosition().x, this->getPosition().y + this->getContentSize().height / 2)
-
-#define PLAYER_BLOOD_PERCENT 100 * float(_panel.getHealthPoint()) / float(_panel.getMaxHealthPoint())
-#define PLAYER_MAGIC_PERCENT 100 * float(_panel.getMagicPoint()) / float(_panel.getMaxMagicPoint())
-/**/
 
 /*==============================以下是你需要修改的宏定义=================================*/
 
@@ -64,6 +48,7 @@ class Weapon;
 class Player : public Entity
 {
 private:
+    int _ID = 0;
     float _weaponAnchorPositionX = PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT;
     float _weaponAnchorPositionY = PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT;
 public:
@@ -118,9 +103,6 @@ public:
     const int _height = 44;
 
     virtual int getID();
-
-private:
-    int ID = 0;
 };
 
 #endif

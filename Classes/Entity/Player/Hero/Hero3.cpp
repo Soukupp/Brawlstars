@@ -9,7 +9,7 @@
 #include "Hero2.h"
 #include "Hero3.h"
 #include "Hero4.h"
-//#include "Entity/Weapon/Weapon.h"
+
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -33,6 +33,7 @@ Hero3* Hero3::create(const std::string& filename)
 	CC_SAFE_DELETE(player);
 	return nullptr;
 }
+
 /****************************
 * Name ：create
 * Summary ：创建
@@ -49,6 +50,7 @@ Hero3* Hero3::create(const std::string& filename, const Rect& rect)
 	CC_SAFE_DELETE(player);
 	return nullptr;
 }
+
 /****************************
 * Name ：initPlayer
 * Summary ：自定义值初始化
@@ -60,6 +62,7 @@ void Hero3::initPlayer(int maxHealthPoint, int attack, int defence, float skillA
 	_panel.init(maxHealthPoint, attack, defence, skillAttackRate, attackRate);
 	this->setAnchorPoint(Vec2(0.5f, 0.5f));
 }
+
 /****************************
 * Name ：initPlayer
 * Summary ：按默认值初始化
@@ -83,13 +86,12 @@ void Hero3::initPlayer()
 ****************************/
 void Hero3::keepHealthBar(Slider* healthBar)
 {
-	/*healthBar->setPosition(HERO3_HEALTHBAR_POSITION);*/
-	//_healthBar->setPosition(position);
 	float x = this->getPosition().x;
 	float y = this->getPosition().y + 30;
 
 	healthBar->setPosition(Vec2::Vec2(x, y));
 }
+
 /****************************
 * Name ：keepMagicBar
 * Summary ：保持蓝条位置
@@ -97,12 +99,12 @@ void Hero3::keepHealthBar(Slider* healthBar)
 ****************************/
 void Hero3::keepMagicBar(Slider* magicBar)
 {
-	//magicBar->setPosition(HERO3_MAGICBAR_POSITION);
 	float x = this->getPosition().x;
 	float y = this->getPosition().y + 25;
 
 	magicBar->setPosition(Vec2::Vec2(x, y));
 }
+
 /****************************
 * Name ：keepWeapon
 * Summary ：保持武器位置
@@ -112,6 +114,7 @@ void Hero3::keepWeapon(Weapon* weapon)
 {
 	weapon->setPosition(HERO3_WEAPON_POSITION_X, HERO3_WEAPON_POSITION_Y);
 }
+
 /****************************
 * Name ：keepLevelText
 * Summary ：保持等级位置
@@ -119,12 +122,12 @@ void Hero3::keepWeapon(Weapon* weapon)
 ****************************/
 void Hero3::keepLevelText(cocos2d::Label* levelText, Slider* bar)
 {
-	//levelText->setPosition(HERO3_LEVELTEXT_POSITION);
 	float x = this->getPosition().x;
 	float y = this->getPosition().y + 35;
 
 	levelText->setPosition(Vec2::Vec2(x, y));
 }
+
 /****************************
 * Name ：runFlipxWithWeapon
 * Summary ：带着武器翻转
@@ -144,6 +147,7 @@ void Hero3::runFlipxWithWeapon(bool flipx, Weapon* weapon)
 	this->runAction(FlipX::create(flipx));
 	weapon->runAction(FlipX::create(flipx));
 }
+
 /****************************
 * Name ：setPositionWithAll
 * Summary ：整体移动
@@ -169,7 +173,8 @@ void Hero3::setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* 
 ****************************/
 void Hero3::upgrade(cocos2d::Label* levelText, Slider* bar)
 {
-	if (_level < PLAYER_MAX_GRADE) {
+	if (_level < PLAYER_MAX_GRADE) 
+	{
 		_level++;
 		levelText->setString((std::string("Lv.") + std::to_string(_level)));
 		_panel.setMaxHealthPoint(HERO3_INIT_MAXHEALTHPOINT / 10 + _panel.getMaxHealthPoint());
@@ -183,6 +188,15 @@ void Hero3::upgrade(cocos2d::Label* levelText, Slider* bar)
 	}
 }
 
+/*===============================================================================*/
+/*==================================以下是动画===================================*/
+/*===============================================================================*/
+
+/****************************
+* Name ：initWalkAction
+* Summary ：初始化行走动作
+* return ：是否初始化成功
+****************************/
 bool Hero3::initWalkAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
@@ -203,10 +217,13 @@ bool Hero3::initWalkAction()
 		return true;
 	else
 		return false;
-
-
 }
 
+/****************************
+* Name ：initNormalAction
+* Summary ：初始化静止动作
+* return ：是否初始化成功
+****************************/
 bool Hero3::initNormalAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
@@ -228,6 +245,11 @@ bool Hero3::initNormalAction()
 		return false;
 }
 
+/****************************
+* Name ：initAttackAction
+* Summary ：初始化普攻动作
+* return ：是否初始化成功
+****************************/
 bool Hero3::initAttackAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
@@ -251,6 +273,11 @@ bool Hero3::initAttackAction()
 		return false;
 }
 
+/****************************
+* Name ：initSkillAction
+* Summary ：初始化技能动作
+* return ：是否初始化成功
+****************************/
 bool Hero3::initSkillAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
@@ -273,6 +300,16 @@ bool Hero3::initSkillAction()
 		return false;
 }
 
+/*===============================================================================*/
+/*================================以下是碰撞检测=================================*/
+/*===============================================================================*/
+
+/****************************
+* Name ：palyerCollisionTest1
+* Summary ：近距离攻击碰撞检测
+* 参数说明 : target : 攻击对象
+*           weapon : 武器对象
+****************************/
 bool Hero3::playerCollisionTest1(Player* target, Weapon* weapon)
 {
 	if (target == nullptr)
@@ -325,6 +362,12 @@ bool Hero3::playerCollisionTest1(Player* target, Weapon* weapon)
 	}
 }
 
+/****************************
+* Name ：palyerCollisionTest2
+* Summary ：近距离攻击碰撞检测
+* 参数说明 : target : 攻击对象
+*           weapon : 武器对象
+****************************/
 bool Hero3::playerCollisionTest2(Player* target, Weapon* weapon)
 {
 	_targetX = target->getPosition().x;                           //目标位置X
@@ -369,7 +412,12 @@ bool Hero3::playerCollisionTest2(Player* target, Weapon* weapon)
 	}
 }
 
+/****************************
+* Name ：getID
+* Summary ：获取角色id
+* return ：id
+****************************/
 int Hero3::getID()
 {
-	return ID;
+	return _ID;
 }

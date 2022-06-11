@@ -42,6 +42,7 @@ int Panel::getHealthPoint()const
 {
 	return _healthPoint;
 }
+
 /****************************
 * Name ：Panel::getMaxHealthPoint()const
 * Summary ：读取最大血量
@@ -51,6 +52,7 @@ int Panel::getMaxHealthPoint()const
 {
 	return _maxHealthPoint;
 }
+
 /****************************
 * Name ：Panel::getMagicPoint()const
 * Summary ：读取当前蓝量
@@ -60,6 +62,7 @@ int Panel::getMagicPoint()const
 {
 	return _magicPoint;
 }
+
 /****************************
 * Name ：Panel::getMaxMagicPoint()const
 * Summary ：读取最大蓝量
@@ -69,6 +72,7 @@ int Panel::getMaxMagicPoint()const
 {
 	return _maxMagicPoint;
 }
+
 /****************************
 * Name ：Panel::getSkillAttackRate()const
 * Summary ：读取技能倍率
@@ -78,6 +82,7 @@ float Panel::getSkillRate()const
 {
 	return _skillRate;
 }
+
 /****************************
 * Name ：Panel::getAttackRate()const
 * Summary ：读取普攻倍率
@@ -87,6 +92,7 @@ float Panel::getAttackRate()const
 {
 	return _attackRate;
 }
+
 /****************************
 * Name ：Panel::getAttack()const
 * Summary ：读取攻击力
@@ -96,6 +102,7 @@ int Panel::getAttack()const
 {
 	return _attack;
 }
+
 /****************************
 * Name ：Panel::getDefence()const
 * Summary ：读取防御力
@@ -105,6 +112,7 @@ int Panel::getDefence()const
 {
 	return _defence;
 }
+
 /****************************
 * Name ：getIsSurvive()const
 * Summary ：获取是否存活 
@@ -114,6 +122,7 @@ bool Panel::getIsSurvive()const
 {
 	return _survive;
 }
+
 /****************************
 * Name ：getCanBeSeen()const
 * Summary ：获取是否可视 
@@ -123,8 +132,6 @@ bool Panel::getCanBeSeen()const
 {
 	return _canBeSeen;
 }
-
-
 
 /*===============================================================================*/
 /*============================以下是面板的直接设置===============================*/
@@ -139,6 +146,7 @@ void Panel::setMaxHealthPoint(int maxHealthPoint)
 {
 	_maxHealthPoint = maxHealthPoint;
 }
+
 /****************************
 * Name ：Panel::setHealthPoint
 * Summary ：设置当前血量
@@ -148,6 +156,7 @@ void Panel::setHealthPoint(int healthPoint)
 {
 	_healthPoint = healthPoint;
 }
+
 /****************************
 * Name ：Panel::setMagicPoint
 * Summary ：设置当前蓝量
@@ -157,6 +166,7 @@ void Panel::setMagicPoint(int magicPoint)
 {
 	_magicPoint = magicPoint;
 }
+
 /****************************
 * Name ：Panel::setAttack
 * Summary ：设置攻击力
@@ -170,6 +180,7 @@ void Panel::setAttack(int attack)
 		_attack = PANEL_MAX_ATTACK;
 	}
 }
+
 /****************************
 * Name ：Panel::setDefence
 * Summary ：设置防御力
@@ -183,6 +194,7 @@ void Panel::setDefence(int defence)
 		_defence = PANEL_MAX_DEFENCE;
 	}
 }
+
 /****************************
 * Name ：Panel::setAttackRate
 * Summary ：设置普攻倍率
@@ -192,6 +204,7 @@ void Panel::setAttackRate(float attackRate)
 {
 	_attackRate = attackRate;
 }
+
 /****************************
 * Name ：Panel::setSkillRate
 * Summary ：设置普攻倍率
@@ -201,6 +214,7 @@ void Panel::setSkillRate(float skillRate)
 {
 	_skillRate = skillRate;
 }
+
 /****************************
 * Name ：setIsSurvive
 * Summary ：设置是否存活 
@@ -210,6 +224,7 @@ void Panel::setIsSurvive(bool survive)
 {
 	_survive = survive;
 }
+
 /****************************
 * Name ：setCanBeSeen
 * Summary ：设置是否可见 
@@ -233,6 +248,7 @@ int Panel::doAttack()
 {
 	return int(_attack * _attackRate);
 }
+
 /****************************
 * Name ：Panel::doSkillAttack()
 * Summary ：结算技能伤害
@@ -257,12 +273,14 @@ int Panel::hit(int attack)
 	//防御力的生效方式为百分比减伤
 	int hitPoint = int(attack * (1.0f - _defence / PANEL_MAX_DEFENCE));
 	_healthPoint -= hitPoint;
-	if (_healthPoint <= 0) {//伤害溢出或击杀
+	if (_healthPoint <= 0) 
+	{//伤害溢出或击杀
 		_healthPoint = 0;
 		_survive = false;
 	}
 	return hitPoint;//哪怕伤害溢出 也直接返回造成的伤害
 }
+
 /****************************
 * Name ：Panel::treat
 * Summary ：受治疗
@@ -277,6 +295,7 @@ int Panel::treat(int healthPoint)
 	}
 	return healthPoint;//返回治疗量
 }
+
 /****************************
 * Name ：Panel::restoreMagic
 * Summary ：恢复蓝量
@@ -291,6 +310,7 @@ int Panel::restoreMagic(int magic)
 	}
 	return magic;
 }
+
 /****************************
 * Name ：Panel::getPlayerState
 * Summary ：获得player的状态（共五种）
@@ -306,28 +326,30 @@ int Panel::getPlayerState()const
 * Name ：Panel::setPlayerState
 * Summary ：设置player的状态（共五种）
            具体状态和枚举量见Panel.h
+* return ：
 ****************************/
 void Panel::setPlayerState(int state)
 {
-	switch (state) {
-	case NORMAL:
-		_playerstase = NORMAL;
-		break;
-	case MOVING:
-		_playerstase = MOVING;
-		break;
-	case ATTACK:
-		_playerstase = ATTACK;
-		break;
-	case HURT:
-		_playerstase = HURT;
-		break;
-	case SKILL:
-		_playerstase = SKILL;
-		break;
-	case DEAD:
-		_playerstase = DEAD;
-		break;
+	switch (state)
+	{
+		case NORMAL:
+			_playerstase = NORMAL;
+			break;
+		case MOVING:
+			_playerstase = MOVING;
+			break;
+		case ATTACK:
+			_playerstase = ATTACK;
+			break;
+		case HURT:
+			_playerstase = HURT;
+			break;
+		case SKILL:
+			_playerstase = SKILL;
+			break;
+		case DEAD:
+			_playerstase = DEAD;
+			break;
 	}
 }
 
@@ -340,9 +362,11 @@ bool Panel::getIfPlayAttackAnimation()const
 {
 	return _ifPlayAttackAnimation;
 }
+
 /****************************
 * Name ：Panel::setIfPlayAttackAnimation
 * Summary : 设置当前是否播放攻击动画
+* return ：
 ****************************/
 void Panel::setIfPlayAttackAnimation(bool ifplay)
 {
@@ -362,6 +386,7 @@ bool Panel::getIfPlayNormalAnimationInUpdate2()const
 /****************************
 * Name ：Panel::getIfPlayNormalAnimationInUpdate2
 * Summary : 设置当前是否在update2中播放normal动画
+* return ：
 ****************************/
 void Panel::setIfPlayNormalAnimationInUpdate2(bool ifplay)
 {
@@ -369,10 +394,21 @@ void Panel::setIfPlayNormalAnimationInUpdate2(bool ifplay)
 
 }
 
+/****************************
+* Name ：Panel::addHitnum
+* Summary : 增加击杀数
+* return ：
+****************************/
 void Panel::addHitnum()
 {
 	_hitnum++;
 }
+
+/****************************
+* Name ：Panel::getHitnum
+* Summary : 获取击杀数
+* return ：
+****************************/
 int Panel::getHitnum()
 {
 	return _hitnum;

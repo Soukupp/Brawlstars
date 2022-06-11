@@ -26,6 +26,7 @@ void Monster::initMonster(int maxHealthPoint, int attack, int defence, float ski
 	//初始化面板
 	_panel.init(maxHealthPoint, attack, defence, skillAttackRate, attackRate);
 }
+
 /****************************
 * Name ：Monster::init
 * Summary ：怪兽初始化
@@ -35,6 +36,7 @@ void Monster::initMonster(Panel& panel)
 {
 	_panel.init(panel.getMaxHealthPoint(), panel.getAttack(), panel.getDefence(), panel.getSkillRate(), panel.getAttackRate());
 }
+
 /****************************
 * Name ：Monster::init
 * Summary ：怪兽初始化
@@ -61,6 +63,7 @@ Monster* Monster::create(const std::string& filename)
 	CC_SAFE_DELETE(player);
 	return nullptr;
 }
+
 /****************************
 * Name ：Monster::getPanel()
 * Summary ：获取面板
@@ -84,6 +87,7 @@ void Monster::launchAnAttack(Player* enemy, Slider* enemyHealthBar)
 {
 
 }
+
 /****************************
 * Name ：Monster::hitMonster
 * Summary ：对怪兽进行攻击
@@ -94,6 +98,7 @@ int Monster::hitMonster(int attack)
 	//结算伤害后可以通过panel的getIsSurvive获取是否存活
 	return _panel.hit(attack);
 }
+
 /****************************
 * Name ：Monster::getHealthPercent
 * Summary ：获取当前血量百分比
@@ -117,6 +122,7 @@ void Monster::keepHealthBar(Slider* healthBar)
 {
 	healthBar->setPosition(MONSTER_HEALTHBAR_POSITION);
 }
+
 /****************************
 * Name ：Monster::setPositionWithAll
 * Summary ：整体移动
@@ -142,6 +148,7 @@ void Monster::refreshHealthBar(Slider* healthBar)
 	healthBar->setPercent(int(MONSTER_BLOOD_PERCENT));
 	keepHealthBar(healthBar);
 }
+
 /****************************
 * Name ：Monster::refreshHealthBar()
 * Summary ：更新怪兽
@@ -157,9 +164,9 @@ void Monster::refreshMonster()
 * Summary ：近距离攻击碰撞检测
 * 参数说明 : target : 攻击对象
 *           weapon : 武器对象
+* return ：
 ****************************/
 bool Monster::playerCollisionTest1(Monster* target)
 {
-
 	return true;
 }

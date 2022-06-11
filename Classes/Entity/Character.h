@@ -19,14 +19,14 @@ struct Character
     Slider* _magicBar;
     cocos2d::Label* _levelText;
 
-    int killedNum = 0;
+    int _killedNum = 0;
 
-    int direct = 0;//需要保存原方向 所以static
-    bool backDirectChanged = 0;
-    int searchTimes = 0;
+    int _direct = 0;//需要保存原方向 所以static
+    bool _backDirectChanged = 0;
+    int _searchTimes = 0;
 
-    bool ifOpenUpdate = false;
-    bool isCollidedByPlayer= false;
+    bool _ifOpenUpdate = false;
+    bool _isCollidedByPlayer= false;
 
 };
 

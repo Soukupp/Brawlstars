@@ -8,7 +8,6 @@
 #include "SimpleAudioEngine.h"
 #include "Entity/Weapon/Weapon.h"
 
-
 using namespace cocos2d::ui;
 using namespace cocos2d;
 
@@ -59,11 +58,11 @@ using namespace cocos2d;
 class Hero2;
 class Hero3;
 class Hero4;
-//class Weapon;
 class Hero1 : public Player
 {
 public:
-
+	const int _width = 26;
+	const int _height = 44;
 	float _weaponAnchorPositionX = HERO1_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT;
 	float _weaponAnchorPositionY = HERO1_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT;
 
@@ -95,14 +94,11 @@ public:
 	bool initSkillAction();
 	bool playerCollisionTest1(Player* target, Weapon* weapon);
 	bool playerCollisionTest2(Player* target, Weapon* weapon);
-	const int _width = 26;
-	const int _height = 44;
-
 	
 	int getID();
 
 private:
-	int ID = 1;
+	int _ID = 1;
 
 	float _targetX;//目标位置X
 	float _targetY;//目标位置Y

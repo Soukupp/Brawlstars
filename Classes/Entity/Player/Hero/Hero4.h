@@ -56,11 +56,11 @@ using namespace cocos2d;
 class Hero1;
 class Hero2;
 class Hero3;
-//class Weapon;
 class Hero4 : public Player
 {
 public:
-	float _direct = 1.0f;//表示方向
+	const int _width = 26;
+	const int _height = 44;
 
 	float _weaponAnchorPositionX = HERO4_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT;
 	float _weaponAnchorPositionY = HERO4_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT;
@@ -89,8 +89,6 @@ public:
 	bool playerCollisionTest1(Player* target, Weapon* weapon);
 	bool playerCollisionTest2(Player* target, Weapon* weapon);
 
-	const int _width = 26;
-	const int _height = 44;
 	int getID();
 
 	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _walkAction, WalkAction);
@@ -98,10 +96,8 @@ public:
 	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _attackAction, AttackAction);
 	CC_SYNTHESIZE_RETAIN(cocos2d::Action*, _skillAction, SkillAction);
 
-
-
 private:
-	int ID = 4;
+	int _ID = 4;
 
 	float _targetX;//目标位置X
 	float _targetY;//目标位置Y

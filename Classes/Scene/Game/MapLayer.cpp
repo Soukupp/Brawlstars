@@ -556,7 +556,7 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 			{
 				if (PLAYER->playerCollisionTest1(AI_PLAYER(i), WEAPON))
 				{
-					CHARACTER(i).isCollidedByPlayer = true;
+					CHARACTER(i)._isCollidedByPlayer = true;
 					ifAttackEnemy = true;
 					break;
 				}
@@ -575,7 +575,7 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 				{
 					if (PLAYER->playerCollisionTest1(allMonster[i]._monster,WEAPON ))
 					{
-						allMonster[i].isCollidedByPlayer = true;
+						allMonster[i]._isCollidedByPlayer = true;
 						ifAttackEnemy = true;
 						break;
 					}
@@ -916,7 +916,7 @@ void MapLayer::update2(float delta)
 	int j = 0;
 	for (int i = 1; i < allCharacter.size(); i++) 
 	{
-		if (CHARACTER(i).isCollidedByPlayer) 
+		if (CHARACTER(i)._isCollidedByPlayer)
 		{ 
 			j++; 
 		}
@@ -927,7 +927,7 @@ void MapLayer::update2(float delta)
 	{
 		for (int i = 1; i < allCharacter.size(); i++) 
 		{
-			if (CHARACTER(i).isCollidedByPlayer) 
+			if (CHARACTER(i)._isCollidedByPlayer)
 			{
 				ifattack = true;
 				times++;
@@ -965,14 +965,14 @@ void MapLayer::update2(float delta)
 					}
 
 				}
-				CHARACTER(i).isCollidedByPlayer = false;
+				CHARACTER(i)._isCollidedByPlayer = false;
 			}
 
 		}
 		times = 0;
 		for (int i = 0; i < allMonster.size(); i++)
 		{
-			if (allMonster[i].isCollidedByPlayer)
+			if (allMonster[i]._isCollidedByPlayer)
 			{
 				ifattack = true;
 				times++;
@@ -1003,7 +1003,7 @@ void MapLayer::update2(float delta)
 					}
 
 				}
-				allMonster[i].isCollidedByPlayer = false;
+				allMonster[i]._isCollidedByPlayer = false;
 			}
 
 		}
@@ -1022,7 +1022,7 @@ void MapLayer::update2(float delta)
 	{
 		for (int i = 1; i < allCharacter.size(); i++)
 		{
-			CHARACTER(i).isCollidedByPlayer = false;
+			CHARACTER(i)._isCollidedByPlayer = false;
 		}
 	}
 
@@ -1255,44 +1255,44 @@ void MapLayer::updateAIMoveOne(Character& character)
 		if (!_SafeArea->boundingBox().containsPoint(Vec2(character._player->getPosition())))//不在安全区
 		{
 			//log("not safe area");
-			++character.searchTimes;
-			if (character.searchTimes <= 100)//寻路少于一定数量则进行逃离方向选择逻辑
+			++character._searchTimes;
+			if (character._searchTimes <= 100)//寻路少于一定数量则进行逃离方向选择逻辑
 			{
 				//log("searchTimes <= 200");
-				if (!character.backDirectChanged)//且没有掉头
+				if (!character._backDirectChanged)//且没有掉头
 				{//那么掉头
 					//log("!backDirectChanged");
-					if (character.direct <= 1)//左右
+					if (character._direct <= 1)//左右
 					{
-						character.direct = 1 - character.direct;
+						character._direct = 1 - character._direct;
 					}
 					else//上下
 					{
-						character.direct = 5 - character.direct;
+						character._direct = 5 - character._direct;
 					}
-					character.backDirectChanged = true;
+					character._backDirectChanged = true;
 				}
 				//否则维持原方向
 			}
 			else//达到寻路上限还没逃离则开始随机选方向逃出
 			{
 				//log("searchTimes > 200");
-				character.backDirectChanged = false;//参数重置
+				character._backDirectChanged = false;//参数重置
 				int tempDirect = rand() % 60;
 				if (tempDirect <= 3)//除去原本的方向，每一帧有3/60的几率转向
 				{//这样是为了保证ai基本可以走一段路 而不是原地不停转向
-					character.direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
+					character._direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
 				}
 			}
 		}
 		else//在安全区
 		{//正常选方向
-			character.searchTimes = 0;//参数重置
-			character.backDirectChanged = false;//参数重置
+			character._searchTimes = 0;//参数重置
+			character._backDirectChanged = false;//参数重置
 			int tempDirect = rand() % 60;
 			if (tempDirect <= 3)//除去原本的方向，每一帧有3/60的几率转向
 			{//这样是为了保证ai基本可以走一段路 而不是原地不停转向
-				character.direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
+				character._direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
 			}
 		}
 
@@ -1302,26 +1302,26 @@ void MapLayer::updateAIMoveOne(Character& character)
 		if (/*character._player->_panel.getIfPlayAttackAnimation() == false*/1) {
 			/*=====================以下由键盘操作改写=====================*/
 			Vec2 playerPos = character._player->getPosition();  // 获取位置坐标
-			if (character.direct == 0)
+			if (character._direct == 0)
 			{
 				playerPos.x += 2;
 				character._player->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
 				//PLAYER->runAction(FlipX::create(false));
 				character._player->runFlipxWithWeapon(false, character._weapon);
 			}
-			else if (character.direct == 1)
+			else if (character._direct == 1)
 			{
 				playerPos.x -= 2;
 				character._player->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
 				//PLAYER->runAction(FlipX::create(true));
 				character._player->runFlipxWithWeapon(true, character._weapon);
 			}
-			else if (character.direct == 2)
+			else if (character._direct == 2)
 			{
 				playerPos.y += 2;
 				character._player->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
 			}
-			else if (character.direct == 3)
+			else if (character._direct == 3)
 			{
 				playerPos.y -= 2;
 				character._player->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
@@ -1344,7 +1344,7 @@ void MapLayer::updateAIMoveOne(Character& character)
 				// 元素+true
 				if (collision == "true")
 				{ //碰撞检测成功
-					character.direct = rand() % 4;//当ai撞墙 每一帧有3/4概率转向 一秒有几十帧 则基本可以做到撞墙即转向
+					character._direct = rand() % 4;//当ai撞墙 每一帧有3/4概率转向 一秒有几十帧 则基本可以做到撞墙即转向
 					return;
 				}
 			}
@@ -1416,7 +1416,7 @@ void MapLayer::updateAIAttack(float delta)
 
 					AI_PLAYER(active)->_panel.setPlayerState(ATTACK);
 					AI_PLAYER(active)->_panel.setIfPlayAttackAnimation(true);
-					CHARACTER(active).ifOpenUpdate = true;
+					CHARACTER(active)._ifOpenUpdate = true;
 
 				}
 			}
@@ -1452,7 +1452,7 @@ void MapLayer::updateAIAttack(float delta)
 
 						AI_PLAYER(active)->_panel.setPlayerState(ATTACK);
 						AI_PLAYER(active)->_panel.setIfPlayAttackAnimation(true);
-						CHARACTER(active).ifOpenUpdate = true;
+						CHARACTER(active)._ifOpenUpdate = true;
 
 					}
 				}
@@ -1489,9 +1489,9 @@ void MapLayer::updateSetIfPlayAttackAnimation(float delta)
 	{
 		if (CHARACTER(i)._player->_panel.getIsSurvive())
 		{
-			if (CHARACTER(i).ifOpenUpdate)
+			if (CHARACTER(i)._ifOpenUpdate)
 			{
-				CHARACTER(i).ifOpenUpdate = false;
+				CHARACTER(i)._ifOpenUpdate = false;
 				CHARACTER(i)._player->_panel.setIfPlayAttackAnimation(false);
 			}
 		}

@@ -42,10 +42,8 @@ public:
 
 	void initMonster(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
 	void initMonster();
-	//void launchAnAttack(Weapon* weapon, const std::string& attackType);
 
 	void keepHealthBar(Slider* healthBar);
-
 };
 
 #endif
