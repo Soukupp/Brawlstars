@@ -61,8 +61,8 @@ class Hero4;
 class Hero2 : public Player
 {
 public:
-	
-
+	const int _width = 26;
+	const int _height = 44;
 	float _weaponAnchorPositionX = HERO2_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT;
 	float _weaponAnchorPositionY = HERO2_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT;
 
@@ -71,7 +71,6 @@ public:
 
 	void initPlayer(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate);
 	void initPlayer();
-
 
 	void keepHealthBar(Slider* healthBar);
 	void keepMagicBar(Slider* magicBar);
@@ -99,13 +98,10 @@ public:
 	bool playerCollisionTest1(Player* target, Weapon* weapon);
 	bool playerCollisionTest2(Player* target, Weapon* weapon);
 
-	const int _width = 26;
-	const int _height = 44;
-
 	int getID();
 
 private:
-	int ID = 2;
+	int _ID = 2;
 
 	float _targetX;//目标位置X
 	float _targetY;//目标位置Y

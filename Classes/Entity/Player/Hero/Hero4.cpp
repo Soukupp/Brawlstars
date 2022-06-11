@@ -9,7 +9,7 @@
 #include "Hero2.h"
 #include "Hero3.h"
 #include "Hero4.h"
-//#include "Entity/Weapon/Weapon.h"
+
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -33,6 +33,7 @@ Hero4* Hero4::create(const std::string& filename)
 	CC_SAFE_DELETE(player);
 	return nullptr;
 }
+
 /****************************
 * Name ：create
 * Summary ：创建
@@ -49,6 +50,7 @@ Hero4* Hero4::create(const std::string& filename, const Rect& rect)
 	CC_SAFE_DELETE(player);
 	return nullptr;
 }
+
 /****************************
 * Name ：initPlayer
 * Summary ：初始化
@@ -60,6 +62,7 @@ void Hero4::initPlayer(int maxHealthPoint, int attack, int defence, float skillA
 	_panel.init(maxHealthPoint, attack, defence, skillAttackRate, attackRate);
 	this->setAnchorPoint(Vec2(0.5f, 0.5f));
 }
+
 /****************************
 * Name ：initPlayer
 * Summary ：按默认值初始化
@@ -73,28 +76,22 @@ void Hero4::initPlayer()
 }
 
 /*===============================================================================*/
-/*============================以下是发动攻击与动画===============================*/
-/*===============================================================================*/
-
-/****************************
-* Name ：launchAnAttack
-* Summary ：发动攻击 输入"attack" "skill" 调用
-* return ：
-****************************/
-
-/*===============================================================================*/
 /*=======================以下是UI、武器等的位置保持跟随==========================*/
 /*===============================================================================*/
 
+/****************************
+* Name ：keepHealthBar
+* Summary ：保持血条位置
+* return ：
+****************************/
 void Hero4::keepHealthBar(Slider * healthBar)
 {
-	/*healthBar->setPosition(HERO3_HEALTHBAR_POSITION);*/
-	//_healthBar->setPosition(position);
 	float x = this->getPosition().x;
 	float y = this->getPosition().y + 30;
 
 	healthBar->setPosition(Vec2::Vec2(x, y));
 }
+
 /****************************
 * Name ：keepMagicBar
 * Summary ：保持蓝条位置
@@ -102,12 +99,12 @@ void Hero4::keepHealthBar(Slider * healthBar)
 ****************************/
 void Hero4::keepMagicBar(Slider* magicBar)
 {
-	//magicBar->setPosition(HERO3_MAGICBAR_POSITION);
 	float x = this->getPosition().x;
 	float y = this->getPosition().y + 25;
 
 	magicBar->setPosition(Vec2::Vec2(x, y));
 }
+
 /****************************
 * Name ：keepWeapon
 * Summary ：保持武器位置
@@ -117,6 +114,7 @@ void Hero4::keepWeapon(Weapon* weapon)
 {
 	weapon->setPosition(HERO3_WEAPON_POSITION_X, HERO3_WEAPON_POSITION_Y);
 }
+
 /****************************
 * Name ：keepLevelText
 * Summary ：保持等级位置
@@ -124,12 +122,12 @@ void Hero4::keepWeapon(Weapon* weapon)
 ****************************/
 void Hero4::keepLevelText(cocos2d::Label* levelText, Slider* bar)
 {
-	//levelText->setPosition(HERO3_LEVELTEXT_POSITION);
 	float x = this->getPosition().x;
 	float y = this->getPosition().y + 35;
 
 	levelText->setPosition(Vec2::Vec2(x, y));
 }
+
 /****************************
 * Name ：runFlipxWithWeapon
 * Summary ：带着武器翻转
@@ -149,6 +147,7 @@ void Hero4::runFlipxWithWeapon(bool flipx, Weapon* weapon)
 	this->runAction(FlipX::create(flipx));
 	weapon->runAction(FlipX::create(flipx));
 }
+
 /****************************
 * Name ：setPositionWithAll
 * Summary ：整体移动
@@ -174,7 +173,8 @@ void Hero4::setPositionWithAll(cocos2d::Vec2& position, Weapon* weapon, Slider* 
 ****************************/
 void Hero4::upgrade(cocos2d::Label* levelText, Slider* bar)
 {
-	if (_level < PLAYER_MAX_GRADE) {
+	if (_level < PLAYER_MAX_GRADE) 
+	{
 		_level++;
 		levelText->setString((std::string("Lv.") + std::to_string(_level)));
 		_panel.setMaxHealthPoint(HERO4_INIT_MAXHEALTHPOINT / 10 + _panel.getMaxHealthPoint());
@@ -187,6 +187,16 @@ void Hero4::upgrade(cocos2d::Label* levelText, Slider* bar)
 		this->keepLevelText(levelText, bar);
 	}
 }
+
+/*===============================================================================*/
+/*==================================以下是动画===================================*/
+/*===============================================================================*/
+
+/****************************
+* Name ：initWalkAction
+* Summary ：初始化行走动作
+* return ：是否初始化成功
+****************************/
 bool Hero4::initWalkAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
@@ -207,10 +217,13 @@ bool Hero4::initWalkAction()
 		return true;
 	else
 		return false;
-
-
 }
 
+/****************************
+* Name ：initAttackAction
+* Summary ：初始化普攻动作
+* return ：是否初始化成功
+****************************/
 bool Hero4::initAttackAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
@@ -232,10 +245,13 @@ bool Hero4::initAttackAction()
 		return true;
 	else
 		return false;
-
 }
 
-
+/****************************
+* Name ：initNormalAction
+* Summary ：初始化静止动作
+* return ：是否初始化成功
+****************************/
 bool Hero4::initNormalAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
@@ -258,7 +274,11 @@ bool Hero4::initNormalAction()
 		return false;
 }
 
-
+/****************************
+* Name ：initSkillAction
+* Summary ：初始化技能动作
+* return ：是否初始化成功
+****************************/
 bool Hero4::initSkillAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
@@ -282,12 +302,16 @@ bool Hero4::initSkillAction()
 		return false;
 }
 
+/*===============================================================================*/
+/*================================以下是碰撞检测=================================*/
+/*===============================================================================*/
 
-int Hero4::getID()
-{
-	return ID;
-}
-
+/****************************
+* Name ：palyerCollisionTest1
+* Summary ：近距离攻击碰撞检测
+* 参数说明 : target : 攻击对象
+*           weapon : 武器对象
+****************************/
 bool Hero4::playerCollisionTest1(Player* target, Weapon* weapon)
 {
 	if (target == nullptr)
@@ -339,6 +363,13 @@ bool Hero4::playerCollisionTest1(Player* target, Weapon* weapon)
 		}
 	}
 }
+
+/****************************
+* Name ：palyerCollisionTest2
+* Summary ：近距离攻击碰撞检测
+* 参数说明 : target : 攻击对象
+*           weapon : 武器对象
+****************************/
 bool Hero4::playerCollisionTest2(Player* target, Weapon* weapon)
 {
 	_targetX = target->getPosition().x;                           //目标位置X
@@ -381,4 +412,14 @@ bool Hero4::playerCollisionTest2(Player* target, Weapon* weapon)
 			return false;
 		}
 	}
+}
+
+/****************************
+* Name ：getID
+* Summary ：获取角色id
+* return ：id
+****************************/
+int Hero4::getID()
+{
+	return _ID;
 }

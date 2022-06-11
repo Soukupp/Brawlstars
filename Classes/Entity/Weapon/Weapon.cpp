@@ -31,6 +31,7 @@ Weapon* Weapon::create(const std::string& filename)
 	CC_SAFE_DELETE(weapon);
 	return nullptr;
 }
+
 /****************************
 * Name ：Weapon::getWeapon()
 * Summary ：获取武器指针
@@ -46,13 +47,10 @@ Weapon* Weapon::getWeapon()
 * Summary ：发起攻击
 * return ：造成的伤害
 ****************************/
-//template<typename Enemy>
 int Weapon::launchAnAttack(int attack, Player* enemy)
 {
-	//pz
 	return enemy->hitPlayer(attack);
 }
-
 
 /****************************
 * Name ：Weapon::createWeaponPhysicsBody()

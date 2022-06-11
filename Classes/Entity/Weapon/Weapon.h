@@ -6,12 +6,7 @@
 
 #include "cocos2d.h"
 #include "Entity/Entity.h"
-/**
-#include "Entity/Player/Hero/Hero1.h"
-#include "Entity/Player/Hero/Hero2.h"
-#include "Entity/Player/Hero/Hero3.h"
-#include "Entity/Player/Hero/Hero4.h"
-/**/
+
 using namespace cocos2d;
 using namespace cocos2d::ui;
 
@@ -28,7 +23,6 @@ public:
 
     void createWeaponPhysicsBody();
     
-    //template<typename Enemy>
     int launchAnAttack(int attack, Player* enemy);
 };
 

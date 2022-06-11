@@ -47,6 +47,7 @@ Player* Player::create(const std::string& filename)
 	CC_SAFE_DELETE(player);
 	return nullptr;
 }
+
 /****************************
 * Name ：Player::getPanel()
 * Summary ：获取面板
@@ -97,9 +98,10 @@ void Player::launchAnAttack(Weapon* weapon, const std::string& attackType, Slide
 		this->refreshMagicBar(magicBar);
 	}
 	else
+	{
 		log("null");
+	}
 }
-
 
 /****************************
 * Name ：Player::hitPlayer
@@ -111,6 +113,7 @@ int Player::hitPlayer(int attack)
 	//结算伤害后可以通过panel的getIsSurvive获取是否存活
 	return _panel.hit(attack);
 }
+
 /****************************
 * Name ：Player::restoreMagic
 * Summary ：补充蓝量
@@ -120,10 +123,8 @@ void Player::restoreMagic()
 {
 	//三次回满
 	_panel.restoreMagic(34);
-	if (this->magicIsFull())
-		return;
-
 }
+
 /****************************
 * Name ：Player::magicIsFull()const
 * Summary ：蓝量已满
@@ -133,6 +134,7 @@ bool Player::magicIsFull()const
 {
 	return _panel.getMagicPoint() == _panel.getMaxMagicPoint();
 }
+
 /****************************
 * Name ：Player::useMagic
 * Summary ：使用蓝
@@ -147,6 +149,7 @@ bool Player::useMagic()
 	}
 	return false;
 }
+
 /****************************
 * Name ：Player::getHealthPercent
 * Summary ：获取当前血量百分比
@@ -156,6 +159,7 @@ int Player::getHealthPercent()
 {
 	return PLAYER_BLOOD_PERCENT;
 }
+
 /****************************
 * Name ：Player::getMagicPercent
 * Summary ：获取当前蓝量百分比
@@ -181,6 +185,7 @@ void Player::keepWeapon(Weapon* weapon)
 		this->getPosition().x+this->getContentSize().width+weapon->getContentSize().width,
 		this->getPosition().y);
 }
+
 /****************************
 * Name ：Player::runFlipxWithWeapon
 * Summary ：带着武器翻转
@@ -208,6 +213,7 @@ void Player::keepHealthBar(Slider* healthBar)
 {
 	healthBar->setPosition(PLAYER_HEALTHBAR_POSITION);
 }
+
 /****************************
 * Name ：Player::keepMagicBar
 * Summary ：保持蓝条位置
@@ -217,6 +223,7 @@ void Player::keepMagicBar(Slider* magicBar)
 {
 	magicBar->setPosition(PLAYER_MAGICBAR_POSITION);
 }
+
 /****************************
 * Name ：Player::keepLevelText
 * Summary ：保持等级位置
@@ -226,6 +233,7 @@ void Player::keepLevelText(cocos2d::Label* levelText, Slider* bar)
 {
 	levelText->setPosition(PLAYER_LEVELTEXT_POSITION);
 }
+
 /****************************
 * Name ：Player::setPositionWithAll
 * Summary ：整体移动
@@ -256,6 +264,7 @@ void Player::refreshHealthBar(Slider* healthBar)
 	healthBar->setPercent(int(PLAYER_BLOOD_PERCENT));
 	keepHealthBar(healthBar);
 }
+
 /****************************
 * Name ：Player::refreshMagicBar()
 * Summary ：更新蓝条
@@ -266,6 +275,7 @@ void Player::refreshMagicBar(Slider* magicBar)
 	magicBar->setPercent(int(PLAYER_MAGIC_PERCENT));
 	keepMagicBar(magicBar);
 }
+
 /****************************
 * Name ：Player::refreshHealthBar()
 * Summary ：更新人物
@@ -286,6 +296,13 @@ bool Player::playerCollisionTest1(Player* target,Weapon* weapon)
 {
 	return true;
 }
+
+/****************************
+* Name ：palyerCollisionTest2
+* Summary ：近距离攻击碰撞检测
+* 参数说明 : target : 攻击对象
+*           weapon : 武器对象
+****************************/
 bool Player::playerCollisionTest2(Player* target, Weapon* weapon)
 {
 	return true;
@@ -300,27 +317,52 @@ void Player::upgrade(cocos2d::Label* levelText, Slider* bar)
 {
 }
 
+/****************************
+* Name ：Player::initWalkAction
+* Summary ：初始化行走动作
+* return ：是否初始化成功
+****************************/
 bool Player::initWalkAction()
 {
 	return true;
 }
 
+/****************************
+* Name ：Player::initNormalAction
+* Summary ：初始化静止动作
+* return ：是否初始化成功
+****************************/
 bool Player::initNormalAction()
 {
 	return true;
 }
 
+/****************************
+* Name ：Player::initAttackAction
+* Summary ：初始化普攻动作
+* return ：是否初始化成功
+****************************/
 bool Player::initAttackAction()
 {
 	return true;
 }
 
+/****************************
+* Name ：Player::initSkillAction
+* Summary ：初始化技能动作
+* return ：是否初始化成功
+****************************/
 bool Player::initSkillAction()
 {
 	return true;
 }
 
+/****************************
+* Name ：Player::getID
+* Summary ：获取角色id
+* return ：id
+****************************/
 int Player::getID()
 {
-	return ID;
+	return _ID;
 }

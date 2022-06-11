@@ -11,6 +11,11 @@
 
 USING_NS_CC;
 
+/****************************
+* Name ：create
+* Summary ：创建怪兽
+* return ：怪兽指针
+****************************/
 GroundMonster* GroundMonster::create(const std::string& filename)
 {
 	GroundMonster* player = new (std::nothrow) GroundMonster();
@@ -23,6 +28,11 @@ GroundMonster* GroundMonster::create(const std::string& filename)
 	return nullptr;
 }
 
+/****************************
+* Name ：create
+* Summary ：创建怪兽
+* return ：怪兽指针
+****************************/
 GroundMonster* GroundMonster::create(const std::string& filename, const Rect& rect)
 {
 	GroundMonster* player = new (std::nothrow) GroundMonster();
@@ -35,6 +45,11 @@ GroundMonster* GroundMonster::create(const std::string& filename, const Rect& re
 	return nullptr;
 }
 
+/****************************
+* Name ：init
+* Summary ：怪兽初始化
+* return ：
+****************************/
 void GroundMonster::initMonster(int maxHealthPoint, int attack, int defence, float skillAttackRate, float attackRate)
 {
 	//初始化面板
@@ -51,10 +66,14 @@ void GroundMonster::initMonster()
 {
 	_panel.init(1000, 100, 200, 1.0f, 1.0f, 100);
 }
+
+/****************************
+* Name ：keepHealthBar()
+* Summary ：保持血条位置
+* return ：
+****************************/
 void GroundMonster::keepHealthBar(Slider* healthBar)
 {
 	healthBar->setPosition(GROUNDMONSTER_HEALTHBAR_POSITION);
 	//_healthBar->setPosition(position);
 }
-
-

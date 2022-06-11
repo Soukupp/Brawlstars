@@ -9,7 +9,7 @@
 
 class Entity : public cocos2d::Sprite
 {
-	//暂时无内容
+	//无内容
 };
 
 #endif
