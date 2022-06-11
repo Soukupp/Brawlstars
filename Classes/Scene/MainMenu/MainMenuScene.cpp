@@ -355,7 +355,7 @@ void MainMenuScene::playerMassageCallback(cocos2d::Ref* pSender)
     auto MainMenuPlayerInformation = InformationPopLayer::create
     ("background/HeroPlayerInformationBackground.jpg", Size(980, 490), 150);
     MainMenuPlayerInformation->setPosition(0, -50);
-    MainMenuPlayerInformation->setTitle("PLATER INFORMATION", "fonts/Lilita one.ttf", 50);
+    MainMenuPlayerInformation->setTitle("PLAYER INFORMATION", "fonts/Lilita one.ttf", 50);
     MainMenuPlayerInformation->setContentText(playerInfo.c_str(),
         "fonts/Lilita one.ttf", 40, MAINMENU_INFORMATION_CONTENT_TEXT_PADDING,
         MAINMENU_INFORMATION_CONTENT_TEXT_PADDINGTOP);
