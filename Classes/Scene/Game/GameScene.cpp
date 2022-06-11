@@ -23,8 +23,6 @@ static bool ifShowStates = false;       //是否显示FPS
 Scene* GameScene::createScene()
 {
 	auto GameScene = Scene::create();
-	//auto MapLayer = MapLayer::create();
-	//GameScene->addChild(MapLayer);
 	auto MapLayer = GameScene::create();
 	GameScene->addChild(MapLayer);
 	return GameScene;
@@ -60,10 +58,8 @@ bool GameScene::init()
 	auto GameSettingLayer = LayerColor::create();
 	GameSettingLayer->changeWidthAndHeight(960, 720);
 
-
-
-
 	/*=====================创建关闭按钮开始======================*/
+
 	auto BackToMenuItem = MenuItemImage::create(
 		"ui/button_close.png",
 		"ui/button_close.png",
@@ -80,7 +76,10 @@ bool GameScene::init()
 		BackToMenuItem->setPosition(Vec2(GAME_BACK_TO_MENU_POSITION_X, GAME_BACK_TO_MENU_POSITION_Y));
 	}  // 关闭菜单需要改为固定位置（且此处关闭菜单表示跳到结束界面）
 
+	/*=====================创建关闭按钮结束======================*/
+
 	/*=====================创建设置按钮开始======================*/
+
 	auto SettingsItem = MenuItemImage::create(
 		"ui/GameSettingsButton.png", "ui/GameSettingsButton.png",
 		CC_CALLBACK_1(GameScene::GameSettingsCallBack, this));
@@ -98,23 +97,16 @@ bool GameScene::init()
 
 	auto menu = Menu::create(BackToMenuItem, SettingsItem, NULL);
 	menu->setPosition(Vec2::ZERO);
-    /*=====================创建设置按钮结束====================*/
-
-	//auto SkillButton = SkillButton::create("ui/buttonForSkill.png", "ui/buttonShadow.png", 30);
-
-	//SkillButton->setPosition(Vec2(GAME_SKILL_BUTTON_POSITION_X, GAME_SKILL_BUTTON_POSITION_X));
-	//this->addChild(SkillButton, 100); // 放在最前面
-
-
 	GameSettingLayer->addChild(menu);
-	
 	this->addChild(GameSettingLayer, 1);
-
 
 	auto MapLayer1 = MapLayer::create();
 	this->addChild(MapLayer1, 0);
 
+    /*=====================创建设置按钮结束====================*/
+
 	/*=====================创建背景音乐开始=======================*/
+
 	CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("music/retro_fight_ingame_01.mp3");
 	if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
 	{
@@ -125,7 +117,6 @@ bool GameScene::init()
 
 	return true;
 }
-
 
 /****************************
 * Name ：GameScene::menuCloseCallback
@@ -151,7 +142,6 @@ void GameScene::menuCallback(Ref* pSender)
 	Director::getInstance()->replaceScene(GOS);
 }
 
-
 /****************************
 * Name ：GameScene::GameSettingsCallBack
 * Summary ：跳到GameSettingsScene
@@ -164,7 +154,6 @@ void GameScene::GameSettingsCallBack(cocos2d::Ref* pSender)
 	Director::getInstance()->pushScene(GSS);  // 此处用push的方式，保留游戏进度
 }
 
-
 /****************************
 * Name ：GameScene::getUserInt
 * Summary ：获取英雄名字
@@ -174,7 +163,6 @@ int GameScene::getUserInt(const char* name)
 {
 	return UserDefault::getInstance()->getIntegerForKey(name);
 }
-
 
 /****************************
 * Name ：GameScene::setUserInt

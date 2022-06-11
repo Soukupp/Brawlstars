@@ -29,7 +29,6 @@ Scene* SettingsScene::createScene()
     return SettingsScene::create();
 }
 
-
 /****************************
 * Name ：problemLoading
 * Summary ：错误打印
@@ -40,7 +39,6 @@ static void problemLoading(const char* filename)
     printf("Error while loading: %s\n", filename);
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in SettingsScene.cpp\n");
 }
-
 
 /****************************
 * Name ：SettingsScene::init
@@ -83,6 +81,7 @@ bool SettingsScene::init()
     auto backMenu = Menu::create(settingsBackItem, NULL);
     backMenu->setPosition(Vec2::ZERO);
     this->addChild(backMenu, 2);
+
     /*=====================创建关闭按钮结束====================*/
 
     /*=================创建清除用户数据按钮开始================*/
@@ -132,6 +131,7 @@ bool SettingsScene::init()
 
         this->addChild(clearUserDataLabel, 2);
     }
+
     /*=================创建清除用户数据按钮结束==============*/
 
     /*=====================创建标题开始======================*/
@@ -156,6 +156,7 @@ bool SettingsScene::init()
 
         this->addChild(settingsNameLabel, 1);
     }
+
     /*=====================创建标题结束======================*/
 
     /*===================创建滑动条开始======================*/
@@ -219,9 +220,7 @@ bool SettingsScene::init()
 
     _displayedMusicStates->setTextColor(settingsMusicLabelColor);
     _displayedMusicStates->setPosition(Vec2(SETTINGS_SETTINGMUSICSTATES_POSITION_X, SETTINGS_SETTINGMUSICSTATES_POSITION_Y));
-
  
-
     auto FPSOn = MenuItemImage::create("ui/FPSOn.png", "ui/FPSOn.png");
     auto FPSOff = MenuItemImage::create("ui/FPSOff.png", "ui/FPSOff.png");
 
@@ -255,7 +254,6 @@ bool SettingsScene::init()
 
 
     Menu* settingsMenu = Menu::create(musicOnOrOff,FPSOnOrOff, NULL);
-    
     this->addChild(settingsMenu, 3);
     addChild(_displayedMusicStates,3);
     addChild(_displayedFPSStates, 3);
@@ -263,6 +261,7 @@ bool SettingsScene::init()
     /*===================创建菜单结束========================*/
 
     /*=====================创建背景图开始======================*/
+
     auto background = Sprite::create("background/GameSettingsBackground.png");
     if (background == nullptr)
     {
@@ -276,10 +275,11 @@ bool SettingsScene::init()
 
         this->addChild(background, 0);
     }
+
     /*=====================创建背景图结束======================*/
+
     return true;
 }
-
 
 /****************************
 * Name ：SettingsScene::settingsBackCallback
@@ -292,7 +292,6 @@ void SettingsScene::settingsBackCallback(Ref* pSender)
     auto mainMenuScene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//过场动画设计
 }
-
 
 /****************************
 * Name ：SettingsScene::sliderEvent
@@ -314,7 +313,6 @@ void SettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
 
     }
 }
-
 
 /****************************
 * Name ：SettingsScene::settingsPlayCallBack
@@ -339,7 +337,6 @@ void SettingsScene::settingsPlayCallBack(Ref* pSender)
     }
 }
 
-
 /****************************
 * Name ：SettingsScene::settingsFPSCallBack
 * Summary  回调函数
@@ -362,7 +359,6 @@ void SettingsScene::settingsFPSCallBack(Ref* pSender)
         _displayedFPSStates->setString(StringUtils::format("DISPLAY FPS"));
     }
 }
-
 
 /****************************
 * Name ：SettingsScene::clearUserDataCallback

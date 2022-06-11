@@ -3,7 +3,6 @@
 
 #include "InformationPopLayer.h"
 
-
 /****************************
 * Name ：InformationPopLayer::InformationPopLayer
 * Summary ：构造函数初始化
@@ -23,7 +22,6 @@ InformationPopLayer::InformationPopLayer()
 
 }
 
-
 /****************************
 * Name ：InformationPopLayer::~InformationPopLayer
 * Summary ：析构函数安全释放
@@ -36,7 +34,6 @@ InformationPopLayer::~InformationPopLayer()
 	CC_SAFE_RELEASE(_ltContentText);
 	CC_SAFE_RELEASE(_ltTitle);
 }
-
 
 /****************************
 * Name ：InformationPopLayer::init
@@ -66,7 +63,6 @@ bool InformationPopLayer::init()
 
 }
 
-
 /****************************
 * Name ：InformationPopLayer::onTouchBegan
 * Summary ：判断有无touch
@@ -76,7 +72,6 @@ bool InformationPopLayer::onTouchBegan(Touch* touch, Event* event)
 {
 	return true;
 }
-
 
 /****************************
 * Name ：InformationPopLayer::create
@@ -94,7 +89,6 @@ InformationPopLayer* InformationPopLayer::create(const char* backgoundImage, Siz
 	return layer;
 }
 
-
 /****************************
 * Name ：InformationPopLayer::setTitle
 * Summary ：设置弹窗标题
@@ -106,7 +100,6 @@ void InformationPopLayer::setTitle(const char* title, const char* fontstyle, int
 	TitleLabel->setColor(Color3B::WHITE); // 默认白色
 	this->setLabelTitle(TitleLabel);
 }
-
 
 /****************************
 * Name ：InformationPopLayer::setContentText
@@ -124,7 +117,6 @@ void InformationPopLayer::setContentText(const char* text, const char* fontstyle
 	// 储存一下文本条件，后续会用到
 }
 
-
 /****************************
 * Name ：InformationPopLayer::setCallBackFunc
 * Summary ：储存回调状态
@@ -136,7 +128,6 @@ void InformationPopLayer::setCallBackFunc(Ref* target, SEL_CallFuncN callfun)
 	_callback = callfun;
 
 }
-
 
 /****************************
 * Name ：InformationPopLayer::createButton
@@ -160,7 +151,6 @@ bool InformationPopLayer::createButton(const char* Image, const char* ImageSelec
 	return true;
 }
 
-
 /****************************
 * Name ：InformationPopLayer::buttonCallBack
 * Summary ：按钮回调
@@ -177,7 +167,6 @@ void InformationPopLayer::buttonCallBack(Ref* pSender) {
 
 	this->removeFromParentAndCleanup(true);
 }
-
 
 /****************************
 * Name ：InformationPopLayer::onEnter
@@ -251,7 +240,6 @@ void InformationPopLayer::backgroundFinish() {
 	}
 
 }
-
 
 /****************************
 * Name ：InformationPopLayer::onExit

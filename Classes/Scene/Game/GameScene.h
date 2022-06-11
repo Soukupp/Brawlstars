@@ -34,20 +34,12 @@ public:
 
     virtual bool init();
 
-    //cocos2d::Sprite* _SafeArea;
-
-    //void updateForSafeArea(float delta);
-
-
     void menuCallback(cocos2d::Ref* pSender);
     void GameSettingsCallBack(cocos2d::Ref* pSender);
 
     int getUserInt(const char* name);
     void setUserInt(const char* name, int num);
 
-    //void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // 必须要加作用域！！！
-
-    // implement the "static create()" method manually
     CREATE_FUNC(GameScene);
 };
 

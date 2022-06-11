@@ -1,6 +1,6 @@
-#pragma once
 //作者 : 王鹏
 //日期 : 2022-5-14
+
 #ifndef __MAINMENU_SCENE_H__
 #define __MAINMENU_SCENE_H__
 
@@ -49,7 +49,6 @@ public:
 
     virtual bool init();
     virtual void onEnterTransitionDidFinish();
-
 
     //关闭主界面
     void menuCloseCallback(cocos2d::Ref* pSender);
