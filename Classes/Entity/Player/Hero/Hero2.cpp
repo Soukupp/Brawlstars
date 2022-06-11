@@ -217,7 +217,7 @@ bool Hero2::initAttackAction()
 		playerFrameArray.pushBack(frame);
 	}
 
-	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 5.0);
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 8.0);
 	animation->setLoops(1);
 	auto* animate = Animate::create(animation);
 	this->setAttackAction(animate);

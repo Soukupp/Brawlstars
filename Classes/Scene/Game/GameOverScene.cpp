@@ -7,7 +7,7 @@
 USING_NS_CC;
 
 /****************************
-* Name ：GameOverScene::createScene
+* Name ：createScene
 * Summary ：创建场景，实质layer
 * return ：场景类指针
 ****************************/
@@ -31,7 +31,7 @@ static void problemLoading(const char* filename)
 }
 
 /****************************
-* Name ：GameOverScene::init
+* Name ：init
 * Summary ：游戏结束场景初始化
 * return ：初始化成功与否
 ****************************/
@@ -45,6 +45,7 @@ bool GameOverScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    //页面基本布局设置
     auto GameOverBackground = Sprite::create("background/GameOverBackground.jpg");
     GameOverBackground->setPosition(Vec2(GAMEOVER_BACKGROUND_POSITION));
     this->addChild(GameOverBackground, 0);
@@ -65,6 +66,7 @@ bool GameOverScene::init()
     {
         settingsBackItem->setPosition(Vec2(GAMEOVER_BACK_ITEM_POSITION_X, GAMEOVER_BACK_ITEM_POSITION_Y));
     }
+
     //创建返回菜单
     auto backMenu = Menu::create(settingsBackItem, NULL);
     backMenu->setPosition(Vec2::ZERO);
@@ -81,6 +83,7 @@ bool GameOverScene::init()
         this->addChild(label, 1);
     }
 
+    //确定选择的英雄，进行相关英雄展示
     int selectedHero = UserDefault::getInstance()->getIntegerForKey("selectedHero");
 
     std::string playerName;
@@ -111,11 +114,10 @@ bool GameOverScene::init()
     else
         tip = "    WHAT A PITY!";
 
-   
-
+    //游戏数据结算
     auto GameOverInformation = InformationPopLayer::create
     ("background/HeroInformationBackground.png", Size(470, 350), 150);
-    GameOverInformation->setPosition(Vec2(170, 0)); // 变大往右
+    GameOverInformation->setPosition(Vec2(170, 0));                             // 变大往右
     auto infoString = tip 
         + "\n" +
         "HERO:     " + playerName
@@ -124,17 +126,17 @@ bool GameOverScene::init()
         + "\n" +
         "KILL COUNT :        " + std::to_string(UserDefault::getInstance()->getIntegerForKey("HitNum"));
     GameOverInformation->setContentText(infoString.c_str(), "fonts/Lilita one.ttf", 45, MAINMENU_INFORMATION_CONTENT_TEXT_PADDING,
+
         MAINMENU_INFORMATION_CONTENT_TEXT_PADDINGTOP);
     this->addChild(GameOverInformation, 4);
 
 
-    
     return true;
 }
 
 /****************************
-* Name ：GameOverScene::menuCloseCallback
-* Summary ：返回目录界面
+* Name ：menuCloseCallback
+* Summary ：返回主菜单界面
 * return ：无
 ****************************/
 void GameOverScene::menuCloseCallback(Ref* pSender)
@@ -143,7 +145,11 @@ void GameOverScene::menuCloseCallback(Ref* pSender)
     Director::getInstance()->replaceScene(MMS);
 }
 
-
+/****************************
+* Name ：hero1
+* Summary ：hero1结束展示
+* return ：无
+****************************/
 void GameOverScene::hero1()
 {
     auto hero1 = Sprite::create("character/Hero1/hero.png");
@@ -168,7 +174,11 @@ void GameOverScene::hero1()
     hero1->runAction(action1);
 }
 
-
+/****************************
+* Name ：hero2
+* Summary ：hero2结束展示
+* return ：无
+****************************/
 void GameOverScene::hero2()
 {
     auto hero2 = Sprite::create("character/Hero2/hero.png");
@@ -193,7 +203,11 @@ void GameOverScene::hero2()
     hero2->runAction(action1);
 }
 
-
+/****************************
+* Name ：hero3
+* Summary ：hero3结束展示
+* return ：无
+****************************/
 void GameOverScene::hero3()
 {
     auto hero3 = Sprite::create("character/Hero3/hero.png");
@@ -216,7 +230,11 @@ void GameOverScene::hero3()
     hero3->runAction(action);
 }
 
-
+/****************************
+* Name ：hero4
+* Summary ：hero4结束展示
+* return ：无
+****************************/
 void GameOverScene::hero4()
 {
     auto hero4 = Sprite::create("character/Hero4/hero.png");
