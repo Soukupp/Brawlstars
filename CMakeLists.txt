@@ -50,8 +50,6 @@ endif()
 list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
 
-     Classes/Entity/Entity.cpp
-     Classes/Entity/Character.cpp
      Classes/Entity/Player/Player.cpp
      Classes/Entity/Player/Panel.cpp
      Classes/Entity/Player/Hero/Hero1.cpp
@@ -59,7 +57,6 @@ list(APPEND GAME_SOURCE
      Classes/Entity/Player/Hero/Hero3.cpp
      Classes/Entity/Player/Hero/Hero4.cpp
 
-     Classes/Entity/TheMonster.cpp
      Classes/Entity/Monster/Monster.cpp
      Classes/Entity/Monster/Monsters/GroundMonster.cpp
      Classes/Entity/Monster/Monsters/DesertMonster.cpp
