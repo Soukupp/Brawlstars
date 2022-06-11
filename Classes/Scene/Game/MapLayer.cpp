@@ -951,11 +951,8 @@ void MapLayer::update2(float delta)
 							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_kill.mp3");
 						else if (PLAYER->getID() == 4)
 							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4_kill.mp3");
-<<<<<<< Updated upstream
-=======
 						CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
 							float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
->>>>>>> Stashed changes
 					}
 
 				}
@@ -1115,12 +1112,8 @@ void MapLayer::updateForFog(float delta)
 		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/first_takedown.mp3");
 	else if (_fogTurn == 2)
 		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/double_takedown.mp3");
-<<<<<<< Updated upstream
-=======
 	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
 		float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
-	/*ScaleBy* SafeAreaScaleBy = ScaleBy::create(2.0f, 0.8f);*/
->>>>>>> Stashed changes
 	_SafeArea->runAction(ScaleBy::create(2.0f, 0.8f));
 
 }

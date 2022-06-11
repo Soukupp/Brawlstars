@@ -204,18 +204,9 @@ bool MainMenuScene::init()
     if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
     {
         CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/first_music.mp3", true);
+        CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(
+            float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     }
-<<<<<<< Updated upstream
-
-=======
-    CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
-    /*else
-    {
-        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/first_music.mp3", true);
-        CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
-    }*/
->>>>>>> Stashed changes
     /*=====================创建背景音乐结束=======================*/
 
     /*=====================创建玩家信息按钮开始===================*/
