@@ -45,8 +45,7 @@ bool GameOverScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    //页面基本布局设置
-    auto GameOverBackground = Sprite::create("background/GameOverBackground.jpg");
+    auto GameOverBackground = Sprite::create("background/GameOverBackground.png");
     GameOverBackground->setPosition(Vec2(GAMEOVER_BACKGROUND_POSITION));
     this->addChild(GameOverBackground, 0);
 
@@ -108,28 +107,35 @@ bool GameOverScene::init()
             break;
     }
 
+    auto crown = Sprite::create("ui/crown.png");
+    crown->setPosition(GAMEOVER_CROWN_POSITION);
+    addChild(crown, 5);
+
+
     std::string tip;
     if (UserDefault::getInstance()->getIntegerForKey("PlayerRank") <= 4)
-        tip = "   CONGRATULATION!";
+        tip = "       CONGRATULATION!";
     else
-        tip = "    WHAT A PITY!";
 
-    //游戏数据结算
+        tip = "        WHAT A PITY!";
+
     auto GameOverInformation = InformationPopLayer::create
-    ("background/HeroInformationBackground.png", Size(470, 350), 150);
-    GameOverInformation->setPosition(Vec2(170, 0));                             // 变大往右
-    auto infoString = tip 
+    ("background/HeroInformationBackground.png", Size(570, 350), 150);
+    GameOverInformation->setPosition(Vec2(150, 0)); // �������
+    auto infoString = tip
         + "\n" +
         "HERO:     " + playerName
         + "\n" +
         "YOUR RANK : NO." + std::to_string(UserDefault::getInstance()->getIntegerForKey("PlayerRank"))
         + "\n" +
-        "KILL COUNT :        " + std::to_string(UserDefault::getInstance()->getIntegerForKey("HitNum"));
+        "KILL COUNT :       " + std::to_string(UserDefault::getInstance()->getIntegerForKey("HitNum"))
+        + "\n" +
+        "CROWN NUMBER :    " + std::to_string(UserDefault::getInstance()->getIntegerForKey("_cupNums"))
+        +" x ";
     GameOverInformation->setContentText(infoString.c_str(), "fonts/Lilita one.ttf", 45, MAINMENU_INFORMATION_CONTENT_TEXT_PADDING,
 
         MAINMENU_INFORMATION_CONTENT_TEXT_PADDINGTOP);
     this->addChild(GameOverInformation, 4);
-
 
     return true;
 }
@@ -146,9 +152,9 @@ void GameOverScene::menuCloseCallback(Ref* pSender)
 }
 
 /****************************
-* Name ：hero1
-* Summary ：hero1结束展示
-* return ：无
+* Name ��GameOverScene::hero1
+* Summary ��hero1����
+* return ����
 ****************************/
 void GameOverScene::hero1()
 {
@@ -231,9 +237,9 @@ void GameOverScene::hero3()
 }
 
 /****************************
-* Name ：hero4
-* Summary ：hero4结束展示
-* return ：无
+* Name ��GameOverScene::hero4
+* Summary ��hero4����
+* return ����
 ****************************/
 void GameOverScene::hero4()
 {

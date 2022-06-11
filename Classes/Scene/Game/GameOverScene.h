@@ -16,7 +16,7 @@
 #define GAMEOVER_TITLE_LABLE_POSITION_X origin.x + visibleSize.width / 2
 #define GAMEOVER_TITLE_LABLE_POSITION_Y origin.y + visibleSize.height - 1.3 * label->getContentSize().height
 
-
+#define GAMEOVER_CROWN_POSITION 895, 258
 
 #define GAMEOVER_BACK_ITEM_POSITION_X origin.x + visibleSize.width - 2 * settingsBackItem->getContentSize().width / 2
 #define GAMEOVER_BACK_ITEM_POSITION_Y origin.y + settingsBackItem->getContentSize().height / 2

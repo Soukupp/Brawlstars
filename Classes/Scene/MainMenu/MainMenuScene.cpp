@@ -9,7 +9,6 @@
 //日期 : 2022-6-7
 //修改 ：弹窗实现
 
-
 #include "MainMenuScene.h"
 #include "SimpleAudioEngine.h"
 USING_NS_CC;
@@ -39,7 +38,6 @@ Scene* MainMenuScene::createScene()
     return MainMenuScene::create();
 }
 
-
 /****************************
 * Name ：problemLoading
 * Summary ：错误打印
@@ -50,7 +48,6 @@ static void problemLoading(const char* filename)
     printf("Error while loading: %s\n", filename);
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in MainMenuScene.cpp\n");
 }
-
 
 /****************************
 * Name ：MainMenuScene::init
@@ -68,6 +65,7 @@ bool MainMenuScene::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     /*=====================创建背景图开始======================*/
+
     auto background = Sprite::create("background/MainMenuBackground.jpg");
     if (background == nullptr)
     {
@@ -81,8 +79,8 @@ bool MainMenuScene::init()
 
         this->addChild(background, 0);
     }
-    /*=====================创建背景图结束======================*/
 
+    /*=====================创建背景图结束======================*/
 
     /*=====================创建游戏名开始======================*/
 
@@ -106,9 +104,8 @@ bool MainMenuScene::init()
 
         this->addChild(gameNameLabel, 1);
     }
+
     /*=====================创建游戏名结束======================*/
-
-
 
     /*===================创建关闭、信息按钮开始=================*/
     auto mainMenuCloseItem = MenuItemImage::create(
@@ -146,10 +143,11 @@ bool MainMenuScene::init()
     auto MainMenu = Menu::create(mainMenuCloseItem, mainMenuInfoItem, NULL);
     MainMenu->setPosition(Vec2::ZERO);
     this->addChild(MainMenu, 2);
+
     /*===================创建关闭、信息按钮结束=================*/
 
-
     /*===================创建主菜单选项开始====================*/
+
     MenuItemFont::setFontName("fonts/Segoe Print.ttf");
     MenuItemFont::setFontSize(50);
     const Color3B menuItemColor(MAINMENU_TEXT_RGB_COLOR);//创建3B颜色
@@ -180,10 +178,11 @@ bool MainMenuScene::init()
     mainMenu->setColor(menuItemColor);
 
     this->addChild(mainMenu, 3);
+
     /*===================创建主菜单选项结束====================*/
 
-
     /*==================设置UseDefault开始====================*/
+
     if (firstSet) {
         UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
         UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
@@ -204,14 +203,11 @@ bool MainMenuScene::init()
     {
         CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/first_music.mp3", true);
     }
-    /*else
-    {
-        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/first_music.mp3", true);
-        CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
-    }*/
+
     /*=====================创建背景音乐结束=======================*/
 
     /*=====================创建玩家信息按钮开始===================*/
+
     auto playerMassageItem = MenuItemImage::create(
         "ui/playerMassage.png",
         "ui/playerMassage.png",
@@ -232,11 +228,11 @@ bool MainMenuScene::init()
     auto playerMassageMenu = Menu::create(playerMassageItem, NULL);
     playerMassageMenu->setPosition(Vec2::ZERO);
     this->addChild(playerMassageMenu, 2);
+
     /*=====================创建玩家信息按钮结束===================*/
 
     return true;
 }
-
 
 /****************************
 * Name ：MainMenuScene::menuCloseCallback
@@ -247,7 +243,6 @@ void MainMenuScene::menuCloseCallback(Ref* pSender)
 {
     Director::getInstance()->end();
 }
-
 
 /****************************
 * Name ：MainMenuScene::menuInfoCallback
@@ -271,7 +266,6 @@ void MainMenuScene::menuInfoCallback(Ref* pSender)
     this->addChild(MainMenuInformation, 4);
 }
 
-
 /****************************
 * Name ：MainMenuScene::menuStartCallback
 * Summary ：主菜单开始按钮回调
@@ -283,7 +277,6 @@ void MainMenuScene::menuStartCallback(cocos2d::Ref* pSender)
     auto GLS1 = GameLoadingScene1::createScene();   // 转入GameLoadingScene1
     Director::getInstance()->replaceScene(TransitionFade::create(1, GLS1));//mainmenu已被释放
 }
-
 
 /****************************
 * Name ：MainMenuScene::menuMapCallback
@@ -297,7 +290,6 @@ void MainMenuScene::menuMapCallback(cocos2d::Ref* pSender)
     Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, storeScene));//mainmenu未被释放 使用popScene返回
 }
 
-
 /****************************
 * Name ：MainMenuScene::menuHerosCallback
 * Summary ：主菜单人物按钮回调
@@ -310,7 +302,6 @@ void MainMenuScene::menuHerosCallback(cocos2d::Ref* pSender)
     Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, heroScene));//mainmenu未被释放 使用popScene返回
 }
 
-
 /****************************
 * Name ：MainMenuScene::menuSettingsCallback
 * Summary ：主菜单设置按钮回调
@@ -322,6 +313,7 @@ void MainMenuScene::menuSettingsCallback(cocos2d::Ref* pSender)
     auto settingsScene = SettingsScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, settingsScene));//mainmenu未被释放 使用popScene返回
 }
+
 /****************************
 * Name ：MainMenuScene::playerMassageCallback
 * Summary ：玩家信息按钮回调
@@ -364,7 +356,6 @@ void MainMenuScene::playerMassageCallback(cocos2d::Ref* pSender)
 
 }
 
-
 /****************************
 * Name ：MainMenuScene::onEnterTransitionDidFinish()
 * Summary ：粒子模型
@@ -379,6 +370,7 @@ void MainMenuScene::onEnterTransitionDidFinish()
     system->setPosition(Vec2(visibleSize.width / 2, visibleSize.height));
     this->addChild(system, 5);
 }
+
 /****************************
 * Name ：MainMenuScene::getUserInt
 * Summary ：获取int用户数据
@@ -388,6 +380,7 @@ int MainMenuScene::getUserInt(const char* name)
 {
     return UserDefault::getInstance()->getIntegerForKey(name);
 }
+
 /****************************
 * Name ：MainMenuScene::setUserInt
 * Summary ：设置int用户数据

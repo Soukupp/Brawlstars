@@ -5,7 +5,6 @@
 
 USING_NS_CC;
 
-
 /****************************
 * Name £ºGameLoadingScene1::createScene
 * Summary £º´´½¨³¡¾°
@@ -15,7 +14,6 @@ Scene* GameLoadingScene1::createScene()
 {
     return GameLoadingScene1::create();
 }
-
 
 /****************************
 * Name £ºproblemLoading
@@ -27,7 +25,6 @@ static void problemLoading(const char* filename)
     printf("Error while loading: %s\n", filename);
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in MainMenuScene.cpp\n");
 }
-
 
 /****************************
 * Name £ºGameLoadingScene1::init
@@ -61,7 +58,6 @@ bool GameLoadingScene1::init() {
 
     return true;
 }
-
 
 /****************************
 * Name £ºGameLoadingScene1::changeScene

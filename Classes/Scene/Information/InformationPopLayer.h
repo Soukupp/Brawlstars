@@ -10,7 +10,6 @@
 
 using namespace cocos2d;
 
-
 class InformationPopLayer : public cocos2d::LayerColor
 {
 public:
@@ -38,7 +37,6 @@ public:
 	// Ìí¼Ó°´Å¥
 
 	virtual void onEnter();
-
 	virtual void onExit();
 
 	void backgroundFinish();

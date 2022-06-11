@@ -24,7 +24,6 @@ Scene* GameSettingsScene::createScene()
     return GameSettingsScene::create();
 }
 
-
 /****************************
 * Name ：problemLoading
 * Summary ：错误打印
@@ -35,7 +34,6 @@ static void problemLoading(const char* filename)
     printf("Error while loading: %s\n", filename);
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in SettingsScene.cpp\n");
 }
-
 
 /****************************
 * Name ：GameSettingsScene::init
@@ -77,6 +75,7 @@ bool GameSettingsScene::init()
     auto backMenu = Menu::create(settingsBackItem, NULL);
     backMenu->setPosition(Vec2::ZERO);
     this->addChild(backMenu, 2);
+
     /*=====================创建关闭按钮结束====================*/
 
     /*=====================创建标题开始======================*/
@@ -101,6 +100,7 @@ bool GameSettingsScene::init()
 
         this->addChild(settingsNameLabel, 1);
     }
+
     /*=====================创建标题结束======================*/
 
     /*===================创建滑动条开始======================*/
@@ -165,15 +165,12 @@ bool GameSettingsScene::init()
     _displayedMusicStates->setTextColor(settingsMusicLabelColor);
     _displayedMusicStates->setPosition(Vec2(GAMESETTINGS_SETTINGMUSICSTATES_POSITION_X, GAMESETTINGS_SETTINGMUSICSTATES_POSITION_Y));
 
-
-
     auto FPSOn = MenuItemImage::create("ui/FPSOn.png", "ui/FPSOn.png");
     auto FPSOff = MenuItemImage::create("ui/FPSOff.png", "ui/FPSOff.png");
 
     MenuItemToggle* FPSOnOrOff = MenuItemToggle::createWithTarget(this,
         menu_selector(SettingsScene::settingsFPSCallBack), FPSOn, FPSOff, NULL);
     //显示FPS显示或隐藏图标
-
 
     FPSOnOrOff->setPosition(Vec2(GAMESETTINGS_SETTINGFPSSTATES_POSITION_X, GAMESETTINGS_SETTINGFPSSTATES_POSITION_Y));
 
@@ -197,9 +194,7 @@ bool GameSettingsScene::init()
     _displayedFPSStates->setTextColor(settingsMusicLabelColor);
     _displayedFPSStates->setPosition(Vec2(GAMESETTINGS_SETTINGSFPSLABEL_POSITION_X, GAMESETTINGS_SETTINGSFPSLABEL_POSITION_Y));
 
-
     Menu* GameSettingsMenu = Menu::create(musicOnOrOff, FPSOnOrOff, NULL);
-
     this->addChild(GameSettingsMenu, 3);
     addChild(_displayedMusicStates, 3);
     addChild(_displayedFPSStates, 3);
@@ -220,10 +215,11 @@ bool GameSettingsScene::init()
 
         this->addChild(background, 0);
     }
+
     /*=====================创建背景图结束======================*/
+
     return true;
 }
-
 
 /****************************
 * Name ：GameSettingsScene::settingsBackCallback
@@ -236,7 +232,6 @@ void GameSettingsScene::settingsBackToGameCallback(Ref* pSender)
     auto GS = GameScene::createScene();
     Director::getInstance()->popScene();//过场动画设计
 }
-
 
 /****************************
 * Name ：GameSettingsScene::sliderEvent
@@ -261,13 +256,11 @@ void GameSettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
     }
 }
 
-
 /****************************
 * Name ：GameSettingsScene::settingsPlayCallBack
 * Summary  回调函数
 * return ：
 * ***************************/
-
 void GameSettingsScene::settingsPlayCallBack(Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
@@ -284,7 +277,6 @@ void GameSettingsScene::settingsPlayCallBack(Ref* pSender)
         _displayedMusicStates->setString(StringUtils::format("MUSIC ON"));
     }
 }
-
 
 /****************************
 * Name ：GameSettingsScene::settingsFPSCallBack

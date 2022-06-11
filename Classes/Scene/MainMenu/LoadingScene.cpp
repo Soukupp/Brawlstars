@@ -20,7 +20,6 @@ Scene* LoadingScene::createScene()
 	return LoadingScene::create();
 }
 
-
 /****************************
 * Name ：problemLoading
 * Summary ：错误打印
@@ -31,7 +30,6 @@ static void problemLoading(const char* filename)
     printf("Error while loading: %s\n", filename);
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
 }
-
 
 /****************************
 * Name ：LoadingScene::init
@@ -49,16 +47,18 @@ bool LoadingScene::init()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 
-
 	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/start_game_music.mp3");
 
 	/*=======================创建背景开始=========================*/
+
 	Sprite* bg = Sprite::create("background/LoadingBackground.png");
 	bg->setPosition(Vec2(LOADING_BACKGROUND_POSITION));
 	this->addChild(bg);
+
 	/*=======================创建背景结束=========================*/
 
 	/*=======================创建Logo开始=========================*/
+
 	Sprite* BrawlStars = Sprite::create("BrawlStarsLogo.png");
 	BrawlStars->setPosition(Vec2(LOADING_BSLOGO_POSITION));
 	this->addChild(BrawlStars);
@@ -66,9 +66,11 @@ bool LoadingScene::init()
     Sprite* Tongji = Sprite::create("TongjiLogo.png");
 	Tongji->setPosition(Vec2(LOADING_TJLOGO_POSITION));
 	this->addChild(Tongji);
+
 	/*=======================创建Logo结束=========================*/
 
 	/*=======================创建提示语开始========================*/
+
 	auto tip1 = LabelTTF::create("Moderate Games, Happy Life!", "fonts/Lilita one.ttf", 36);
 	tip1->enableShadow(LOADING_TIP1_SHADOW);
 	tip1->setColor(Color3B::WHITE);
@@ -120,7 +122,6 @@ bool LoadingScene::init()
 	SimpleAudioEngine::getInstance()->preloadEffect("music/printed_eggshell_4.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/store_ai_number.mp3");
 
-
 	// 以下都和技能有关
 	SimpleAudioEngine::getInstance()->preloadEffect("music/gun_skill_3times.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/gun_attack.mp3");
@@ -134,7 +135,6 @@ bool LoadingScene::init()
 	SimpleAudioEngine::getInstance()->preloadEffect("music/hero2.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/hero3.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/hero4.mp3");
-
 
 	// 以下英雄杀死AI时候用到
 	SimpleAudioEngine::getInstance()->preloadEffect("music/gun_kill.mp3");
@@ -150,14 +150,12 @@ bool LoadingScene::init()
 	SimpleAudioEngine::getInstance()->preloadEffect("music/first_takedown.mp3");
 	SimpleAudioEngine::getInstance()->preloadEffect("music/double_takedown.mp3");
 
-
 	/*=======================预加载Audio结束=======================*/
 
 	this->scheduleOnce(schedule_selector(LoadingScene::changeScene), 3.0f); // 开启计时器！
 
 	return true;
 }
-
 
 /****************************
 * Name ：LoadingScene::changeScene
