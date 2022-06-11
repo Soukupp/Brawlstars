@@ -1,5 +1,5 @@
-//×÷Õß : ÀîÔªÌØ
-//ÈÕÆÚ : 2022-5-18
+//ä½œè€… : æŽå…ƒç‰¹
+//æ—¥æœŸ : 2022-5-18
 
 #include "GameOverScene.h"
 #include "SimpleAudioEngine.h"
@@ -7,9 +7,9 @@
 USING_NS_CC;
 
 /****************************
-* Name £ºGameOverScene::createScene
-* Summary £º´´½¨³¡¾°£¬ÊµÖÊlayer
-* return £º³¡¾°ÀàÖ¸Õë
+* Name ï¼šcreateScene
+* Summary ï¼šåˆ›å»ºåœºæ™¯ï¼Œå®žè´¨layer
+* return ï¼šåœºæ™¯ç±»æŒ‡é’ˆ
 ****************************/
 Scene* GameOverScene::createScene()
 {
@@ -20,9 +20,9 @@ Scene* GameOverScene::createScene()
 }
 
 /****************************
-* Name £ºproblemLoading
-* Summary £º´íÎó´òÓ¡
-* return £º
+* Name ï¼šproblemLoading
+* Summary ï¼šé”™è¯¯æ‰“å°
+* return ï¼š
 ****************************/
 static void problemLoading(const char* filename)
 {
@@ -31,9 +31,9 @@ static void problemLoading(const char* filename)
 }
 
 /****************************
-* Name £ºGameOverScene::init
-* Summary £ºÓÎÏ·½áÊø³¡¾°³õÊ¼»¯
-* return £º³õÊ¼»¯³É¹¦Óë·ñ
+* Name ï¼šinit
+* Summary ï¼šæ¸¸æˆç»“æŸåœºæ™¯åˆå§‹åŒ–
+* return ï¼šåˆå§‹åŒ–æˆåŠŸä¸Žå¦
 ****************************/
 bool GameOverScene::init()
 {
@@ -65,7 +65,8 @@ bool GameOverScene::init()
     {
         settingsBackItem->setPosition(Vec2(GAMEOVER_BACK_ITEM_POSITION_X, GAMEOVER_BACK_ITEM_POSITION_Y));
     }
-    //´´½¨·µ»Ø²Ëµ¥
+
+    //åˆ›å»ºè¿”å›žèœå•
     auto backMenu = Menu::create(settingsBackItem, NULL);
     backMenu->setPosition(Vec2::ZERO);
     this->addChild(backMenu, 6);
@@ -81,6 +82,7 @@ bool GameOverScene::init()
         this->addChild(label, 1);
     }
 
+    //ç¡®å®šé€‰æ‹©çš„è‹±é›„ï¼Œè¿›è¡Œç›¸å…³è‹±é›„å±•ç¤º
     int selectedHero = UserDefault::getInstance()->getIntegerForKey("selectedHero");
 
     std::string playerName;
@@ -114,11 +116,12 @@ bool GameOverScene::init()
     if (UserDefault::getInstance()->getIntegerForKey("PlayerRank") <= 4)
         tip = "       CONGRATULATION!";
     else
+
         tip = "        WHAT A PITY!";
 
     auto GameOverInformation = InformationPopLayer::create
     ("background/HeroInformationBackground.png", Size(570, 350), 150);
-    GameOverInformation->setPosition(Vec2(150, 0)); // ±ä´óÍùÓÒ
+    GameOverInformation->setPosition(Vec2(150, 0)); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     auto infoString = tip
         + "\n" +
         "HERO:     " + playerName
@@ -130,16 +133,17 @@ bool GameOverScene::init()
         "CROWN NUMBER :    " + std::to_string(UserDefault::getInstance()->getIntegerForKey("_cupNums"))
         +" x ";
     GameOverInformation->setContentText(infoString.c_str(), "fonts/Lilita one.ttf", 45, MAINMENU_INFORMATION_CONTENT_TEXT_PADDING,
+
         MAINMENU_INFORMATION_CONTENT_TEXT_PADDINGTOP);
     this->addChild(GameOverInformation, 4);
-    
+
     return true;
 }
 
 /****************************
-* Name £ºGameOverScene::menuCloseCallback
-* Summary £º·µ»ØÄ¿Â¼½çÃæ
-* return £ºÎÞ
+* Name ï¼šmenuCloseCallback
+* Summary ï¼šè¿”å›žä¸»èœå•ç•Œé¢
+* return ï¼šæ— 
 ****************************/
 void GameOverScene::menuCloseCallback(Ref* pSender)
 {
@@ -148,9 +152,9 @@ void GameOverScene::menuCloseCallback(Ref* pSender)
 }
 
 /****************************
-* Name £ºGameOverScene::hero1
-* Summary £ºhero1¶¯»­
-* return £ºÎÞ
+* Name ï¿½ï¿½GameOverScene::hero1
+* Summary ï¿½ï¿½hero1ï¿½ï¿½ï¿½ï¿½
+* return ï¿½ï¿½ï¿½ï¿½
 ****************************/
 void GameOverScene::hero1()
 {
@@ -177,9 +181,9 @@ void GameOverScene::hero1()
 }
 
 /****************************
-* Name £ºGameOverScene::hero2
-* Summary £ºhero2¶¯»­
-* return £ºÎÞ
+* Name ï¼šhero2
+* Summary ï¼šhero2ç»“æŸå±•ç¤º
+* return ï¼šæ— 
 ****************************/
 void GameOverScene::hero2()
 {
@@ -206,49 +210,49 @@ void GameOverScene::hero2()
 }
 
 /****************************
-* Name £ºGameOverScene::hero3
-* Summary £ºhero3¶¯»­
-* return £ºÎÞ
+* Name ï¼šhero3
+* Summary ï¼šhero3ç»“æŸå±•ç¤º
+* return ï¼šæ— 
 ****************************/
 void GameOverScene::hero3()
 {
-    auto hero3 = Sprite::create("Character/Hero3/hero.png");
+    auto hero3 = Sprite::create("character/Hero3/hero.png");
     hero3->setPosition(GAMEOVER_HERO_ANIMATON_POSITION);
     addChild(hero3);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("character/Hero3/hero3_Start.plist", "character/Hero3/hero3_Start.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero3/hero3_Start2.plist", "character/Hero3/hero3_Start2.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero3.mp3");
     Vector<CCSpriteFrame*> hero3FrameArray;
-    for (int i = 0; i < 6; i++)
+    for (int i = 1; i < 7; i++)
     {
-        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("Idle3-%d.png", i)->getCString());
+        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("Start3 (%d).png", i)->getCString());
         hero3FrameArray.pushBack(frame);
     }
     auto* animation = Animation::createWithSpriteFrames(hero3FrameArray);
     animation->setDelayPerUnit(0.1f);
     animation->setLoops(-1);
-    hero3->setScale(5.0f);
+    hero3->setScale(2.5f);
     auto* action = Animate::create(animation);
     hero3->runAction(action);
 }
 
 /****************************
-* Name £ºGameOverScene::hero4
-* Summary £ºhero4¶¯»­
-* return £ºÎÞ
+* Name ï¿½ï¿½GameOverScene::hero4
+* Summary ï¿½ï¿½hero4ï¿½ï¿½ï¿½ï¿½
+* return ï¿½ï¿½ï¿½ï¿½
 ****************************/
 void GameOverScene::hero4()
 {
     auto hero4 = Sprite::create("character/Hero4/hero.png");
-    hero4->setPosition(GAMEOVER_HERO_ANIMATON_POSITION);
+    hero4->setPosition(200,400);
     addChild(hero4);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("character/Hero4/hero4_Normal.plist", "character/Hero4/hero4_Normal.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero4/hero4_Start.plist", "character/Hero4/hero4_Start.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4.mp3");
     Vector<CCSpriteFrame*> hero4FrameArray;
-    for (int i = 0; i < 8; i++)
+    for (int i = 1; i < 9; i++)
     {
-        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("Idle4 (%d).png", i)->getCString());
+        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("Start4 (%d).png", i)->getCString());
         hero4FrameArray.pushBack(frame);
     }
     auto* animation = Animation::createWithSpriteFrames(hero4FrameArray);

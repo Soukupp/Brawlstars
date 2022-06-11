@@ -211,7 +211,7 @@ bool Hero1::initWalkAction()
 {
 
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Walk.plist", "Character/Hero1/hero1_Walk.png");
+	frameCache->addSpriteFramesWithFile("character/Hero1/hero1_Walk.plist", "character/Hero1/hero1_Walk.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 0; i < 6; i++)
@@ -239,7 +239,7 @@ bool Hero1::initNormalAction()
 {
 
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Idle.plist", "Character/Hero1/hero1_Idle.png");
+	frameCache->addSpriteFramesWithFile("character/Hero1/hero1_Idle.plist", "character/Hero1/hero1_Idle.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 1; i < 5; i++)
@@ -265,7 +265,7 @@ bool Hero1::initAttackAction()
 {
 
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Attack.plist", "Character/Hero1/hero1_Attack.png");
+	frameCache->addSpriteFramesWithFile("character/Hero1/hero1_Attack.plist", "character/Hero1/hero1_Attack.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 1; i < 13; i++)
@@ -288,7 +288,7 @@ bool Hero1::initAttackAction()
 bool Hero1::initSkillAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Skill.plist", "Character/Hero1/hero1_Skill.png");
+	frameCache->addSpriteFramesWithFile("character/Hero1/hero1_Skill.plist", "character/Hero1/hero1_Skill.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 0; i < 4; i++)

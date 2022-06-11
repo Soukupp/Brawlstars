@@ -49,9 +49,9 @@ using namespace cocos2d;
 #define HERO3_LEVELTEXT_POSITION Vec2(this->getPosition().x, this->getPosition().y + HERO3_YOU_BAR_POSITION + bar->getContentSize().height)
 //初始面板
 #define HERO3_INIT_MAXHEALTHPOINT 800
-#define HERO3_INIT_ATTACK 130
+#define HERO3_INIT_ATTACK 140
 #define HERO3_INIT_DEFENCE 90
-#define HERO3_INIT_SKILLRATE 6.0f
+#define HERO3_INIT_SKILLRATE 6.5f
 #define HERO3_INIT_ATTACKRATE 0.8f
 
 /*==============================!!!!!以上宏请勿修改!!!!!=================================*/

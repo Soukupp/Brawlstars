@@ -190,7 +190,7 @@ void Hero4::upgrade(cocos2d::Label* levelText, Slider* bar)
 bool Hero4::initWalkAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Run.plist", "Character/Hero4/hero4_Run.png");
+	frameCache->addSpriteFramesWithFile("character/Hero4/hero4_Run.plist", "character/Hero4/hero4_Run.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 0; i <8; i++)
@@ -214,7 +214,7 @@ bool Hero4::initWalkAction()
 bool Hero4::initAttackAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Attack.plist", "Character/Hero4/hero4_Attack.png");
+	frameCache->addSpriteFramesWithFile("character/Hero4/hero4_Attack.plist", "character/Hero4/hero4_Attack.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 0; i <4; i++)
@@ -223,7 +223,7 @@ bool Hero4::initAttackAction()
 		playerFrameArray.pushBack(frame);
 	}
 
-	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 24.0);
 	animation->setLoops(1);
 	auto* animate = Animate::create(animation);
 	this->setAttackAction(animate);
@@ -239,7 +239,7 @@ bool Hero4::initAttackAction()
 bool Hero4::initNormalAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Normal.plist", "Character/Hero4/hero4_Normal.png");
+	frameCache->addSpriteFramesWithFile("character/Hero4/hero4_Normal.plist", "character/Hero4/hero4_Normal.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i =0; i < 8; i++)
@@ -262,7 +262,7 @@ bool Hero4::initNormalAction()
 bool Hero4::initSkillAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Skill.plist", "Character/Hero4/hero4_Skill.png");
+	frameCache->addSpriteFramesWithFile("character/Hero4/hero4_Skill.plist", "character/Hero4/hero4_Skill.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 0; i <4; i++)

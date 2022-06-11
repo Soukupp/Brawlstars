@@ -452,7 +452,7 @@ void HeroScene::animate2()
 ****************************/
 void HeroScene::animate3()
 {
-    hero3 = Sprite::create("Character/Hero3/hero.png");
+    hero3 = Sprite::create("character/Hero3/hero.png");
     hero3->setPosition(720, 360);
     addChild(hero3);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
@@ -480,7 +480,7 @@ void HeroScene::animate3()
 void HeroScene::animate4()
 {
     log("true");
-    hero4 = Sprite::create("Character/Hero4/hero.png");
+    hero4 = Sprite::create("character/Hero4/hero.png");
     hero4->setPosition(700, 450);
     addChild(hero4);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
