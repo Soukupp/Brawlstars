@@ -1,5 +1,5 @@
-//×÷Õß : ÀîÔªÌØ
-//ÈÕÆÚ : 2022-5-18
+//ä½œè€… : æŽå…ƒç‰¹
+//æ—¥æœŸ : 2022-5-18
 
 #include "GameOverScene.h"
 #include "SimpleAudioEngine.h"
@@ -7,9 +7,9 @@
 USING_NS_CC;
 
 /****************************
-* Name £ºGameOverScene::createScene
-* Summary £º´´½¨³¡¾°£¬ÊµÖÊlayer
-* return £º³¡¾°ÀàÖ¸Õë
+* Name ï¼šGameOverScene::createScene
+* Summary ï¼šåˆ›å»ºåœºæ™¯ï¼Œå®žè´¨layer
+* return ï¼šåœºæ™¯ç±»æŒ‡é’ˆ
 ****************************/
 Scene* GameOverScene::createScene()
 {
@@ -20,9 +20,9 @@ Scene* GameOverScene::createScene()
 }
 
 /****************************
-* Name £ºproblemLoading
-* Summary £º´íÎó´òÓ¡
-* return £º
+* Name ï¼šproblemLoading
+* Summary ï¼šé”™è¯¯æ‰“å°
+* return ï¼š
 ****************************/
 static void problemLoading(const char* filename)
 {
@@ -31,9 +31,9 @@ static void problemLoading(const char* filename)
 }
 
 /****************************
-* Name £ºGameOverScene::init
-* Summary £ºÓÎÏ·½áÊø³¡¾°³õÊ¼»¯
-* return £º³õÊ¼»¯³É¹¦Óë·ñ
+* Name ï¼šGameOverScene::init
+* Summary ï¼šæ¸¸æˆç»“æŸåœºæ™¯åˆå§‹åŒ–
+* return ï¼šåˆå§‹åŒ–æˆåŠŸä¸Žå¦
 ****************************/
 bool GameOverScene::init()
 {
@@ -65,7 +65,7 @@ bool GameOverScene::init()
     {
         settingsBackItem->setPosition(Vec2(GAMEOVER_BACK_ITEM_POSITION_X, GAMEOVER_BACK_ITEM_POSITION_Y));
     }
-    //´´½¨·µ»Ø²Ëµ¥
+    //åˆ›å»ºè¿”å›žèœå•
     auto backMenu = Menu::create(settingsBackItem, NULL);
     backMenu->setPosition(Vec2::ZERO);
     this->addChild(backMenu, 6);
@@ -115,7 +115,7 @@ bool GameOverScene::init()
 
     auto GameOverInformation = InformationPopLayer::create
     ("background/HeroInformationBackground.png", Size(470, 350), 150);
-    GameOverInformation->setPosition(Vec2(170, 0)); // ±ä´óÍùÓÒ
+    GameOverInformation->setPosition(Vec2(170, 0)); // å˜å¤§å¾€å³
     auto infoString = tip 
         + "\n" +
         "HERO:     " + playerName
@@ -133,9 +133,9 @@ bool GameOverScene::init()
 }
 
 /****************************
-* Name £ºGameOverScene::menuCloseCallback
-* Summary £º·µ»ØÄ¿Â¼½çÃæ
-* return £ºÎÞ
+* Name ï¼šGameOverScene::menuCloseCallback
+* Summary ï¼šè¿”å›žç›®å½•ç•Œé¢
+* return ï¼šæ— 
 ****************************/
 void GameOverScene::menuCloseCallback(Ref* pSender)
 {
@@ -146,11 +146,11 @@ void GameOverScene::menuCloseCallback(Ref* pSender)
 
 void GameOverScene::hero1()
 {
-    auto hero1 = Sprite::create("Character/Hero1/hero.png");
+    auto hero1 = Sprite::create("character/Hero1/hero.png");
     hero1->setPosition(GAMEOVER_HERO_ANIMATON_POSITION);
     addChild(hero1);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero1/hero1_Start.plist", "Character/Hero1/hero1_Start.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero1/hero1_Start.plist", "character/Hero1/hero1_Start.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero1.mp3");
     Vector<CCSpriteFrame*> hero1FrameArray;
     for (int i = 4; i < 8; i++)
@@ -171,11 +171,11 @@ void GameOverScene::hero1()
 
 void GameOverScene::hero2()
 {
-    auto hero2 = Sprite::create("Character/Hero2/hero.png");
+    auto hero2 = Sprite::create("character/Hero2/hero.png");
     hero2->setPosition(GAMEOVER_HERO_ANIMATON_POSITION);
     addChild(hero2);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero2/hero2_Normal.plist", "Character/Hero2/hero2_Normal.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero2/hero2_Normal.plist", "character/Hero2/hero2_Normal.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero2.mp3");
     Vector<CCSpriteFrame*> hero2FrameArray;
     for (int i = 0; i < 8; i++)
@@ -196,11 +196,11 @@ void GameOverScene::hero2()
 
 void GameOverScene::hero3()
 {
-    auto hero3 = Sprite::create("Character/Hero3/hero.png");
+    auto hero3 = Sprite::create("character/Hero3/hero.png");
     hero3->setPosition(GAMEOVER_HERO_ANIMATON_POSITION);
     addChild(hero3);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Start2.plist", "Character/Hero3/hero3_Start2.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero3/hero3_Start2.plist", "character/Hero3/hero3_Start2.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero3.mp3");
     Vector<CCSpriteFrame*> hero3FrameArray;
     for (int i = 1; i < 7; i++)
@@ -219,11 +219,11 @@ void GameOverScene::hero3()
 
 void GameOverScene::hero4()
 {
-    auto hero4 = Sprite::create("Character/Hero4/hero.png");
+    auto hero4 = Sprite::create("character/Hero4/hero.png");
     hero4->setPosition(200,400);
     addChild(hero4);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Start.plist", "Character/Hero4/hero4_Start.png");
+    m_frameCache->addSpriteFramesWithFile("character/Hero4/hero4_Start.plist", "character/Hero4/hero4_Start.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4.mp3");
     Vector<CCSpriteFrame*> hero4FrameArray;
     for (int i = 1; i < 9; i++)

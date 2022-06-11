@@ -154,7 +154,7 @@ bool Hero2::initWalkAction()
 {
 
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero2/hero2_Run.plist", "Character/Hero2/hero2_Run.png");
+	frameCache->addSpriteFramesWithFile("character/Hero2/hero2_Run.plist", "character/Hero2/hero2_Run.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 1; i < 9; i++)
@@ -182,7 +182,7 @@ bool Hero2::initNormalAction()
 {
 
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero2/hero2_Normal.plist", "Character/Hero2/hero2_Normal.png");
+	frameCache->addSpriteFramesWithFile("character/Hero2/hero2_Normal.plist", "character/Hero2/hero2_Normal.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 0; i < 8; i++)
@@ -208,7 +208,7 @@ bool Hero2::initAttackAction()
 {
 
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero2/hero2_Attack.plist", "Character/Hero2/hero2_Attack.png");
+	frameCache->addSpriteFramesWithFile("character/Hero2/hero2_Attack.plist", "character/Hero2/hero2_Attack.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 1; i < 5; i++)
@@ -231,7 +231,7 @@ bool Hero2::initAttackAction()
 bool Hero2::initSkillAction()
 {
 	auto* frameCache = CCSpriteFrameCache::getInstance();
-	frameCache->addSpriteFramesWithFile("Character/Hero2/hero2_Skill.plist", "Character/Hero2/hero2_Skill.png");
+	frameCache->addSpriteFramesWithFile("character/Hero2/hero2_Skill.plist", "character/Hero2/hero2_Skill.png");
 
 	Vector<CCSpriteFrame*> playerFrameArray;
 	for (int i = 0; i < 4; i++)
