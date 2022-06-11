@@ -217,8 +217,7 @@ bool MapLayer::init()
 
 	this->schedule(schedule_selector(MapLayer::updateAIMove), 0.05f);
 	this->schedule(schedule_selector(MapLayer::updateAIAttack), 1.0f);
-	/*createMonster(&_monster, &_monsterHealthBar,
-		Vec2(_playerX, _playerY), "Character/Hero3/hero.png");*/  // 系统显示有冲突，所以我注释掉了
+
 
 	/*======================AI创建结束=========================*/
 
@@ -279,11 +278,7 @@ bool MapLayer::init()
 	}
 	/*=======================创建怪兽结束=======================*/
 	
-	auto SkillButton = SkillButton::create("ui/buttonForSkill.png", "ui/buttonShadow.png", 30);
-
-	SkillButton->setPosition(Vec2(GAME_SKILL_BUTTON_POSITION_X, GAME_SKILL_BUTTON_POSITION_X));
-	this->addChild(SkillButton, 100); // 放在最前面
-
+	
 	PLAYER->initWalkAction();
 	PLAYER->initNormalAction();
 	PLAYER->initAttackAction();
@@ -388,9 +383,7 @@ bool MapLayer::init()
 
 	/*=====================控制毒圈开始===========================*/
 	memset(FogIsPlaced, 0, sizeof(FogIsPlaced));
-	//this->scheduleOnce(schedule_selector(MapLayer::updateForFog), 5.0); // 第一次缩圈
-	//this->scheduleOnce(schedule_selector(MapLayer::updateForFog), 5.0); // 第二次缩圈
-	//this->scheduleOnce(schedule_selector(MapLayer::updateForFog), 5.0); // 第三次缩圈
+
 	this->schedule(schedule_selector(MapLayer::updateForFog), MAP_SAFEAREA_INTERVAL_LAST, MAP_SAFEAREA_APPEAR_TIMES, MAP_SAFEAREA_DELAY_LAST); // 持续到结束
 	this->schedule(schedule_selector(MapLayer::updateOutsideFog));
 	this->schedule(schedule_selector(MapLayer::updatePlayerHurtByFog), 0.01);
