@@ -112,18 +112,19 @@ bool SettingsScene::init()
 
     //创建文本
     auto clearUserDataLabel = Label::createWithTTF(
-        "ClearYour\nUserData",
-        "fonts/PixeloidSans.ttf",
-        16
+        "Clear Your\nUser Data",
+        "fonts/Lilita one.ttf",
+        25
     );
     if (clearUserDataLabel == nullptr)
     {
-        problemLoading("'fonts/PixeloidSans.ttf'");
+        problemLoading("'fonts/Lilita one.ttf'");
     }
     else
     {
         const Color4B gameNameLabelColor(220, 0, 0, 255);//创建4B颜色
         clearUserDataLabel->setTextColor(gameNameLabelColor);
+        clearUserDataLabel->setBMFontSize(25);
         clearUserDataLabel->setPosition(
             Vec2(SETTINGS_CLEARUSERDATA_LABEL_POSITION_X,
                 SETTINGS_CLEARUSERDATA_LABEL_POSITION_Y)
@@ -180,9 +181,10 @@ bool SettingsScene::init()
 
     /*===================创建标签开始=======================*/
 
-    Label* settingsMusicLabel = Label::create("MUSIC SETTING", "fonts/PixeloidSans.ttf", 35);
+    Label* settingsMusicLabel = Label::create("MUSIC SETTING", "fonts/Lilita one.ttf", 35);
     settingsMusicLabel->setPosition(SETTINGS_SETTINGSMUSICLABEL_POSITION_X, SETTINGS_SETTINGSMUSICLABEL_POSITION_Y);
     const Color4B settingsMusicLabelColor(0, 0, 0, 255);//创建4B颜色
+    settingsMusicLabel->enableShadow();
     settingsMusicLabel->setTextColor(settingsMusicLabelColor);
     
     this->addChild(settingsMusicLabel, 3);
@@ -360,6 +362,8 @@ void SettingsScene::settingsFPSCallBack(Ref* pSender)
         _displayedFPSStates->setString(StringUtils::format("DISPLAY FPS"));
     }
 }
+
+
 /****************************
 * Name ：SettingsScene::clearUserDataCallback
 * Summary  回调函数
@@ -367,6 +371,7 @@ void SettingsScene::settingsFPSCallBack(Ref* pSender)
 * ***************************/
 void SettingsScene::clearUserDataCallback(cocos2d::Ref* pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     if (UserDefault::getInstance()->getIntegerForKey("_winTimes"))
     {
         UserDefault::getInstance()->setIntegerForKey("_winTimes", 0);
