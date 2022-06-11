@@ -77,21 +77,18 @@ bool AppDelegate::applicationDidFinishLaunching() {
     //FileUtils::getInstance()->setWritablePath("./Resources/data");
 
     if (!UserDefault::getInstance()->getIntegerForKey("_winTimes")) 
-    {
         UserDefault::getInstance()->setIntegerForKey("_winTimes", 0);
-    }
     if (!UserDefault::getInstance()->getIntegerForKey("_gameTimes"))
-    {
         UserDefault::getInstance()->setIntegerForKey("_gameTimes", 0);
-    }
     if (!UserDefault::getInstance()->getIntegerForKey("_killNums"))
-    {
         UserDefault::getInstance()->setIntegerForKey("_killNums", 0);
-    }
     if (!UserDefault::getInstance()->getIntegerForKey("_cupNums"))
-    {
         UserDefault::getInstance()->setIntegerForKey("_cupNums", 0);
-    }
+    if (!UserDefault::getInstance()->getIntegerForKey("selectedHero"))
+        UserDefault::getInstance()->setIntegerForKey("selectedHero", 1);
+    if(!UserDefault::getInstance()->getIntegerForKey("invincibleMode"))
+        UserDefault::getInstance()->setIntegerForKey("invincibleMode", 0);
+    UserDefault::getInstance()->setIntegerForKey("invincibleMode", 0);
 
     // turn on display FPS
     director->setDisplayStats(false);

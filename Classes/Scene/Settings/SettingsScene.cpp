@@ -383,4 +383,8 @@ void SettingsScene::clearUserDataCallback(cocos2d::Ref* pSender)
     {
         UserDefault::getInstance()->setIntegerForKey("_cupNums", 0);
     }
+    if (UserDefault::getInstance()->getIntegerForKey("selectedHero"))
+    {
+        UserDefault::getInstance()->setIntegerForKey("selectedHero", 1);
+    }
 }

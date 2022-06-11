@@ -240,8 +240,6 @@ bool MapLayer::init()
 	memset(_dmX, 0, sizeof(_dmX));
 	memset(_dmY, 0, sizeof(_dmY));
 
-
-
 	for (int i = 1; i < MAP_GM_NUMBER + 1; ++i)
 	{
 		std::string moNumber = "gm" + std::to_string(i);
@@ -260,7 +258,7 @@ bool MapLayer::init()
 		_dmX[i] = _tileMap->getObjectGroup("desertmonster")->getObject(moNumber).at("x").asInt();
 		_dmY[i] = _tileMap->getObjectGroup("desertmonster")->getObject(moNumber).at("y").asInt();
 	}
-	//注意！！以下三个 顺序不可调换
+	//  !!!!!注意！！以下三个 顺序 不可调换!!!!!
 	for (int i = 1; i < MAP_GM_NUMBER + 1; ++i)
 	{
 		createMonster(&_monsterG, &_healthBar, Vec2(_gmX[i], _gmY[i]), "Monster/groundmonster.png");
@@ -1172,10 +1170,11 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 	if (PLAYER->_panel.getIsSurvive()
 		&& !_SafeArea->boundingBox().containsPoint(Vec2(PLAYER->getPosition())))
 	{
-		if (_invincibleMode == 0)
+		//log("mode %d", _invincibleMode);
+		if (getUserInt("invincibleMode") == 0)
 		{
 			//扣血
-			//log("hurt!");
+			//log("mode 0 fog hurt!");
 			PLAYER->_panel.hit(MAP_FOG_DAMAGE_TO_PLAYER);
 			PLAYER->refreshHealthBar(HEALTHBAR);
 			if (!PLAYER->_panel.getIsSurvive())  // player死亡==》GameOverScene
@@ -1244,7 +1243,6 @@ void MapLayer::updateAIMove(float delta)
 		gameOver();
 	}
 }
-
 
 /****************************
 * Name ：MapLayer::updateAIMoveOne
@@ -1365,7 +1363,6 @@ void MapLayer::updateAIMoveOne(Character& character)
 	}
 }
 
-
 /****************************
 * Name ：MapLayer::updateAIAttack
 * Summary ：ai攻击
@@ -1384,13 +1381,29 @@ void MapLayer::updateAIAttack(float delta)
 				{         // active对passive造成伤害
 					AI_PLAYER(active)->stopAllActions();
 
-					if (!AI_PLAYER(active)->magicIsFull()) {
+					if (!AI_PLAYER(active)->magicIsFull()) 
+					{
 						AI_PLAYER(active)->runAction(AI_PLAYER(active)->getAttackAction());
-						AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "attack", AI_MAGICBAR(active), CHARACTER(passive)._player, CHARACTER(passive)._healthBar);
-					}
-					else {
+						if (passive == 0 && getUserInt("invincibleMode") == 1)
+						{
+
+						}
+						else 
+						{
+							AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "attack", AI_MAGICBAR(active), CHARACTER(passive)._player, CHARACTER(passive)._healthBar);
+						}
+	}
+					else
+					{
 						AI_PLAYER(active)->runAction(AI_PLAYER(active)->getSkillAction());
-						AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "skill", AI_MAGICBAR(active), CHARACTER(passive)._player, CHARACTER(passive)._healthBar);
+						if (passive == 0 && getUserInt("invincibleMode") == 1)
+						{
+
+						}
+						else
+						{
+							AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "skill", AI_MAGICBAR(active), CHARACTER(passive)._player, CHARACTER(passive)._healthBar);
+						}
 					}
 
 					if (!AI_PLAYER(passive)->_panel.getIsSurvive() && passive != 0)   // AI 死亡
@@ -1493,7 +1506,6 @@ void MapLayer::updateSetIfPlayAttackAnimation(float delta)
 	}
 }
 
-
 /****************************
 * Name ：MapLayer::getPlayerRank
 * Summary ：获取玩家排名
@@ -1504,7 +1516,6 @@ int MapLayer::getPlayerRank()
 	return _numOfPlayer;
 }
 
-
 /****************************
 * Name ：MapLayer::getHitNum
 * Summary ：获取玩家击杀数
@@ -1514,7 +1525,6 @@ int MapLayer::getHitNum()
 {
 	return PLAYER->_panel.getHitnum();
 }
-
 
 /****************************
 * Name ：MapLayer::savePlayerKill
@@ -1528,7 +1538,6 @@ void MapLayer::savePlayerKill()
 	saveData();
 }
 
-
 /****************************
 * Name ：MapLayer::saveAIKill
 * Summary ：记录ai击杀
@@ -1540,7 +1549,6 @@ void MapLayer::saveAIKill()
 	saveData();
 }
 
-
 /****************************
 * Name ：MapLayer::saveData
 * Summary ：保存数据
@@ -1551,7 +1559,6 @@ void MapLayer::saveData()
 	UserDefault::getInstance()->setIntegerForKey("PlayerRank", this->getPlayerRank());
 	UserDefault::getInstance()->setIntegerForKey("HitNum", this->getHitNum());
 }
-
 
 /****************************
 * Name ：MapLayer::gameOver
@@ -1576,7 +1583,6 @@ void MapLayer::gameOver()
 	Director::getInstance()->replaceScene(GOS);
 }
 
-
 /****************************
 * Name ：MapLayer::getBuff
 * Summary ：获取增益
@@ -1600,7 +1606,6 @@ void MapLayer::getBuff(Character& character, int numOfMonster)
 	}
 }
 
-
 /****************************
 * Name ：MapLayer::getAttackBuff
 * Summary ：获取攻击增益
@@ -1611,7 +1616,6 @@ void MapLayer::getAttackBuff(Character& character)
 	character._player->_panel.setAttack(20 + character._player->_panel.getAttack());
 }
 
-
 /****************************
 * Name ：MapLayer::getDefenceBuff
 * Summary ：获取防御增益
@@ -1621,7 +1625,6 @@ void MapLayer::getDefenceBuff(Character& character)
 {
 	character._player->_panel.setDefence(20 + character._player->_panel.getDefence());
 }
-
 
 /****************************
 * Name ：MapLayer::setCharacterVisible
@@ -1636,7 +1639,6 @@ void MapLayer::setCharacterVisible(bool visible, Character& character)
 	character._levelText->setVisible(visible);
 }
 
-
 /****************************
 * Name ：MapLayer::setCharacterPosition
 * Summary ：角色移动
@@ -1648,21 +1650,19 @@ void MapLayer::setCharacterPosition(Vec2 position, Character& character)
 		character._weapon, character._healthBar, character._magicBar, character._levelText);
 }
 
-
 /****************************
 * Name ：MapLayer::getUserInt
-* Summary ：获取英雄名字
-* return ：英雄名字对应的ID
+* Summary ：获取用户int型数据
+* return ：用户int型数据
 ****************************/
 int MapLayer::getUserInt(const char* name)
 {
 	return UserDefault::getInstance()->getIntegerForKey(name);
 }
 
-
 /****************************
 * Name ：MapLayer::setUserInt
-* Summary ：设置英雄名字对应的ID
+* Summary ：设置用户int型数据
 * return ：无
 ****************************/
 void MapLayer::setUserInt(const char* name, int num)

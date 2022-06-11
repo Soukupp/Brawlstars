@@ -339,6 +339,9 @@ void StoreScene::Select_Vincible_Mode_Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     UserDefault::getInstance()->setIntegerForKey("invincibleMode", 0); // 常规模式
+    //_selectedInvincible = 0;
+    log("mode 0 selected");
+    log("now mode %d", UserDefault::getInstance()->getIntegerForKey("invincibleMode"));
 }
 
 
@@ -351,7 +354,9 @@ void StoreScene::Select_Invincible_Mode_Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     UserDefault::getInstance()->setIntegerForKey("invincibleMode", 1); // 无敌模式
-    log("%d", _selectedInvincible);
+    //_selectedInvincible = 1;
+    log("mode 1 selected");
+    log("now mode %d", UserDefault::getInstance()->getIntegerForKey("invincibleMode"));
 }
 
 
