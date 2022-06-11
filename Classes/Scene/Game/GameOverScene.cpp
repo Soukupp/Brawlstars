@@ -200,18 +200,18 @@ void GameOverScene::hero3()
     hero3->setPosition(GAMEOVER_HERO_ANIMATON_POSITION);
     addChild(hero3);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Start.plist", "Character/Hero3/hero3_Start.png");
+    m_frameCache->addSpriteFramesWithFile("Character/Hero3/hero3_Start2.plist", "Character/Hero3/hero3_Start2.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero3.mp3");
     Vector<CCSpriteFrame*> hero3FrameArray;
-    for (int i = 0; i < 6; i++)
+    for (int i = 1; i < 7; i++)
     {
-        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("Idle3-%d.png", i)->getCString());
+        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("Start3 (%d).png", i)->getCString());
         hero3FrameArray.pushBack(frame);
     }
     auto* animation = Animation::createWithSpriteFrames(hero3FrameArray);
     animation->setDelayPerUnit(0.1f);
     animation->setLoops(-1);
-    hero3->setScale(5.0f);
+    hero3->setScale(2.5f);
     auto* action = Animate::create(animation);
     hero3->runAction(action);
 }
@@ -220,15 +220,15 @@ void GameOverScene::hero3()
 void GameOverScene::hero4()
 {
     auto hero4 = Sprite::create("Character/Hero4/hero.png");
-    hero4->setPosition(GAMEOVER_HERO_ANIMATON_POSITION);
+    hero4->setPosition(200,400);
     addChild(hero4);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
-    m_frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Normal.plist", "Character/Hero4/hero4_Normal.png");
+    m_frameCache->addSpriteFramesWithFile("Character/Hero4/hero4_Start.plist", "Character/Hero4/hero4_Start.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4.mp3");
     Vector<CCSpriteFrame*> hero4FrameArray;
-    for (int i = 0; i < 8; i++)
+    for (int i = 1; i < 9; i++)
     {
-        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("Idle4 (%d).png", i)->getCString());
+        auto frame = m_frameCache->getSpriteFrameByName(String::createWithFormat("Start4 (%d).png", i)->getCString());
         hero4FrameArray.pushBack(frame);
     }
     auto* animation = Animation::createWithSpriteFrames(hero4FrameArray);
