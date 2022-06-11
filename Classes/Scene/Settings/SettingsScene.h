@@ -13,10 +13,10 @@
 #define SETTINGS_BACK_ITEM_POSITION_Y origin.y + settingsBackItem->getContentSize().height / 2
 
 #define SETTINGS_CLEAR_USERDATA_ITEM_POSITION_X origin.x + visibleSize.width - clearUserDataItem->getContentSize().width / 2
-#define SETTINGS_CLEAR_USERDATA_ITEM_POSITION_Y origin.y + clearUserDataItem->getContentSize().height / 2
+#define SETTINGS_CLEAR_USERDATA_ITEM_POSITION_Y origin.y + 1.5 * clearUserDataItem->getContentSize().height / 2
 
 #define SETTINGS_CLEARUSERDATA_LABEL_POSITION_X origin.x + visibleSize.width - clearUserDataItem->getContentSize().width / 2 - clearUserDataLabel->getContentSize().width
-#define SETTINGS_CLEARUSERDATA_LABEL_POSITION_Y origin.y + clearUserDataItem->getContentSize().height / 2
+#define SETTINGS_CLEARUSERDATA_LABEL_POSITION_Y origin.y + 1.5 * clearUserDataItem->getContentSize().height / 2
 
 #define SETTINGS_NAME_LABEL_POSITION_X origin.x + visibleSize.width / 2
 #define SETTINGS_NAME_LABEL_POSITION_Y origin.y + visibleSize.height - settingsNameLabel->getContentSize().height

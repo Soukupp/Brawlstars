@@ -141,6 +141,7 @@ bool MapLayer::init()
 			break;
 	}
 
+
 	/*=====================创建角色结束========================*/
 
 	/*====================创建安全区开始=======================*/
@@ -217,8 +218,6 @@ bool MapLayer::init()
 
 	this->schedule(schedule_selector(MapLayer::updateAIMove), 0.05f);
 	this->schedule(schedule_selector(MapLayer::updateAIAttack), 1.0f);
-	/*createMonster(&_monster, &_monsterHealthBar,
-		Vec2(_playerX, _playerY), "character/Hero3/hero.png");*/  // 系统显示有冲突，所以我注释掉了
 
 	/*======================AI创建结束=========================*/
 
@@ -279,11 +278,7 @@ bool MapLayer::init()
 	}
 	/*=======================创建怪兽结束=======================*/
 	
-	auto SkillButton = SkillButton::create("ui/buttonForSkill.png", "ui/buttonShadow.png", 30);
-
-	SkillButton->setPosition(Vec2(GAME_SKILL_BUTTON_POSITION_X, GAME_SKILL_BUTTON_POSITION_X));
-	this->addChild(SkillButton, 100); // 放在最前面
-
+	
 	PLAYER->initWalkAction();
 	PLAYER->initNormalAction();
 	PLAYER->initAttackAction();
@@ -367,8 +362,7 @@ bool MapLayer::init()
 	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
 
     /*===================Tilemap相关设置结束===================*/
-
-
+	
 	/*====================控制键盘开始==========================*/
 
 	PLAYER->runAction(PLAYER->getNormalAction());
@@ -388,9 +382,7 @@ bool MapLayer::init()
 
 	/*=====================控制毒圈开始===========================*/
 	memset(FogIsPlaced, 0, sizeof(FogIsPlaced));
-	//this->scheduleOnce(schedule_selector(MapLayer::updateForFog), 5.0); // 第一次缩圈
-	//this->scheduleOnce(schedule_selector(MapLayer::updateForFog), 5.0); // 第二次缩圈
-	//this->scheduleOnce(schedule_selector(MapLayer::updateForFog), 5.0); // 第三次缩圈
+
 	this->schedule(schedule_selector(MapLayer::updateForFog), MAP_SAFEAREA_INTERVAL_LAST, MAP_SAFEAREA_APPEAR_TIMES, MAP_SAFEAREA_DELAY_LAST); // 持续到结束
 	this->schedule(schedule_selector(MapLayer::updateOutsideFog));
 	this->schedule(schedule_selector(MapLayer::updatePlayerHurtByFog), 0.01);
@@ -571,7 +563,7 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 			}
 			if (PLAYER->magicIsFull())
 			{
-				if (PLAYER->magicIsFull() && !ifAttackEnemy)
+				if (PLAYER->magicIsFull() && !ifAttackEnemy)                //如果发动技能而没有击中目标
 				{
 					PLAYER->useMagic();
 					PLAYER->launchAnAttack(WEAPON, "skill", MAGICBAR, nullptr, nullptr);
@@ -851,7 +843,7 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 {
 	*hero = Hero::create(filenameHero);
 	(**hero).initPlayer();
-	addChild(*hero, 2, 200);
+	addChild(*hero, 4, 200);
 
 	*weapon = Weapon::create(filenameWeapon);
 	(**weapon).setAnchorPoint(

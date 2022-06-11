@@ -72,7 +72,7 @@ void Player::launchAnAttack(Weapon* weapon, const std::string& attackType, Slide
 		if (attackType == "attack")
 		{
 			if (this->playerCollisionTest2(enemy, weapon)) {
-				if (weapon->launchAnAttack(_panel.doAttack(), enemy))
+				if (weapon->launchAnAttack(this->_panel.doAttack(), enemy))
 				{
 					//成功造成伤害才回能
 					restoreMagic();
@@ -85,7 +85,7 @@ void Player::launchAnAttack(Weapon* weapon, const std::string& attackType, Slide
 			if (useMagic())
 			{
 				if (this->playerCollisionTest2(enemy, weapon)) {
-					weapon->launchAnAttack(_panel.doSkillAttack(), enemy);
+					weapon->launchAnAttack(this->_panel.doSkillAttack(), enemy);
 					enemy->refreshHealthBar(enemyHealthBar);
 				}
 			}
@@ -96,6 +96,8 @@ void Player::launchAnAttack(Weapon* weapon, const std::string& attackType, Slide
 		}
 		this->refreshMagicBar(magicBar);
 	}
+	else
+		log("null");
 }
 
 
