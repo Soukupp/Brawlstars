@@ -112,31 +112,32 @@ bool MapLayer::init()
 
 	switch (selectedHero)     //由于测试的需要，不同英雄的createHero的参数统一为一套
 	{
-		case 1:
-			createHero(&_player1, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_playerX, _playerY), "Character/Hero1/hero.png", "Character/Hero1/emptyWeapon.png");
-			tempCharacter = { _player1,_weapon,_healthBar,_magicBar,_levelText };
-			allCharacter.push_back(tempCharacter);
-			break;
-		case 2:
-			createHero(&_player2, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_playerX, _playerY), "Character/Hero2/hero.png", "Character/Hero2/emptyWeapon.png");
-			tempCharacter = { _player2,_weapon,_healthBar,_magicBar,_levelText };
-			allCharacter.push_back(tempCharacter);
-			break;
-		case 3:
-			createHero(&_player3, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_playerX, _playerY), "Character/Hero3/hero.png", "Character/Hero3/emptyWeapon.png");
-			tempCharacter = { _player3,_weapon,_healthBar,_magicBar,_levelText };
-			allCharacter.push_back(tempCharacter);
-			break;
-		case 4:
-			createHero(&_player4, &_weapon, &_healthBar, &_magicBar, &_levelText,
-				Vec2(_playerX, _playerY), "Character/Hero4/hero.png", "Character/Hero4/emptyWeapon.png");
-			tempCharacter = { _player4,_weapon,_healthBar,_magicBar,_levelText };
-			allCharacter.push_back(tempCharacter);
-			break;
+	case 1:
+		createHero(&_player1, &_weapon, &_healthBar, &_magicBar, &_levelText,
+			Vec2(_playerX, _playerY), "Character/Hero1/hero.png", "Character/Hero1/emptyWeapon.png");
+		tempCharacter = { _player1,_weapon,_healthBar,_magicBar,_levelText };
+		allCharacter.push_back(tempCharacter);
+		break;
+	case 2:
+		createHero(&_player2, &_weapon, &_healthBar, &_magicBar, &_levelText,
+			Vec2(_playerX, _playerY), "Character/Hero2/hero.png", "Character/Hero2/emptyWeapon.png");
+		tempCharacter = { _player2,_weapon,_healthBar,_magicBar,_levelText };
+		allCharacter.push_back(tempCharacter);
+		break;
+	case 3:
+		createHero(&_player3, &_weapon, &_healthBar, &_magicBar, &_levelText,
+			Vec2(_playerX, _playerY), "Character/Hero3/hero.png", "Character/Hero3/emptyWeapon.png");
+		tempCharacter = { _player3,_weapon,_healthBar,_magicBar,_levelText };
+		allCharacter.push_back(tempCharacter);
+		break;
+	case 4:
+		createHero(&_player4, &_weapon, &_healthBar, &_magicBar, &_levelText,
+			Vec2(_playerX, _playerY), "Character/Hero4/hero.png", "Character/Hero4/emptyWeapon.png");
+		tempCharacter = { _player4,_weapon,_healthBar,_magicBar,_levelText };
+		allCharacter.push_back(tempCharacter);
+		break;
 	}
+
 
 	/*=====================创建角色结束========================*/
 
@@ -365,8 +366,7 @@ bool MapLayer::init()
 	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
 
     /*===================Tilemap相关设置结束===================*/
-
-
+	
 	/*====================控制键盘开始==========================*/
 
 	PLAYER->runAction(PLAYER->getNormalAction());
@@ -570,7 +570,7 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 			}
 			if (PLAYER->magicIsFull())
 			{
-				if (PLAYER->magicIsFull() && !ifAttackEnemy)
+				if (PLAYER->magicIsFull() && !ifAttackEnemy)                //如果发动技能而没有击中目标
 				{
 					PLAYER->useMagic();
 					PLAYER->launchAnAttack(WEAPON, "skill", MAGICBAR, nullptr, nullptr);
@@ -845,7 +845,7 @@ void MapLayer::createHero(Hero** hero, Weapon** weapon, Slider** healthBar, Slid
 {
 	*hero = Hero::create(filenameHero);
 	(**hero).initPlayer();
-	addChild(*hero, 2, 200);
+	addChild(*hero, 4, 200);
 
 	*weapon = Weapon::create(filenameWeapon);
 	(**weapon).setAnchorPoint(
