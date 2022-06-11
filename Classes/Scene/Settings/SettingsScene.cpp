@@ -56,6 +56,8 @@ bool SettingsScene::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/to_a_new_scene.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 
     /*=====================创建返回按钮开始======================*/
 
@@ -289,6 +291,8 @@ bool SettingsScene::init()
 void SettingsScene::settingsBackCallback(Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     auto mainMenuScene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//过场动画设计
 }
@@ -310,7 +314,7 @@ void SettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
         UserDefault::getInstance()->setIntegerForKey("musicVolume", percentVolume);
 
         _displayedPercentage->setString(StringUtils::format("Percent %d", percentVolume));   //显示所占百分比
-
+        
     }
 }
 
@@ -323,6 +327,8 @@ void SettingsScene::settingsPlayCallBack(Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("music/first_music.mp3");//预加载音乐
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
     {
         CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
@@ -345,6 +351,8 @@ void SettingsScene::settingsPlayCallBack(Ref* pSender)
 void SettingsScene::settingsFPSCallBack(Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     auto director = Director::getInstance();
     if (director->isDisplayStats())
     {
@@ -368,6 +376,8 @@ void SettingsScene::settingsFPSCallBack(Ref* pSender)
 void SettingsScene::clearUserDataCallback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     if (UserDefault::getInstance()->getIntegerForKey("_winTimes"))
     {
         UserDefault::getInstance()->setIntegerForKey("_winTimes", 0);
