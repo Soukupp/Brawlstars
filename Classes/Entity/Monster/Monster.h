@@ -24,7 +24,7 @@ using namespace cocos2d::ui;
 //血条 位置 this->getContentSize().width / 2
 #define MONSTER_HEALTHBAR_POSITION Vec2(this->getPosition().x, this->getPosition().y + MONSTER_YOU_BAR_POSITION + healthBar->getContentSize().height / 2)
 //血百分比计算
-#define MONSTER_BLOOD_PERCENT int(100 * float(_panel.getHealthPoint()) / float(_panel.getMaxHealthPoint()))
+#define MONSTER_BLOOD_PERCENT static_cast<int>(100 * static_cast<float>(_panel.getHealthPoint()) / static_cast<float>(_panel.getMaxHealthPoint()))
 /*==============================!!!!!以上宏请勿修改!!!!!=================================*/
 class Hero1;
 class Hero2;

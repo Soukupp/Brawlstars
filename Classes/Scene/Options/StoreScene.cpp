@@ -43,7 +43,7 @@ bool StoreScene::init()
 
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/to_a_new_scene.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 
     /*=====================创建返回按钮开始======================*/
 
@@ -255,7 +255,7 @@ void StoreScene::storeSelectMap1Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     log("Map1 Callback！");
     UserDefault::getInstance()->setIntegerForKey("selectedMap", 0);
 
@@ -272,7 +272,7 @@ void StoreScene::Select_AI_5_Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 5);
 }
 
@@ -285,7 +285,7 @@ void StoreScene::Select_AI_6_Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 6);
 }
 
@@ -298,7 +298,7 @@ void StoreScene::Select_AI_7_Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 7);
 }
 
@@ -311,7 +311,7 @@ void StoreScene::Select_AI_8_Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 8);
 }
 
@@ -324,7 +324,7 @@ void StoreScene::Select_AI_9_Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 9);
 }
 
@@ -337,7 +337,7 @@ void StoreScene::AINumberTipCallback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/store_ai_number.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 }
 
 /****************************
@@ -349,7 +349,7 @@ void StoreScene::Select_Vincible_Mode_Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     UserDefault::getInstance()->setIntegerForKey("invincibleMode", 0); // 常规模式
     //_selectedInvincible = 0;
     log("mode 0 selected");
@@ -365,7 +365,7 @@ void StoreScene::Select_Invincible_Mode_Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     UserDefault::getInstance()->setIntegerForKey("invincibleMode", 1); // 无敌模式
     //_selectedInvincible = 1;
     log("mode 1 selected");
@@ -381,7 +381,7 @@ void StoreScene::storeSelectMap3Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     log("Map3 Callback！");
     UserDefault::getInstance()->setIntegerForKey("selectedMap", 1);
 
@@ -398,7 +398,7 @@ void StoreScene::storeEggshell1Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/printed_eggshell_1.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 }
 
 /****************************
@@ -410,7 +410,7 @@ void StoreScene::storeEggshell2Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/printed_eggshell_2.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 }
 
 /****************************
@@ -422,7 +422,7 @@ void StoreScene::storeEggshell3Callback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/printed_eggshell_3.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 }
 
 
@@ -435,7 +435,7 @@ void StoreScene::storeBackCallback(cocos2d::Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     auto mainMenuScene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//过场动画设计
 }

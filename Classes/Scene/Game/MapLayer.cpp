@@ -78,7 +78,7 @@ bool MapLayer::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	srand((unsigned)time(0));
+	srand(static_cast<unsigned int>(time(0)));
 
 
 	/*===================Tilemap相关设置开始==================*/
@@ -543,7 +543,7 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 
 			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
 			CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-				float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+				static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 			if (!PLAYER->magicIsFull())
 			{
 				PLAYER->runAction(PLAYER->getAttackAction());
@@ -962,7 +962,7 @@ void MapLayer::update2(float delta)
 						else if (PLAYER->getID() == 4)
 							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4_kill.mp3");
 						CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-							float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+							static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 					}
 
 				}
@@ -1005,7 +1005,7 @@ void MapLayer::update2(float delta)
 
 						CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/update.mp3");
 						CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-							float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+							static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 					}
 
 				}
@@ -1122,7 +1122,7 @@ void MapLayer::updateForFog(float delta)
 	else if (_fogTurn == 2)
 		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/double_takedown.mp3");
 	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-		float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+		static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 	_SafeArea->runAction(ScaleBy::create(2.0f, 0.8f));
 
 }
