@@ -210,7 +210,7 @@ bool MapLayer::init()
 			allCharacter.push_back(tempCharacter);
 		}
 	}
-
+	(* HEALTHBAR).loadProgressBarTexture("/ui/playerGreenHealthbarBlock.png");
 	//各个AI相关数据初始化
 	for (int i = 1; i < allCharacter.size(); ++i)
 	{
