@@ -111,7 +111,6 @@ bool GameOverScene::init()
     crown->setPosition(GAMEOVER_CROWN_POSITION);
     addChild(crown, 5);
 
-
     std::string tip;
     if (UserDefault::getInstance()->getIntegerForKey("PlayerRank") <= 4)
         tip = "       CONGRATULATION!";
@@ -130,8 +129,8 @@ bool GameOverScene::init()
         + "\n" +
         "KILL COUNT :       " + std::to_string(UserDefault::getInstance()->getIntegerForKey("HitNum"))
         + "\n" +
-        "CROWN NUMBER :    " + std::to_string(UserDefault::getInstance()->getIntegerForKey("_cupNums"))
-        +" x ";
+        "CROWN NUMBER :    " + std::to_string(UserDefault::getInstance()->getIntegerForKey("PlayerRank") <= 5 ? 6 - UserDefault::getInstance()->getIntegerForKey("PlayerRank") : 0)
+        + " x ";
     GameOverInformation->setContentText(infoString.c_str(), "fonts/Lilita one.ttf", 45, MAINMENU_INFORMATION_CONTENT_TEXT_PADDING,
 
         MAINMENU_INFORMATION_CONTENT_TEXT_PADDINGTOP);
@@ -152,9 +151,9 @@ void GameOverScene::menuCloseCallback(Ref* pSender)
 }
 
 /****************************
-* Name ��GameOverScene::hero1
-* Summary ��hero1����
-* return ����
+* Name GameOverScene::hero1
+* Summary hero1结束展示
+* return : 
 ****************************/
 void GameOverScene::hero1()
 {
@@ -244,8 +243,8 @@ void GameOverScene::hero3()
 
 /****************************
 * Name ��GameOverScene::hero4
-* Summary ��hero4����
-* return ����
+* Summary hero4结束展示
+* return : 
 ****************************/
 void GameOverScene::hero4()
 {

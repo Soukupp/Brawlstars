@@ -36,7 +36,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-	//以下调用控制台窗口
+	/*以下调用控制台窗口*
 #ifdef WIN32
 	wchar_t pcName[256] = { 0 };
 	DWORD len = sizeof(pcName) / sizeof(pcName[0]);
@@ -53,7 +53,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,
 		freopen("CONOUT$", "w", stderr);
 	}
 #endif
-	//以上调用控制台窗口
+	/*以上调用控制台窗口*/
 
     // create the application instance
     AppDelegate app;

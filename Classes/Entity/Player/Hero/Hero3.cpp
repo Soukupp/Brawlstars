@@ -181,7 +181,7 @@ void Hero3::upgrade(cocos2d::Label* levelText, Slider* bar)
 		_panel.setAttack(HERO3_INIT_ATTACK / 10 + _panel.getAttack());
 		_panel.setDefence(HERO3_INIT_DEFENCE / 10 + _panel.getDefence());
 		_panel.setAttackRate(0.1f + _panel.getAttackRate());
-		_panel.setSkillRate(0.1f + _panel.getSkillRate());
+		_panel.setSkillRate(0.3f + _panel.getSkillRate());
 		_panel.setHealthPoint(HERO3_INIT_MAXHEALTHPOINT / 10 + _panel.getHealthPoint());
 		_panel.treat(HERO3_INIT_MAXHEALTHPOINT / 2);
 		this->keepLevelText(levelText, bar);
