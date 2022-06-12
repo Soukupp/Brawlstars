@@ -78,7 +78,7 @@ bool MapLayer::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	srand((unsigned)time(0));
+	srand(static_cast<unsigned int>(time(0)));
 
 
 	/*===================Tilemap相关设置开始==================*/
@@ -210,7 +210,7 @@ bool MapLayer::init()
 			allCharacter.push_back(tempCharacter);
 		}
 	}
-
+	(* HEALTHBAR).loadProgressBarTexture("/ui/playerGreenHealthbarBlock.png");
 	//各个AI相关数据初始化
 	for (int i = 1; i < allCharacter.size(); ++i)
 	{
@@ -221,6 +221,7 @@ bool MapLayer::init()
 		CHARACTER(i)._player->initSkillAction();
 		CHARACTER(i)._player->initNormalAction();
 		CHARACTER(i)._player->setScale(1.3f);
+		CHARACTER(i)._player->_panel.setIsSurvive(true);
 		setCharacterVisible(true, CHARACTER(i));
 	}
 
@@ -542,7 +543,7 @@ bool MapLayer::onTouchBegan(Touch* touch, Event* event)
 
 			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
 			CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-				float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+				static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 			if (!PLAYER->magicIsFull())
 			{
 				PLAYER->runAction(PLAYER->getAttackAction());
@@ -916,7 +917,7 @@ void MapLayer::createMonster(Monsters** monster, Slider** healthBar,
 * return ：
 ****************************/
 /*解释：由于执行normal动画如果只添加在onKeyRealeased，
-       而鼠标点击开始执行attack动画，如果在鼠标结束后加入normal动画
+     而鼠标点击开始执行attack动画，如果在鼠标结束后加入normal动画
 	   会屏蔽attack动画。如果attack和normal都放在onTouchEnded也
 	   会造成attack动画被屏蔽为了。解决这个问题，只能延时调用update2*/
 void MapLayer::update2(float delta)
@@ -961,7 +962,7 @@ void MapLayer::update2(float delta)
 						else if (PLAYER->getID() == 4)
 							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4_kill.mp3");
 						CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-							float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+							static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 					}
 
 				}
@@ -1004,7 +1005,7 @@ void MapLayer::update2(float delta)
 
 						CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/update.mp3");
 						CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-							float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+							static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 					}
 
 				}
@@ -1121,7 +1122,7 @@ void MapLayer::updateForFog(float delta)
 	else if (_fogTurn == 2)
 		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/double_takedown.mp3");
 	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-		float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+		static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 	_SafeArea->runAction(ScaleBy::create(2.0f, 0.8f));
 
 }

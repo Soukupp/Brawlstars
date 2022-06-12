@@ -53,7 +53,7 @@ bool GameSettingsScene::init()
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("music/retro_fight_ingame_01.mp3"); //预加载音乐
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/to_a_new_scene.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     /*=====================创建返回按钮开始======================*/
 
     //创建返回按钮
@@ -231,7 +231,7 @@ void GameSettingsScene::settingsBackToGameCallback(Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     auto GS = GameScene::createScene();
     Director::getInstance()->popScene();//过场动画设计
 }
@@ -268,7 +268,7 @@ void GameSettingsScene::settingsPlayCallBack(Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
     {
         CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
@@ -292,7 +292,7 @@ void GameSettingsScene::settingsFPSCallBack(Ref* pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     auto director = Director::getInstance();
     if (director->isDisplayStats())
     {

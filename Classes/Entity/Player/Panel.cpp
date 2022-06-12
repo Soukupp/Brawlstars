@@ -246,7 +246,7 @@ void Panel::setCanBeSeen(bool canBeSeen)
 ****************************/
 int Panel::doAttack()
 {
-	return int(_attack * _attackRate);
+	return static_cast<int>(_attack * _attackRate);
 }
 
 /****************************
@@ -256,7 +256,7 @@ int Panel::doAttack()
 ****************************/
 int Panel::doSkillAttack()
 {
-	return int(_attack * _skillRate);
+	return static_cast<int>(_attack * _skillRate);
 }
 
 /*===============================================================================*/
@@ -271,7 +271,7 @@ int Panel::doSkillAttack()
 int Panel::hit(int attack)
 {
 	//防御力的生效方式为百分比减伤
-	int hitPoint = int(attack * (1.0f - _defence / PANEL_MAX_DEFENCE));
+	int hitPoint = static_cast<int>(attack * (1.0f - _defence / PANEL_MAX_DEFENCE));
 	_healthPoint -= hitPoint;
 	if (_healthPoint <= 0) 
 	{//伤害溢出或击杀

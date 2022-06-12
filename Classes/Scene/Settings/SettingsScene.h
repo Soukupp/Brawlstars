@@ -24,8 +24,8 @@
 #define SETTINGS_BACKGROUND_POSITION_X visibleSize.width / 2 + origin.x
 #define SETTINGS_BACKGROUND_POSITION_Y visibleSize.height / 2 + origin.y
 
-#define SETTINGS_SETTINGSMENU_POSITION_X float(visibleSize.width / 2 + origin.x)
-#define SETTINGS_SETTINGSMENU_POSITION_Y float(visibleSize.height / 2 * 1.25 + origin.y)
+#define SETTINGS_SETTINGSMENU_POSITION_X static_cast<float>(visibleSize.width / 2 + origin.x)
+#define SETTINGS_SETTINGSMENU_POSITION_Y static_cast<float>(visibleSize.height / 2 * 1.25 + origin.y)
 
 #define SETTINGS_SETTINGSMUSICLABEL_POSITION_X visibleSize.width / 2 * 0.5 + origin.x
 #define SETTINGS_SETTINGSMUSICLABEL_POSITION_Y visibleSize.height / 2 * 1.4 + origin.y

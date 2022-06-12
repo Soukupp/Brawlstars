@@ -135,9 +135,10 @@ public:
     void updatePlayerHurtByFog(float delta);
     void updateOutsideFog(float delta);
 
-    void updateAIMove(float delta);
-    void updateAIMoveOne(Character& character);
-    void updateAIAttack(float delta);
+    void updateAIMove(float delta);                      //AI遍历
+    void updateAIMoveOne(Character& character);          //单个AI的移动实现
+    void updateAIAttack(float delta);                    //AI碰撞检测
+
     void updateSetIfPlayAttackAnimation(float delta);
 
     void setPlayerPosition(cocos2d::Vec2 position);
