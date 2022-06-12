@@ -38,7 +38,7 @@ using namespace cocos2d::ui;
 #define PLAYER_MAGICBAR_POSITION Vec2(this->getPosition().x, this->getPosition().y + PLAYER_YOU_BAR_POSITION)
 //血、蓝百分比计算
 #define PLAYER_BLOOD_PERCENT static_cast<int>(100 * static_cast<float>(_panel.getHealthPoint()) / static_cast<float>(_panel.getMaxHealthPoint()))
-#define PLAYER_MAGIC_PERCENT static_cast<int>(100 * static_cast<float>(_panel.getHealthPoint()) / static_cast<float>(_panel.getMaxHealthPoint()))
+#define PLAYER_MAGIC_PERCENT static_cast<int>(100 * static_cast<float>(_panel.getMagicPoint()) / static_cast<float>(_panel.getMaxMagicPoint()))
 //等级位置
 #define PLAYER_LEVELTEXT_POSITION Vec2(this->getPosition().x, this->getPosition().y + PLAYER_YOU_BAR_POSITION + bar->getContentSize().height)
 //最高等级
