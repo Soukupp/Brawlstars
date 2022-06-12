@@ -13,6 +13,7 @@
 
 - 操作系统：Windows
 - 选用引擎：Cocos2d-x 3.17.2
+- 辅助软件：Tiled 地图编辑器 1.8.4、TexturePackerGUI、Adobe Photoshop CC 2018
 - 开发语言：c++
 - 开发平台：Visual Studio 2022
 
