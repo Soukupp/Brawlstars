@@ -74,7 +74,17 @@ bool AppDelegate::applicationDidFinishLaunching() {
         director->setOpenGLView(glview);
     }
 
-    //FileUtils::getInstance()->setWritablePath("./Resources/data");
+    std::string str = UserDefault::getInstance()->getXMLFilePath();
+    if (UserDefault::getInstance()->isXMLFileExist()) //ÊÇ·ñ´æÔÚ
+    {
+        std::string path = UserDefault::getInstance()->getXMLFilePath();
+        CCLOG("XML file is exist!");
+        CCLOG("XML file path : %s", path.c_str());
+    }
+    else
+    {
+        CCLOG("XML file is not exist!");
+    }
 
     if (!UserDefault::getInstance()->getIntegerForKey("_winTimes")) 
         UserDefault::getInstance()->setIntegerForKey("_winTimes", 0);
@@ -89,6 +99,20 @@ bool AppDelegate::applicationDidFinishLaunching() {
     if(!UserDefault::getInstance()->getIntegerForKey("invincibleMode"))
         UserDefault::getInstance()->setIntegerForKey("invincibleMode", 0);
     UserDefault::getInstance()->setIntegerForKey("invincibleMode", 0);
+    if (!UserDefault::getInstance()->getIntegerForKey("selectedMap"))
+        UserDefault::getInstance()->setIntegerForKey("selectedMap", 0);
+    if (!UserDefault::getInstance()->getIntegerForKey("selectedAINUmber"))
+        UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 9); 
+    if (!UserDefault::getInstance()->getIntegerForKey("PlayerRank"))
+        UserDefault::getInstance()->setIntegerForKey("PlayerRank", 10);
+    if (!UserDefault::getInstance()->getIntegerForKey("HitNum"))
+        UserDefault::getInstance()->setIntegerForKey("HitNum", 0);
+    if (!UserDefault::getInstance()->getIntegerForKey("musicVolume"))
+        UserDefault::getInstance()->setIntegerForKey("musicVolume", 50);
+    if (!UserDefault::getInstance()->getBoolForKey("ifPlayMusic"))
+        UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
+    if (!UserDefault::getInstance()->getBoolForKey("ifShowFPS"))
+        UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
 
     // turn on display FPS
     director->setDisplayStats(false);

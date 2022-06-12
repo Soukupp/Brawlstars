@@ -221,6 +221,7 @@ bool MapLayer::init()
 		CHARACTER(i)._player->initSkillAction();
 		CHARACTER(i)._player->initNormalAction();
 		CHARACTER(i)._player->setScale(1.3f);
+		setCharacterVisible(true, CHARACTER(i));
 	}
 
 	//schedule调用
@@ -729,10 +730,7 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 			{
 				if (playerOpacity == MAP_PLAYER_IN_TREE_AND_NOT_AROUND_AI)
 				{
-					AI_PLAYER(i)->setVisible(false);
-					allCharacter[i]._healthBar->setVisible(false);
-					allCharacter[i]._magicBar->setVisible(false);
-					allCharacter[i]._levelText->setVisible(false);
+					setCharacterVisible(false, CHARACTER(i));
 				}
 				else if (playerOpacity == MAP_PLAYER_IN_TREE_AND_AROUND_AI)
 				{
@@ -1200,12 +1198,13 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 void MapLayer::updateAIMove(float delta)
 {
 	int tempNum = 1;
+	/**/
 	for (int i = 1; i < allCharacter.size(); ++i)
 	{
 		if (AI_PLAYER(i)->_panel.getIsSurvive())
 		{
 			updateAIMoveOne(CHARACTER(i));
-			setCharacterVisible(true, CHARACTER(i));
+			//setCharacterVisible(true, CHARACTER(i));
 			++tempNum;
 		}
 		else
@@ -1214,6 +1213,7 @@ void MapLayer::updateAIMove(float delta)
 			//setCharacterPosition(deathPosition, CHARACTER(i));
 		}
 	}
+	/**/
 	_numOfPlayer = tempNum;
 	setUserInt("_numOfPlayer", _numOfPlayer);
 	setUserInt("_hitNum", PLAYER->_panel.getHitnum());
