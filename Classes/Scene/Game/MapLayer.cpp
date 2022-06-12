@@ -708,7 +708,8 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 	}
 	else
 	{
-		playerOpacity = MAP_PLAYER_IN_TREE_AND_NOT_AROUND_AI;
+		if (playerOpacity != MAP_PLAYER_IN_TREE_AND_AROUND_AI)
+			playerOpacity = MAP_PLAYER_IN_TREE_AND_NOT_AROUND_AI;
 		count = 0;
 	}
 
@@ -729,23 +730,34 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 			Vec2 treetileCoord = this->tileCoordFromPosition(AI_PLAYER(i)->getPosition());
 			if (_tree->getTileAt(treetileCoord))// AI的位置有树丛
 			{
-				if (playerOpacity == MAP_PLAYER_IN_TREE_AND_NOT_AROUND_AI)
+				if (playerOpacity == MAP_PLAYER_IN_TREE_AND_NOT_AROUND_AI && aroundPlayer[i] == false)
 				{
-					setCharacterVisible(false, CHARACTER(i));
+					setCharacterVisible(false, CHARACTER(i));  // 不可见
 				}
-				else if (playerOpacity == MAP_PLAYER_IN_TREE_AND_AROUND_AI)
+				else if (playerOpacity == MAP_PLAYER_IN_TREE_AND_AROUND_AI)  // 有AI在玩家旁边
 				{
-					setCharacterVisible(true, CHARACTER(i));
+					if (aroundPlayer[i] == true)   // 如果这个AI在玩家旁边，则可见
+					{
+						AI_PLAYER(i)->setVisible(true);
+						allCharacter[i]._healthBar->setVisible(true);
+						allCharacter[i]._magicBar->setVisible(true);
+						allCharacter[i]._levelText->setVisible(true);
+					}
+
 				}
 			}
-			else
+			else   // AI 的位置没有草丛
 			{
-				setCharacterVisible(true, CHARACTER(i));
+				aroundPlayer[i] = false;  // 无需考虑AI在不在玩家旁边，回到默认值false，且AI可见
+				AI_PLAYER(i)->setVisible(true);
+				allCharacter[i]._healthBar->setVisible(true);
+				allCharacter[i]._magicBar->setVisible(true);
+				allCharacter[i]._levelText->setVisible(true);
 			}
 		}
 	}
 	
-	for (int i = 0; i < playerVisionArea.size(); ++i)
+	for (int i = 0; i < playerVisionArea.size(); ++i) // 玩家周围区域若有草丛，则变透明
 	{
 		Vec2 treetileCoord = this->tileCoordFromPosition(playerVisionArea[i]);
 		if (_tree->getTileAt(treetileCoord))
@@ -755,10 +767,10 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 			_treecell->setOpacity(100);  //透明
 		}
 	}
-
-	if (count != 0)
+	
+	if (count != 0)   // 周围至少有一处草丛变透明
 	{
-		playerOpacity = MAP_PLAYER_IN_TREE_AND_NOT_AROUND_AI;
+		playerOpacity = MAP_PLAYER_IN_TREE_AND_NOT_AROUND_AI;  // 表示人一定在树丛中，但不一定周围没AI，后续代码判断
 		count = 0;
 	}
 
@@ -766,17 +778,23 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 	{
 		if (AI_PLAYER(i)->_panel.getIsSurvive())
 		{
-			if (AI_PLAYER(i)->getPositionX() <= (pos.x + MAP_PLAYER_TO_AI_VISIBLE_SIZE) &&
-				AI_PLAYER(i)->getPositionX() >= (pos.x - MAP_PLAYER_TO_AI_VISIBLE_SIZE) &&
-				AI_PLAYER(i)->getPositionY() <= (pos.y + MAP_PLAYER_TO_AI_VISIBLE_SIZE) &&
-				AI_PLAYER(i)->getPositionY() >= (pos.y - MAP_PLAYER_TO_AI_VISIBLE_SIZE))
-//				&&((playerOpacity == 1) || (playerOpacity = 2)))
+			if (playerOpacity != MAP_PLAYER_NOT_IN_TREE)   // 玩家在草丛的话
 			{
-				AI_PLAYER(i)->setVisible(true);
-				allCharacter[i]._healthBar->setVisible(true);
-				allCharacter[i]._magicBar->setVisible(true);
-				allCharacter[i]._levelText->setVisible(true);
-				playerOpacity = MAP_PLAYER_IN_TREE_AND_AROUND_AI;
+				if (AI_PLAYER(i)->getPositionX() <= (pos.x + MAP_PLAYER_TO_AI_VISIBLE_SIZE) &&
+					AI_PLAYER(i)->getPositionX() >= (pos.x - MAP_PLAYER_TO_AI_VISIBLE_SIZE) &&
+					AI_PLAYER(i)->getPositionY() <= (pos.y + MAP_PLAYER_TO_AI_VISIBLE_SIZE) &&
+					AI_PLAYER(i)->getPositionY() >= (pos.y - MAP_PLAYER_TO_AI_VISIBLE_SIZE))   // 这个AI在玩家的周围
+					//				&&((playerOpacity == 1) || (playerOpacity = 2)))
+				{
+					aroundPlayer[i] = true;   // 这个AI在玩家的周围
+					AI_PLAYER(i)->setVisible(true);   // 这个AI可见
+					allCharacter[i]._healthBar->setVisible(true);
+					allCharacter[i]._magicBar->setVisible(true);
+					allCharacter[i]._levelText->setVisible(true);
+					playerOpacity = MAP_PLAYER_IN_TREE_AND_AROUND_AI;   // 有AI在玩家的周围
+				}
+				else    // 不在玩家的周围
+					aroundPlayer[i] = false;
 			}
 		}
 	}
@@ -893,14 +911,13 @@ void MapLayer::createMonster(Monsters** monster, Slider** healthBar,
 	(**monster).setPositionWithAll(position, *healthBar);
 }
 
-
 /****************************
 * Name ：MapLayer::update2
 * Summary ：实现在attack动画执行后可以执行normal动画
 * return ：
 ****************************/
 /*解释：由于执行normal动画如果只添加在onKeyRealeased，
-       而鼠标点击开始执行attack动画，如果在鼠标结束后加入normal动画
+     而鼠标点击开始执行attack动画，如果在鼠标结束后加入normal动画
 	   会屏蔽attack动画。如果attack和normal都放在onTouchEnded也
 	   会造成attack动画被屏蔽为了。解决这个问题，只能延时调用update2*/
 void MapLayer::update2(float delta)
@@ -1017,7 +1034,6 @@ void MapLayer::update2(float delta)
 	}
 
 }
-
 
 /****************************
 * Name ：MapLayer::updateForPortal

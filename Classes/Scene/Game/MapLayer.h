@@ -102,7 +102,10 @@ private:
     int _numOfPlayer;
     int _invincibleMode;
 
-    int playerOpacity = MAP_PLAYER_NOT_IN_TREE;  // 表示人可见，且不在树丛里
+
+    bool aroundPlayer[10] = { false,false,false,false,false,false,false,false,false,false };
+
+    int playerOpacity = 0;  // MAP_PLAYER_NOT_IN_TREE 表示人可见，且不在树丛里
                                                  //   1   // 表示人在树丛里，树丛半透明，且AI不在人的周围
                                                  //   2   // 表示人在树丛里，树丛半透明，且AI在人的周围
 
