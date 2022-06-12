@@ -221,6 +221,7 @@ bool MapLayer::init()
 		CHARACTER(i)._player->initSkillAction();
 		CHARACTER(i)._player->initNormalAction();
 		CHARACTER(i)._player->setScale(1.3f);
+		CHARACTER(i)._player->_panel.setIsSurvive(true);
 		setCharacterVisible(true, CHARACTER(i));
 	}
 
@@ -742,6 +743,7 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 						allCharacter[i]._magicBar->setVisible(true);
 						allCharacter[i]._levelText->setVisible(true);
 					}
+
 				}
 			}
 			else   // AI 的位置没有草丛
@@ -915,7 +917,7 @@ void MapLayer::createMonster(Monsters** monster, Slider** healthBar,
 * return ：
 ****************************/
 /*解释：由于执行normal动画如果只添加在onKeyRealeased，
-       而鼠标点击开始执行attack动画，如果在鼠标结束后加入normal动画
+     而鼠标点击开始执行attack动画，如果在鼠标结束后加入normal动画
 	   会屏蔽attack动画。如果attack和normal都放在onTouchEnded也
 	   会造成attack动画被屏蔽为了。解决这个问题，只能延时调用update2*/
 void MapLayer::update2(float delta)
