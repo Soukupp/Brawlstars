@@ -152,7 +152,7 @@ bool LoadingScene::init()
 
 	/*=======================预加载Audio结束=======================*/
 
-	this->scheduleOnce(schedule_selector(LoadingScene::changeScene), 3.0f); // 开启计时器！
+	this->scheduleOnce(schedule_selector(LoadingScene::changeScene), 4.0f); // 开启计时器！
 
 	return true;
 }

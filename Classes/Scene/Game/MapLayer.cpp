@@ -491,7 +491,7 @@ void MapLayer::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 
 /****************************
 * Name ：MapLayer::update
-* Summary ：更新函数，改变player实施动态
+* Summary ：更新函数，改变player实时动态
 * return ：无
 ****************************/
 void MapLayer::update(float delta)
@@ -687,7 +687,7 @@ void MapLayer::setPlayerPosition(Vec2 position)
 void MapLayer::setTreeOpacity(Vec2 pos)
 {
 	static std::vector<Vec2> playerVisionArea = {};
-	
+
 	int count = 0;
 
 	for (int i = 0; i < playerVisionArea.size(); ++i)
@@ -756,7 +756,7 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 			}
 		}
 	}
-	
+
 	for (int i = 0; i < playerVisionArea.size(); ++i) // 玩家周围区域若有草丛，则变透明
 	{
 		Vec2 treetileCoord = this->tileCoordFromPosition(playerVisionArea[i]);
@@ -767,7 +767,7 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 			_treecell->setOpacity(100);  //透明
 		}
 	}
-	
+
 	if (count != 0)   // 周围至少有一处草丛变透明
 	{
 		playerOpacity = MAP_PLAYER_IN_TREE_AND_NOT_AROUND_AI;  // 表示人一定在树丛中，但不一定周围没AI，后续代码判断
@@ -1215,7 +1215,7 @@ void MapLayer::updateAIMove(float delta)
 		if (AI_PLAYER(i)->_panel.getIsSurvive())
 		{
 			updateAIMoveOne(CHARACTER(i));
-			//setCharacterVisible(true, CHARACTER(i));
+			setCharacterVisible(true, CHARACTER(i));
 			++tempNum;
 		}
 		else
