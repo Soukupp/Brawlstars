@@ -221,6 +221,7 @@ bool MapLayer::init()
 		CHARACTER(i)._player->initSkillAction();
 		CHARACTER(i)._player->initNormalAction();
 		CHARACTER(i)._player->setScale(1.3f);
+		CHARACTER(i)._player->_panel.setIsSurvive(true);
 		setCharacterVisible(true, CHARACTER(i));
 	}
 
@@ -734,18 +735,12 @@ void MapLayer::setTreeOpacity(Vec2 pos)
 				}
 				else if (playerOpacity == MAP_PLAYER_IN_TREE_AND_AROUND_AI)
 				{
-					AI_PLAYER(i)->setVisible(true);
-					allCharacter[i]._healthBar->setVisible(true);
-					allCharacter[i]._magicBar->setVisible(true);
-					allCharacter[i]._levelText->setVisible(true);
+					setCharacterVisible(true, CHARACTER(i));
 				}
 			}
 			else
 			{
-				AI_PLAYER(i)->setVisible(true);
-				allCharacter[i]._healthBar->setVisible(true);
-				allCharacter[i]._magicBar->setVisible(true);
-				allCharacter[i]._levelText->setVisible(true);
+				setCharacterVisible(true, CHARACTER(i));
 			}
 		}
 	}
