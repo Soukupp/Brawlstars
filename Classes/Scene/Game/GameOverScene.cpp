@@ -164,7 +164,7 @@ void GameOverScene::hero1()
     m_frameCache->addSpriteFramesWithFile("character/Hero1/hero1_Start.plist", "character/Hero1/hero1_Start.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero1.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     Vector<CCSpriteFrame*> hero1FrameArray;
     for (int i = 4; i < 8; i++)
     {
@@ -195,7 +195,7 @@ void GameOverScene::hero2()
     m_frameCache->addSpriteFramesWithFile("character/Hero2/hero2_Normal.plist", "character/Hero2/hero2_Normal.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero2.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     Vector<CCSpriteFrame*> hero2FrameArray;
     for (int i = 0; i < 8; i++)
     {
@@ -226,7 +226,7 @@ void GameOverScene::hero3()
     m_frameCache->addSpriteFramesWithFile("character/Hero3/hero3_Start2.plist", "character/Hero3/hero3_Start2.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero3.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     Vector<CCSpriteFrame*> hero3FrameArray;
     for (int i = 1; i < 7; i++)
     {
@@ -255,7 +255,7 @@ void GameOverScene::hero4()
     m_frameCache->addSpriteFramesWithFile("character/Hero4/hero4_Start.plist", "character/Hero4/hero4_Start.png");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     Vector<CCSpriteFrame*> hero4FrameArray;
     for (int i = 1; i < 9; i++)
     {

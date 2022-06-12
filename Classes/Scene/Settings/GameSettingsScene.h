@@ -23,11 +23,11 @@
 #define GAMESETTINGS_BACKGROUND_POSITION_X visibleSize.width / 2 + origin.x
 #define GAMESETTINGS_BACKGROUND_POSITION_Y visibleSize.height / 2 + origin.y
 
-#define GAMESETTINGS_SETTINGSMENU_POSITION_X float(visibleSize.width / 2 + origin.x)
-#define GAMESETTINGS_SETTINGSMENU_POSITION_Y float(visibleSize.height / 2 * 1.25 + origin.y)
+#define GAMESETTINGS_SETTINGSMENU_POSITION_X static_cast<float>(visibleSize.width / 2 + origin.x)
+#define GAMESETTINGS_SETTINGSMENU_POSITION_Y static_cast<float>(visibleSize.height / 2 * 1.25 + origin.y)
 
-#define GAMESETTINGS_SETTINGSMUSICLABEL_POSITION_X float(visibleSize.width / 2 * 0.5 + origin.x)
-#define GAMESETTINGS_SETTINGSMUSICLABEL_POSITION_Y float(visibleSize.height / 2 * 1.4 + origin.y)
+#define GAMESETTINGS_SETTINGSMUSICLABEL_POSITION_X static_cast<float>(visibleSize.width / 2 * 0.5 + origin.x)
+#define GAMESETTINGS_SETTINGSMUSICLABEL_POSITION_Y static_cast<float>(visibleSize.height / 2 * 1.4 + origin.y)
 
 #define GAMESETTINGS_SETTINGMUSICSTATES_POSITION_X visibleSize.width / 4 + origin.x
 #define GAMESETTINGS_SETTINGMUSICSTATES_POSITION_Y visibleSize.height / 2  + origin.y

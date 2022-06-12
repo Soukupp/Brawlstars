@@ -113,7 +113,7 @@ bool GameScene::init()
 		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/retro_fight_ingame_01.mp3", true);
 	}
 	CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(
-		float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+		static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 	/*=====================创建背景音乐结束=======================*/
 
 	return true;
@@ -128,7 +128,7 @@ void GameScene::menuCallback(Ref* pSender)
 {
 	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
 	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-		float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+		static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 	/**/
 	if (getUserInt("_numOfPlayer") == 1)
 	{
@@ -154,7 +154,7 @@ void GameScene::GameSettingsCallBack(cocos2d::Ref* pSender)
 {
 	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
 	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-		float(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+		static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 	auto GSS = GameSettingsScene::createScene();
 	Director::getInstance()->pushScene(GSS);  // 此处用push的方式，保留游戏进度
 }
