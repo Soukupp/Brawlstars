@@ -22,14 +22,9 @@ USING_NS_CC;
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(960, 720);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(960, 720);
-static cocos2d::Size mediumResolutionSize = cocos2d::Size(960, 720);
-static cocos2d::Size largeResolutionSize = cocos2d::Size(960, 720);
-/**
-static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
-static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
-static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
-static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
-/**/
+static cocos2d::Size mediumResolutionSize = cocos2d::Size(1920, 1080);
+static cocos2d::Size largeResolutionSize = cocos2d::Size(1920, 1080);
+
 AppDelegate::AppDelegate()
 {
 }
@@ -70,58 +65,31 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #else
         glview = GLViewImpl::create("Brawlstars");
 #endif
-        glview->setFrameSize(960, 720);
+
+        //获取屏幕分辨率
+        int screenWidth, screenHeight;
+        screenWidth = GetSystemMetrics(SM_CXSCREEN);
+        screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+        glview->setFrameSize(screenWidth, screenHeight);
         director->setOpenGLView(glview);
+
+        //获取窗口大小
+        int windowWidth, windowHeight;
+        tagRECT rect;
+        ::GetWindowRect(glview->getWin32Window(), &rect);
+        windowWidth = rect.right - rect.left;
+        windowHeight = rect.bottom - rect.top;
+
+        //移动窗口并重绘
+        ::MoveWindow(glview->getWin32Window(), (screenWidth - windowWidth) / 2, (screenHeight - windowHeight) / 2, windowWidth, windowHeight, TRUE);
     }
-
-    std::string str = UserDefault::getInstance()->getXMLFilePath();
-    if (UserDefault::getInstance()->isXMLFileExist()) //是否存在
-    {
-        std::string path = UserDefault::getInstance()->getXMLFilePath();
-        CCLOG("XML file is exist!");
-        CCLOG("XML file path : %s", path.c_str());
-    }
-    else
-    {
-        CCLOG("XML file is not exist!");
-    }
-
-    if (!UserDefault::getInstance()->getIntegerForKey("_winTimes")) 
-        UserDefault::getInstance()->setIntegerForKey("_winTimes", 0);
-    if (!UserDefault::getInstance()->getIntegerForKey("_gameTimes"))
-        UserDefault::getInstance()->setIntegerForKey("_gameTimes", 0);
-    if (!UserDefault::getInstance()->getIntegerForKey("_killNums"))
-        UserDefault::getInstance()->setIntegerForKey("_killNums", 0);
-    if (!UserDefault::getInstance()->getIntegerForKey("_cupNums"))
-        UserDefault::getInstance()->setIntegerForKey("_cupNums", 0);
-    if (!UserDefault::getInstance()->getIntegerForKey("selectedHero"))
-        UserDefault::getInstance()->setIntegerForKey("selectedHero", 1);
-    if(!UserDefault::getInstance()->getIntegerForKey("invincibleMode"))
-        UserDefault::getInstance()->setIntegerForKey("invincibleMode", 0);
-    UserDefault::getInstance()->setIntegerForKey("invincibleMode", 0);
-    if (!UserDefault::getInstance()->getIntegerForKey("selectedMap"))
-        UserDefault::getInstance()->setIntegerForKey("selectedMap", 0);
-    if (!UserDefault::getInstance()->getIntegerForKey("selectedAINUmber"))
-        UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 9); 
-    if (!UserDefault::getInstance()->getIntegerForKey("PlayerRank"))
-        UserDefault::getInstance()->setIntegerForKey("PlayerRank", 10);
-    if (!UserDefault::getInstance()->getIntegerForKey("HitNum"))
-        UserDefault::getInstance()->setIntegerForKey("HitNum", 0);
-    if (!UserDefault::getInstance()->getIntegerForKey("musicVolume"))
-        UserDefault::getInstance()->setIntegerForKey("musicVolume", 50);
-    if (!UserDefault::getInstance()->getBoolForKey("ifPlayMusic"))
-        UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
-    if (!UserDefault::getInstance()->getBoolForKey("ifShowFPS"))
-        UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
-
-    // turn on display FPS
-    director->setDisplayStats(false);
-
-    // set FPS. the default value is 1.0/60 if you don't call this
-    director->setAnimationInterval(1.0f / 60);
 
     // Set the design resolution
-    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
+    //glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::EXACT_FIT);
+    //glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
+    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::SHOW_ALL);
+    /**
     auto frameSize = glview->getFrameSize();
     // if the frame's height is larger than the height of medium size.
     if (frameSize.height > mediumResolutionSize.height)
@@ -138,6 +106,55 @@ bool AppDelegate::applicationDidFinishLaunching() {
     {        
         director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height, smallResolutionSize.width/designResolutionSize.width));
     }
+    /**/
+
+    std::string str = UserDefault::getInstance()->getXMLFilePath();
+    if (UserDefault::getInstance()->isXMLFileExist()) //是否存在
+    {
+        std::string path = UserDefault::getInstance()->getXMLFilePath();
+        CCLOG("XML file is exist!");
+        CCLOG("XML file path : %s", path.c_str());
+    }
+    else
+    {
+        CCLOG("XML file is not exist!");
+    }
+
+    do {
+        if (!UserDefault::getInstance()->getIntegerForKey("_winTimes"))
+            UserDefault::getInstance()->setIntegerForKey("_winTimes", 0);
+        if (!UserDefault::getInstance()->getIntegerForKey("_gameTimes"))
+            UserDefault::getInstance()->setIntegerForKey("_gameTimes", 0);
+        if (!UserDefault::getInstance()->getIntegerForKey("_killNums"))
+            UserDefault::getInstance()->setIntegerForKey("_killNums", 0);
+        if (!UserDefault::getInstance()->getIntegerForKey("_cupNums"))
+            UserDefault::getInstance()->setIntegerForKey("_cupNums", 0);
+        if (!UserDefault::getInstance()->getIntegerForKey("selectedHero"))
+            UserDefault::getInstance()->setIntegerForKey("selectedHero", 1);
+        if (!UserDefault::getInstance()->getIntegerForKey("invincibleMode"))
+            UserDefault::getInstance()->setIntegerForKey("invincibleMode", 0);
+        UserDefault::getInstance()->setIntegerForKey("invincibleMode", 0);
+        if (!UserDefault::getInstance()->getIntegerForKey("selectedMap"))
+            UserDefault::getInstance()->setIntegerForKey("selectedMap", 0);
+        if (!UserDefault::getInstance()->getIntegerForKey("selectedAINUmber"))
+            UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 9);
+        if (!UserDefault::getInstance()->getIntegerForKey("PlayerRank"))
+            UserDefault::getInstance()->setIntegerForKey("PlayerRank", 10);
+        if (!UserDefault::getInstance()->getIntegerForKey("HitNum"))
+            UserDefault::getInstance()->setIntegerForKey("HitNum", 0);
+        if (!UserDefault::getInstance()->getIntegerForKey("musicVolume"))
+            UserDefault::getInstance()->setIntegerForKey("musicVolume", 50);
+        if (!UserDefault::getInstance()->getBoolForKey("ifPlayMusic"))
+            UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
+        if (!UserDefault::getInstance()->getBoolForKey("ifShowFPS"))
+            UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
+    } while (0);
+
+    // turn on display FPS
+    director->setDisplayStats(UserDefault::getInstance()->getBoolForKey("ifShowFPS"));
+
+    // set FPS. the default value is 1.0/60 if you don't call this
+    director->setAnimationInterval(1.0f / 144);
 
     register_all_packages();
 
@@ -146,7 +163,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // run
     director->runWithScene(LS);
-
 
     return true;
 }

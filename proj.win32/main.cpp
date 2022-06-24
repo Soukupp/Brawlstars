@@ -36,24 +36,28 @@ int WINAPI _tWinMain(HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-	/*以下调用控制台窗口*
-#ifdef WIN32
-	wchar_t pcName[256] = { 0 };
-	DWORD len = sizeof(pcName) / sizeof(pcName[0]);
-	bool bShowDbgWnd = (GetComputerName(pcName, &len) \
-		&& wcscmp(pcName, L"CNSHA-08337-WIN") != 0 \
-		&& wcscmp(pcName, L"CNSHA-08335-WIN") != 0 \
-		&& wcscmp(pcName, L"CNSHA-08318-WIN") != 0);
-
-	if (bShowDbgWnd)
+	/*以下调用控制台窗口*/
+	if (1)
 	{
-		AllocConsole();
-		freopen("CONIN$", "r", stdin);
-		freopen("CONOUT$", "w", stdout);
-		freopen("CONOUT$", "w", stderr);
-	}
+#ifdef WIN32
+		wchar_t pcName[256] = { 0 };
+		DWORD len = sizeof(pcName) / sizeof(pcName[0]);
+		bool bShowDbgWnd = (GetComputerName(pcName, &len) \
+			&& wcscmp(pcName, L"CNSHA-08337-WIN") != 0 \
+			&& wcscmp(pcName, L"CNSHA-08335-WIN") != 0 \
+			&& wcscmp(pcName, L"CNSHA-08318-WIN") != 0);
+
+		if (bShowDbgWnd)
+		{
+			AllocConsole();
+			freopen("CONIN$", "r", stdin);
+			freopen("CONOUT$", "w", stdout);
+			freopen("CONOUT$", "w", stderr);
+		}
 #endif
-	/*以上调用控制台窗口*/
+		/*以上调用控制台窗口*/
+	}
+
 
     // create the application instance
     AppDelegate app;
