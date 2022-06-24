@@ -16,11 +16,7 @@
 #include "Scene/Settings/GameSettingsScene.h"
 #include "Scene/MainMenu/MainMenuScene.h"
 
-
-#define GAME_BACK_TO_MENU_POSITION_X origin.x + visibleSize.width - 2.5 * BackToMenuItem->getContentSize().width / 2
-#define GAME_BACK_TO_MENU_POSITION_Y origin.y + 1.2 * BackToMenuItem->getContentSize().height / 2
-
-#define GAME_SETTING_POSITION_X origin.x + visibleSize.width - 2.5 * SettingsItem->getContentSize().width / 2
+#define GAME_SETTING_POSITION_X origin.x + visibleSize.width - 1.2 * SettingsItem->getContentSize().width / 2
 #define GAME_SETTING_POSITION_Y visibleSize.height - 1.2 * SettingsItem->getContentSize().height / 2
 
 #define GAME_SKILL_BUTTON_POSITION_X origin.x + 1.5 * 40

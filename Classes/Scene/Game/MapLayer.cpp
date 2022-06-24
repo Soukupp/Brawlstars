@@ -979,13 +979,13 @@ void MapLayer::update2(float delta)
 				{
 					if (!PLAYER->magicIsFull()||times>1)
 					{
-						log("attack!");
+						//log("attack!");
 						AI_PLAYER(i)->runAction(Shake::create(0.1f, 5));
 						PLAYER->launchAnAttack(WEAPON, "attack", MAGICBAR, AI_PLAYER(i), AI_HEALTHBAR(i));
 					}
 					else
 					{
-						log("skill!");
+						//log("skill!");
 						AI_PLAYER(i)->runAction(Shake::create(0.1f, 5));
 						PLAYER->launchAnAttack(WEAPON, "skill", MAGICBAR, AI_PLAYER(i), AI_HEALTHBAR(i));
 					}
@@ -996,9 +996,9 @@ void MapLayer::update2(float delta)
 						setCharacterPosition(deathPosition, CHARACTER(i));
 						savePlayerKill();
 						
-						log("attack %d", PLAYER->_panel.getAttack());
-						log("attackrate %d", PLAYER->_panel.getAttackRate());
-						log("player kill ai %d", i);
+						//log("attack %d", PLAYER->_panel.getAttack());
+						//log("attackrate %d", PLAYER->_panel.getAttackRate());
+						//log("player kill ai %d", i);
 
 						if (PLAYER->getID() == 1)
 							CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/gun2_kill.mp3");
@@ -1028,13 +1028,13 @@ void MapLayer::update2(float delta)
 				{
 					if (!PLAYER->magicIsFull() || times > 1)
 					{
-						log("attack!");
+						//log("attack!");
 						MONSTER(i)->runAction(Shake::create(0.1f, 5));
 						PLAYER->launchAnAttack(WEAPON,"attack",MAGICBAR, MONSTER(i), MONSTER_HEALTHBAR(i));
 					}
 					else
 					{
-						log("skill!");
+						//log("skill!");
 						MONSTER(i)->runAction(Shake::create(0.1f, 5));
 						PLAYER->launchAnAttack(WEAPON,"skill", MAGICBAR, MONSTER(i), MONSTER_HEALTHBAR(i));
 					}
@@ -1046,9 +1046,9 @@ void MapLayer::update2(float delta)
 						MONSTER_HEALTHBAR(i)->setVisible(false);
 						MONSTER(i)->setPosition(deathPosition);
 						MONSTER_HEALTHBAR(i)->setPosition(deathPosition);
-						log("attack %d", PLAYER->_panel.getAttack());
-						log("attackrate %f", PLAYER->_panel.getAttackRate());
-						log("skillrate %f", PLAYER->_panel.getSkillRate());
+						//log("attack %d", PLAYER->_panel.getAttack());
+						//log("attackrate %f", PLAYER->_panel.getAttackRate());
+						//log("skillrate %f", PLAYER->_panel.getSkillRate());
 
 						CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/update.mp3");
 						CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
@@ -1218,7 +1218,7 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 				setCharacterVisible(false, CHARACTER(0));
 				setCharacterPosition(deathPosition, CHARACTER(0));
 
-				log("player died fog");
+				//log("player died fog");
 				saveData();
 				gameOver();
 			}
@@ -1238,10 +1238,10 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 				setCharacterPosition(deathPosition, CHARACTER(i));
 
 				saveAIKill();//毒圈毒死ai被视为ai击杀
-				log("ai %d died fog",i);
+				//log("ai %d died fog",i);
 				if (_numOfPlayer == 1)
 				{
-					log("win bec ai died fog");
+					//log("win bec ai died fog");
 					gameOver();
 				}
 			}
@@ -1450,13 +1450,13 @@ void MapLayer::updateAIAttack(float delta)
 						setCharacterVisible(false, CHARACTER(passive));
 						setCharacterPosition(deathPosition, CHARACTER(passive));
 						saveAIKill();
-						log("ai %d kill ai %d", active, passive);
+						//log("ai %d kill ai %d", active, passive);
 					}
 
 					else if (!PLAYER->_panel.getIsSurvive())   // 如果玩家死亡
 					{
 						AI_PLAYER(active)->upgrade(AI_LEVELTEXT(active), AI_HEALTHBAR(active));
-						log("ai %d kill player", active);
+						//log("ai %d kill player", active);
 						saveData();
 						gameOver();
 					}
@@ -1641,16 +1641,16 @@ void MapLayer::getBuff(Character& character, int numOfMonster)
 {
 	if (numOfMonster >= 0 && numOfMonster < MAP_GM_NUMBER)
 	{
-		log("kill groundmonster");
+		//log("kill groundmonster");
 	}
 	else if (numOfMonster >= MAP_GM_NUMBER && numOfMonster < MAP_GM_NUMBER + MAP_WM_NUMBER)
 	{
-		log("kill watermonster");
+		//log("kill watermonster");
 		getAttackBuff(character);
 	}
 	else if (numOfMonster >= MAP_GM_NUMBER + MAP_WM_NUMBER && numOfMonster < MAP_GM_NUMBER + MAP_WM_NUMBER + MAP_DM_NUMBER)
 	{
-		log("kill desertmonster");
+		//log("kill desertmonster");
 		getDefenceBuff(character);
 	}
 }

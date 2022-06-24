@@ -58,25 +58,7 @@ bool GameScene::init()
 	auto GameSettingLayer = LayerColor::create();
 	GameSettingLayer->changeWidthAndHeight(960, 720);
 
-	/*=====================创建关闭按钮开始======================*/
-
-	auto BackToMenuItem = MenuItemImage::create(
-		"ui/button_close.png",
-		"ui/button_close.png",
-		CC_CALLBACK_1(GameScene::menuCallback, this));
-
-	if (BackToMenuItem == nullptr ||
-		BackToMenuItem->getContentSize().width <= 0 ||
-		BackToMenuItem->getContentSize().height <= 0)
-	{
-		problemLoading("'ui/button_close.png' and 'ui/button_close.png'");
-	}
-	else
-	{
-		BackToMenuItem->setPosition(Vec2(GAME_BACK_TO_MENU_POSITION_X, GAME_BACK_TO_MENU_POSITION_Y));
-	}  // 关闭菜单需要改为固定位置（且此处关闭菜单表示跳到结束界面）
-
-	/*=====================创建关闭按钮结束======================*/
+	
 
 	/*=====================创建设置按钮开始======================*/
 
@@ -95,7 +77,7 @@ bool GameScene::init()
 		SettingsItem->setPosition(Vec2(GAME_SETTING_POSITION_X, GAME_SETTING_POSITION_Y));
 	}
 
-	auto menu = Menu::create(BackToMenuItem, SettingsItem, NULL);
+	auto menu = Menu::create(SettingsItem, NULL);
 	menu->setPosition(Vec2::ZERO);
 	GameSettingLayer->addChild(menu);
 	this->addChild(GameSettingLayer, 1);

@@ -63,7 +63,7 @@ bool Shake::initWithDuration(float duration, float strengthX, float strengthY)
 ****************************/
 float fgRangeRand(float min,float max)
 {
-    float rnd = ((float)rand() / (float)RAND_MAX);
+    float rnd = (static_cast<float>(rand()) / static_cast<float>(RAND_MAX));
     return rnd * (max - min) + min;
 }
 

@@ -73,11 +73,35 @@ bool GameSettingsScene::init()
         settingsBackItem->setPosition(Vec2(GAMESETTINGS_BACK_ITEM_POSITION_X, GAMESETTINGS_BACK_ITEM_POSITION_Y));
     }
     //创建返回菜单
-    auto backMenu = Menu::create(settingsBackItem, NULL);
-    backMenu->setPosition(Vec2::ZERO);
-    this->addChild(backMenu, 2);
+    auto settingsBackMenu = Menu::create(settingsBackItem, NULL);
+    settingsBackMenu->setPosition(Vec2::ZERO);
+    this->addChild(settingsBackMenu, 2);
 
-    /*=====================创建关闭按钮结束====================*/
+    /*=====================创建返回按钮结束====================*/
+
+    /*=====================创建关闭按钮开始======================*/
+
+    auto backToMenuItem = MenuItemImage::create(
+        "ui/button_close.png",
+        "ui/button_close.png",
+        CC_CALLBACK_1(GameSettingsScene::menuCallback, this));
+
+    if (backToMenuItem == nullptr ||
+        backToMenuItem->getContentSize().width <= 0 ||
+        backToMenuItem->getContentSize().height <= 0)
+    {
+        problemLoading("'ui/button_close.png' and 'ui/button_close.png'");
+    }
+    else
+    {
+        backToMenuItem->setPosition(Vec2(GAMESETTINGS_BACK_TO_MENU_POSITION_X, GAMESETTINGS_BACK_TO_MENU_POSITION_Y));
+    }  // 关闭菜单需要改为固定位置（且此处关闭菜单表示跳到结束界面）
+
+    auto backToMenuMenu = Menu::create(backToMenuItem, NULL);
+    backToMenuMenu->setPosition(Vec2::ZERO);
+    this->addChild(backToMenuMenu, 2);
+
+    /*=====================创建关闭按钮结束======================*/
 
     /*=====================创建标题开始======================*/
 
@@ -248,7 +272,7 @@ void GameSettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
         Slider* slider = dynamic_cast<Slider*>(pSender);
         int percentVolume = slider->getPercent();
 
-        log(percentVolume);
+        //log(percentVolume);
         CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(2 * float(percentVolume) / 100);
         //CocosDenshion::SimpleAudioEngine::sharedEngine()->setBackgroundMusicVolume(CocosDenshion::SimpleAudioEngine::sharedEngine()->getBackgroundMusicVolume() + float(percentVolume) / 100);
 
@@ -306,4 +330,50 @@ void GameSettingsScene::settingsFPSCallBack(Ref* pSender)
         UserDefault::getInstance()->setBoolForKey("ifShowFPS", true);
         _displayedFPSStates->setString(StringUtils::format("DISPLAY FPS"));
     }
+}
+
+/****************************
+* Name ：GameSettingsScene::menuCloseCallback
+* Summary ：跳到GameOverScene
+* return ：无
+****************************/
+void GameSettingsScene::menuCallback(Ref* pSender)
+{
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    /**/
+    if (getUserInt("_numOfPlayer") == 1)
+    {
+        setUserInt("_winTimes", 1 + getUserInt("_winTimes"));
+    }
+    setUserInt("_gameTimes", 1 + getUserInt("_gameTimes"));
+    setUserInt("_killNums", getUserInt("_hitNum") + getUserInt("_killNums"));
+    if (getUserInt("_numOfPlayer") <= 5)
+    {
+        setUserInt("_cupNums", 6 + getUserInt("_numOfPlayer") + getUserInt("_cupNums"));
+    }
+    /**/
+    auto GOS = GameOverScene::createScene();
+    Director::getInstance()->replaceScene(GOS);
+}
+
+/****************************
+* Name ：GameSettingsScene::getUserInt
+* Summary ：获取英雄名字
+* return ：英雄名字对应的ID
+****************************/
+int GameSettingsScene::getUserInt(const char* name)
+{
+    return UserDefault::getInstance()->getIntegerForKey(name);
+}
+
+/****************************
+* Name ：GameSettingsScene::setUserInt
+* Summary ：设置英雄名字对应的ID
+* return ：无
+****************************/
+void GameSettingsScene::setUserInt(const char* name, int num)
+{
+    UserDefault::getInstance()->setIntegerForKey(name, num);
 }
