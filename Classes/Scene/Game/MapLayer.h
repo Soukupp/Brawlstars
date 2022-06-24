@@ -12,6 +12,7 @@
 #include "GameOverScene.h"
 #include "Entity/Character.h"
 #include "Entity/TheMonster.h"
+#include "Scene/SpecialEffects/Shake.h"
 #include <vector>
 #include "string"
 #include <ctime>

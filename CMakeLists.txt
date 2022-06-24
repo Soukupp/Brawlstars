@@ -80,6 +80,8 @@ list(APPEND GAME_SOURCE
 
      Classes/Scene/GameLoading/GameLoadingScene1.cpp
      Classes/Scene/GameLoading/GameLoadingScene2.cpp
+
+     Classes/Scene/SpecialEffects/Shake.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -117,6 +119,8 @@ list(APPEND GAME_HEADER
 
      Classes/Scene/GameLoading/GameLoadingScene1.h
      Classes/Scene/GameLoading/GameLoadingScene2.h
+
+     Classes/Scene/SpecialEffects/Shake.h
      )
 
 if(ANDROID)

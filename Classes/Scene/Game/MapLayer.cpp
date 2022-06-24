@@ -980,11 +980,13 @@ void MapLayer::update2(float delta)
 					if (!PLAYER->magicIsFull()||times>1)
 					{
 						log("attack!");
+						AI_PLAYER(i)->runAction(Shake::create(0.1f, 5));
 						PLAYER->launchAnAttack(WEAPON, "attack", MAGICBAR, AI_PLAYER(i), AI_HEALTHBAR(i));
 					}
 					else
 					{
 						log("skill!");
+						AI_PLAYER(i)->runAction(Shake::create(0.1f, 5));
 						PLAYER->launchAnAttack(WEAPON, "skill", MAGICBAR, AI_PLAYER(i), AI_HEALTHBAR(i));
 					}
 					if (!AI_PLAYER(i)->_panel.getIsSurvive())  // 如果AI死亡
@@ -1009,11 +1011,9 @@ void MapLayer::update2(float delta)
 						CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
 							static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 					}
-
 				}
 				CHARACTER(i)._isCollidedByPlayer = false;     //重新标记为未碰撞
 			}
-
 		}
 		
 		times = 0;
@@ -1029,11 +1029,13 @@ void MapLayer::update2(float delta)
 					if (!PLAYER->magicIsFull() || times > 1)
 					{
 						log("attack!");
+						MONSTER(i)->runAction(Shake::create(0.1f, 5));
 						PLAYER->launchAnAttack(WEAPON,"attack",MAGICBAR, MONSTER(i), MONSTER_HEALTHBAR(i));
 					}
 					else
 					{
 						log("skill!");
+						MONSTER(i)->runAction(Shake::create(0.1f, 5));
 						PLAYER->launchAnAttack(WEAPON,"skill", MAGICBAR, MONSTER(i), MONSTER_HEALTHBAR(i));
 					}
 					if (!MONSTER(i)->_panel.getIsSurvive())  // 如果怪兽死亡
@@ -1052,11 +1054,9 @@ void MapLayer::update2(float delta)
 						CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
 							static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 					}
-
 				}
 				allMonster[i]._isCollidedByPlayer = false;
 			}
-
 		}
 
 		//player相关数据的重置
@@ -1185,10 +1185,13 @@ void MapLayer::updateOutsideFog(float delta)
 		{
 			if ((!_SafeArea->boundingBox().containsPoint(Vec2(position_x, position_y))) && (_fogIsPlaced[position_x][position_y] == false))
 			{
-				auto FogFullfill = Sprite::create("ui/purple_fog3.png");
-				FogFullfill->setAnchorPoint(Vec2(0.5, 0.5));
-				FogFullfill->setPosition(position_x, position_y);
-				this->addChild(FogFullfill, 100);
+				if (rand() % 6 == 0)
+				{
+					auto FogFullfill = Sprite::create("ui/purple_fog3.png");
+					FogFullfill->setAnchorPoint(Vec2(0.5, 0.5));
+					FogFullfill->setPosition(position_x, position_y);
+					this->addChild(FogFullfill, 100);
+				}
 				_fogIsPlaced[position_x][position_y] = true;
 			}
 		}
@@ -1419,20 +1422,26 @@ void MapLayer::updateAIAttack(float delta)
 						AI_PLAYER(active)->runAction(AI_PLAYER(active)->getAttackAction());
 						if (passive == 0 && getUserInt("invincibleMode") == 1)
 						{
-							//do nothing
+							CHARACTER(passive)._player->runAction(Shake::create(0.1f, passive == 0 ? 4 : 5));
 						}
-						else 
-							AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "attack", AI_MAGICBAR(active), CHARACTER(passive)._player, CHARACTER(passive)._healthBar);						
+						else
+						{
+							CHARACTER(passive)._player->runAction(Shake::create(0.1f, passive == 0 ? 4 : 5));
+							AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "attack", AI_MAGICBAR(active), CHARACTER(passive)._player, CHARACTER(passive)._healthBar);
+						}
 					}
 					else
 					{
 						AI_PLAYER(active)->runAction(AI_PLAYER(active)->getSkillAction());
 						if (passive == 0 && getUserInt("invincibleMode") == 1)
 						{
-							//do nothing
+							CHARACTER(passive)._player->runAction(Shake::create(0.1f, passive == 0 ? 4 : 5));
 						}
 						else
+						{
+							CHARACTER(passive)._player->runAction(Shake::create(0.1f, passive == 0 ? 4 : 5));
 							AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "skill", AI_MAGICBAR(active), CHARACTER(passive)._player, CHARACTER(passive)._healthBar);
+						}
 					}
 
 					if (!AI_PLAYER(passive)->_panel.getIsSurvive() && passive != 0)   // 如果AI死亡
@@ -1456,7 +1465,6 @@ void MapLayer::updateAIAttack(float delta)
 					AI_PLAYER(active)->_panel.setPlayerState(ATTACK);
 					AI_PLAYER(active)->_panel.setIfPlayAttackAnimation(true);
 					CHARACTER(active)._ifOpenUpdate = true;
-
 				}
 			}
 			//碰撞检测失败则不做操作
@@ -1479,10 +1487,12 @@ void MapLayer::updateAIAttack(float delta)
 						if (!AI_PLAYER(active)->magicIsFull()) {
 							AI_PLAYER(active)->runAction(AI_PLAYER(active)->getAttackAction());
 							AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "attack", AI_MAGICBAR(active), MONSTER(passive), MONSTER_HEALTHBAR(passive));
+							MONSTER(passive)->runAction(Shake::create(0.1f, 5));
 						}
 						else {
 							AI_PLAYER(active)->runAction(AI_PLAYER(active)->getSkillAction());
 							AI_PLAYER(active)->launchAnAttack(AI_WEAPON(active), "skill", AI_MAGICBAR(active), MONSTER(passive), MONSTER_HEALTHBAR(passive));
+							MONSTER(passive)->runAction(Shake::create(0.1f, 5));
 						}
 						if (!MONSTER(passive)->_panel.getIsSurvive())
 						{
@@ -1499,7 +1509,6 @@ void MapLayer::updateAIAttack(float delta)
 						AI_PLAYER(active)->_panel.setPlayerState(ATTACK);
 						AI_PLAYER(active)->_panel.setIfPlayAttackAnimation(true);
 						CHARACTER(active)._ifOpenUpdate = true;
-
 					}
 				}
 				//碰撞检测失败则不做操作
