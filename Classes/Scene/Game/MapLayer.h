@@ -56,6 +56,8 @@
 #define MONSTER(a) (allMonster[a]._monster)
 #define MONSTER_HEALTHBAR(a) (allMonster[a]._healthBar)
 
+#define MAPLAYER_SHAKERATE 50
+
 class MapLayer : public cocos2d::Layer
 {
 private:
@@ -120,6 +122,13 @@ public:
 
     static cocos2d::Scene* createScene();
     virtual bool init();
+    bool initTilemap();
+    bool initCharacter();
+    bool initSafeArea();
+    bool initAICharacter();
+    bool initAllMonster();
+    bool initPortal();
+    bool initDeathPosition();
 
     virtual bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
     virtual void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);

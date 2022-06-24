@@ -48,6 +48,8 @@ bool LoadingScene::init()
 
 
 	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/start_game_music.mp3");
+	CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(
+		static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 
 	/*=======================创建背景开始=========================*/
 

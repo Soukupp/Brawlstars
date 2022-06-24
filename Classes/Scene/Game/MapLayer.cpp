@@ -77,16 +77,59 @@ bool MapLayer::init()
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
 	srand(static_cast<unsigned int>(time(0)));
 
-
 	/*===================Tilemap相关设置开始==================*/
+	initTilemap();
+	/*===================Tilemap相关设置结束===================*/
+	
+	
+	/*====================键盘操纵设置开始==========================*/
 
+	PLAYER->runAction(PLAYER->getNormalAction());
+
+	auto keyboardListener = EventListenerKeyboard::create();// 建立键盘监听器keyboardListener
+
+	keyboardListener->onKeyPressed = CC_CALLBACK_2(MapLayer::onKeyPressed, this);  // 按键盘操作
+	// 没有设置成持续按压，持续前进
+    keyboardListener->onKeyReleased = CC_CALLBACK_2(MapLayer::onKeyReleased, this); // 释放键盘操作
+	
+	EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+
+	this->schedule(schedule_selector(MapLayer::update), 0.05); 
+	//每一帧都进入 update 函数，判断键盘有没有被按压住 参数（也可以控制行走速度）
+
+	/*=====================键盘操控设置结束===========================*/
+
+	/*=====================控制毒圈开始===========================*/
+
+	memset(_fogIsPlaced, 0, sizeof(_fogIsPlaced));
+
+	this->schedule(schedule_selector(MapLayer::updateForFog), MAP_SAFEAREA_INTERVAL_LAST, MAP_SAFEAREA_APPEAR_TIMES, MAP_SAFEAREA_DELAY_LAST); // 持续到结束
+	this->schedule(schedule_selector(MapLayer::updateOutsideFog));
+	this->schedule(schedule_selector(MapLayer::updatePlayerHurtByFog), 0.01);
+	this->schedule(schedule_selector(MapLayer::updateForPortal));
+
+	/*=====================控制毒圈结束===========================*/
+
+	/*====================初始化数据开始==========================*/
+
+	_numOfPlayer = allCharacter.size();
+	UserDefault::getInstance()->setIntegerForKey("PlayerRank", this->getPlayerRank());
+	UserDefault::getInstance()->setIntegerForKey("HitNum", this->getHitNum());
+
+	/*====================初始化数据结束==========================*/
+
+	return true;
+
+}
+
+bool MapLayer::initTilemap()
+{
+	/*===================Tilemap相关设置开始==================*/
 	log("Map begin");
-
 	int selectedMap = UserDefault::getInstance()->getIntegerForKey("selectedMap");
-
 	switch (selectedMap)
 	{
 		case 0:
@@ -100,10 +143,34 @@ bool MapLayer::init()
 	addChild(_tileMap, 0, 100);
 	log("Map finished");
 
+	//场景初始化
+	_collidable = _tileMap->getLayer("collidable");  //障碍物collidable
+	_collidable->setVisible(false);                  // 对应collidable图层是否可见
+	_tree = _tileMap->getLayer("tree");
+	/*=====================创建角色开始========================*/
+	initCharacter();
+	/*====================创建安全区开始=======================*/
+	initSafeArea();
+	/*======================AI创建开始=========================*/
+	initAICharacter();
+	/*======================创建怪兽开始=======================*/
+	initAllMonster();
+	/*=====================传送阵创建开始======================*/
+	initPortal();
+	/*=====================死亡点创建开始=====================*/
+	initDeathPosition();
+
+	setTouchEnabled(true);  // 开启触摸，必须继承于layer
+	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
+	/*===================Tilemap相关设置结束===================*/
+	return true;
+}
+
+bool MapLayer::initCharacter()
+{
 	TMXObjectGroup* group = _tileMap->getObjectGroup("objects");
 	log("Get Player finished");
 	ValueMap spawnPoint = group->getObject("player");
-
 	/*=====================创建角色开始========================*/
 
 	int _playerX = spawnPoint["x"].asInt();
@@ -111,7 +178,7 @@ bool MapLayer::init()
 
 	int selectedHero = UserDefault::getInstance()->getIntegerForKey("selectedHero");   //selectedHero表示玩家选择的英雄
 
-	switch (selectedHero)       
+	switch (selectedHero)
 	{
 		case 1:
 			createHero(&_player1, &_weapon, &_healthBar, &_magicBar, &_levelText,
@@ -146,8 +213,15 @@ bool MapLayer::init()
 	PLAYER->initSkillAction();
 	PLAYER->setScale(1.3);
 
-	/*=====================创建角色结束========================*/
+	log("%d ID", PLAYER->getID());
 
+	setViewpointCenter(PLAYER->getPosition());
+	/*=====================创建角色结束========================*/
+	return true;
+}
+
+bool MapLayer::initSafeArea()
+{
 	/*====================创建安全区开始=======================*/
 
 	log("Safe Area added");
@@ -158,7 +232,11 @@ bool MapLayer::init()
 	this->addChild(_SafeArea, 100);
 
 	/*====================创建安全区结束=======================*/
+	return true;
+}
 
+bool MapLayer::initAICharacter()
+{
 	/*======================AI创建开始=========================*/
 
 	int _aiX[MAP_AI_NUMBER + 1];
@@ -210,7 +288,7 @@ bool MapLayer::init()
 			allCharacter.push_back(tempCharacter);
 		}
 	}
-	(* HEALTHBAR).loadProgressBarTexture("/ui/playerGreenHealthbarBlock.png");
+	(*HEALTHBAR).loadProgressBarTexture("/ui/playerGreenHealthbarBlock.png");
 	//各个AI相关数据初始化
 	for (int i = 1; i < allCharacter.size(); ++i)
 	{
@@ -230,7 +308,11 @@ bool MapLayer::init()
 	this->schedule(schedule_selector(MapLayer::updateAIAttack), 1.0f);  //每1s检测AI的攻击状况
 
 	/*======================AI创建结束=========================*/
+	return true;
+}
 
+bool MapLayer::initAllMonster()
+{
 	/*=======================创建怪兽开始=======================*/
 
 	int _gmX[MAP_GM_NUMBER + 1];
@@ -290,17 +372,11 @@ bool MapLayer::init()
 	}
 
 	/*=======================创建怪兽结束=======================*/
-	
-	
-	log("%d ID", PLAYER->getID());
+	return true;
+}
 
-	setViewpointCenter(PLAYER->getPosition());
-
-    //场景初始化
-	_collidable = _tileMap->getLayer("collidable");  //障碍物collidable
-	_collidable->setVisible(false);                  // 对应collidable图层是否可见
-	_tree = _tileMap->getLayer("tree");
-
+bool MapLayer::initPortal()
+{
 	/*===================传送阵起点创建开始===================*/
 
 	TMXObjectGroup* portalGroup = _tileMap->getObjectGroup("portal");
@@ -358,7 +434,11 @@ bool MapLayer::init()
 	this->addChild(_portal_Determination_4, 1);
 
 	/*===================传送阵终点创建结束===================*/
+	return true;
+}
 
+bool MapLayer::initDeathPosition()
+{
 	/*=====================死亡点创建开始=====================*/
 
 	TMXObjectGroup* deathPositionGroup = _tileMap->getObjectGroup("DiePoint");
@@ -366,51 +446,7 @@ bool MapLayer::init()
 	deathPosition = Vec2(deathMapPosition["x"].asInt(), deathMapPosition["y"].asInt());
 
 	/*=====================死亡点创建结束=====================*/
-
-	setTouchEnabled(true);  // 开启触摸，必须继承于layer
-	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
-
-    /*===================Tilemap相关设置结束===================*/
-	
-	/*====================键盘操纵设置开始==========================*/
-
-	PLAYER->runAction(PLAYER->getNormalAction());
-
-	auto keyboardListener = EventListenerKeyboard::create();// 建立键盘监听器keyboardListener
-
-	keyboardListener->onKeyPressed = CC_CALLBACK_2(MapLayer::onKeyPressed, this);  // 按键盘操作
-	// 没有设置成持续按压，持续前进
-    keyboardListener->onKeyReleased = CC_CALLBACK_2(MapLayer::onKeyReleased, this); // 释放键盘操作
-	
-	EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
-
-	this->schedule(schedule_selector(MapLayer::update), 0.05); 
-	//每一帧都进入 update 函数，判断键盘有没有被按压住 参数（也可以控制行走速度）
-
-	/*=====================键盘操控设置结束===========================*/
-
-	/*=====================控制毒圈开始===========================*/
-
-	memset(_fogIsPlaced, 0, sizeof(_fogIsPlaced));
-
-	this->schedule(schedule_selector(MapLayer::updateForFog), MAP_SAFEAREA_INTERVAL_LAST, MAP_SAFEAREA_APPEAR_TIMES, MAP_SAFEAREA_DELAY_LAST); // 持续到结束
-	this->schedule(schedule_selector(MapLayer::updateOutsideFog));
-	this->schedule(schedule_selector(MapLayer::updatePlayerHurtByFog), 0.01);
-	this->schedule(schedule_selector(MapLayer::updateForPortal));
-
-	/*=====================控制毒圈结束===========================*/
-
-	/*====================初始化数据开始==========================*/
-
-	_numOfPlayer = allCharacter.size();
-	UserDefault::getInstance()->setIntegerForKey("PlayerRank", this->getPlayerRank());
-	UserDefault::getInstance()->setIntegerForKey("HitNum", this->getHitNum());
-
-	/*====================初始化数据结束==========================*/
-
 	return true;
-
 }
 
 /****************************
@@ -676,7 +712,10 @@ void MapLayer::setPlayerPosition(Vec2 position)
 	PLAYER->setPositionWithAll(position, WEAPON, HEALTHBAR, MAGICBAR, LEVELTEXT);
 
 	//滚动地图
-	this->setViewpointCenter(PLAYER->getPosition());
+	if (PLAYER->_panel.getPlayerState() != ATTACK)
+	{
+		this->setViewpointCenter(PLAYER->getPosition());
+	}
 }
 
 /****************************
@@ -832,14 +871,20 @@ void MapLayer::setViewpointCenter(Vec2 position)
 	visible_y = MIN(visible_y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height)
 		- visibleSize.height / 2);
 
+	visible_x = position.x;
+	visible_y = position.y;
+	//log("===========================");
+	//log("visible %f %f", visible_x, visible_y);
 	//屏幕中心点
 	Vec2 pointA = Vec2(visibleSize.width / 2, visibleSize.height / 2);
-
+	//log("pointA %f %f", pointA.x, pointA.y);
 	//使精灵处于屏幕中心，移动地图目标位置
 	Vec2 pointB = Vec2(visible_x, visible_y);
-
+	//log("pointB %f %f", pointB.x, pointB.y);
 	//地图移动偏移量
 	Vec2 offset = pointA - pointB;
+	//log("offset %f %f", offset.x, offset.y);
+	//log("===========================");
 	this->setPosition(offset);
 }
 
