@@ -64,6 +64,8 @@ bool MainMenuScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    auto pDict = Tools::initDict();
+
     /*=====================创建背景图开始======================*/
 
     auto background = Sprite::create("background/MainMenuBackground.jpg");
@@ -154,19 +156,19 @@ bool MainMenuScene::init()
 
     //创建单个菜单项
     MenuItemFont* itemStart = MenuItemFont::create(
-        "START",
+        Tools::strid(pDict, "start"),
         CC_CALLBACK_1(MainMenuScene::menuStartCallback, this)
     );
     MenuItemFont* itemMap = MenuItemFont::create(
-        "MAP",
+        Tools::strid(pDict, "maps"),
         CC_CALLBACK_1(MainMenuScene::menuMapCallback, this)
     );
     MenuItemFont* itemHeros = MenuItemFont::create(
-        "HEROS",
+        Tools::strid(pDict, "heros"),
         CC_CALLBACK_1(MainMenuScene::menuHerosCallback, this)
     );
     MenuItemFont* itemSettings = MenuItemFont::create(
-        "SETTINGS",
+        Tools::strid(pDict, "settings"),
         CC_CALLBACK_1(MainMenuScene::menuSettingsCallback, this)
     );
 
@@ -336,19 +338,19 @@ void MainMenuScene::menuSettingsCallback(cocos2d::Ref* pSender)
 ****************************/
 void MainMenuScene::playerMassageCallback(cocos2d::Ref* pSender)
 {
-    log("_winTimes %d", getUserInt("_winTimes"));
-    log("_gameTimes %d", getUserInt("_gameTimes"));
-    log("_killNums %d", getUserInt("_killNums"));
-    log("_cupNums %d", getUserInt("_cupNums"));
+    log("_winTimes %d", Tools::getUserInt("_winTimes"));
+    log("_gameTimes %d", Tools::getUserInt("_gameTimes"));
+    log("_killNums %d", Tools::getUserInt("_killNums"));
+    log("_cupNums %d", Tools::getUserInt("_cupNums"));
 
     std::string playerInfo =
-        "\n                                    GAME WINNING :      " + std::to_string(getUserInt("_winTimes"))
+        "\n                                    GAME WINNING :      " + std::to_string(Tools::getUserInt("_winTimes"))
         + "\n" +
-        "                                           GAME COUNT :      " + std::to_string(getUserInt("_gameTimes"))
+        "                                           GAME COUNT :      " + std::to_string(Tools::getUserInt("_gameTimes"))
         + "\n" +
-        "                                         KILL NUMBERS :     " + std::to_string(getUserInt("_killNums"))
+        "                                         KILL NUMBERS :     " + std::to_string(Tools::getUserInt("_killNums"))
         + "\n" +
-        "                                 CROWN NUMBERS :     " + std::to_string(getUserInt("_cupNums"))
+        "                                 CROWN NUMBERS :     " + std::to_string(Tools::getUserInt("_cupNums"))
         + "\n\n" +
         "               COME ON, MY BRAVE BRAWLSTAR!"
         + "\n" +
@@ -386,24 +388,4 @@ void MainMenuScene::onEnterTransitionDidFinish()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     system->setPosition(Vec2(visibleSize.width / 2, visibleSize.height));
     this->addChild(system, 5);
-}
-
-/****************************
-* Name ：MainMenuScene::getUserInt
-* Summary ：获取int用户数据
-* return ：
-****************************/
-int MainMenuScene::getUserInt(const char* name)
-{
-    return UserDefault::getInstance()->getIntegerForKey(name);
-}
-
-/****************************
-* Name ：MainMenuScene::setUserInt
-* Summary ：设置int用户数据
-* return ：
-****************************/
-void MainMenuScene::setUserInt(const char* name, int num)
-{
-    UserDefault::getInstance()->setIntegerForKey(name, num);
 }

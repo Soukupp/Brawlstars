@@ -41,6 +41,8 @@ bool StoreScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    auto pDict = Tools::initDict();
+
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/to_a_new_scene.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
         static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
@@ -137,7 +139,7 @@ bool StoreScene::init()
     MenuItemFont::setFontName("fonts/Lilita one.ttf");
     MenuItemFont::setFontSize(25);
     MenuItemFont* aiNUmberTip = MenuItemFont::create(
-        "Choose the number of NPC (DEFAULT NUMBER is 9)",
+        Tools::strid(pDict, "Choose the number of NPC (DEFAULT NUMBER is 9)"),
         CC_CALLBACK_1(StoreScene::AINumberTipCallback, this)
     );
     aiNUmberTip->setPosition(STORE_AI_TIP);
@@ -145,7 +147,7 @@ bool StoreScene::init()
     MenuItemFont::setFontName("fonts/Lilita one.ttf");
     MenuItemFont::setFontSize(25);
     MenuItemFont* vincibleModeTip = MenuItemFont::create(
-        "NORMAL MODE",
+        Tools::strid(pDict, "NORMAL MODE"),
         CC_CALLBACK_1(StoreScene::Select_Vincible_Mode_Callback, this)
     );
     vincibleModeTip->setPosition(STORE_VINCIBLE_POSITION);
@@ -153,7 +155,7 @@ bool StoreScene::init()
     MenuItemFont::setFontName("fonts/Lilita one.ttf");
     MenuItemFont::setFontSize(25);
     MenuItemFont* invincibleModeTip = MenuItemFont::create(
-        "INVINCIBLE MODE",
+        Tools::strid(pDict, "INVINCIBLE MODE"),
         CC_CALLBACK_1(StoreScene::Select_Invincible_Mode_Callback, this)
     );
     invincibleModeTip->setPosition(STORE_INVINCIBLE_POSITION);
@@ -196,7 +198,7 @@ bool StoreScene::init()
         CC_CALLBACK_1(StoreScene::storeSelectMap1Callback, this));
     MapUpdatedOverview_1->setPosition(Vec2(STORE_MAP_UPDATED_OVERVIEW_POSITION_1));
 
-    auto MapUpdatedOverviewName_1 = LabelTTF::create("CLASSIC MAP", "fonts/Lilita one.ttf", 28);
+    auto MapUpdatedOverviewName_1 = LabelTTF::create(Tools::strid(pDict, "CLASSIC MAP"), "fonts/Lilita one.ttf", 28);
     MapUpdatedOverviewName_1->setColor(Color3B::WHITE);
     MapUpdatedOverviewName_1->setPosition(Vec2(STORE_MAP_UPDATED_OVERVIEW_NAME_POSITION_1));
     MapUpdatedOverviewName_1->enableShadow(STORE_MAP_UPDATED_OVERVIEW_NAME_SHADOW_1);
@@ -207,7 +209,7 @@ bool StoreScene::init()
         CC_CALLBACK_1(StoreScene::storeSelectMap3Callback, this));
     MapUpdatedOverview_3->setPosition(Vec2(STORE_MAP_UPDATED_OVERVIEW_POSITION_3));
 
-    auto MapUpdatedOverviewName_3 = LabelTTF::create("OBSTACLES-TERRAIN MAP", "fonts/Lilita one.ttf", 28);
+    auto MapUpdatedOverviewName_3 = LabelTTF::create(Tools::strid(pDict, "OBSTACLES-TERRAIN MAP"), "fonts/Lilita one.ttf", 28);
     MapUpdatedOverviewName_3->setColor(Color3B::WHITE);
     MapUpdatedOverviewName_3->setPosition(Vec2(STORE_MAP_UPDATED_OVERVIEW_NAME_POSITION_3));
     MapUpdatedOverviewName_3->enableShadow(STORE_MAP_UPDATED_OVERVIEW_NAME_SHADOW_3);

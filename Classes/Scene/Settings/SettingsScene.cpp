@@ -55,6 +55,8 @@ bool SettingsScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    auto pDict = Tools::initDict();
+
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/to_a_new_scene.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
         static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
@@ -86,6 +88,33 @@ bool SettingsScene::init()
 
     /*=====================创建关闭按钮结束====================*/
 
+    /*=====================创建语言选择开始======================*/
+    MenuItemFont::setFontName("fonts/Lilita one.ttf");
+    MenuItemFont::setFontSize(40);
+    const Color3B languageColor(SETTINGS_LANGUAGE_RGB_COLOR);//创建3B颜色
+
+    MenuItemFont* itemChinese = MenuItemFont::create(
+        "中文",
+        CC_CALLBACK_1(SettingsScene::choseChineseCallback, this)
+    );
+    Menu* menuChinese = Menu::create(itemChinese, NULL);
+    menuChinese->setPosition(SETTINGS_CHINESE_POSITION_X, SETTINGS_CHINESE_POSITION_Y);
+    menuChinese->alignItemsVertically();
+    menuChinese->setColor(languageColor);
+    this->addChild(menuChinese, 2);
+
+    MenuItemFont* itemEnglish = MenuItemFont::create(
+        "English",
+        CC_CALLBACK_1(SettingsScene::choseEnglishCallback, this)
+    );
+    Menu* menuEnglish = Menu::create(itemEnglish, NULL);
+    menuEnglish->setPosition(SETTINGS_ENGLISH_POSITION_X, SETTINGS_ENGLISH_POSITION_Y);
+    menuEnglish->alignItemsVertically();
+    menuEnglish->setColor(languageColor);
+    this->addChild(menuEnglish, 2);
+
+    /*=====================创建语言选择结束====================*/
+
     /*=================创建清除用户数据按钮开始================*/
 
     //创建返回按钮
@@ -113,13 +142,13 @@ bool SettingsScene::init()
 
     //创建文本
     auto clearUserDataLabel = Label::createWithTTF(
-        "Clear Your\nUser Data",
-        "fonts/Lilita one.ttf",
+        Tools::strid(pDict, "Clear Your User Data"),
+        "fonts/Segoe Print.ttf",
         25
     );
     if (clearUserDataLabel == nullptr)
     {
-        problemLoading("'fonts/Lilita one.ttf'");
+        problemLoading("'fonts/Segoe Print.ttf'");
     }
     else
     {
@@ -184,7 +213,7 @@ bool SettingsScene::init()
 
     /*===================创建标签开始=======================*/
 
-    Label* settingsMusicLabel = Label::create("MUSIC SETTING", "fonts/Lilita one.ttf", 35);
+    Label* settingsMusicLabel = Label::create(Tools::strid(pDict, "MUSIC SETTING"), "fonts/Segoe Print.ttf", 35);
     settingsMusicLabel->setPosition(SETTINGS_SETTINGSMUSICLABEL_POSITION_X, SETTINGS_SETTINGSMUSICLABEL_POSITION_Y);
     const Color4B settingsMusicLabelColor(0, 0, 0, 255);//创建4B颜色
     settingsMusicLabel->enableShadow();
@@ -206,16 +235,16 @@ bool SettingsScene::init()
     if (UserDefault::getInstance()->getBoolForKey("ifPlayMusic", true))
     {
         musicOnOrOff->setSelectedIndex(0);
-        _displayedMusicStates->setString(StringUtils::format("MUSIC ON"));
-        _displayedMusicStates->setFontName("fonts/Lilita one.ttf");
+        _displayedMusicStates->setString(StringUtils::format(Tools::strid(pDict, "MUSIC ON")));
+        _displayedMusicStates->setFontName("fonts/Segoe Print.ttf");
         _displayedMusicStates->setFontSize(35);
         _displayedMusicStates->enableShadow();
     }
     else
     {
         musicOnOrOff->setSelectedIndex(1);
-        _displayedMusicStates->setString(StringUtils::format("MUSIC OFF"));
-        _displayedMusicStates->setFontName("fonts/Lilita one.ttf");
+        _displayedMusicStates->setString(StringUtils::format(Tools::strid(pDict, "MUSIC OFF")));
+        _displayedMusicStates->setFontName("fonts/Segoe Print.ttf");
         _displayedMusicStates->setFontSize(35);
         _displayedMusicStates->enableShadow();
     }
@@ -237,16 +266,16 @@ bool SettingsScene::init()
     {
        
         FPSOnOrOff->setSelectedIndex(0);
-        _displayedFPSStates->setString(StringUtils::format("DISPLAY FPS"));
-        _displayedFPSStates->setFontName("fonts/Lilita one.ttf");
+        _displayedFPSStates->setString(StringUtils::format(Tools::strid(pDict, "DISPLAY FPS")));
+        _displayedFPSStates->setFontName("fonts/Segoe Print.ttf");
         _displayedFPSStates->setFontSize(35);
         _displayedFPSStates->enableShadow();
     }
     else
     {
         FPSOnOrOff->setSelectedIndex(1);
-        _displayedFPSStates->setString(StringUtils::format("CONCEAL FPS"));
-        _displayedFPSStates->setFontName("fonts/Lilita one.ttf");
+        _displayedFPSStates->setString(StringUtils::format(Tools::strid(pDict, "CONCEAL FPS")));
+        _displayedFPSStates->setFontName("fonts/Segoe Print.ttf");
         _displayedFPSStates->setFontSize(35);
         _displayedFPSStates->enableShadow();
     }
@@ -325,6 +354,7 @@ void SettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
 * ***************************/
 void SettingsScene::settingsPlayCallBack(Ref* pSender)
 {
+    auto pDict = Tools::initDict();
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("music/first_music.mp3");//预加载音乐
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
@@ -333,13 +363,13 @@ void SettingsScene::settingsPlayCallBack(Ref* pSender)
     {
         CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
         UserDefault::getInstance()->setBoolForKey("ifPlayMusic", false);
-        _displayedMusicStates->setString(StringUtils::format("MUSIC OFF"));
+        _displayedMusicStates->setString(StringUtils::format(Tools::strid(pDict, "MUSIC OFF")));
     }
     else
     {
         CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
         UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
-        _displayedMusicStates->setString(StringUtils::format("MUSIC ON"));
+        _displayedMusicStates->setString(StringUtils::format(Tools::strid(pDict, "MUSIC ON")));
     }
 }
 
@@ -350,6 +380,7 @@ void SettingsScene::settingsPlayCallBack(Ref* pSender)
 * ***************************/
 void SettingsScene::settingsFPSCallBack(Ref* pSender)
 {
+    auto pDict = Tools::initDict();
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
         static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
@@ -358,13 +389,13 @@ void SettingsScene::settingsFPSCallBack(Ref* pSender)
     {
         director->setDisplayStats(false);
         UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
-        _displayedFPSStates->setString(StringUtils::format("CONCEAL FPS"));
+        _displayedFPSStates->setString(StringUtils::format(Tools::strid(pDict, "CONCEAL FPS")));
     }
     else
     {
         director->setDisplayStats(true);
         UserDefault::getInstance()->setBoolForKey("ifShowFPS", true);
-        _displayedFPSStates->setString(StringUtils::format("DISPLAY FPS"));
+        _displayedFPSStates->setString(StringUtils::format(Tools::strid(pDict, "DISPLAY FPS")));
     }
 }
 
@@ -398,4 +429,13 @@ void SettingsScene::clearUserDataCallback(cocos2d::Ref* pSender)
     {
         UserDefault::getInstance()->setIntegerForKey("selectedHero", 1);
     }
+}
+
+void SettingsScene::choseChineseCallback(cocos2d::Ref* pSender)
+{
+    Tools::setUserInt("language", enumChinese);
+}
+void SettingsScene::choseEnglishCallback(cocos2d::Ref* pSender)
+{
+    Tools::setUserInt("language", enumEnglish);
 }

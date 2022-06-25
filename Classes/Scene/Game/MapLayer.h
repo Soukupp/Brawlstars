@@ -13,6 +13,7 @@
 #include "Entity/Character.h"
 #include "Entity/TheMonster.h"
 #include "Scene/SpecialEffects/Shake.h"
+#include "Tools.h"
 #include <vector>
 #include "string"
 #include <ctime>
@@ -178,9 +179,6 @@ public:
 
     void setCharacterVisible(bool visible, Character& character);
     void setCharacterPosition(Vec2 position, Character& character);
-
-    int getUserInt(const char* name);
-    void setUserInt(const char* name, int num);
 
     Animation* getAnimationByName(std::string fileName, float interval, int fileNum, int if_repeat = -1);
 

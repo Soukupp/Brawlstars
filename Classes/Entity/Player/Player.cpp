@@ -99,7 +99,7 @@ void Player::launchAnAttack(Weapon* weapon, const std::string& attackType, Slide
 	}
 	else
 	{
-		log("null");
+		log("Player::launchAnAttack enemy == null");
 	}
 }
 

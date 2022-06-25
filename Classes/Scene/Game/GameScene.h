@@ -33,9 +33,6 @@ public:
     void menuCallback(cocos2d::Ref* pSender);
     void GameSettingsCallBack(cocos2d::Ref* pSender);
 
-    int getUserInt(const char* name);
-    void setUserInt(const char* name, int num);
-
     CREATE_FUNC(GameScene);
 };
 

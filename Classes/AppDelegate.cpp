@@ -61,7 +61,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("Brawlstars", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+        glview = GLViewImpl::createWithRect("Brawlstars", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height), 1.0f, true);
 #else
         glview = GLViewImpl::create("Brawlstars");
 #endif
@@ -71,7 +71,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
         screenWidth = GetSystemMetrics(SM_CXSCREEN);
         screenHeight = GetSystemMetrics(SM_CYSCREEN);
 
-        glview->setFrameSize(screenWidth, screenHeight);
+        glview->setFrameSize(screenWidth * 0.8f, screenHeight * 0.8f);
         director->setOpenGLView(glview);
 
         //获取窗口大小
@@ -148,6 +148,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
             UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
         if (!UserDefault::getInstance()->getBoolForKey("ifShowFPS"))
             UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
+        if (!UserDefault::getInstance()->getIntegerForKey("language"))
+            UserDefault::getInstance()->setIntegerForKey("language", enumEnglish);
     } while (0);
 
     // turn on display FPS

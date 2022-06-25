@@ -457,7 +457,7 @@ bool MapLayer::initDeathPosition()
 void MapLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
 	if (
-		keyCode== EventKeyboard::KeyCode:: KEY_RIGHT_ARROW||                 //忽略其他非功能按键
+		keyCode == EventKeyboard::KeyCode:: KEY_RIGHT_ARROW ||                 //忽略其他非功能按键
 		keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW ||
 		keyCode == EventKeyboard::KeyCode::KEY_UP_ARROW ||
 		keyCode == EventKeyboard::KeyCode::KEY_DOWN_ARROW ||
@@ -1208,7 +1208,7 @@ void MapLayer::updatePlayerHurtByFog(float delta)
 	if (PLAYER->_panel.getIsSurvive()
 		&& !_SafeArea->boundingBox().containsPoint(Vec2(PLAYER->getPosition())))
 	{
-		if (getUserInt("invincibleMode") == 0)
+		if (Tools::getUserInt("invincibleMode") == 0)
 		{
 			//扣血
 			PLAYER->_panel.hit(MAP_FOG_DAMAGE_TO_PLAYER);
@@ -1274,8 +1274,8 @@ void MapLayer::updateAIMove(float delta)
 	}
 	/**/
 	_numOfPlayer = tempNum;
-	setUserInt("_numOfPlayer", _numOfPlayer);
-	setUserInt("_hitNum", PLAYER->_panel.getHitnum());
+	Tools::setUserInt("_numOfPlayer", _numOfPlayer);
+	Tools::setUserInt("_hitNum", PLAYER->_panel.getHitnum());
 	if (_numOfPlayer == 1)
 	{
 		gameOver();
@@ -1420,7 +1420,7 @@ void MapLayer::updateAIAttack(float delta)
 					if (!AI_PLAYER(active)->magicIsFull()) 
 					{
 						AI_PLAYER(active)->runAction(AI_PLAYER(active)->getAttackAction());
-						if (passive == 0 && getUserInt("invincibleMode") == 1)
+						if (passive == 0 && Tools::getUserInt("invincibleMode") == 1)
 						{
 							CHARACTER(passive)._player->runAction(Shake::create(0.1f, passive == 0 ? 4 : 5));
 						}
@@ -1433,7 +1433,7 @@ void MapLayer::updateAIAttack(float delta)
 					else
 					{
 						AI_PLAYER(active)->runAction(AI_PLAYER(active)->getSkillAction());
-						if (passive == 0 && getUserInt("invincibleMode") == 1)
+						if (passive == 0 && Tools::getUserInt("invincibleMode") == 1)
 						{
 							CHARACTER(passive)._player->runAction(Shake::create(0.1f, passive == 0 ? 4 : 5));
 						}
@@ -1619,13 +1619,13 @@ void MapLayer::gameOver()
 	/**/
 	if (_numOfPlayer == 1)
 	{
-		setUserInt("_winTimes", 1 + getUserInt("_winTimes"));
+		Tools::setUserInt("_winTimes", 1 + Tools::getUserInt("_winTimes"));
 	}
-	setUserInt("_gameTimes", 1 + getUserInt("_gameTimes"));
-	setUserInt("_killNums", PLAYER->_panel.getHitnum() + getUserInt("_killNums"));
+	Tools::setUserInt("_gameTimes", 1 + Tools::getUserInt("_gameTimes"));
+	Tools::setUserInt("_killNums", PLAYER->_panel.getHitnum() + Tools::getUserInt("_killNums"));
 	if (_numOfPlayer <= 5)
 	{
-		setUserInt("_cupNums", 6 - _numOfPlayer + getUserInt("_cupNums"));
+		Tools::setUserInt("_cupNums", 6 - _numOfPlayer + Tools::getUserInt("_cupNums"));
 	}
 	/**/
 	auto GOS = GameOverScene::createScene();
@@ -1697,24 +1697,4 @@ void MapLayer::setCharacterPosition(Vec2 position, Character& character)
 {
 	character._player->setPositionWithAll(position,
 		character._weapon, character._healthBar, character._magicBar, character._levelText);
-}
-
-/****************************
-* Name ：MapLayer::getUserInt
-* Summary ：获取用户int型数据
-* return ：用户int型数据
-****************************/
-int MapLayer::getUserInt(const char* name)
-{
-	return UserDefault::getInstance()->getIntegerForKey(name);
-}
-
-/****************************
-* Name ：MapLayer::setUserInt
-* Summary ：设置用户int型数据
-* return ：无
-****************************/
-void MapLayer::setUserInt(const char* name, int num)
-{
-	UserDefault::getInstance()->setIntegerForKey(name, num);
 }

@@ -343,37 +343,17 @@ void GameSettingsScene::menuCallback(Ref* pSender)
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
         static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     /**/
-    if (getUserInt("_numOfPlayer") == 1)
+    if (Tools::getUserInt("_numOfPlayer") == 1)
     {
-        setUserInt("_winTimes", 1 + getUserInt("_winTimes"));
+        Tools::setUserInt("_winTimes", 1 + Tools::getUserInt("_winTimes"));
     }
-    setUserInt("_gameTimes", 1 + getUserInt("_gameTimes"));
-    setUserInt("_killNums", getUserInt("_hitNum") + getUserInt("_killNums"));
-    if (getUserInt("_numOfPlayer") <= 5)
+    Tools::setUserInt("_gameTimes", 1 + Tools::getUserInt("_gameTimes"));
+    Tools::setUserInt("_killNums", Tools::getUserInt("_hitNum") + Tools::getUserInt("_killNums"));
+    if (Tools::getUserInt("_numOfPlayer") <= 5)
     {
-        setUserInt("_cupNums", 6 + getUserInt("_numOfPlayer") + getUserInt("_cupNums"));
+        Tools::setUserInt("_cupNums", 6 + Tools::getUserInt("_numOfPlayer") + Tools::getUserInt("_cupNums"));
     }
     /**/
     auto GOS = GameOverScene::createScene();
     Director::getInstance()->replaceScene(GOS);
-}
-
-/****************************
-* Name ：GameSettingsScene::getUserInt
-* Summary ：获取英雄名字
-* return ：英雄名字对应的ID
-****************************/
-int GameSettingsScene::getUserInt(const char* name)
-{
-    return UserDefault::getInstance()->getIntegerForKey(name);
-}
-
-/****************************
-* Name ：GameSettingsScene::setUserInt
-* Summary ：设置英雄名字对应的ID
-* return ：无
-****************************/
-void GameSettingsScene::setUserInt(const char* name, int num)
-{
-    UserDefault::getInstance()->setIntegerForKey(name, num);
 }

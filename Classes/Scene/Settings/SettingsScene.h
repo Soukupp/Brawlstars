@@ -39,6 +39,13 @@
 #define SETTINGS_SETTINGSFPSLABEL_POSITION_X visibleSize.width / 4 + origin.x
 #define SETTINGS_SETTINGSFPSLABEL_POSITION_Y visibleSize.height / 3 + origin.y+20
 
+#define SETTINGS_CHINESE_POSITION_X origin.x + visibleSize.width / 2 - itemChinese->getContentSize().width / 1.5
+#define SETTINGS_CHINESE_POSITION_Y origin.y + visibleSize.height / 4
+#define SETTINGS_ENGLISH_POSITION_X origin.x + visibleSize.width / 2 + itemEnglish->getContentSize().width / 1.5
+#define SETTINGS_ENGLISH_POSITION_Y origin.y + visibleSize.height / 4
+
+#define SETTINGS_LANGUAGE_RGB_COLOR 55, 55, 55
+
 #define SETTINGS_TEXT_RGB_COLOR 0, 0, 0
 
 #define SETTINGS_NAME_LABEL_SIZE 64
@@ -61,6 +68,9 @@ public:
 
     void settingsBackCallback(cocos2d::Ref* pSender);    //按钮回调函数
     void settingsPlayCallBack(cocos2d::Ref* pSender);
+
+    void choseChineseCallback(cocos2d::Ref* pSender);
+    void choseEnglishCallback(cocos2d::Ref* pSender);
 
     void clearUserDataCallback(cocos2d::Ref* pSender);
 

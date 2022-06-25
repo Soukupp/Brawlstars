@@ -41,6 +41,8 @@ bool HeroScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    auto pDict = Tools::initDict();
+
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/to_a_new_scene.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
         static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
@@ -118,7 +120,7 @@ bool HeroScene::init()
     auto* hero1LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
         "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero1Callback));
 
-    auto* hero1LabelText = LabelTTF::create("Winston", "Maiandra GD", 35);
+    auto* hero1LabelText = LabelTTF::create(Tools::strid(pDict, "Winston"), "Maiandra GD", 35);
     auto* hero1Label = MenuItemLabel::create(hero1LabelText,
         this, menu_selector(HeroScene::selectHero1Callback));
 
@@ -131,7 +133,7 @@ bool HeroScene::init()
     auto* hero2LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
         "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero2Callback));
 
-    auto* hero2LabelText = LabelTTF::create("Wrderly", "Maiandra GD", 35);
+    auto* hero2LabelText = LabelTTF::create(Tools::strid(pDict, "Wrderly"), "Maiandra GD", 35);
     auto* hero2Label = MenuItemLabel::create(hero2LabelText,
         this, menu_selector(HeroScene::selectHero2Callback));
 
@@ -144,7 +146,7 @@ bool HeroScene::init()
     auto* hero3LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
         "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero3Callback));
 
-    auto* hero3LabelText = LabelTTF::create("Pearl", "Maiandra GD", 35);
+    auto* hero3LabelText = LabelTTF::create(Tools::strid(pDict, "Pearl"), "Maiandra GD", 35);
     auto* hero3Label = MenuItemLabel::create(hero3LabelText,
         this, menu_selector(HeroScene::selectHero3Callback));
     auto* hero3Button = Menu::create(hero3LabelImage, hero3Label, NULL);
@@ -156,7 +158,7 @@ bool HeroScene::init()
     auto* hero4LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
         "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero4Callback));
 
-    auto* hero4LabelText = LabelTTF::create("Soren", "Maiandra GD", 35);
+    auto* hero4LabelText = LabelTTF::create(Tools::strid(pDict, "Soren"), "Maiandra GD", 35);
     auto* hero4Label = MenuItemLabel::create(hero4LabelText,
         this, menu_selector(HeroScene::selectHero4Callback));
 
