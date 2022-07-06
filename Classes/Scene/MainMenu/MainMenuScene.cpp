@@ -156,19 +156,19 @@ bool MainMenuScene::init()
 
     //创建单个菜单项
     MenuItemFont* itemStart = MenuItemFont::create(
-        Tools::strid(pDict, "start"),
+        Tools::cbyid(pDict, "start"),
         CC_CALLBACK_1(MainMenuScene::menuStartCallback, this)
     );
     MenuItemFont* itemMap = MenuItemFont::create(
-        Tools::strid(pDict, "maps"),
+        Tools::cbyid(pDict, "maps"),
         CC_CALLBACK_1(MainMenuScene::menuMapCallback, this)
     );
     MenuItemFont* itemHeros = MenuItemFont::create(
-        Tools::strid(pDict, "heros"),
+        Tools::cbyid(pDict, "heros"),
         CC_CALLBACK_1(MainMenuScene::menuHerosCallback, this)
     );
     MenuItemFont* itemSettings = MenuItemFont::create(
-        Tools::strid(pDict, "settings"),
+        Tools::cbyid(pDict, "settings"),
         CC_CALLBACK_1(MainMenuScene::menuSettingsCallback, this)
     );
 
@@ -188,8 +188,8 @@ bool MainMenuScene::init()
     if (firstSet) {
         UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
         UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
-        UserDefault::getInstance()->setIntegerForKey("musicVolume", 50);
-        UserDefault::getInstance()->setIntegerForKey("selectedHero", 1);
+        Tools::setUserInt("musicVolume", 50);
+        Tools::setUserInt("selectedHero", 1);
 
         firstSet = false;
     }
@@ -201,13 +201,13 @@ bool MainMenuScene::init()
     if (firstPlay)
         CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/first_music.mp3", true);
     CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+        static_cast<float>(Tools::getUserInt("musicVolume")) / 100);
     firstPlay = false;
     if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
     {
         CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/first_music.mp3", true);
         CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(
-            static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+            static_cast<float>(Tools::getUserInt("musicVolume")) / 100);
     }
     /*=====================创建背景音乐结束=======================*/
 
@@ -256,17 +256,40 @@ void MainMenuScene::menuCloseCallback(Ref* pSender)
 ****************************/
 void MainMenuScene::menuInfoCallback(Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
+    Tools::setEffectsVolume("musicVolume");
+
+    auto pDict = Tools::initDict();
+
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    std::string mainMenuInfo;
+    mainMenuInfo += "\n";
+    mainMenuInfo += Tools::cbyid(pDict, "Welcome to the BRAWLSTARS world, my handsome(pretty) brawlstar!");
+    mainMenuInfo += "\n";
+    mainMenuInfo += Tools::cbyid(pDict, "Click \"MAP\" to select the map");
+    mainMenuInfo += "\n";
+    mainMenuInfo += Tools::cbyid(pDict, "(Classic mode or Terrain warfare mode)");
+    mainMenuInfo += "\n";
+    mainMenuInfo += Tools::cbyid(pDict, "and select the number of game NPC(5 to 9)");
+    mainMenuInfo += "\n";
+    mainMenuInfo += Tools::cbyid(pDict, "Click \"HERO\" to select a hero (4 types).");
+    mainMenuInfo += "\n";
+    mainMenuInfo += Tools::cbyid(pDict, "After your choices, you can start your");
+    mainMenuInfo += "\n";
+    mainMenuInfo += Tools::cbyid(pDict, "marvelous and fantasy adventure!");
+    mainMenuInfo += "\n";
+    mainMenuInfo += Tools::cbyid(pDict, "You can also adjust the volume on the settings page or in the game.");
+    mainMenuInfo += "\n";
+    mainMenuInfo += Tools::cbyid(pDict, "Finally, enjoy your wonderful adventure!");
 
     auto MainMenuInformation = InformationPopLayer::create
     ("background/MainMenuINformationBackground.png", Size(700, 490), 150);
     MainMenuInformation->setPosition(0, -50);
-    MainMenuInformation->setTitle("BRAWLSTARS INTRODUCTION", "fonts/Lilita one.ttf", 40);
-    MainMenuInformation->setContentText(" \n Welcome to the BRAWLSTARS world, my handsome(pretty) brawlstar! \n Click \"MAP\" to select the map \n (Classic mode or Terrain warfare mode) \n and select the number of game NPC(5 to 9) \n Click \"HERO\" to select a hero (4 types). \n  After your choices, you can start your\n marvelous and fantasy adventure! \n If you need to adjust the volume during your adventure, you can also personalize the settings on the menu page or in the game. \n Finally, enjoy your wonderful adventure!"
+    MainMenuInformation->setTitle(Tools::cbyid(pDict, "BRAWLSTARS INTRODUCTION"), "fonts/Lilita one.ttf", 40);
+    MainMenuInformation->setContentText(
+        mainMenuInfo.c_str()
         , "fonts/Lilita one.ttf", 30, MAINMENU_INFORMATION_CONTENT_TEXT_PADDING,
         MAINMENU_INFORMATION_CONTENT_TEXT_PADDINGTOP);
     MainMenuInformation->createButton("ui/button_close.png", "ui/button_close.png");
@@ -280,9 +303,8 @@ void MainMenuScene::menuInfoCallback(Ref* pSender)
 ****************************/
 void MainMenuScene::menuStartCallback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
+    Tools::setEffectsVolume("musicVolume");
     //auto GLS1 = GameLoadingScene1::createScene();   // 转入GameLoadingScene1
     //Director::getInstance()->replaceScene(TransitionFade::create(1, GLS1));//mainmenu已被释放
     auto GS = GameScene::createScene();   // 转入GameScene
@@ -296,9 +318,8 @@ void MainMenuScene::menuStartCallback(cocos2d::Ref* pSender)
 ****************************/
 void MainMenuScene::menuMapCallback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
+    Tools::setEffectsVolume("musicVolume");
     auto storeScene = StoreScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, storeScene));//mainmenu未被释放 使用popScene返回
 }
@@ -310,9 +331,8 @@ void MainMenuScene::menuMapCallback(cocos2d::Ref* pSender)
 ****************************/
 void MainMenuScene::menuHerosCallback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
+    Tools::setEffectsVolume("musicVolume");
     auto heroScene = HeroScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, heroScene));//mainmenu未被释放 使用popScene返回
 }
@@ -324,11 +344,10 @@ void MainMenuScene::menuHerosCallback(cocos2d::Ref* pSender)
 ****************************/
 void MainMenuScene::menuSettingsCallback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
+    Tools::setEffectsVolume("musicVolume");
     auto settingsScene = SettingsScene::createScene();
-    Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, settingsScene));//mainmenu未被释放 使用popScene返回
+    Director::getInstance()->replaceScene(TransitionSlideInR::create(0.5f, settingsScene));
 }
 
 /****************************
@@ -343,36 +362,48 @@ void MainMenuScene::playerMassageCallback(cocos2d::Ref* pSender)
     log("_killNums %d", Tools::getUserInt("_killNums"));
     log("_cupNums %d", Tools::getUserInt("_cupNums"));
 
-    std::string playerInfo =
-        "\n                                    GAME WINNING :      " + std::to_string(Tools::getUserInt("_winTimes"))
-        + "\n" +
-        "                                           GAME COUNT :      " + std::to_string(Tools::getUserInt("_gameTimes"))
-        + "\n" +
-        "                                         KILL NUMBERS :     " + std::to_string(Tools::getUserInt("_killNums"))
-        + "\n" +
-        "                                 CROWN NUMBERS :     " + std::to_string(Tools::getUserInt("_cupNums"))
-        + "\n\n" +
-        "               COME ON, MY BRAVE BRAWLSTAR!"
-        + "\n" +
-        "                GO AND FIGHT FOR YOUR HONOR!"
-        ;
-
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    auto pDict = Tools::initDict();
+
+    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
+    Tools::setEffectsVolume("musicVolume");
+
+    /*=======================文本处理开始=======================*/
+    std::string playerInfo = "\n";
+    playerInfo += Tools::cbyid(pDict,"GAME WINNING");
+    playerInfo += " :     ";
+    playerInfo += std::to_string(Tools::getUserInt("_winTimes"));
+    playerInfo += "\n";
+    playerInfo += Tools::cbyid(pDict, "GAME COUNT");
+    playerInfo += " :     ";
+    playerInfo += std::to_string(Tools::getUserInt("_gameTimes"));
+    playerInfo += "\n";
+    playerInfo += Tools::cbyid(pDict, "KILL NUMBERS");
+    playerInfo += " :     ";
+    playerInfo += std::to_string(Tools::getUserInt("_killNums"));
+    playerInfo += "\n";
+    playerInfo += Tools::cbyid(pDict, "CROWN NUMBERS");
+    playerInfo += " :     ";
+    playerInfo += std::to_string(Tools::getUserInt("_cupNums"));
+    playerInfo += "\n\n";
+    playerInfo += Tools::cbyid(pDict, "COME ON, MY BRAVE BRAWLSTAR!");
+    playerInfo += "\n";
+    playerInfo += Tools::cbyid(pDict, "GO AND FIGHT FOR YOUR HONOR!");
+    /*=======================文本处理结束=======================*/
+
     auto MainMenuPlayerInformation = InformationPopLayer::create
-    ("background/HeroPlayerInformationBackground.jpg", Size(980, 490), 150);
+    ("background/HeroPlayerInformationBackground.jpg", Size(980, 490), 200);
     MainMenuPlayerInformation->setPosition(0, -50);
-    MainMenuPlayerInformation->setTitle("PLAYER INFORMATION", "fonts/Lilita one.ttf", 50);
+    MainMenuPlayerInformation->setTitle(Tools::cbyid(pDict, "PLAYER INFORMATION"), "fonts/Lilita one.ttf", 50);
     MainMenuPlayerInformation->setContentText(playerInfo.c_str(),
         "fonts/Lilita one.ttf", 40, MAINMENU_INFORMATION_CONTENT_TEXT_PADDING,
         MAINMENU_INFORMATION_CONTENT_TEXT_PADDINGTOP);
     MainMenuPlayerInformation->createButton("ui/button_close.png", "ui/button_close.png");
     this->addChild(MainMenuPlayerInformation, 6);
 
+    log(playerInfo.c_str());
 }
 
 /****************************

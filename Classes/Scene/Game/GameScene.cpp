@@ -95,7 +95,7 @@ bool GameScene::init()
 		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/retro_fight_ingame_01.mp3", true);
 	}
 	CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(
-		static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+		static_cast<float>(Tools::getUserInt("musicVolume")) / 100);
 	/*=====================创建背景音乐结束=======================*/
 
 	return true;
@@ -108,20 +108,10 @@ bool GameScene::init()
 ****************************/
 void GameScene::menuCallback(Ref* pSender)
 {
-	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-		static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+	Tools::playEffect("music/if_click_buttom_on_menu.mp3");
+	Tools::setEffectsVolume("musicVolume");
 	/**/
-	if (Tools::getUserInt("_numOfPlayer") == 1)
-	{
-		Tools::setUserInt("_winTimes", 1 + Tools::getUserInt("_winTimes"));
-	}
-	Tools::setUserInt("_gameTimes", 1 + Tools::getUserInt("_gameTimes"));
-	Tools::setUserInt("_killNums", Tools::getUserInt("_hitNum") + Tools::getUserInt("_killNums"));
-	if (Tools::getUserInt("_numOfPlayer") <= 5)
-	{
-		Tools::setUserInt("_cupNums", 6 + Tools::getUserInt("_numOfPlayer") + Tools::getUserInt("_cupNums"));
-	}
+	Tools::gameoverDataSave();
 	/**/
 	auto GOS = GameOverScene::createScene();
 	Director::getInstance()->replaceScene(GOS);
@@ -134,9 +124,8 @@ void GameScene::menuCallback(Ref* pSender)
 ****************************/
 void GameScene::GameSettingsCallBack(cocos2d::Ref* pSender)
 {
-	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-		static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+	Tools::playEffect("music/if_click_buttom_on_menu.mp3");
+	Tools::setEffectsVolume("musicVolume");
 	auto GSS = GameSettingsScene::createScene();
 	Director::getInstance()->pushScene(GSS);  // 此处用push的方式，保留游戏进度
 }

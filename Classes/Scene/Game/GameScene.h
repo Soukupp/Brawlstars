@@ -16,11 +16,11 @@
 #include "Scene/Settings/GameSettingsScene.h"
 #include "Scene/MainMenu/MainMenuScene.h"
 
-#define GAME_SETTING_POSITION_X origin.x + visibleSize.width - 1.2 * SettingsItem->getContentSize().width / 2
-#define GAME_SETTING_POSITION_Y visibleSize.height - 1.2 * SettingsItem->getContentSize().height / 2
+#define GAME_SETTING_POSITION_X static_cast<float>(origin.x + visibleSize.width - 1.2 * SettingsItem->getContentSize().width / 2)
+#define GAME_SETTING_POSITION_Y static_cast<float>(visibleSize.height - 1.2 * SettingsItem->getContentSize().height / 2)
 
-#define GAME_SKILL_BUTTON_POSITION_X origin.x + 1.5 * 40
-#define GAME_SKILL_BUTTON_POSITION_Y origin.y + 1.5 * 40
+#define GAME_SKILL_BUTTON_POSITION_X static_cast<float>(origin.x + 1.5 * 40)
+#define GAME_SKILL_BUTTON_POSITION_Y static_cast<float>(origin.y + 1.5 * 40)
 
 
 class GameScene : public cocos2d::Scene

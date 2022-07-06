@@ -140,7 +140,7 @@ public:
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); 
 
     void update(float delta);
-    void update2(float delta);
+    void updatePlayerDoAttack(float delta);
     void updateForPortal(float delta);
     void updateForFog(float delta);
     void updatePlayerHurtByFog(float delta);

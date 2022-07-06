@@ -89,24 +89,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
     //glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::EXACT_FIT);
     //glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::SHOW_ALL);
-    /**
-    auto frameSize = glview->getFrameSize();
-    // if the frame's height is larger than the height of medium size.
-    if (frameSize.height > mediumResolutionSize.height)
-    {        
-        director->setContentScaleFactor(MIN(largeResolutionSize.height/designResolutionSize.height, largeResolutionSize.width/designResolutionSize.width));
-    }
-    // if the frame's height is larger than the height of small size.
-    else if (frameSize.height > smallResolutionSize.height)
-    {        
-        director->setContentScaleFactor(MIN(mediumResolutionSize.height/designResolutionSize.height, mediumResolutionSize.width/designResolutionSize.width));
-    }
-    // if the frame's height is smaller than the height of medium size.
-    else
-    {        
-        director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height, smallResolutionSize.width/designResolutionSize.width));
-    }
-    /**/
 
     std::string str = UserDefault::getInstance()->getXMLFilePath();
     if (UserDefault::getInstance()->isXMLFileExist()) //ÊÇ·ñ´æÔÚ
@@ -121,35 +103,35 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     do {
-        if (!UserDefault::getInstance()->getIntegerForKey("_winTimes"))
-            UserDefault::getInstance()->setIntegerForKey("_winTimes", 0);
-        if (!UserDefault::getInstance()->getIntegerForKey("_gameTimes"))
-            UserDefault::getInstance()->setIntegerForKey("_gameTimes", 0);
-        if (!UserDefault::getInstance()->getIntegerForKey("_killNums"))
-            UserDefault::getInstance()->setIntegerForKey("_killNums", 0);
-        if (!UserDefault::getInstance()->getIntegerForKey("_cupNums"))
-            UserDefault::getInstance()->setIntegerForKey("_cupNums", 0);
-        if (!UserDefault::getInstance()->getIntegerForKey("selectedHero"))
-            UserDefault::getInstance()->setIntegerForKey("selectedHero", 1);
-        if (!UserDefault::getInstance()->getIntegerForKey("invincibleMode"))
-            UserDefault::getInstance()->setIntegerForKey("invincibleMode", 0);
-        UserDefault::getInstance()->setIntegerForKey("invincibleMode", 0);
-        if (!UserDefault::getInstance()->getIntegerForKey("selectedMap"))
-            UserDefault::getInstance()->setIntegerForKey("selectedMap", 0);
-        if (!UserDefault::getInstance()->getIntegerForKey("selectedAINUmber"))
-            UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 9);
-        if (!UserDefault::getInstance()->getIntegerForKey("PlayerRank"))
-            UserDefault::getInstance()->setIntegerForKey("PlayerRank", 10);
-        if (!UserDefault::getInstance()->getIntegerForKey("HitNum"))
-            UserDefault::getInstance()->setIntegerForKey("HitNum", 0);
-        if (!UserDefault::getInstance()->getIntegerForKey("musicVolume"))
-            UserDefault::getInstance()->setIntegerForKey("musicVolume", 50);
+        if (!Tools::getUserInt("_winTimes"))
+            Tools::setUserInt("_winTimes", 0);
+        if (!Tools::getUserInt("_gameTimes"))
+            Tools::setUserInt("_gameTimes", 0);
+        if (!Tools::getUserInt("_killNums"))
+            Tools::setUserInt("_killNums", 0);
+        if (!Tools::getUserInt("_cupNums"))
+            Tools::setUserInt("_cupNums", 0);
+        if (!Tools::getUserInt("selectedHero"))
+            Tools::setUserInt("selectedHero", 1);
+        if (!Tools::getUserInt("invincibleMode"))
+            Tools::setUserInt("invincibleMode", 0);
+        Tools::setUserInt("invincibleMode", 0);
+        if (!Tools::getUserInt("selectedMap"))
+            Tools::setUserInt("selectedMap", 0);
+        if (!Tools::getUserInt("selectedAINUmber"))
+            Tools::setUserInt("selectedAINUmber", 9);
+        if (!Tools::getUserInt("PlayerRank"))
+            Tools::setUserInt("PlayerRank", 10);
+        if (!Tools::getUserInt("HitNum"))
+            Tools::setUserInt("HitNum", 0);
+        if (!Tools::getUserInt("musicVolume"))
+            Tools::setUserInt("musicVolume", 50);
         if (!UserDefault::getInstance()->getBoolForKey("ifPlayMusic"))
             UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
         if (!UserDefault::getInstance()->getBoolForKey("ifShowFPS"))
             UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
-        if (!UserDefault::getInstance()->getIntegerForKey("language"))
-            UserDefault::getInstance()->setIntegerForKey("language", enumEnglish);
+        if (!Tools::getUserInt("language"))
+            Tools::setUserInt("language", enumEnglish);
     } while (0);
 
     // turn on display FPS

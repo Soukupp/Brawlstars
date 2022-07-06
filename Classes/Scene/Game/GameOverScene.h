@@ -10,16 +10,16 @@
 #include "Scene/Information/InformationPopLayer.h"
 
 
-#define GAMEOVER_HERO_ANIMATON_POSITION 200, 250
+#define GAMEOVER_HERO_ANIMATON_POSITION 200.0f, 250.0f
 
-#define GAMEOVER_BACKGROUND_POSITION origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2
-#define GAMEOVER_TITLE_LABLE_POSITION_X origin.x + visibleSize.width / 2
-#define GAMEOVER_TITLE_LABLE_POSITION_Y origin.y + visibleSize.height - 1.3 * label->getContentSize().height
+#define GAMEOVER_BACKGROUND_POSITION static_cast<float>(origin.x + visibleSize.width / 2), static_cast<float>(origin.y + visibleSize.height / 2)
+#define GAMEOVER_TITLE_LABLE_POSITION_X static_cast<float>(origin.x + visibleSize.width / 2)
+#define GAMEOVER_TITLE_LABLE_POSITION_Y static_cast<float>(origin.y + visibleSize.height - 1.3 * label->getContentSize().height)
 
-#define GAMEOVER_CROWN_POSITION 895, 258
+#define GAMEOVER_CROWN_POSITION 895.0f, 258.0f
 
-#define GAMEOVER_BACK_ITEM_POSITION_X origin.x + visibleSize.width - 2 * settingsBackItem->getContentSize().width / 2
-#define GAMEOVER_BACK_ITEM_POSITION_Y origin.y + settingsBackItem->getContentSize().height / 2
+#define GAMEOVER_BACK_ITEM_POSITION_X static_cast<float>(origin.x + visibleSize.width - 2 * settingsBackItem->getContentSize().width / 2)
+#define GAMEOVER_BACK_ITEM_POSITION_Y static_cast<float>(origin.y + settingsBackItem->getContentSize().height / 2)
 
 class GameOverScene : public cocos2d::Layer
 {

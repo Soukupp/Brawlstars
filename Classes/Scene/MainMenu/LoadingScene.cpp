@@ -46,10 +46,11 @@ bool LoadingScene::init()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+	auto pDict = Tools::initDict();
 
 	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/start_game_music.mp3");
 	CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(
-		static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+		static_cast<float>(Tools::getUserInt("musicVolume")) / 100);
 
 	/*=======================创建背景开始=========================*/
 
@@ -72,23 +73,24 @@ bool LoadingScene::init()
 	/*=======================创建Logo结束=========================*/
 
 	/*=======================创建提示语开始========================*/
+	Color3B tipColor(220, 220, 220);
 
-	auto tip1 = LabelTTF::create("Moderate Games, Happy Life!", "fonts/Lilita one.ttf", 36);
+	auto tip1 = LabelTTF::create(Tools::cbyid(pDict, "Moderate Games, Happy Life!"), "fonts/Lilita one.ttf", 36);
 	tip1->enableShadow(LOADING_TIP1_SHADOW);
-	tip1->setColor(Color3B::WHITE);
+	tip1->setColor(tipColor);
 	tip1->setPosition(Vec2(LOADING_TIP1_POSITION));
 	this->addChild(tip1);
 
-	auto tip2 = LabelTTF::create("WELCOME TO THE WILDERNESS JOURNEY!", "fonts/Lilita one.ttf", 28);
+	auto tip2 = LabelTTF::create(Tools::cbyid(pDict, "WELCOME TO THE WILDERNESS JOURNEY!"), "fonts/Lilita one.ttf", 28);
 	tip2->enableShadow(LOADING_TIP1_SHADOW);
-	tip2->setColor(Color3B::WHITE);
+	tip2->setColor(tipColor);
 	tip2->setPosition(Vec2(LOADING_TIP2_POSITION));
 	this->addChild(tip2);
 	log("WELCOME TO THE WILDERNESS JOURNEY!");
 
-	auto tip3 = LabelTTF::create("Shoot 'em up, blow 'em up, punch 'em out and win the BRAWL!", "fonts/Lilita one.ttf", 28);
+	auto tip3 = LabelTTF::create(Tools::cbyid(pDict, "Shoot 'em up, blow 'em up, punch 'em out and win the BRAWL!"), "fonts/Lilita one.ttf", 28);
 	tip3->enableShadow(LOADING_TIP1_SHADOW);
-	tip3->setColor(Color3B::WHITE);
+	tip3->setColor(tipColor);
 	tip3->setPosition(Vec2(LOADING_TIP3_POSITION));
 	this->addChild(tip3);
 	log("Shoot 'em up, blow 'em up, punch 'em out and win the BRAWL!");

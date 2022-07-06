@@ -1,13 +1,13 @@
-//×÷Õß£ºÍõÅô
-//ÈÕÆÚ£º2022-6-25
-//ÊµÏÖ£º¹¤¾ß¼¯
+//ä½œè€…ï¼šçŽ‹é¹
+//æ—¥æœŸï¼š2022-6-25
+//å®žçŽ°ï¼šå·¥å…·é›†
 
 #include "Tools.h"
 
 /****************************
-* Name £ºproblemLoading
-* Summary £º´íÎó´òÓ¡
-* return £º
+* Name ï¼šproblemLoading
+* Summary ï¼šé”™è¯¯æ‰“å°
+* return ï¼š
 ****************************/
 static void problemLoading(const char* filename)
 {
@@ -16,9 +16,9 @@ static void problemLoading(const char* filename)
 }
 
 /****************************
-* Name £ºTools::getUserInt
-* Summary £º»ñÈ¡ÓÃ»§intÐÍÊý¾Ý
-* return £ºÓÃ»§intÐÍÊý¾Ý
+* Name ï¼šTools::getUserInt
+* Summary ï¼šèŽ·å–ç”¨æˆ·intåž‹æ•°æ®
+* return ï¼šç”¨æˆ·intåž‹æ•°æ®
 ****************************/
 int Tools::getUserInt(CCH* name)
 {
@@ -26,16 +26,16 @@ int Tools::getUserInt(CCH* name)
 }
 
 /****************************
-* Name £ºTools::setUserInt
-* Summary £ºÉèÖÃÓÃ»§intÐÍÊý¾Ý
-* return £ºÎÞ
+* Name ï¼šTools::setUserInt
+* Summary ï¼šè®¾ç½®ç”¨æˆ·intåž‹æ•°æ®
+* return ï¼šæ— 
 ****************************/
 void Tools::setUserInt(CCH* name, int num)
 {
-	UserDefault::getInstance()->setIntegerForKey(name, num);
+	Tools::setUserInt(name, num);
 }
 
-std::string Tools::GBKToUTF8(const std::string& strGBK)
+std::string Tools::GBKToUTF8(CSTR& strGBK)
 {
     std::string strOutUTF8 = "";
     WCHAR* str1;
@@ -53,14 +53,32 @@ std::string Tools::GBKToUTF8(const std::string& strGBK)
     return strOutUTF8;
 }
 
-const char* Tools::strid(CCDictionary* pDict, const std::string& key)
+const char* Tools::cbyid(Dictionary* pDict, CSTR& key)
 {
+    const char* charById = ((String*)pDict->objectForKey(key))->getCString();
+    if (charById == nullptr)
+    {
+        printf("cbyid error when load key : %s\n", key.c_str());
+    }
+    return charById;
+}
+
+const char* Tools::cbyid(CSTR& key)
+{
+    auto pDict = Tools::initDict();
     return ((String*)pDict->objectForKey(key))->getCString();
+}
+
+std::string Tools::strbyid(Dictionary* pDict, CSTR& key)
+{
+    auto b = ((String*)pDict->objectForKey(key))->getCString();
+    std::string a = b;
+    return a;
 }
 
 Dictionary* Tools::initDict()
 {
-    Dictionary* pDict;
+    Dictionary* pDict = NULL;
     switch (Tools::getUserInt("language"))
     {
         case enumEnglish:
@@ -80,4 +98,39 @@ Dictionary* Tools::initDict()
         log("nullptr language xml loaded");
     }
     return pDict;
+}
+
+void Tools::emptyCallback(cocos2d::Ref* pSender)
+{
+
+}
+
+void Tools::gameoverDataSave()
+{
+    if (Tools::getUserInt("_numOfPlayer") == 1)
+    {
+        Tools::setUserInt("_winTimes", 1 + Tools::getUserInt("_winTimes"));
+    }
+    Tools::setUserInt("_gameTimes", 1 + Tools::getUserInt("_gameTimes"));
+    Tools::setUserInt("_killNums", Tools::getUserInt("_hitNum") + Tools::getUserInt("_killNums"));
+    if (Tools::getUserInt("_numOfPlayer") <= 5)
+    {
+        Tools::setUserInt("_cupNums", 6 + Tools::getUserInt("_numOfPlayer") + Tools::getUserInt("_cupNums"));
+    }
+}
+
+void Tools::playEffect(CCH* filePath, bool loop, float pitch, float pan, float gain)
+{
+    Tools::playEffect( filePath, loop, pitch, pan, gain);
+}
+
+void Tools::setEffectsVolume(float volume)
+{
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(volume);
+}
+
+void Tools::setEffectsVolume(CCH* volume)
+{
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(Tools::getUserInt(volume)) / 100);
 }
