@@ -90,52 +90,38 @@ bool AppDelegate::applicationDidFinishLaunching() {
     //glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::SHOW_ALL);
 
-    std::string str = UserDefault::getInstance()->getXMLFilePath();
     if (UserDefault::getInstance()->isXMLFileExist()) //ÊÇ·ñ´æÔÚ
     {
         std::string path = UserDefault::getInstance()->getXMLFilePath();
         CCLOG("XML file is exist!");
         CCLOG("XML file path : %s", path.c_str());
+
+        do {
+            Tools::initUserInt("_winTimes", 0);
+            Tools::initUserInt("_gameTimes", 0);
+            Tools::initUserInt("_killNums", 0);
+            Tools::initUserInt("_cupNums", 0);
+            Tools::initUserInt("selectedHero", 1);
+            Tools::initUserInt("invincibleMode", 0);
+            Tools::setUserInt("invincibleMode", 0);
+            Tools::initUserInt("selectedMap", 0);
+            Tools::initUserInt("selectedAINUmber", 9);
+            Tools::initUserInt("PlayerRank", 10);
+            Tools::initUserInt("HitNum", 0);
+            Tools::initUserInt("musicVolume", 50);
+            Tools::initUserInt("language", enumEnglish);
+            Tools::initUserBool("ifPlayMusic", true);
+            Tools::initUserBool("ifShowFPS", false);
+        } while (0);
     }
     else
     {
         CCLOG("XML file is not exist!");
+        exit(0);
     }
 
-    do {
-        if (!Tools::getUserInt("_winTimes"))
-            Tools::setUserInt("_winTimes", 0);
-        if (!Tools::getUserInt("_gameTimes"))
-            Tools::setUserInt("_gameTimes", 0);
-        if (!Tools::getUserInt("_killNums"))
-            Tools::setUserInt("_killNums", 0);
-        if (!Tools::getUserInt("_cupNums"))
-            Tools::setUserInt("_cupNums", 0);
-        if (!Tools::getUserInt("selectedHero"))
-            Tools::setUserInt("selectedHero", 1);
-        if (!Tools::getUserInt("invincibleMode"))
-            Tools::setUserInt("invincibleMode", 0);
-        Tools::setUserInt("invincibleMode", 0);
-        if (!Tools::getUserInt("selectedMap"))
-            Tools::setUserInt("selectedMap", 0);
-        if (!Tools::getUserInt("selectedAINUmber"))
-            Tools::setUserInt("selectedAINUmber", 9);
-        if (!Tools::getUserInt("PlayerRank"))
-            Tools::setUserInt("PlayerRank", 10);
-        if (!Tools::getUserInt("HitNum"))
-            Tools::setUserInt("HitNum", 0);
-        if (!Tools::getUserInt("musicVolume"))
-            Tools::setUserInt("musicVolume", 50);
-        if (!UserDefault::getInstance()->getBoolForKey("ifPlayMusic"))
-            UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
-        if (!UserDefault::getInstance()->getBoolForKey("ifShowFPS"))
-            UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
-        if (!Tools::getUserInt("language"))
-            Tools::setUserInt("language", enumEnglish);
-    } while (0);
-
     // turn on display FPS
-    director->setDisplayStats(UserDefault::getInstance()->getBoolForKey("ifShowFPS"));
+    director->setDisplayStats(Tools::getUserBool("ifShowFPS"));
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 240);

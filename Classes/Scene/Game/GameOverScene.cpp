@@ -20,17 +20,6 @@ Scene* GameOverScene::createScene()
 }
 
 /****************************
-* Name ：problemLoading
-* Summary ：错误打印
-* return ：
-****************************/
-static void problemLoading(const char* filename)
-{
-    printf("Error while loading: %s\n", filename);
-    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
-}
-
-/****************************
 * Name ：init
 * Summary ：游戏结束场景初始化
 * return ：初始化成功与否

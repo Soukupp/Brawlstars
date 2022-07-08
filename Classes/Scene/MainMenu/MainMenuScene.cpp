@@ -39,17 +39,6 @@ Scene* MainMenuScene::createScene()
 }
 
 /****************************
-* Name ：problemLoading
-* Summary ：错误打印
-* return ：
-****************************/
-static void problemLoading(const char* filename)
-{
-    printf("Error while loading: %s\n", filename);
-    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in MainMenuScene.cpp\n");
-}
-
-/****************************
 * Name ：MainMenuScene::init
 * Summary ：主菜单初始化
 * return ：初始化成功与否
@@ -186,8 +175,8 @@ bool MainMenuScene::init()
     /*==================设置UseDefault开始====================*/
 
     if (firstSet) {
-        UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
-        UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
+        Tools::setUserBool("ifPlayMusic", true);
+        Tools::setUserBool("ifShowFPS", false);
         Tools::setUserInt("musicVolume", 50);
         Tools::setUserInt("selectedHero", 1);
 
@@ -199,15 +188,13 @@ bool MainMenuScene::init()
     /*=================创建背景音乐开始=======================*/
 
     if (firstPlay)
-        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/first_music.mp3", true);
-    CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(
-        static_cast<float>(Tools::getUserInt("musicVolume")) / 100);
+        Tools::playBackgroundMusic("music/first_music.mp3", true);
+    Tools::setBackgroundMusicVolume("musicVolume");
     firstPlay = false;
-    if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
+    if (Tools::isBackgroundMusicPlaying())
     {
-        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/first_music.mp3", true);
-        CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(
-            static_cast<float>(Tools::getUserInt("musicVolume")) / 100);
+        Tools::playBackgroundMusic("music/first_music.mp3", true);
+        Tools::setBackgroundMusicVolume("musicVolume");
     }
     /*=====================创建背景音乐结束=======================*/
 

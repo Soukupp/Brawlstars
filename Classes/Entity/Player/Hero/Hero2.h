@@ -57,7 +57,7 @@ using namespace cocos2d;
 class Hero1;
 class Hero3;
 class Hero4;
-//class Weapon;
+class Tools;
 class Hero2 : public Player
 {
 public:

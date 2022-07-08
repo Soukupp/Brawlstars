@@ -53,17 +53,6 @@ Scene* MapLayer::createScene()
 }
 
 /****************************
-* Name ：problemLoading
-* Summary ：错误打印
-* return ：
-****************************/
-static void problemLoading(const char* filename)
-{
-	printf("Error while loading: %s\n", filename);
-	printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in MapLayer.cpp\n");
-}
-
-/****************************
 * Name ：MapLayer::init
 * Summary ：地图层初始化
 * return ：初始化成功与否
@@ -82,8 +71,6 @@ bool MapLayer::init()
 	/*===================Tilemap相关设置开始==================*/
 	initTilemap();
 	/*===================Tilemap相关设置结束===================*/
-	
-	PLAYER->runAction(PLAYER->getNormalAction());
 
 	/*====================键盘操纵设置开始==========================*/
 
@@ -106,7 +93,7 @@ bool MapLayer::init()
 	memset(_fogIsPlaced, 0, sizeof(_fogIsPlaced));
 
 	this->schedule(schedule_selector(MapLayer::updateForFog), MAP_SAFEAREA_INTERVAL_LAST, MAP_SAFEAREA_APPEAR_TIMES, MAP_SAFEAREA_DELAY_LAST); // 持续到结束
-	this->schedule(schedule_selector(MapLayer::updateOutsideFog));
+	//this->schedule(schedule_selector(MapLayer::updateOutsideFog));
 	this->schedule(schedule_selector(MapLayer::updatePlayerHurtByFog), 0.01f);
 	this->schedule(schedule_selector(MapLayer::updateForPortal));
 
@@ -215,6 +202,8 @@ bool MapLayer::initCharacter()
 	log("%d ID", PLAYER->getID());
 
 	setViewpointCenter(PLAYER->getPosition());
+
+	PLAYER->runAction(PLAYER->getNormalAction());
 	/*=====================创建角色结束========================*/
 	return true;
 }
@@ -534,28 +523,9 @@ void MapLayer::update(float delta)
 
 	Vec2 playerPos = PLAYER->getPosition();  // 获取玩家位置坐标
 
-	if (keyMap[EventKeyboard::KeyCode::KEY_D] || keyMap[EventKeyboard::KeyCode::KEY_RIGHT_ARROW])
-	{
-		playerPos.x +=4;
-		PLAYER->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
-		PLAYER->runFlipxWithWeapon(false, WEAPON);
-	}
-	else if (keyMap[EventKeyboard::KeyCode::KEY_A] || keyMap[EventKeyboard::KeyCode::KEY_LEFT_ARROW])
-	{
-		playerPos.x -=4;
-		PLAYER->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
-		PLAYER->runFlipxWithWeapon(true, WEAPON);
-	}
-	else if (keyMap[EventKeyboard::KeyCode::KEY_W] || keyMap[EventKeyboard::KeyCode::KEY_UP_ARROW])
-	{
-		playerPos.y += 4;
-		PLAYER->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
-	}
-	else if (keyMap[EventKeyboard::KeyCode::KEY_S] || keyMap[EventKeyboard::KeyCode::KEY_DOWN_ARROW])
-	{
-		playerPos.y -= 4;
-		PLAYER->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
-	}
+	Tools::getDirtFromKey(keyMap, CHARACTER(0)._direct);
+	Tools::getNextPosByDirt(playerPos, CHARACTER(0));
+
 	this->setPlayerPosition(playerPos);
 	this->setTreeOpacity(playerPos);
 }
@@ -1163,11 +1133,16 @@ void MapLayer::updateForFog(float delta)
 {
 	_fogTurn++;
 	if (_fogTurn == 1)
+	{
 		Tools::playEffect("music/first_takedown.mp3");
+	}
 	else if (_fogTurn == 2)
+	{
 		Tools::playEffect("music/double_takedown.mp3");
+	}
 	Tools::setEffectsVolume("musicVolume");
 	_SafeArea->runAction(ScaleBy::create(2.0f, 0.8f));
+	this->schedule(schedule_selector(MapLayer::updateOutsideFog), 0.1, 2.0f / 0.1, 0.0f);
 
 }
 
@@ -1288,114 +1263,56 @@ void MapLayer::updateAIMove(float delta)
 ****************************/
 void MapLayer::updateAIMoveOne(Character& character)
 {
-	int i = character._player->_panel.getIfPlayAttackAnimation();
-
-	if (character._player->_panel.getIfPlayAttackAnimation() == false)
+	if (character._player->_panel.getIfPlayAttackAnimation() == false)//没有执行攻击动画
 	{
-		if (character._player->_panel.getPlayerState() != MOVING)
+		//动画处理开始
+		if (character._player->_panel.getPlayerState() != MOVING)//不是移动状态
 		{
-			character._player->stopAllActions();
-			character._player->runAction(character._player->getWalkAction());
+			character._player->stopAllActions();//停止所有动作
+			character._player->runAction(character._player->getWalkAction());//执行移动动画
 		}
-		if (!_SafeArea->boundingBox().containsPoint(Vec2(character._player->getPosition())))//不在安全区
+		//动画处理结束
+
+		//方向抉择开始
+		Tools::getDirtForAI(character, _SafeArea);
+		//方向抉择结束
+
+		//移动开始
+		/*=====================以下由键盘操作改写=====================*/
+		
+		Vec2 playerPos = character._player->getPosition();  // 获取位置坐标
+		Tools::getNextPosByDirt(playerPos, character);
+
+		/*=====================以上由键盘操作改写=====================*/
+
+		/*=====================以下由位置移动改写=====================*/
+
+		// 读取坐标
+		Vec2 tileCoord = this->tileCoordFromPosition(playerPos);  //从像素点坐标转化为瓦片坐标
+
+		int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
+
+		// 碰撞检测
+		if (tileGid > 0)
 		{
-			++character._searchTimes;
-			if (character._searchTimes <= 100)//寻路少于一定数量则进行逃离方向选择逻辑
-			{
-				if (!character._backDirectChanged)//且没有掉头
-				{//那么掉头
-					if (character._direct <= 1)//左右
-					{
-						character._direct = 1 - character._direct;
-					}
-					else//上下
-					{
-						character._direct = 5 - character._direct;
-					}
-					character._backDirectChanged = true;
-				}
-				//否则维持原方向
-			}
-			else//达到寻路上限还没逃离则开始随机选方向逃出
-			{
-				character._backDirectChanged = false;//参数重置
-				int tempDirect = rand() % 60;
-				if (tempDirect <= 3)//除去原本的方向，每一帧有3/60的几率转向
-				{//这样是为了保证ai基本可以走一段路 而不是原地不停转向
-					character._direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
-				}
-			}
-		}
-		else//在安全区
-		{//正常选方向
-			character._searchTimes = 0;//参数重置
-			character._backDirectChanged = false;//参数重置
-			int tempDirect = rand() % 60;
-			if (tempDirect <= 3)//除去原本的方向，每一帧有3/60的几率转向
-			{//这样是为了保证ai基本可以走一段路 而不是原地不停转向
-				character._direct = tempDirect;//每一帧小概率获取新方向或者大概率维持原方向
+			Value prop = _tileMap->getPropertiesForGID(tileGid);
+			ValueMap propValueMap = prop.asValueMap();
+
+			std::string collision = propValueMap["Collidable"].asString();
+			// 元素+true
+			if (collision == "true")
+			{ //碰撞检测成功
+				character._direct = rand() % 8;//当ai撞墙 每一帧有3/4概率转向 一秒有几十帧 则基本可以做到撞墙即转向
+				return;
 			}
 		}
 
-		/*
-		* 这里应当判断ai的角色的当前状态 比如如果在攻击则不移动 现在暂时写成一直移动
-		*/
-		if (1) {
-			/*=====================以下由键盘操作改写=====================*/
+		character._player->setPositionWithAll(playerPos, character._weapon, character._healthBar, character._magicBar, character._levelText);
 
-			Vec2 playerPos = character._player->getPosition();  // 获取位置坐标
-			if (character._direct == 0)
-			{
-				playerPos.x += 2;
-				character._player->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
-				character._player->runFlipxWithWeapon(false, character._weapon);
-			}
-			else if (character._direct == 1)
-			{
-				playerPos.x -= 2;
-				character._player->_panel.setPlayerState(MOVING);          //只要精灵发生位移就在MOVING状态
-				character._player->runFlipxWithWeapon(true, character._weapon);
-			}
-			else if (character._direct == 2)
-			{
-				playerPos.y += 2;
-				character._player->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
-			}
-			else if (character._direct == 3)
-			{
-				playerPos.y -= 2;
-				character._player->_panel.setPlayerState(MOVING);           //只要精灵发生位移就在MOVING状态
-			}
+		/*=====================以上由位置移动改写=====================*/
+	    //移动结束
 
-			/*=====================以上由键盘操作改写=====================*/
-
-			/*=====================以下由位置移动改写=====================*/
-
-			// 读取坐标
-			Vec2 tileCoord = this->tileCoordFromPosition(playerPos);  //从像素点坐标转化为瓦片坐标
-
-			int tileGid = _collidable->getTileGIDAt(tileCoord);   //获得瓦片的GID
-
-			// 碰撞检测
-			if (tileGid > 0)
-			{
-				Value prop = _tileMap->getPropertiesForGID(tileGid);
-				ValueMap propValueMap = prop.asValueMap();
-
-				std::string collision = propValueMap["Collidable"].asString();
-				// 元素+true
-				if (collision == "true")
-				{ //碰撞检测成功
-					character._direct = rand() % 4;//当ai撞墙 每一帧有3/4概率转向 一秒有几十帧 则基本可以做到撞墙即转向
-					return;
-				}
-			}
-
-			character._player->setPositionWithAll(playerPos, character._weapon, character._healthBar, character._magicBar, character._levelText);
-
-			/*=====================以上由位置移动改写=====================*/
-		}
-	}
+	}//end of if(没有执行攻击动画)
 }
 
 /****************************

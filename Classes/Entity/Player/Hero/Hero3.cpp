@@ -9,6 +9,7 @@
 #include "Hero2.h"
 #include "Hero3.h"
 #include "Hero4.h"
+#include "Tools.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;

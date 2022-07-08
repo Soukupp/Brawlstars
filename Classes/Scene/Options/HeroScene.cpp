@@ -20,17 +20,6 @@ Scene* HeroScene::createScene()
     return HeroScene::create();
 }
 
-/****************************
-* Name ：problemLoading
-* Summary ：错误打印
-* return ：
-****************************/
-static void problemLoading(const char* filename)
-{
-    printf("Error while loading: %s\n", filename);
-    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in SettingsScene.cpp\n");
-}
-
 bool HeroScene::init()
 {
     if (!Scene::init())

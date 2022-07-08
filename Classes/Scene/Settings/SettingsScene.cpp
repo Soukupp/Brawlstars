@@ -30,17 +30,6 @@ Scene* SettingsScene::createScene()
 }
 
 /****************************
-* Name ：problemLoading
-* Summary ：错误打印
-* return ：
-****************************/
-static void problemLoading(const char* filename)
-{
-    printf("Error while loading: %s\n", filename);
-    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in SettingsScene.cpp\n");
-}
-
-/****************************
 * Name ：SettingsScene::init
 * Summary ：设置初始化
 * return ：初始化成功与否
@@ -328,7 +317,7 @@ void SettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
         Slider* slider = dynamic_cast<Slider*>(pSender);
         int percentVolume = slider->getPercent();
 
-        CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(float(percentVolume) / 100);
+        Tools::setBackgroundMusicVolume(float(percentVolume) / 100);
 
         Tools::setUserInt("musicVolume", percentVolume);
 
@@ -346,18 +335,18 @@ void SettingsScene::settingsPlayCallBack(Ref* pSender)
 {
     auto pDict = Tools::initDict();
     Tools::playEffect("music/if_click_buttom_on_menu.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("music/first_music.mp3");//预加载音乐
+    Tools::preloadBackgroundMusic("music/first_music.mp3");//预加载音乐
     Tools::setEffectsVolume("musicVolume");
-    if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
+    if (Tools::isBackgroundMusicPlaying())
     {
-        CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
-        UserDefault::getInstance()->setBoolForKey("ifPlayMusic", false);
+        Tools::pauseBackgroundMusic();
+        Tools::setUserBool("ifPlayMusic", false);
         _displayedMusicStates->setString(StringUtils::format(Tools::cbyid(pDict, "MUSIC OFF")));
     }
     else
     {
-        CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
-        UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
+        Tools::resumeBackgroundMusic();
+        Tools::setUserBool("ifPlayMusic", true);
         _displayedMusicStates->setString(StringUtils::format(Tools::cbyid(pDict, "MUSIC ON")));
     }
 }
@@ -376,13 +365,13 @@ void SettingsScene::settingsFPSCallBack(Ref* pSender)
     if (director->isDisplayStats())
     {
         director->setDisplayStats(false);
-        UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
+        Tools::setUserBool("ifShowFPS", false);
         _displayedFPSStates->setString(StringUtils::format(Tools::cbyid(pDict, "CONCEAL FPS")));
     }
     else
     {
         director->setDisplayStats(true);
-        UserDefault::getInstance()->setBoolForKey("ifShowFPS", true);
+        Tools::setUserBool("ifShowFPS", true);
         _displayedFPSStates->setString(StringUtils::format(Tools::cbyid(pDict, "DISPLAY FPS")));
     }
 }

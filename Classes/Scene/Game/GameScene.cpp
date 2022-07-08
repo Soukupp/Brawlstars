@@ -29,18 +29,6 @@ Scene* GameScene::createScene()
 }
 
 /****************************
-* Name ：problemLoading
-* Summary ：错误打印
-* return ：
-****************************/
-static void problemLoading(const char* filename)
-{
-	printf("Error while loading: %s\n", filename);
-	printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
-}
-
-
-/****************************
 * Name ：GameScene::init
 * Summary ：游戏场景初始化
 * return ：初始化成功与否
@@ -89,13 +77,12 @@ bool GameScene::init()
 
 	/*=====================创建背景音乐开始=======================*/
 
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("music/retro_fight_ingame_01.mp3");
-	if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
+	Tools::preloadBackgroundMusic("music/retro_fight_ingame_01.mp3");
+	if (Tools::isBackgroundMusicPlaying())
 	{
-		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/retro_fight_ingame_01.mp3", true);
+		Tools::playBackgroundMusic("music/retro_fight_ingame_01.mp3", true);
 	}
-	CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(
-		static_cast<float>(Tools::getUserInt("musicVolume")) / 100);
+	Tools::setBackgroundMusicVolume("musicVolume");
 	/*=====================创建背景音乐结束=======================*/
 
 	return true;

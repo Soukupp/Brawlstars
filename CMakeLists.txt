@@ -51,6 +51,7 @@ list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
      Classes/Tools.cpp
 
+     Classes/Entity/Entity.cpp
      Classes/Entity/Player/Player.cpp
      Classes/Entity/Player/Panel.cpp
      Classes/Entity/Player/Hero/Hero1.cpp
