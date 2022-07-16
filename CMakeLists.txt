@@ -49,9 +49,7 @@ endif()
 # add cross-platforms source files and header files 
 list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
-     Classes/Tools.cpp
 
-     Classes/Entity/Entity.cpp
      Classes/Entity/Player/Player.cpp
      Classes/Entity/Player/Panel.cpp
      Classes/Entity/Player/Hero/Hero1.cpp
@@ -82,12 +80,9 @@ list(APPEND GAME_SOURCE
 
      Classes/Scene/GameLoading/GameLoadingScene1.cpp
      Classes/Scene/GameLoading/GameLoadingScene2.cpp
-
-     Classes/Scene/SpecialEffects/Shake.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
-     Classes/Tools.h
 
      Classes/Entity/Entity.h
      Classes/Entity/Character.h
@@ -122,8 +117,6 @@ list(APPEND GAME_HEADER
 
      Classes/Scene/GameLoading/GameLoadingScene1.h
      Classes/Scene/GameLoading/GameLoadingScene2.h
-
-     Classes/Scene/SpecialEffects/Shake.h
      )
 
 if(ANDROID)

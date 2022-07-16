@@ -25,6 +25,17 @@ Scene* GameSettingsScene::createScene()
 }
 
 /****************************
+* Name ：problemLoading
+* Summary ：错误打印
+* return ：
+****************************/
+static void problemLoading(const char* filename)
+{
+    printf("Error while loading: %s\n", filename);
+    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in SettingsScene.cpp\n");
+}
+
+/****************************
 * Name ：GameSettingsScene::init
 * Summary ：主菜单初始化
 * return ：初始化成功与否
@@ -39,11 +50,10 @@ bool GameSettingsScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto pDict = Tools::initDict();
-
-    Tools::preloadBackgroundMusic("music/retro_fight_ingame_01.mp3"); //预加载音乐
-    Tools::playEffect("music/to_a_new_scene.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("music/retro_fight_ingame_01.mp3"); //预加载音乐
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/to_a_new_scene.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     /*=====================创建返回按钮开始======================*/
 
     //创建返回按钮
@@ -63,35 +73,11 @@ bool GameSettingsScene::init()
         settingsBackItem->setPosition(Vec2(GAMESETTINGS_BACK_ITEM_POSITION_X, GAMESETTINGS_BACK_ITEM_POSITION_Y));
     }
     //创建返回菜单
-    auto settingsBackMenu = Menu::create(settingsBackItem, NULL);
-    settingsBackMenu->setPosition(Vec2::ZERO);
-    this->addChild(settingsBackMenu, 2);
+    auto backMenu = Menu::create(settingsBackItem, NULL);
+    backMenu->setPosition(Vec2::ZERO);
+    this->addChild(backMenu, 2);
 
-    /*=====================创建返回按钮结束====================*/
-
-    /*=====================创建关闭按钮开始======================*/
-
-    auto backToMenuItem = MenuItemImage::create(
-        "ui/button_close.png",
-        "ui/button_close.png",
-        CC_CALLBACK_1(GameSettingsScene::menuCallback, this));
-
-    if (backToMenuItem == nullptr ||
-        backToMenuItem->getContentSize().width <= 0 ||
-        backToMenuItem->getContentSize().height <= 0)
-    {
-        problemLoading("'ui/button_close.png' and 'ui/button_close.png'");
-    }
-    else
-    {
-        backToMenuItem->setPosition(Vec2(GAMESETTINGS_BACK_TO_MENU_POSITION_X, GAMESETTINGS_BACK_TO_MENU_POSITION_Y));
-    }  // 关闭菜单需要改为固定位置（且此处关闭菜单表示跳到结束界面）
-
-    auto backToMenuMenu = Menu::create(backToMenuItem, NULL);
-    backToMenuMenu->setPosition(Vec2::ZERO);
-    this->addChild(backToMenuMenu, 2);
-
-    /*=====================创建关闭按钮结束======================*/
+    /*=====================创建关闭按钮结束====================*/
 
     /*=====================创建标题开始======================*/
 
@@ -125,9 +111,9 @@ bool GameSettingsScene::init()
 
     auto musicSlider = Slider::create();
 
-    _displayedPercentage->setString(StringUtils::format("%d%%", Tools::getUserInt("musicVolume")));
+    _displayedPercentage->setString(StringUtils::format("Percent %d", UserDefault::getInstance()->getIntegerForKey("musicVolume")));
 
-    musicSlider->setPercent(Tools::getUserInt("musicVolume"));
+    musicSlider->setPercent(UserDefault::getInstance()->getIntegerForKey("musicVolume"));
     musicSlider->loadBarTexture("ui/progressFrame.png");
     musicSlider->loadProgressBarTexture("ui/progressBlock.png");
     musicSlider->setPosition(Vec2(GAMESETTINGS_SETTINGSMENU_POSITION_X, GAMESETTINGS_SETTINGSMENU_POSITION_Y));
@@ -141,11 +127,10 @@ bool GameSettingsScene::init()
 
     /*===================创建标签开始========================*/
 
-    Label* settingsMusicLabel = Label::create(Tools::cbyid(pDict, "VOLUME SETTING"), "Maiandra GD", 35);
+    Label* settingsMusicLabel = Label::create("MUSIC SETTING", "fonts/Lilita one.ttf", 35);
     settingsMusicLabel->setPosition(GAMESETTINGS_SETTINGSMUSICLABEL_POSITION_X, GAMESETTINGS_SETTINGSMUSICLABEL_POSITION_Y);
     const Color4B settingsMusicLabelColor(0, 0, 0, 255);//创建4B颜色
-    const Color4B settingsMusicLabelShadowColor(50, 50, 50, 200);
-    settingsMusicLabel->enableShadow(settingsMusicLabelShadowColor);
+    settingsMusicLabel->enableShadow();
     settingsMusicLabel->setTextColor(settingsMusicLabelColor);
 
     this->addChild(settingsMusicLabel, 3);
@@ -156,54 +141,59 @@ bool GameSettingsScene::init()
 
     auto musicOn = MenuItemImage::create("ui/musicOn.png", "ui/musicOn.png");
     auto musicOff = MenuItemImage::create("ui/musicOff.png", "ui/musicOff.png");
+
     MenuItemToggle* musicOnOrOff = MenuItemToggle::createWithTarget(this,
-        menu_selector(SettingsScene::settingsPlayCallBack), musicOn, musicOff, NULL);
+        menu_selector(GameSettingsScene::settingsPlayCallBack), musicOn, musicOff, NULL);
     //显示音乐开始或静音图标
 
-    if (UserDefault::getInstance()->getBoolForKey("ifPlayMusic", true))
+    if (UserDefault::getInstance()->getBoolForKey("ifPlayMusic",true))
     {
         musicOnOrOff->setSelectedIndex(0);
-        _displayedMusicStates->setString(StringUtils::format(Tools::cbyid(pDict, "MUSIC ON")));
+        _displayedMusicStates->setString(StringUtils::format("MUSIC ON"));
+        _displayedMusicStates->setFontName("fonts/Lilita one.ttf");
+        _displayedMusicStates->setFontSize(35);
+        _displayedMusicStates->enableShadow();
     }
     else
     {
         musicOnOrOff->setSelectedIndex(1);
-        _displayedMusicStates->setString(StringUtils::format(Tools::cbyid(pDict, "MUSIC OFF")));
+        _displayedMusicStates->setString(StringUtils::format("MUSIC OFF"));
+        _displayedMusicStates->setFontName("fonts/Lilita one.ttf");
+        _displayedMusicStates->setFontSize(35);
+        _displayedMusicStates->enableShadow();
     }
 
     _displayedMusicStates->setTextColor(settingsMusicLabelColor);
-    const Color4B displayedMusicStatesShadowColor(50, 50, 50, 200);
-    _displayedMusicStates->enableShadow(displayedMusicStatesShadowColor);
     _displayedMusicStates->setPosition(Vec2(GAMESETTINGS_SETTINGMUSICSTATES_POSITION_X, GAMESETTINGS_SETTINGMUSICSTATES_POSITION_Y));
-
-    /*===============*/
 
     auto FPSOn = MenuItemImage::create("ui/FPSOn.png", "ui/FPSOn.png");
     auto FPSOff = MenuItemImage::create("ui/FPSOff.png", "ui/FPSOff.png");
+
     MenuItemToggle* FPSOnOrOff = MenuItemToggle::createWithTarget(this,
         menu_selector(SettingsScene::settingsFPSCallBack), FPSOn, FPSOff, NULL);
     //显示FPS显示或隐藏图标
 
-    FPSOnOrOff->setPosition(Vec2(SETTINGS_SETTINGFPSSTATES_POSITION_X, SETTINGS_SETTINGFPSSTATES_POSITION_Y));
+    FPSOnOrOff->setPosition(Vec2(GAMESETTINGS_SETTINGFPSSTATES_POSITION_X, GAMESETTINGS_SETTINGFPSSTATES_POSITION_Y));
 
-    if (UserDefault::getInstance()->getBoolForKey("ifShowFPS", true))
+    if (UserDefault::getInstance()->getBoolForKey("ifShowFPS", false))
     {
-
         FPSOnOrOff->setSelectedIndex(0);
-        _displayedFPSStates->setString(StringUtils::format(Tools::cbyid(pDict, "DISPLAY FPS")));
+        _displayedFPSStates->setString(StringUtils::format("DISPLAY FPS"));
+        _displayedFPSStates->setFontName("fonts/Lilita one.ttf");
+        _displayedFPSStates->setFontSize(35);
+        _displayedFPSStates->enableShadow();
     }
     else
     {
         FPSOnOrOff->setSelectedIndex(1);
-        _displayedFPSStates->setString(StringUtils::format(Tools::cbyid(pDict, "CONCEAL FPS")));
+        _displayedFPSStates->setString(StringUtils::format("CONCEAL FPS"));
+        _displayedFPSStates->setFontName("fonts/Lilita one.ttf");
+        _displayedFPSStates->setFontSize(35);
+        _displayedFPSStates->enableShadow();
     }
 
     _displayedFPSStates->setTextColor(settingsMusicLabelColor);
-    const Color4B displayedFPSStatesShadowColor(50, 50, 50, 200);
-    _displayedFPSStates->enableShadow(displayedFPSStatesShadowColor);
     _displayedFPSStates->setPosition(Vec2(GAMESETTINGS_SETTINGSFPSLABEL_POSITION_X, GAMESETTINGS_SETTINGSFPSLABEL_POSITION_Y));
-
-    /*===============*/
 
     Menu* GameSettingsMenu = Menu::create(musicOnOrOff, FPSOnOrOff, NULL);
     this->addChild(GameSettingsMenu, 3);
@@ -239,8 +229,9 @@ bool GameSettingsScene::init()
 ****************************/
 void GameSettingsScene::settingsBackToGameCallback(Ref* pSender)
 {
-    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     auto GS = GameScene::createScene();
     Director::getInstance()->popScene();//过场动画设计
 }
@@ -257,13 +248,13 @@ void GameSettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
         Slider* slider = dynamic_cast<Slider*>(pSender);
         int percentVolume = slider->getPercent();
 
-        //log(percentVolume);
-        Tools::setBackgroundMusicVolume(2 * float(percentVolume) / 100);
+        log(percentVolume);
+        CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(2 * float(percentVolume) / 100);
         //CocosDenshion::SimpleAudioEngine::sharedEngine()->setBackgroundMusicVolume(CocosDenshion::SimpleAudioEngine::sharedEngine()->getBackgroundMusicVolume() + float(percentVolume) / 100);
 
-        Tools::setUserInt("musicVolume", percentVolume);
+        UserDefault::getInstance()->setIntegerForKey("musicVolume", percentVolume);
 
-        _displayedPercentage->setString(StringUtils::format("%d%%", percentVolume));   //显示所占百分比
+        _displayedPercentage->setString(StringUtils::format("Percent %d", percentVolume));   //显示所占百分比
 
     }
 }
@@ -275,20 +266,20 @@ void GameSettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
 * ***************************/
 void GameSettingsScene::settingsPlayCallBack(Ref* pSender)
 {
-    auto pDict = Tools::initDict();
-    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
     {
-        Tools::pauseBackgroundMusic();
-        Tools::setUserBool("ifPlayMusic", false);
-        _displayedMusicStates->setString(StringUtils::format(Tools::cbyid(pDict, "MUSIC OFF")));
+        CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
+        UserDefault::getInstance()->setBoolForKey("ifPlayMusic", false);
+        _displayedMusicStates->setString(StringUtils::format("MUSIC OFF"));
     }
     else
     {
-        Tools::resumeBackgroundMusic();
-        Tools::setUserBool("ifPlayMusic", true);
-        _displayedMusicStates->setString(StringUtils::format(Tools::cbyid(pDict, "MUSIC ON")));
+        CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
+        UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
+        _displayedMusicStates->setString(StringUtils::format("MUSIC ON"));
     }
 }
 
@@ -299,36 +290,20 @@ void GameSettingsScene::settingsPlayCallBack(Ref* pSender)
 * ***************************/
 void GameSettingsScene::settingsFPSCallBack(Ref* pSender)
 {
-    auto pDict = Tools::initDict();
-    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     auto director = Director::getInstance();
     if (director->isDisplayStats())
     {
         director->setDisplayStats(false);
-        Tools::setUserBool("ifShowFPS", false);
-        _displayedFPSStates->setString(StringUtils::format(Tools::cbyid(pDict, "CONCEAL FPS")));
+        UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
+        _displayedFPSStates->setString(StringUtils::format("CONCEAL FPS"));
     }
     else
     {
         director->setDisplayStats(true);
-        Tools::setUserBool("ifShowFPS", true);
-        _displayedFPSStates->setString(StringUtils::format(Tools::cbyid(pDict, "DISPLAY FPS")));
+        UserDefault::getInstance()->setBoolForKey("ifShowFPS", true);
+        _displayedFPSStates->setString(StringUtils::format("DISPLAY FPS"));
     }
-}
-
-/****************************
-* Name ：GameSettingsScene::menuCloseCallback
-* Summary ：跳到GameOverScene
-* return ：无
-****************************/
-void GameSettingsScene::menuCallback(Ref* pSender)
-{
-    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
-    Tools::setEffectsVolume("musicVolume");
-    /**/
-    Tools::gameoverDataSave();
-    /**/
-    auto GOS = GameOverScene::createScene();
-    Director::getInstance()->replaceScene(GOS);
 }

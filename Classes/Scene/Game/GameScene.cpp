@@ -29,6 +29,18 @@ Scene* GameScene::createScene()
 }
 
 /****************************
+* Name ：problemLoading
+* Summary ：错误打印
+* return ：
+****************************/
+static void problemLoading(const char* filename)
+{
+	printf("Error while loading: %s\n", filename);
+	printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
+}
+
+
+/****************************
 * Name ：GameScene::init
 * Summary ：游戏场景初始化
 * return ：初始化成功与否
@@ -46,7 +58,25 @@ bool GameScene::init()
 	auto GameSettingLayer = LayerColor::create();
 	GameSettingLayer->changeWidthAndHeight(960, 720);
 
-	
+	/*=====================创建关闭按钮开始======================*/
+
+	auto BackToMenuItem = MenuItemImage::create(
+		"ui/button_close.png",
+		"ui/button_close.png",
+		CC_CALLBACK_1(GameScene::menuCallback, this));
+
+	if (BackToMenuItem == nullptr ||
+		BackToMenuItem->getContentSize().width <= 0 ||
+		BackToMenuItem->getContentSize().height <= 0)
+	{
+		problemLoading("'ui/button_close.png' and 'ui/button_close.png'");
+	}
+	else
+	{
+		BackToMenuItem->setPosition(Vec2(GAME_BACK_TO_MENU_POSITION_X, GAME_BACK_TO_MENU_POSITION_Y));
+	}  // 关闭菜单需要改为固定位置（且此处关闭菜单表示跳到结束界面）
+
+	/*=====================创建关闭按钮结束======================*/
 
 	/*=====================创建设置按钮开始======================*/
 
@@ -65,7 +95,7 @@ bool GameScene::init()
 		SettingsItem->setPosition(Vec2(GAME_SETTING_POSITION_X, GAME_SETTING_POSITION_Y));
 	}
 
-	auto menu = Menu::create(SettingsItem, NULL);
+	auto menu = Menu::create(BackToMenuItem, SettingsItem, NULL);
 	menu->setPosition(Vec2::ZERO);
 	GameSettingLayer->addChild(menu);
 	this->addChild(GameSettingLayer, 1);
@@ -77,12 +107,13 @@ bool GameScene::init()
 
 	/*=====================创建背景音乐开始=======================*/
 
-	Tools::preloadBackgroundMusic("music/retro_fight_ingame_01.mp3");
-	if (Tools::isBackgroundMusicPlaying())
+	CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("music/retro_fight_ingame_01.mp3");
+	if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
 	{
-		Tools::playBackgroundMusic("music/retro_fight_ingame_01.mp3", true);
+		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music/retro_fight_ingame_01.mp3", true);
 	}
-	Tools::setBackgroundMusicVolume("musicVolume");
+	CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(
+		static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 	/*=====================创建背景音乐结束=======================*/
 
 	return true;
@@ -95,10 +126,20 @@ bool GameScene::init()
 ****************************/
 void GameScene::menuCallback(Ref* pSender)
 {
-	Tools::playEffect("music/if_click_buttom_on_menu.mp3");
-	Tools::setEffectsVolume("musicVolume");
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+		static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 	/**/
-	Tools::gameoverDataSave();
+	if (getUserInt("_numOfPlayer") == 1)
+	{
+		setUserInt("_winTimes", 1 + getUserInt("_winTimes"));
+	}
+	setUserInt("_gameTimes", 1 + getUserInt("_gameTimes"));
+	setUserInt("_killNums", getUserInt("_hitNum") + getUserInt("_killNums"));
+	if (getUserInt("_numOfPlayer") <= 5)
+	{
+		setUserInt("_cupNums", 6 + getUserInt("_numOfPlayer") + getUserInt("_cupNums"));
+	}
 	/**/
 	auto GOS = GameOverScene::createScene();
 	Director::getInstance()->replaceScene(GOS);
@@ -111,8 +152,30 @@ void GameScene::menuCallback(Ref* pSender)
 ****************************/
 void GameScene::GameSettingsCallBack(cocos2d::Ref* pSender)
 {
-	Tools::playEffect("music/if_click_buttom_on_menu.mp3");
-	Tools::setEffectsVolume("musicVolume");
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+		static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 	auto GSS = GameSettingsScene::createScene();
 	Director::getInstance()->pushScene(GSS);  // 此处用push的方式，保留游戏进度
 }
+
+/****************************
+* Name ：GameScene::getUserInt
+* Summary ：获取英雄名字
+* return ：英雄名字对应的ID
+****************************/
+int GameScene::getUserInt(const char* name)
+{
+	return UserDefault::getInstance()->getIntegerForKey(name);
+}
+
+/****************************
+* Name ：GameScene::setUserInt
+* Summary ：设置英雄名字对应的ID
+* return ：无
+****************************/
+void GameScene::setUserInt(const char* name, int num)
+{
+	UserDefault::getInstance()->setIntegerForKey(name, num);
+}
+
