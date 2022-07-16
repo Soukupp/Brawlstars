@@ -20,6 +20,17 @@ Scene* GameOverScene::createScene()
 }
 
 /****************************
+* Name ：problemLoading
+* Summary ：错误打印
+* return ：
+****************************/
+static void problemLoading(const char* filename)
+{
+    printf("Error while loading: %s\n", filename);
+    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
+}
+
+/****************************
 * Name ：init
 * Summary ：游戏结束场景初始化
 * return ：初始化成功与否
@@ -33,8 +44,6 @@ bool GameOverScene::init()
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-    auto pDict = Tools::initDict();
 
     auto GameOverBackground = Sprite::create("background/GameOverBackground.png");
     GameOverBackground->setPosition(Vec2(GAMEOVER_BACKGROUND_POSITION));
@@ -62,10 +71,10 @@ bool GameOverScene::init()
     backMenu->setPosition(Vec2::ZERO);
     this->addChild(backMenu, 6);
 
-    auto label = Label::createWithTTF(Tools::cbyid(pDict, "GAME OVER"), Tools::cbyid(pDict, "gameoverLabelFont"), 60);
+    auto label = Label::createWithTTF("GAME OVER", "fonts/Marker Felt.ttf", 60);
     if (label == nullptr)
     {
-        problemLoading(Tools::cbyid(pDict, "gameoverLabelFont"));
+        problemLoading("'fonts/Marker Felt.ttf'");
     }
     else
     {
@@ -74,26 +83,27 @@ bool GameOverScene::init()
     }
 
     //确定选择的英雄，进行相关英雄展示
-    int selectedHero = Tools::getUserInt("selectedHero");
+    int selectedHero = UserDefault::getInstance()->getIntegerForKey("selectedHero");
 
     std::string playerName;
+
     switch (selectedHero)
     {
         case 1:
             hero1();
-            playerName = Tools::cbyid(pDict, "Winston");
+            playerName = "Winston";
             break;
         case 2:
             hero2();
-            playerName = Tools::cbyid(pDict, "Wrderly");
+            playerName = "Wrderly";
             break;
         case 3:
             hero3();
-            playerName = Tools::cbyid(pDict, "Pearl");
+            playerName = "Pearl";
             break;
         case 4:
             hero4();
-            playerName = Tools::cbyid(pDict, "Soren");
+            playerName = "Soren";
             break;
     }
 
@@ -102,29 +112,26 @@ bool GameOverScene::init()
     addChild(crown, 5);
 
     std::string tip;
-    if (Tools::getUserInt("PlayerRank") <= 4)
-        tip = Tools::cbyid(pDict, "CONGRATULATION!");
+    if (UserDefault::getInstance()->getIntegerForKey("PlayerRank") <= 4)
+        tip = "       CONGRATULATION!";
     else
 
-        tip = Tools::cbyid(pDict, "WHAT A PITY!");
+        tip = "        WHAT A PITY!";
 
     auto GameOverInformation = InformationPopLayer::create
     ("background/HeroInformationBackground.png", Size(570, 350), 150);
     GameOverInformation->setPosition(Vec2(150, 0)); // �������
-
-    /*=======================文本处理开始=======================*/
-    std::string gameoverInfo = tip + "\n";
-    gameoverInfo += (Tools::cbyid(pDict, "HERO"));
-    gameoverInfo += (" :     " + playerName + "\n");
-    gameoverInfo += (Tools::cbyid(pDict, "YOUR RANK"));
-    gameoverInfo += (" :     NO." + std::to_string(Tools::getUserInt("PlayerRank")) + "\n");
-    gameoverInfo += (Tools::cbyid(pDict, "KILL COUNT"));
-    gameoverInfo += (" :     " + std::to_string(Tools::getUserInt("HitNum")) + "\n");
-    gameoverInfo += (Tools::cbyid(pDict, "CROWN NUMBER"));
-    gameoverInfo += (" :    " + (std::to_string(Tools::getUserInt("PlayerRank") <= 5 ? 6 - Tools::getUserInt("PlayerRank") : 0)) + " x ");
-    /*=======================文本处理结束=======================*/
-
-    GameOverInformation->setContentText(gameoverInfo.c_str(), "fonts/Lilita one.ttf", 45, MAINMENU_INFORMATION_CONTENT_TEXT_PADDING,
+    auto infoString = tip
+        + "\n" +
+        "HERO:     " + playerName
+        + "\n" +
+        "YOUR RANK : NO." + std::to_string(UserDefault::getInstance()->getIntegerForKey("PlayerRank"))
+        + "\n" +
+        "KILL COUNT :       " + std::to_string(UserDefault::getInstance()->getIntegerForKey("HitNum"))
+        + "\n" +
+        "CROWN NUMBER :    " + std::to_string(UserDefault::getInstance()->getIntegerForKey("PlayerRank") <= 5 ? 6 - UserDefault::getInstance()->getIntegerForKey("PlayerRank") : 0)
+        + " x ";
+    GameOverInformation->setContentText(infoString.c_str(), "fonts/Lilita one.ttf", 45, MAINMENU_INFORMATION_CONTENT_TEXT_PADDING,
 
         MAINMENU_INFORMATION_CONTENT_TEXT_PADDINGTOP);
     this->addChild(GameOverInformation, 4);
@@ -155,8 +162,9 @@ void GameOverScene::hero1()
     addChild(hero1);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
     m_frameCache->addSpriteFramesWithFile("character/Hero1/hero1_Start.plist", "character/Hero1/hero1_Start.png");
-    Tools::playEffect("music/hero1.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero1.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     Vector<CCSpriteFrame*> hero1FrameArray;
     for (int i = 4; i < 8; i++)
     {
@@ -185,8 +193,9 @@ void GameOverScene::hero2()
     addChild(hero2);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
     m_frameCache->addSpriteFramesWithFile("character/Hero2/hero2_Normal.plist", "character/Hero2/hero2_Normal.png");
-    Tools::playEffect("music/hero2.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero2.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     Vector<CCSpriteFrame*> hero2FrameArray;
     for (int i = 0; i < 8; i++)
     {
@@ -215,8 +224,9 @@ void GameOverScene::hero3()
     addChild(hero3);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
     m_frameCache->addSpriteFramesWithFile("character/Hero3/hero3_Start2.plist", "character/Hero3/hero3_Start2.png");
-    Tools::playEffect("music/hero3.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero3.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     Vector<CCSpriteFrame*> hero3FrameArray;
     for (int i = 1; i < 7; i++)
     {
@@ -243,8 +253,9 @@ void GameOverScene::hero4()
     addChild(hero4);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
     m_frameCache->addSpriteFramesWithFile("character/Hero4/hero4_Start.plist", "character/Hero4/hero4_Start.png");
-    Tools::playEffect("music/hero4.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     Vector<CCSpriteFrame*> hero4FrameArray;
     for (int i = 1; i < 9; i++)
     {

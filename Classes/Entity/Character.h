@@ -21,7 +21,7 @@ struct Character
 
     int _killedNum = 0;
 
-    int _direct = 0;
+    int _direct = 0;//需要保存原方向 所以static
     bool _backDirectChanged = 0;
     int _searchTimes = 0;
 

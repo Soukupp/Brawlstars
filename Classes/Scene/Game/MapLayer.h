@@ -12,8 +12,6 @@
 #include "GameOverScene.h"
 #include "Entity/Character.h"
 #include "Entity/TheMonster.h"
-#include "Scene/SpecialEffects/Shake.h"
-#include "Tools.h"
 #include <vector>
 #include "string"
 #include <ctime>
@@ -24,7 +22,6 @@
 #define MAP_SAFEAREA_APPEAR_TIMES 5
 #define MAP_SAFEAREA_DELAY_LAST 30.0f
 #define MAP_SAFEAREA_INTERVAL_LAST 15.0f
-
 #define MAP_FOG_DENSITY 24
 #define MAP_FOG_DAMAGE_TO_PLAYER 2
 #define MAP_PORTAL_SIZE 6
@@ -58,8 +55,6 @@
 #define THEMONSTER(a) (allMonster[a])
 #define MONSTER(a) (allMonster[a]._monster)
 #define MONSTER_HEALTHBAR(a) (allMonster[a]._healthBar)
-
-#define MAPLAYER_SHAKERATE 50
 
 class MapLayer : public cocos2d::Layer
 {
@@ -125,13 +120,6 @@ public:
 
     static cocos2d::Scene* createScene();
     virtual bool init();
-    bool initTilemap();
-    bool initCharacter();
-    bool initSafeArea();
-    bool initAICharacter();
-    bool initAllMonster();
-    bool initPortal();
-    bool initDeathPosition();
 
     virtual bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
     virtual void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
@@ -141,7 +129,7 @@ public:
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); 
 
     void update(float delta);
-    void updatePlayerDoAttack(float delta);
+    void update2(float delta);
     void updateForPortal(float delta);
     void updateForFog(float delta);
     void updatePlayerHurtByFog(float delta);
@@ -180,6 +168,9 @@ public:
 
     void setCharacterVisible(bool visible, Character& character);
     void setCharacterPosition(Vec2 position, Character& character);
+
+    int getUserInt(const char* name);
+    void setUserInt(const char* name, int num);
 
     Animation* getAnimationByName(std::string fileName, float interval, int fileNum, int if_repeat = -1);
 

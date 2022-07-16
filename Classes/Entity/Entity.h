@@ -7,10 +7,8 @@
 #include "cocos2d.h"
 #include "../ui/UISlider.h"
 
-class Tools;
 class Entity : public cocos2d::Sprite
 {
-
 	//ÎŞÄÚÈİ
 };
 

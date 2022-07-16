@@ -62,6 +62,9 @@ public:
 
     void playerMassageCallback(cocos2d::Ref* pSender);
 
+    int getUserInt(const char* name);
+    void setUserInt(const char* name, int num);
+
     //´´½¨
     CREATE_FUNC(MainMenuScene);
 };

@@ -20,6 +20,17 @@ Scene* HeroScene::createScene()
     return HeroScene::create();
 }
 
+/****************************
+* Name ：problemLoading
+* Summary ：错误打印
+* return ：
+****************************/
+static void problemLoading(const char* filename)
+{
+    printf("Error while loading: %s\n", filename);
+    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in SettingsScene.cpp\n");
+}
+
 bool HeroScene::init()
 {
     if (!Scene::init())
@@ -30,10 +41,9 @@ bool HeroScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto pDict = Tools::initDict();
-
-    Tools::playEffect("music/to_a_new_scene.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/to_a_new_scene.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
 
     /*=====================创建背景图开始======================*/
 
@@ -108,7 +118,7 @@ bool HeroScene::init()
     auto* hero1LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
         "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero1Callback));
 
-    auto* hero1LabelText = LabelTTF::create(Tools::cbyid(pDict, "Winston"), "Maiandra GD", 35);
+    auto* hero1LabelText = LabelTTF::create("Winston", "Maiandra GD", 35);
     auto* hero1Label = MenuItemLabel::create(hero1LabelText,
         this, menu_selector(HeroScene::selectHero1Callback));
 
@@ -121,7 +131,7 @@ bool HeroScene::init()
     auto* hero2LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
         "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero2Callback));
 
-    auto* hero2LabelText = LabelTTF::create(Tools::cbyid(pDict, "Wrderly"), "Maiandra GD", 35);
+    auto* hero2LabelText = LabelTTF::create("Wrderly", "Maiandra GD", 35);
     auto* hero2Label = MenuItemLabel::create(hero2LabelText,
         this, menu_selector(HeroScene::selectHero2Callback));
 
@@ -134,7 +144,7 @@ bool HeroScene::init()
     auto* hero3LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
         "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero3Callback));
 
-    auto* hero3LabelText = LabelTTF::create(Tools::cbyid(pDict, "Pearl"), "Maiandra GD", 35);
+    auto* hero3LabelText = LabelTTF::create("Pearl", "Maiandra GD", 35);
     auto* hero3Label = MenuItemLabel::create(hero3LabelText,
         this, menu_selector(HeroScene::selectHero3Callback));
     auto* hero3Button = Menu::create(hero3LabelImage, hero3Label, NULL);
@@ -146,7 +156,7 @@ bool HeroScene::init()
     auto* hero4LabelImage = MenuItemImage::create("ui/heroLabelNormal.png",
         "ui/heroLabelSelected.png", this, menu_selector(HeroScene::selectHero4Callback));
 
-    auto* hero4LabelText = LabelTTF::create(Tools::cbyid(pDict, "Soren"), "Maiandra GD", 35);
+    auto* hero4LabelText = LabelTTF::create("Soren", "Maiandra GD", 35);
     auto* hero4Label = MenuItemLabel::create(hero4LabelText,
         this, menu_selector(HeroScene::selectHero4Callback));
 
@@ -179,7 +189,7 @@ bool HeroScene::init()
 
 
    //如果玩家已经选择了英雄，那么优先展示该英雄的动画
-       _selectedHero = Tools::getUserInt("selectedHero");
+       _selectedHero = UserDefault::getInstance()->getIntegerForKey("selectedHero");
     if (_selectedHero) 
     {
         switch (_selectedHero)
@@ -211,8 +221,9 @@ bool HeroScene::init()
 ****************************/
 void HeroScene::heroBackCallback(cocos2d::Ref* pSender)
 {
-    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     AnimationCache::destroyInstance();
     SpriteFrameCache::getInstance()->removeUnusedSpriteFrames();
     TextureCache::getInstance()->removeUnusedTextures();
@@ -227,8 +238,9 @@ void HeroScene::heroBackCallback(cocos2d::Ref* pSender)
 ****************************/
 void HeroScene::selectHero1Callback(cocos2d::Ref* pSender)
 {
-    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     if (_selectedHero == 1)                    //如果确认选择hero1
         _confirmButton->setEnabled(false);   //按钮设置为禁用
     else
@@ -257,8 +269,9 @@ void HeroScene::selectHero1Callback(cocos2d::Ref* pSender)
 ****************************/
 void HeroScene::selectHero2Callback(cocos2d::Ref* pSender)
 {
-    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     if (_selectedHero == 2)
         _confirmButton->setEnabled(false);
     else
@@ -287,8 +300,9 @@ void HeroScene::selectHero2Callback(cocos2d::Ref* pSender)
 ****************************/
 void HeroScene::selectHero3Callback(cocos2d::Ref* pSender)
 {
-    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     if (_selectedHero == 3)
         _confirmButton->setEnabled(false);
     else
@@ -317,8 +331,9 @@ void HeroScene::selectHero3Callback(cocos2d::Ref* pSender)
 void HeroScene::selectHero4Callback(cocos2d::Ref* pSender)
 {
 
-    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     if (_selectedHero == 4)
         _confirmButton->setEnabled(false);
     else
@@ -345,24 +360,25 @@ void HeroScene::selectHero4Callback(cocos2d::Ref* pSender)
 ****************************/
 void HeroScene::selectHeroConfirmCallback(cocos2d::Ref* pSender)
 {
-    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     switch (_chooseNumber) 
     {
         case 1:
-            Tools::setUserInt("selectedHero", 1);
+            UserDefault::getInstance()->setIntegerForKey("selectedHero", 1);
             break;
         case 2:
-            Tools::setUserInt("selectedHero", 2);
+            UserDefault::getInstance()->setIntegerForKey("selectedHero", 2);
             break;
         case 3:
-            Tools::setUserInt("selectedHero", 3);
+            UserDefault::getInstance()->setIntegerForKey("selectedHero", 3);
             break;
         case 4:
-            Tools::setUserInt("selectedHero", 4);
+            UserDefault::getInstance()->setIntegerForKey("selectedHero", 4);
             break;
     }
-    _selectedHero= Tools::getUserInt("selectedHero");
+    _selectedHero= UserDefault::getInstance()->getIntegerForKey("selectedHero");
     _confirmButton->setEnabled(false);
 }
 
@@ -373,8 +389,9 @@ void HeroScene::selectHeroConfirmCallback(cocos2d::Ref* pSender)
 ****************************/
 void HeroScene::SelectHeroInformationCallback(cocos2d::Ref* pSender)
 {
-    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -398,8 +415,9 @@ void HeroScene::animate1()
     addChild(hero1);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
     m_frameCache->addSpriteFramesWithFile("character/Hero1/hero1_Start.plist", "character/Hero1/hero1_Start.png");
-    Tools::playEffect("music/hero1.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero1.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     Vector<CCSpriteFrame*> hero1FrameArray;
     for (int i = 4; i < 8; i++)
     {
@@ -428,8 +446,9 @@ void HeroScene::animate2()
     addChild(hero2);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
     m_frameCache->addSpriteFramesWithFile("character/Hero2/hero2_Normal.plist", "character/Hero2/hero2_Normal.png");
-    Tools::playEffect("music/hero2.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero2.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     Vector<CCSpriteFrame*> hero2FrameArray;
     for (int i = 0; i < 8; i++)
     {
@@ -458,8 +477,9 @@ void HeroScene::animate3()
     addChild(hero3);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
     m_frameCache->addSpriteFramesWithFile("character/Hero3/hero3_Start2.plist", "character/Hero3/hero3_Start2.png");
-    Tools::playEffect("music/hero3.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero3.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     Vector<CCSpriteFrame*> hero3FrameArray;
     for (int i = 1; i < 7; i++)
     {
@@ -487,8 +507,9 @@ void HeroScene::animate4()
     addChild(hero4);
     auto* m_frameCache = CCSpriteFrameCache::getInstance();
     m_frameCache->addSpriteFramesWithFile("character/Hero4/hero4_Start.plist", "character/Hero4/hero4_Start.png");
-    Tools::playEffect("music/hero4.mp3");
-    Tools::setEffectsVolume("musicVolume");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/hero4.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
+        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
     Vector<CCSpriteFrame*> hero4FrameArray;
     for (int i = 1; i < 9; i++)
     {

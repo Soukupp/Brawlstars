@@ -72,7 +72,7 @@ void Player::launchAnAttack(Weapon* weapon, const std::string& attackType, Slide
 	if (enemy != nullptr) {
 		if (attackType == "attack")
 		{
-			if (this->playerCollisionTest(enemy, weapon, true)) {
+			if (this->playerCollisionTest2(enemy, weapon)) {
 				if (weapon->launchAnAttack(this->_panel.doAttack(), enemy))
 				{
 					//成功造成伤害才回能
@@ -85,7 +85,7 @@ void Player::launchAnAttack(Weapon* weapon, const std::string& attackType, Slide
 		{
 			if (useMagic())
 			{
-				if (this->playerCollisionTest(enemy, weapon, true)) {
+				if (this->playerCollisionTest2(enemy, weapon)) {
 					weapon->launchAnAttack(this->_panel.doSkillAttack(), enemy);
 					enemy->refreshHealthBar(enemyHealthBar);
 				}
@@ -99,7 +99,7 @@ void Player::launchAnAttack(Weapon* weapon, const std::string& attackType, Slide
 	}
 	else
 	{
-		log("Player::launchAnAttack enemy == null");
+		log("null");
 	}
 }
 
@@ -193,16 +193,15 @@ void Player::keepWeapon(Weapon* weapon)
 ****************************/
 void Player::runFlipxWithWeapon(bool flipx,Weapon* weapon)
 {
-	_weaponAnchorPositionX = (flipx ?
-		PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT :
-		PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT);
-	_direct = (flipx ? -1 : 1);
-
-	weapon->setAnchorPoint(Vec2(_weaponAnchorPositionX, _weaponAnchorPositionY));
-	keepWeapon(weapon);
-
 	this->runAction(FlipX::create(flipx));
 	weapon->runAction(FlipX::create(flipx));
+
+	_weaponAnchorPositionX = 
+		flipx ? 
+		PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT : 
+		PLAYER_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT;
+
+	weapon->setAnchorPoint(Vec2(_weaponAnchorPositionX, _weaponAnchorPositionY));
 }
 
 /****************************
@@ -293,7 +292,18 @@ void Player::refreshPlayer()
 * 参数说明 : target : 攻击对象
 *           weapon : 武器对象
 ****************************/
-bool Player::playerCollisionTest(Player* target,Weapon* weapon, bool ifPlayEffect)
+bool Player::playerCollisionTest1(Player* target,Weapon* weapon)
+{
+	return true;
+}
+
+/****************************
+* Name ：palyerCollisionTest2
+* Summary ：近距离攻击碰撞检测
+* 参数说明 : target : 攻击对象
+*           weapon : 武器对象
+****************************/
+bool Player::playerCollisionTest2(Player* target, Weapon* weapon)
 {
 	return true;
 }
