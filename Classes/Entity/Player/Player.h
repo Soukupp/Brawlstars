@@ -54,7 +54,7 @@ private:
 public:
     Panel _panel;
     
-    float _direct = 1.0f;//表示方向
+    int _direct = 1;//表示方向
     int _level = 0;
 
     static Player* create(const std::string& filename);
@@ -84,8 +84,7 @@ public:
     void refreshMagicBar(Slider* magicBar);
     void refreshPlayer();
 
-    virtual bool playerCollisionTest1(Player* target, Weapon* weapon);
-    virtual bool playerCollisionTest2(Player* target, Weapon* weapon);
+    virtual bool playerCollisionTest(Player* target, Weapon* weapon, bool ifPlayEffect);
 
     virtual void upgrade(cocos2d::Label* levelText, Slider* bar);
 

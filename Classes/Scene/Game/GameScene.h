@@ -16,15 +16,11 @@
 #include "Scene/Settings/GameSettingsScene.h"
 #include "Scene/MainMenu/MainMenuScene.h"
 
+#define GAME_SETTING_POSITION_X static_cast<float>(origin.x + visibleSize.width - 1.2 * SettingsItem->getContentSize().width / 2)
+#define GAME_SETTING_POSITION_Y static_cast<float>(visibleSize.height - 1.2 * SettingsItem->getContentSize().height / 2)
 
-#define GAME_BACK_TO_MENU_POSITION_X origin.x + visibleSize.width - 2.5 * BackToMenuItem->getContentSize().width / 2
-#define GAME_BACK_TO_MENU_POSITION_Y origin.y + 1.2 * BackToMenuItem->getContentSize().height / 2
-
-#define GAME_SETTING_POSITION_X origin.x + visibleSize.width - 2.5 * SettingsItem->getContentSize().width / 2
-#define GAME_SETTING_POSITION_Y visibleSize.height - 1.2 * SettingsItem->getContentSize().height / 2
-
-#define GAME_SKILL_BUTTON_POSITION_X origin.x + 1.5 * 40
-#define GAME_SKILL_BUTTON_POSITION_Y origin.y + 1.5 * 40
+#define GAME_SKILL_BUTTON_POSITION_X static_cast<float>(origin.x + 1.5 * 40)
+#define GAME_SKILL_BUTTON_POSITION_Y static_cast<float>(origin.y + 1.5 * 40)
 
 
 class GameScene : public cocos2d::Scene
@@ -36,9 +32,6 @@ public:
 
     void menuCallback(cocos2d::Ref* pSender);
     void GameSettingsCallBack(cocos2d::Ref* pSender);
-
-    int getUserInt(const char* name);
-    void setUserInt(const char* name, int num);
 
     CREATE_FUNC(GameScene);
 };

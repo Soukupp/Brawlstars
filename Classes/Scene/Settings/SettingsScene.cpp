@@ -30,19 +30,8 @@ Scene* SettingsScene::createScene()
 }
 
 /****************************
-* Name ：problemLoading
-* Summary ：错误打印
-* return ：
-****************************/
-static void problemLoading(const char* filename)
-{
-    printf("Error while loading: %s\n", filename);
-    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in SettingsScene.cpp\n");
-}
-
-/****************************
 * Name ：SettingsScene::init
-* Summary ：主菜单初始化
+* Summary ：设置初始化
 * return ：初始化成功与否
 ****************************/
 bool SettingsScene::init()
@@ -55,9 +44,10 @@ bool SettingsScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/to_a_new_scene.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    auto pDict = Tools::initDict();
+
+    Tools::playEffect("music/to_a_new_scene.mp3");
+    Tools::setEffectsVolume("musicVolume");
 
     /*=====================创建返回按钮开始======================*/
 
@@ -86,6 +76,33 @@ bool SettingsScene::init()
 
     /*=====================创建关闭按钮结束====================*/
 
+    /*=====================创建语言选择开始======================*/
+    MenuItemFont::setFontName("fonts/Lilita one.ttf");
+    MenuItemFont::setFontSize(40);
+    const Color3B languageColor(SETTINGS_LANGUAGE_RGB_COLOR);//创建3B颜色
+
+    MenuItemFont* itemChinese = MenuItemFont::create(
+        "中文",
+        CC_CALLBACK_1(SettingsScene::choseChineseCallback, this)
+    );
+    Menu* menuChinese = Menu::create(itemChinese, NULL);
+    menuChinese->setPosition(SETTINGS_CHINESE_POSITION_X, SETTINGS_CHINESE_POSITION_Y);
+    menuChinese->alignItemsVertically();
+    menuChinese->setColor(languageColor);
+    this->addChild(menuChinese, 2);
+
+    MenuItemFont* itemEnglish = MenuItemFont::create(
+        "English",
+        CC_CALLBACK_1(SettingsScene::choseEnglishCallback, this)
+    );
+    Menu* menuEnglish = Menu::create(itemEnglish, NULL);
+    menuEnglish->setPosition(SETTINGS_ENGLISH_POSITION_X, SETTINGS_ENGLISH_POSITION_Y);
+    menuEnglish->alignItemsVertically();
+    menuEnglish->setColor(languageColor);
+    this->addChild(menuEnglish, 2);
+
+    /*=====================创建语言选择结束====================*/
+
     /*=================创建清除用户数据按钮开始================*/
 
     //创建返回按钮
@@ -112,14 +129,13 @@ bool SettingsScene::init()
     this->addChild(clearUserDataMenu, 2);
 
     //创建文本
-    auto clearUserDataLabel = Label::createWithTTF(
-        "Clear Your\nUser Data",
-        "fonts/Lilita one.ttf",
-        25
-    );
-    if (clearUserDataLabel == nullptr)
+    std::string strClearData = Tools::cbyid(pDict, "Clear");
+    strClearData += "\n";
+    strClearData += Tools::cbyid(pDict, "Data");
+    auto clearUserDataLabel = Label::create(strClearData, "Maiandra GD", 25);
+    if (clearUserDataLabel == nullptr || clearUserDataItem == nullptr)
     {
-        problemLoading("'fonts/Lilita one.ttf'");
+        problemLoading("'fonts/Segoe Print.ttf'");
     }
     else
     {
@@ -159,18 +175,18 @@ bool SettingsScene::init()
         this->addChild(settingsNameLabel, 1);
     }
 
-    /*=====================创建标题结束======================*/
+    /*======================创建标题结束=======================*/
 
-    /*===================创建滑动条开始======================*/
+    /*=====================创建滑动条开始======================*/
 
     _displayedPercentage = Text::create("0", "fonts/Lilita one.ttf", 32);          //_displayedPercentage 用于显示滑块拖动后所占比例
     _displayedPercentage->setPosition(Vec2(SETTINGS_SETTINGSMENU_POSITION_X, SETTINGS_SETTINGSMENU_POSITION_Y));
 
     auto musicSlider = Slider::create();
 
-    _displayedPercentage->setString(StringUtils::format("Percent %d", UserDefault::getInstance()->getIntegerForKey("musicVolume")));
+    _displayedPercentage->setString(StringUtils::format("%d%%", Tools::getUserInt("musicVolume")));
 
-    musicSlider->setPercent(UserDefault::getInstance()->getIntegerForKey("musicVolume"));
+    musicSlider->setPercent(Tools::getUserInt("musicVolume"));
     musicSlider->loadBarTexture("ui/progressFrame.png");
     musicSlider->loadProgressBarTexture("ui/progressBlock.png");
     musicSlider->setPosition(Vec2(SETTINGS_SETTINGSMENU_POSITION_X, SETTINGS_SETTINGSMENU_POSITION_Y));
@@ -180,87 +196,80 @@ bool SettingsScene::init()
     this->addChild(_displayedPercentage,3);
     this->addChild(musicSlider,2);
 
-    /*===================创建滑动条结束====================*/
+    /*=====================创建滑动条结束======================*/
 
-    /*===================创建标签开始=======================*/
+    /*======================创建标签开始=======================*/
 
-    Label* settingsMusicLabel = Label::create("MUSIC SETTING", "fonts/Lilita one.ttf", 35);
+    Label* settingsMusicLabel = Label::create(Tools::cbyid(pDict, "VOLUME SETTING"), "Maiandra GD", 35);
     settingsMusicLabel->setPosition(SETTINGS_SETTINGSMUSICLABEL_POSITION_X, SETTINGS_SETTINGSMUSICLABEL_POSITION_Y);
     const Color4B settingsMusicLabelColor(0, 0, 0, 255);//创建4B颜色
-    settingsMusicLabel->enableShadow();
+    const Color4B settingsMusicLabelShadowColor(50, 50, 50, 200);
+    settingsMusicLabel->enableShadow(settingsMusicLabelShadowColor);
     settingsMusicLabel->setTextColor(settingsMusicLabelColor);
-    
+
     this->addChild(settingsMusicLabel, 3);
 
-    /*===================创建标签结束=========================*/
+    /*====================创建标签结束=========================*/
 
-    /*===================创建菜单开始========================*/
+    /*=====================创建菜单开始========================*/
 
     auto musicOn = MenuItemImage::create("ui/musicOn.png", "ui/musicOn.png");
     auto musicOff = MenuItemImage::create("ui/musicOff.png", "ui/musicOff.png");
-
     MenuItemToggle* musicOnOrOff = MenuItemToggle::createWithTarget(this,
         menu_selector(SettingsScene::settingsPlayCallBack), musicOn, musicOff, NULL);
-                                                                                        //显示音乐开始或静音图标
-    
+    //显示音乐开始或静音图标
+
     if (UserDefault::getInstance()->getBoolForKey("ifPlayMusic", true))
     {
         musicOnOrOff->setSelectedIndex(0);
-        _displayedMusicStates->setString(StringUtils::format("MUSIC ON"));
-        _displayedMusicStates->setFontName("fonts/Lilita one.ttf");
-        _displayedMusicStates->setFontSize(35);
-        _displayedMusicStates->enableShadow();
+        _displayedMusicStates->setString(StringUtils::format(Tools::cbyid(pDict, "MUSIC ON")));
     }
     else
     {
         musicOnOrOff->setSelectedIndex(1);
-        _displayedMusicStates->setString(StringUtils::format("MUSIC OFF"));
-        _displayedMusicStates->setFontName("fonts/Lilita one.ttf");
-        _displayedMusicStates->setFontSize(35);
-        _displayedMusicStates->enableShadow();
+        _displayedMusicStates->setString(StringUtils::format(Tools::cbyid(pDict, "MUSIC OFF")));
     }
 
     _displayedMusicStates->setTextColor(settingsMusicLabelColor);
+    const Color4B displayedMusicStatesShadowColor(50, 50, 50, 200);
+    _displayedMusicStates->enableShadow(displayedMusicStatesShadowColor);
     _displayedMusicStates->setPosition(Vec2(SETTINGS_SETTINGMUSICSTATES_POSITION_X, SETTINGS_SETTINGMUSICSTATES_POSITION_Y));
- 
+
+    /*===============*/
+
     auto FPSOn = MenuItemImage::create("ui/FPSOn.png", "ui/FPSOn.png");
     auto FPSOff = MenuItemImage::create("ui/FPSOff.png", "ui/FPSOff.png");
-
     MenuItemToggle* FPSOnOrOff = MenuItemToggle::createWithTarget(this,
-        menu_selector(SettingsScene::settingsFPSCallBack),FPSOn , FPSOff, NULL);
+        menu_selector(SettingsScene::settingsFPSCallBack), FPSOn, FPSOff, NULL);
     //显示FPS显示或隐藏图标
-
 
     FPSOnOrOff->setPosition(Vec2(SETTINGS_SETTINGFPSSTATES_POSITION_X, SETTINGS_SETTINGFPSSTATES_POSITION_Y));
 
     if (UserDefault::getInstance()->getBoolForKey("ifShowFPS", true))
     {
-       
+
         FPSOnOrOff->setSelectedIndex(0);
-        _displayedFPSStates->setString(StringUtils::format("DISPLAY FPS"));
-        _displayedFPSStates->setFontName("fonts/Lilita one.ttf");
-        _displayedFPSStates->setFontSize(35);
-        _displayedFPSStates->enableShadow();
+        _displayedFPSStates->setString(StringUtils::format(Tools::cbyid(pDict, "DISPLAY FPS")));
     }
     else
     {
         FPSOnOrOff->setSelectedIndex(1);
-        _displayedFPSStates->setString(StringUtils::format("CONCEAL FPS"));
-        _displayedFPSStates->setFontName("fonts/Lilita one.ttf");
-        _displayedFPSStates->setFontSize(35);
-        _displayedFPSStates->enableShadow();
+        _displayedFPSStates->setString(StringUtils::format(Tools::cbyid(pDict, "CONCEAL FPS")));
     }
 
     _displayedFPSStates->setTextColor(settingsMusicLabelColor);
+    const Color4B displayedFPSStatesShadowColor(50, 50, 50, 200);
+    _displayedFPSStates->enableShadow(displayedFPSStatesShadowColor);
     _displayedFPSStates->setPosition(Vec2(SETTINGS_SETTINGSFPSLABEL_POSITION_X, SETTINGS_SETTINGSFPSLABEL_POSITION_Y));
 
+    /*===============*/
 
-    Menu* settingsMenu = Menu::create(musicOnOrOff,FPSOnOrOff, NULL);
+    Menu* settingsMenu = Menu::create(musicOnOrOff, FPSOnOrOff, NULL);
     this->addChild(settingsMenu, 3);
-    addChild(_displayedMusicStates,3);
+    addChild(_displayedMusicStates, 3);
     addChild(_displayedFPSStates, 3);
 
-    /*===================创建菜单结束========================*/
+    /*=====================创建菜单结束========================*/
 
     /*=====================创建背景图开始======================*/
 
@@ -290,9 +299,8 @@ bool SettingsScene::init()
 ****************************/
 void SettingsScene::settingsBackCallback(Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
+    Tools::setEffectsVolume("musicVolume");
     auto mainMenuScene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//过场动画设计
 }
@@ -309,12 +317,12 @@ void SettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
         Slider* slider = dynamic_cast<Slider*>(pSender);
         int percentVolume = slider->getPercent();
 
-        CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(float(percentVolume) / 100);
+        Tools::setBackgroundMusicVolume(float(percentVolume) / 100);
 
-        UserDefault::getInstance()->setIntegerForKey("musicVolume", percentVolume);
+        Tools::setUserInt("musicVolume", percentVolume);
 
-        _displayedPercentage->setString(StringUtils::format("Percent %d", percentVolume));   //显示所占百分比
-        
+        _displayedPercentage->setString(StringUtils::format("%d%%", percentVolume));   //显示所占百分比
+
     }
 }
 
@@ -325,21 +333,21 @@ void SettingsScene::sliderEvent(Ref* pSender, Slider::EventType type)
 * ***************************/
 void SettingsScene::settingsPlayCallBack(Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("music/first_music.mp3");//预加载音乐
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
-    if (CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
+    auto pDict = Tools::initDict();
+    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
+    Tools::preloadBackgroundMusic("music/first_music.mp3");//预加载音乐
+    Tools::setEffectsVolume("musicVolume");
+    if (Tools::isBackgroundMusicPlaying())
     {
-        CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
-        UserDefault::getInstance()->setBoolForKey("ifPlayMusic", false);
-        _displayedMusicStates->setString(StringUtils::format("MUSIC OFF"));
+        Tools::pauseBackgroundMusic();
+        Tools::setUserBool("ifPlayMusic", false);
+        _displayedMusicStates->setString(StringUtils::format(Tools::cbyid(pDict, "MUSIC OFF")));
     }
     else
     {
-        CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
-        UserDefault::getInstance()->setBoolForKey("ifPlayMusic", true);
-        _displayedMusicStates->setString(StringUtils::format("MUSIC ON"));
+        Tools::resumeBackgroundMusic();
+        Tools::setUserBool("ifPlayMusic", true);
+        _displayedMusicStates->setString(StringUtils::format(Tools::cbyid(pDict, "MUSIC ON")));
     }
 }
 
@@ -350,21 +358,21 @@ void SettingsScene::settingsPlayCallBack(Ref* pSender)
 * ***************************/
 void SettingsScene::settingsFPSCallBack(Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    auto pDict = Tools::initDict();
+    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
+    Tools::setEffectsVolume("musicVolume");
     auto director = Director::getInstance();
     if (director->isDisplayStats())
     {
         director->setDisplayStats(false);
-        UserDefault::getInstance()->setBoolForKey("ifShowFPS", false);
-        _displayedFPSStates->setString(StringUtils::format("CONCEAL FPS"));
+        Tools::setUserBool("ifShowFPS", false);
+        _displayedFPSStates->setString(StringUtils::format(Tools::cbyid(pDict, "CONCEAL FPS")));
     }
     else
     {
         director->setDisplayStats(true);
-        UserDefault::getInstance()->setBoolForKey("ifShowFPS", true);
-        _displayedFPSStates->setString(StringUtils::format("DISPLAY FPS"));
+        Tools::setUserBool("ifShowFPS", true);
+        _displayedFPSStates->setString(StringUtils::format(Tools::cbyid(pDict, "DISPLAY FPS")));
     }
 }
 
@@ -375,27 +383,39 @@ void SettingsScene::settingsFPSCallBack(Ref* pSender)
 * ***************************/
 void SettingsScene::clearUserDataCallback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
-    if (UserDefault::getInstance()->getIntegerForKey("_winTimes"))
+    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
+    Tools::setEffectsVolume("musicVolume");
+    if (Tools::getUserInt("_winTimes"))
     {
-        UserDefault::getInstance()->setIntegerForKey("_winTimes", 0);
+        Tools::setUserInt("_winTimes", 0);
     }
-    if (UserDefault::getInstance()->getIntegerForKey("_gameTimes"))
+    if (Tools::getUserInt("_gameTimes"))
     {
-        UserDefault::getInstance()->setIntegerForKey("_gameTimes", 0);
+        Tools::setUserInt("_gameTimes", 0);
     }
-    if (UserDefault::getInstance()->getIntegerForKey("_killNums"))
+    if (Tools::getUserInt("_killNums"))
     {
-        UserDefault::getInstance()->setIntegerForKey("_killNums", 0);
+        Tools::setUserInt("_killNums", 0);
     }
-    if (UserDefault::getInstance()->getIntegerForKey("_cupNums"))
+    if (Tools::getUserInt("_cupNums"))
     {
-        UserDefault::getInstance()->setIntegerForKey("_cupNums", 0);
+        Tools::setUserInt("_cupNums", 0);
     }
-    if (UserDefault::getInstance()->getIntegerForKey("selectedHero"))
+    if (Tools::getUserInt("selectedHero"))
     {
-        UserDefault::getInstance()->setIntegerForKey("selectedHero", 1);
+        Tools::setUserInt("selectedHero", 1);
     }
+}
+
+void SettingsScene::choseChineseCallback(cocos2d::Ref* pSender)
+{
+    Tools::setUserInt("language", enumChinese);
+    auto settingsScene = SettingsScene::createScene();
+    Director::getInstance()->replaceScene(settingsScene);
+}
+void SettingsScene::choseEnglishCallback(cocos2d::Ref* pSender)
+{
+    Tools::setUserInt("language", enumEnglish);
+    auto settingsScene = SettingsScene::createScene();
+    Director::getInstance()->replaceScene(settingsScene);
 }

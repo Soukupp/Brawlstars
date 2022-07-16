@@ -20,17 +20,6 @@ Scene* StoreScene::createScene()
     return StoreScene::create();
 }
 
-/****************************
-* Name ：problemLoading
-* Summary ：错误打印
-* return ：
-****************************/
-static void problemLoading(const char* filename)
-{
-    printf("Error while loading: %s\n", filename);
-    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in SettingsScene.cpp\n");
-}
-
 bool StoreScene::init()
 {
     if (!Scene::init())
@@ -41,9 +30,10 @@ bool StoreScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/to_a_new_scene.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    auto pDict = Tools::initDict();
+
+    Tools::playEffect("music/to_a_new_scene.mp3");
+    Tools::setEffectsVolume("musicVolume");
 
     /*=====================创建返回按钮开始======================*/
 
@@ -137,15 +127,15 @@ bool StoreScene::init()
     MenuItemFont::setFontName("fonts/Lilita one.ttf");
     MenuItemFont::setFontSize(25);
     MenuItemFont* aiNUmberTip = MenuItemFont::create(
-        "Choose the number of NPC (DEFAULT NUMBER is 9)",
+        Tools::cbyid(pDict, "Choose the number of NPC (DEFAULT NUMBER is 9)"),
         CC_CALLBACK_1(StoreScene::AINumberTipCallback, this)
     );
     aiNUmberTip->setPosition(STORE_AI_TIP);
-    
+
     MenuItemFont::setFontName("fonts/Lilita one.ttf");
     MenuItemFont::setFontSize(25);
     MenuItemFont* vincibleModeTip = MenuItemFont::create(
-        "NORMAL MODE",
+        Tools::cbyid(pDict, "NORMAL MODE"),
         CC_CALLBACK_1(StoreScene::Select_Vincible_Mode_Callback, this)
     );
     vincibleModeTip->setPosition(STORE_VINCIBLE_POSITION);
@@ -153,7 +143,7 @@ bool StoreScene::init()
     MenuItemFont::setFontName("fonts/Lilita one.ttf");
     MenuItemFont::setFontSize(25);
     MenuItemFont* invincibleModeTip = MenuItemFont::create(
-        "INVINCIBLE MODE",
+        Tools::cbyid(pDict, "INVINCIBLE MODE"),
         CC_CALLBACK_1(StoreScene::Select_Invincible_Mode_Callback, this)
     );
     invincibleModeTip->setPosition(STORE_INVINCIBLE_POSITION);
@@ -164,8 +154,8 @@ bool StoreScene::init()
     aiNumberSelectMenu->setPosition(Vec2::ZERO);
     this->addChild(aiNumberSelectMenu, 2);  // 增加AI个数选择
 
-    _selectedAINumber = UserDefault::getInstance()->getIntegerForKey("selectedAINumber");
-    _selectedInvincible = UserDefault::getInstance()->getIntegerForKey("invincibleMode");
+    _selectedAINumber = Tools::getUserInt("selectedAINumber");
+    _selectedInvincible = Tools::getUserInt("invincibleMode");
 
     /*=====================创建滚动层容器开始======================*/
 
@@ -196,7 +186,7 @@ bool StoreScene::init()
         CC_CALLBACK_1(StoreScene::storeSelectMap1Callback, this));
     MapUpdatedOverview_1->setPosition(Vec2(STORE_MAP_UPDATED_OVERVIEW_POSITION_1));
 
-    auto MapUpdatedOverviewName_1 = LabelTTF::create("CLASSIC MAP", "fonts/Lilita one.ttf", 28);
+    auto MapUpdatedOverviewName_1 = LabelTTF::create(Tools::cbyid(pDict, "CLASSIC MAP"), "fonts/Lilita one.ttf", 28);
     MapUpdatedOverviewName_1->setColor(Color3B::WHITE);
     MapUpdatedOverviewName_1->setPosition(Vec2(STORE_MAP_UPDATED_OVERVIEW_NAME_POSITION_1));
     MapUpdatedOverviewName_1->enableShadow(STORE_MAP_UPDATED_OVERVIEW_NAME_SHADOW_1);
@@ -207,7 +197,7 @@ bool StoreScene::init()
         CC_CALLBACK_1(StoreScene::storeSelectMap3Callback, this));
     MapUpdatedOverview_3->setPosition(Vec2(STORE_MAP_UPDATED_OVERVIEW_POSITION_3));
 
-    auto MapUpdatedOverviewName_3 = LabelTTF::create("OBSTACLES-TERRAIN MAP", "fonts/Lilita one.ttf", 28);
+    auto MapUpdatedOverviewName_3 = LabelTTF::create(Tools::cbyid(pDict, "OBSTACLES-TERRAIN MAP"), "fonts/Lilita one.ttf", 28);
     MapUpdatedOverviewName_3->setColor(Color3B::WHITE);
     MapUpdatedOverviewName_3->setPosition(Vec2(STORE_MAP_UPDATED_OVERVIEW_NAME_POSITION_3));
     MapUpdatedOverviewName_3->enableShadow(STORE_MAP_UPDATED_OVERVIEW_NAME_SHADOW_3);
@@ -236,7 +226,7 @@ bool StoreScene::init()
         PaintedEggshell_1, PaintedEggshell_2, PaintedEggshell_3, NULL);
     storeView->addChild(storeViewMenu);
 
-    _selectedMap = UserDefault::getInstance()->getIntegerForKey("selectedMap");
+    _selectedMap = Tools::getUserInt("selectedMap");
 
     storeView->jumpToLeft();   //让一开始页面在最左边
 
@@ -253,11 +243,10 @@ bool StoreScene::init()
 * ***************************/
 void StoreScene::storeSelectMap1Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
+    Tools::setEffectsVolume("musicVolume");
     log("Map1 Callback！");
-    UserDefault::getInstance()->setIntegerForKey("selectedMap", 0);
+    Tools::setUserInt("selectedMap", 0);
 
     auto mainMenuScene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//过场动画设计
@@ -270,10 +259,9 @@ void StoreScene::storeSelectMap1Callback(cocos2d::Ref* pSender)
 * ***************************/
 void StoreScene::Select_AI_5_Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
-    UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 5);
+    Tools::playEffect("music/select_ok.mp3");
+    Tools::setEffectsVolume("musicVolume");
+    Tools::setUserInt("selectedAINUmber", 5);
 }
 
 /****************************
@@ -283,10 +271,9 @@ void StoreScene::Select_AI_5_Callback(cocos2d::Ref* pSender)
 * ***************************/
 void StoreScene::Select_AI_6_Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
-    UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 6);
+    Tools::playEffect("music/select_ok.mp3");
+    Tools::setEffectsVolume("musicVolume");
+    Tools::setUserInt("selectedAINUmber", 6);
 }
 
 /****************************
@@ -296,10 +283,9 @@ void StoreScene::Select_AI_6_Callback(cocos2d::Ref* pSender)
 * ***************************/
 void StoreScene::Select_AI_7_Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
-    UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 7);
+    Tools::playEffect("music/select_ok.mp3");
+    Tools::setEffectsVolume("musicVolume");
+    Tools::setUserInt("selectedAINUmber", 7);
 }
 
 /****************************
@@ -309,10 +295,9 @@ void StoreScene::Select_AI_7_Callback(cocos2d::Ref* pSender)
 * ***************************/
 void StoreScene::Select_AI_8_Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
-    UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 8);
+    Tools::playEffect("music/select_ok.mp3");
+    Tools::setEffectsVolume("musicVolume");
+    Tools::setUserInt("selectedAINUmber", 8);
 }
 
 /****************************
@@ -322,10 +307,9 @@ void StoreScene::Select_AI_8_Callback(cocos2d::Ref* pSender)
 * ***************************/
 void StoreScene::Select_AI_9_Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
-    UserDefault::getInstance()->setIntegerForKey("selectedAINUmber", 9);
+    Tools::playEffect("music/select_ok.mp3");
+    Tools::setEffectsVolume("musicVolume");
+    Tools::setUserInt("selectedAINUmber", 9);
 }
 
 /****************************
@@ -335,9 +319,8 @@ void StoreScene::Select_AI_9_Callback(cocos2d::Ref* pSender)
 * ***************************/
 void StoreScene::AINumberTipCallback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/store_ai_number.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    Tools::playEffect("music/store_ai_number.mp3");
+    Tools::setEffectsVolume("musicVolume");
 }
 
 /****************************
@@ -347,13 +330,12 @@ void StoreScene::AINumberTipCallback(cocos2d::Ref* pSender)
 * ***************************/
 void StoreScene::Select_Vincible_Mode_Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
-    UserDefault::getInstance()->setIntegerForKey("invincibleMode", 0); // 常规模式
+    Tools::playEffect("music/select_ok.mp3");
+    Tools::setEffectsVolume("musicVolume");
+    Tools::setUserInt("invincibleMode", 0); // 常规模式
     //_selectedInvincible = 0;
     log("mode 0 selected");
-    log("now mode %d", UserDefault::getInstance()->getIntegerForKey("invincibleMode"));
+    log("now mode %d", Tools::getUserInt("invincibleMode"));
 }
 
 /****************************
@@ -363,13 +345,12 @@ void StoreScene::Select_Vincible_Mode_Callback(cocos2d::Ref* pSender)
 * ***************************/
 void StoreScene::Select_Invincible_Mode_Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/select_ok.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
-    UserDefault::getInstance()->setIntegerForKey("invincibleMode", 1); // 无敌模式
+    Tools::playEffect("music/select_ok.mp3");
+    Tools::setEffectsVolume("musicVolume");
+    Tools::setUserInt("invincibleMode", 1); // 无敌模式
     //_selectedInvincible = 1;
     log("mode 1 selected");
-    log("now mode %d", UserDefault::getInstance()->getIntegerForKey("invincibleMode"));
+    log("now mode %d", Tools::getUserInt("invincibleMode"));
 }
 
 /****************************
@@ -379,11 +360,10 @@ void StoreScene::Select_Invincible_Mode_Callback(cocos2d::Ref* pSender)
 * ***************************/
 void StoreScene::storeSelectMap3Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
+    Tools::setEffectsVolume("musicVolume");
     log("Map3 Callback！");
-    UserDefault::getInstance()->setIntegerForKey("selectedMap", 1);
+    Tools::setUserInt("selectedMap", 1);
 
     auto mainMenuScene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//过场动画设计
@@ -396,9 +376,8 @@ void StoreScene::storeSelectMap3Callback(cocos2d::Ref* pSender)
 * ***************************/
 void StoreScene::storeEggshell1Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/printed_eggshell_1.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    Tools::playEffect("music/printed_eggshell_1.mp3");
+    Tools::setEffectsVolume("musicVolume");
 }
 
 /****************************
@@ -408,9 +387,8 @@ void StoreScene::storeEggshell1Callback(cocos2d::Ref* pSender)
 * ***************************/
 void StoreScene::storeEggshell2Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/printed_eggshell_2.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    Tools::playEffect("music/printed_eggshell_2.mp3");
+    Tools::setEffectsVolume("musicVolume");
 }
 
 /****************************
@@ -420,9 +398,8 @@ void StoreScene::storeEggshell2Callback(cocos2d::Ref* pSender)
 * ***************************/
 void StoreScene::storeEggshell3Callback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/printed_eggshell_3.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    Tools::playEffect("music/printed_eggshell_3.mp3");
+    Tools::setEffectsVolume("musicVolume");
 }
 
 
@@ -433,9 +410,8 @@ void StoreScene::storeEggshell3Callback(cocos2d::Ref* pSender)
 * ***************************/
 void StoreScene::storeBackCallback(cocos2d::Ref* pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/if_click_buttom_on_menu.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(
-        static_cast<float>(UserDefault::getInstance()->getIntegerForKey("musicVolume")) / 100);
+    Tools::playEffect("music/if_click_buttom_on_menu.mp3");
+    Tools::setEffectsVolume("musicVolume");
     auto mainMenuScene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInL::create(0.5f, mainMenuScene));//过场动画设计
 }

@@ -56,6 +56,7 @@ using namespace cocos2d;
 class Hero1;
 class Hero2;
 class Hero3;
+class Tools;
 class Hero4 : public Player
 {
 public:
@@ -86,8 +87,7 @@ public:
 	bool initNormalAction();
 	bool initSkillAction();
 
-	bool playerCollisionTest1(Player* target, Weapon* weapon);
-	bool playerCollisionTest2(Player* target, Weapon* weapon);
+	bool playerCollisionTest(Player* target, Weapon* weapon, bool ifPlayEffect);
 
 	int getID();
 
@@ -101,10 +101,6 @@ private:
 
 	float _targetX;//目标位置X
 	float _targetY;//目标位置Y
-	float _targetWidth;//目标的宽度
-	float _targetHeight;//目标的高度
-	float _weaponWidth;//攻击范围的宽度
-	float _weaponHeight;//攻击范围的高度
 
 	float _thisX;
 	float _thisY;

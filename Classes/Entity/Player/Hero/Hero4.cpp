@@ -9,6 +9,7 @@
 #include "Hero2.h"
 #include "Hero3.h"
 #include "Hero4.h"
+#include "Tools.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -139,7 +140,7 @@ void Hero4::runFlipxWithWeapon(bool flipx, Weapon* weapon)
 	_weaponAnchorPositionX = (flipx ?
 		HERO4_WEAPON_ANCHOR_POSITION_X_WHEN_LEFT :
 		HERO4_WEAPON_ANCHOR_POSITION_X_WHEN_RIGHT);
-	_direct = (flipx ? -1.0f : 1.0f);
+	_direct = (flipx ? -1 : 1);
 
 	weapon->setAnchorPoint(Vec2(_weaponAnchorPositionX, _weaponAnchorPositionY));
 	keepWeapon(weapon);
@@ -209,7 +210,7 @@ bool Hero4::initWalkAction()
 		playerFrameArray.pushBack(frame);
 	}
 
-	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0f / 12.0f);
 
 	this->setWalkAction(RepeatForever::create(Animate::create(animation)));
 
@@ -236,7 +237,7 @@ bool Hero4::initAttackAction()
 		playerFrameArray.pushBack(frame);
 	}
 
-	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 24.0);
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0f / 24.0f);
 	animation->setLoops(1);
 	auto* animate = Animate::create(animation);
 	this->setAttackAction(animate);
@@ -264,7 +265,7 @@ bool Hero4::initNormalAction()
 		playerFrameArray.pushBack(frame);
 	}
 
-	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0f / 12.0f);
 
 	this->setNormalAction(RepeatForever::create(Animate::create(animation)));
 
@@ -291,7 +292,7 @@ bool Hero4::initSkillAction()
 		playerFrameArray.pushBack(frame);
 	}
 
-	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0 / 12.0);
+	auto* animation = Animation::createWithSpriteFrames(playerFrameArray, 1.0f / 12.0f);
 	animation->setLoops(1);
 	auto* animate = Animate::create(animation);
 	this->setSkillAction(animate);
@@ -312,105 +313,34 @@ bool Hero4::initSkillAction()
 * 参数说明 : target : 攻击对象
 *           weapon : 武器对象
 ****************************/
-bool Hero4::playerCollisionTest1(Player* target, Weapon* weapon)
+bool Hero4::playerCollisionTest(Player* target, Weapon* weapon, bool ifPlayerEffect)
 {
 	if (target == nullptr)
 		return false;
 	_targetX = target->getPosition().x;                           //目标位置X
 	_targetY = target->getPosition().y;                           //目标位置Y
-	_targetWidth = target->_width;                                //目标的宽度
-	_targetHeight = target->_height;                              //目标的高度
-	_weaponWidth = weapon->getContentSize().width;                //攻击范围的宽度
-	_weaponHeight = weapon->getContentSize().height;              //攻击范围的高度
-
 	_thisX = this->getPosition().x;
 	_thisY = this->getPosition().y;
 
-	if (_direct == 1)
-	{
-		if ((_targetX - _thisX) < (_weaponWidth + _targetWidth / 2) && (_thisX - _targetX) <= 0)
-		{           //范围判定
-			if (fabs(_thisY - _targetY) < (_weaponHeight / 2 + _targetHeight / 2))
-			{
-				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
-				return true;
-			}
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-			return false;
+	if (
+		(_targetX - _thisX) * _direct < (weapon->getContentSize().width + target->_width / 2)
+		&& (_targetX - _thisX) * _direct >= 0
+		&& fabs(_targetY - _thisY) < (weapon->getContentSize().height / 2 + target->_height / 2)
+		)
+	{           //范围判定
+		if (ifPlayerEffect)
+		{//命中音效
+			Tools::playEffect("music/knife_attack_2.mp3");
 		}
-		else
-		{
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-			return false;
-		}
+		return true;
 	}
-	if (_direct == -1)
+	else
 	{
-		if ((_thisX - _targetX) < (_weaponWidth + _targetWidth / 2) && (_thisX - _targetX) >= 0)
-		{           //范围判定
-			if (fabs(_thisY - _targetY) < (_weaponHeight / 2 + _targetHeight / 2))
-			{
-				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_2.mp3");
-				return true;
-			}
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-			return false;
+		if (ifPlayerEffect)
+		{//击空音效
+			Tools::playEffect("music/knife_attack_1.mp3");
 		}
-		else
-		{
-			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("music/knife_attack_1.mp3");
-			return false;
-		}
-	}
-}
-
-/****************************
-* Name ：palyerCollisionTest2
-* Summary ：近距离攻击碰撞检测
-* 参数说明 : target : 攻击对象
-*           weapon : 武器对象
-****************************/
-bool Hero4::playerCollisionTest2(Player* target, Weapon* weapon)
-{
-	_targetX = target->getPosition().x;                           //目标位置X
-	_targetY = target->getPosition().y;                           //目标位置Y
-	_targetWidth = target->_width;         //目标的宽度
-	_targetHeight = target->_height;        //目标的高度
-	_weaponWidth = weapon->getContentSize().width;                //攻击范围的宽度
-	_weaponHeight = weapon->getContentSize().height;              //攻击范围的高度
-
-	_thisX = this->getPosition().x;
-	_thisY = this->getPosition().y;
-
-	if (_direct == 1)
-	{
-		if ((_targetX - _thisX) < (_weaponWidth + _targetWidth / 2) && (_thisX - _targetX) <= 0)
-		{           //范围判定
-			if (fabs(_thisY - _targetY) < (_weaponHeight / 2 + _targetHeight / 2))
-			{
-				return true;
-			}
-			return false;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	if (_direct == -1)
-	{
-		if ((_thisX - _targetX) < (_weaponWidth + _targetWidth / 2) && (_thisX - _targetX) >= 0)
-		{           //范围判定
-			if (fabs(_thisY - _targetY) < (_weaponHeight / 2 + _targetHeight / 2))
-			{
-				return true;
-			}
-			return false;
-		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 }
 
